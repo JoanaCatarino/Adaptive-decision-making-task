@@ -137,11 +137,6 @@ class Ui_TaskGui(object):
         self.Box1_Stop.setStyleSheet(u"font: 700 8pt \"Segoe UI\";\n"
 "background-color: rgb(255, 203, 198);")
         self.Box1_Animal_ID = QComboBox(self.TaskSettings)
-        self.Box1_Animal_ID.addItem("")
-        self.Box1_Animal_ID.addItem("")
-        self.Box1_Animal_ID.addItem("")
-        self.Box1_Animal_ID.addItem("")
-        self.Box1_Animal_ID.addItem("")
         self.Box1_Animal_ID.setObjectName(u"Box1_Animal_ID")
         self.Box1_Animal_ID.setGeometry(QRect(100, 27, 110, 21))
         self.Box1_Animal_ID.setStyleSheet(u"background-color: rgb(255, 255, 255);")
@@ -456,7 +451,7 @@ class Ui_TaskGui(object):
         self.Background_B1_LeftSpout.setStyleSheet(u"background-color: rgb(234, 234, 234);")
         self.layoutWidget = QWidget(self.Background_B1_LeftSpout)
         self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(10, 9, 448, 16))
+        self.layoutWidget.setGeometry(QRect(10, 9, 448, 20))
         self.Layout_B1_LeftSpout = QHBoxLayout(self.layoutWidget)
         self.Layout_B1_LeftSpout.setSpacing(19)
         self.Layout_B1_LeftSpout.setObjectName(u"Layout_B1_LeftSpout")
@@ -556,99 +551,99 @@ class Ui_TaskGui(object):
         self.Background_B1_RightSpout.setObjectName(u"Background_B1_RightSpout")
         self.Background_B1_RightSpout.setGeometry(QRect(574, 537, 471, 31))
         self.Background_B1_RightSpout.setStyleSheet(u"background-color: rgb(234, 234, 234);")
-        self.widget = QWidget(self.Background_B1_RightSpout)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(10, 9, 448, 16))
-        self.Layout_B1_RightSpout = QHBoxLayout(self.widget)
+        self.layoutWidget1 = QWidget(self.Background_B1_RightSpout)
+        self.layoutWidget1.setObjectName(u"layoutWidget1")
+        self.layoutWidget1.setGeometry(QRect(10, 9, 448, 20))
+        self.Layout_B1_RightSpout = QHBoxLayout(self.layoutWidget1)
         self.Layout_B1_RightSpout.setSpacing(19)
         self.Layout_B1_RightSpout.setObjectName(u"Layout_B1_RightSpout")
         self.Layout_B1_RightSpout.setSizeConstraint(QLayout.SetNoConstraint)
         self.Layout_B1_RightSpout.setContentsMargins(0, 0, 0, 0)
-        self.label_61 = QLabel(self.widget)
+        self.label_61 = QLabel(self.layoutWidget1)
         self.label_61.setObjectName(u"label_61")
         self.label_61.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_61)
 
-        self.label_62 = QLabel(self.widget)
+        self.label_62 = QLabel(self.layoutWidget1)
         self.label_62.setObjectName(u"label_62")
         self.label_62.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_62)
 
-        self.label_63 = QLabel(self.widget)
+        self.label_63 = QLabel(self.layoutWidget1)
         self.label_63.setObjectName(u"label_63")
         self.label_63.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_63)
 
-        self.label_64 = QLabel(self.widget)
+        self.label_64 = QLabel(self.layoutWidget1)
         self.label_64.setObjectName(u"label_64")
         self.label_64.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_64)
 
-        self.label_65 = QLabel(self.widget)
+        self.label_65 = QLabel(self.layoutWidget1)
         self.label_65.setObjectName(u"label_65")
         self.label_65.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_65)
 
-        self.label_66 = QLabel(self.widget)
+        self.label_66 = QLabel(self.layoutWidget1)
         self.label_66.setObjectName(u"label_66")
         self.label_66.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_66)
 
-        self.label_67 = QLabel(self.widget)
+        self.label_67 = QLabel(self.layoutWidget1)
         self.label_67.setObjectName(u"label_67")
         self.label_67.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_67)
 
-        self.label_68 = QLabel(self.widget)
+        self.label_68 = QLabel(self.layoutWidget1)
         self.label_68.setObjectName(u"label_68")
         self.label_68.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_68)
 
-        self.label_69 = QLabel(self.widget)
+        self.label_69 = QLabel(self.layoutWidget1)
         self.label_69.setObjectName(u"label_69")
         self.label_69.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_69)
 
-        self.label_70 = QLabel(self.widget)
+        self.label_70 = QLabel(self.layoutWidget1)
         self.label_70.setObjectName(u"label_70")
         self.label_70.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_70)
 
-        self.label_71 = QLabel(self.widget)
+        self.label_71 = QLabel(self.layoutWidget1)
         self.label_71.setObjectName(u"label_71")
         self.label_71.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_71)
 
-        self.label_72 = QLabel(self.widget)
+        self.label_72 = QLabel(self.layoutWidget1)
         self.label_72.setObjectName(u"label_72")
         self.label_72.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_72)
 
-        self.label_73 = QLabel(self.widget)
+        self.label_73 = QLabel(self.layoutWidget1)
         self.label_73.setObjectName(u"label_73")
         self.label_73.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_73)
 
-        self.label_74 = QLabel(self.widget)
+        self.label_74 = QLabel(self.layoutWidget1)
         self.label_74.setObjectName(u"label_74")
         self.label_74.setFrameShape(QFrame.Box)
 
         self.Layout_B1_RightSpout.addWidget(self.label_74)
 
-        self.label_75 = QLabel(self.widget)
+        self.label_75 = QLabel(self.layoutWidget1)
         self.label_75.setObjectName(u"label_75")
         self.label_75.setFrameShape(QFrame.Box)
 
@@ -1038,21 +1033,6 @@ class Ui_TaskGui(object):
         self.label_B1_LeftSpout.raise_()
         self.label_B1_RightSpout.raise_()
         self.label_B1_Trials.raise_()
-        self.label_61.raise_()
-        self.label_62.raise_()
-        self.label_63.raise_()
-        self.label_64.raise_()
-        self.label_65.raise_()
-        self.label_66.raise_()
-        self.label_67.raise_()
-        self.label_68.raise_()
-        self.label_69.raise_()
-        self.label_70.raise_()
-        self.label_71.raise_()
-        self.label_72.raise_()
-        self.label_73.raise_()
-        self.label_74.raise_()
-        self.label_75.raise_()
         self.label_B1_TotalTrials.raise_()
         self.label_B1_CorrectTrials.raise_()
         self.label_B1_IncorrectTrials.raise_()
@@ -1096,7 +1076,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(0)
+        self.Boxes.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(TaskGui)
@@ -1132,12 +1112,6 @@ class Ui_TaskGui(object):
         self.label_B1_AnimalID.setText(QCoreApplication.translate("TaskGui", u"Animal_ID :", None))
         self.Box1_Start.setText(QCoreApplication.translate("TaskGui", u"START", None))
         self.Box1_Stop.setText(QCoreApplication.translate("TaskGui", u"STOP", None))
-        self.Box1_Animal_ID.setItemText(0, QCoreApplication.translate("TaskGui", u"Animal 1", None))
-        self.Box1_Animal_ID.setItemText(1, QCoreApplication.translate("TaskGui", u"Animal 2", None))
-        self.Box1_Animal_ID.setItemText(2, QCoreApplication.translate("TaskGui", u"Animal 3", None))
-        self.Box1_Animal_ID.setItemText(3, QCoreApplication.translate("TaskGui", u"Animal 4", None))
-        self.Box1_Animal_ID.setItemText(4, QCoreApplication.translate("TaskGui", u"Animal 5", None))
-
         self.Box1_Task.setItemText(0, QCoreApplication.translate("TaskGui", u"Test rig", None))
         self.Box1_Task.setItemText(1, QCoreApplication.translate("TaskGui", u"Free Licking", None))
         self.Box1_Task.setItemText(2, QCoreApplication.translate("TaskGui", u"Spout Sampling", None))

@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Rbpi_Connection">
      <attribute name="title">
@@ -421,31 +421,6 @@ background-color: rgb(255, 203, 198);</string>
        <property name="editable">
         <bool>true</bool>
        </property>
-       <item>
-        <property name="text">
-         <string>Animal 1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Animal 2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Animal 3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Animal 4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Animal 5</string>
-        </property>
-       </item>
       </widget>
       <widget class="QComboBox" name="Box1_Task">
        <property name="geometry">
@@ -1468,7 +1443,7 @@ color: rgb(73, 192, 203);</string>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_LeftSpout">
@@ -1643,13 +1618,13 @@ color: rgb(73, 192, 203);</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(234, 234, 234);</string>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_RightSpout">
@@ -2935,36 +2910,6 @@ color: rgb(112, 112, 112);</string>
      <zorder>label_B1_LeftSpout</zorder>
      <zorder>label_B1_RightSpout</zorder>
      <zorder>label_B1_Trials</zorder>
-     <zorder>label_45</zorder>
-     <zorder>label_43</zorder>
-     <zorder>label_44</zorder>
-     <zorder>label_46</zorder>
-     <zorder>label_47</zorder>
-     <zorder>label_48</zorder>
-     <zorder>label_49</zorder>
-     <zorder>label_50</zorder>
-     <zorder>label_51</zorder>
-     <zorder>label_52</zorder>
-     <zorder>label_53</zorder>
-     <zorder>label_54</zorder>
-     <zorder>label_55</zorder>
-     <zorder>label_56</zorder>
-     <zorder>label_57</zorder>
-     <zorder>label_61</zorder>
-     <zorder>label_62</zorder>
-     <zorder>label_63</zorder>
-     <zorder>label_64</zorder>
-     <zorder>label_65</zorder>
-     <zorder>label_66</zorder>
-     <zorder>label_67</zorder>
-     <zorder>label_68</zorder>
-     <zorder>label_69</zorder>
-     <zorder>label_70</zorder>
-     <zorder>label_71</zorder>
-     <zorder>label_72</zorder>
-     <zorder>label_73</zorder>
-     <zorder>label_74</zorder>
-     <zorder>label_75</zorder>
      <zorder>label_B1_TotalTrials</zorder>
      <zorder>label_B1_CorrectTrials</zorder>
      <zorder>label_B1_IncorrectTrials</zorder>

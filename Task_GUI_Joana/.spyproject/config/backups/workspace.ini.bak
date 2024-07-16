@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['..\\..\\..\\..\\..\\.spyder-py3\\temp.py', '..\\..\\..\\..\\..\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\asyncio\\base_events.py', 'taskgui_copy.py', 'Server_connection_rbpi.py', 'Client_connection_rbpi.py']
+recent_files = ['taskgui_copy.py', 'Server_connection_rbpi.py', 'Client_connection_rbpi.py', 'ui_form.py', 'taskgui.py', 'animal_id_generator.py', 'sound_generator.py', 'test_server.py']
 
 [main]
 version = 0.2.0
