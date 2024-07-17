@@ -442,6 +442,11 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <item>
         <property name="text">
+         <string>---</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Test rig</string>
         </property>
        </item>
@@ -500,7 +505,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
          <bold>true</bold>
          <underline>true</underline>
         </font>
@@ -523,7 +528,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
          <bold>true</bold>
          <underline>true</underline>
         </font>
@@ -543,7 +548,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -561,7 +566,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -579,7 +584,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -597,7 +602,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -615,7 +620,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -627,13 +632,13 @@ background-color: rgb(255, 203, 198);</string>
         <rect>
          <x>276</x>
          <y>195</y>
-         <width>111</width>
+         <width>121</width>
          <height>20</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -651,7 +656,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -669,7 +674,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
@@ -684,7 +689,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -702,7 +707,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -720,7 +725,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
@@ -735,7 +740,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -753,7 +758,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
@@ -768,7 +773,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -786,7 +791,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -804,7 +809,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
          <bold>true</bold>
          <underline>true</underline>
         </font>
@@ -827,7 +832,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -845,7 +850,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
       </widget>
@@ -860,7 +865,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -878,7 +883,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
          <bold>true</bold>
          <underline>true</underline>
         </font>
@@ -898,7 +903,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -916,7 +921,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -934,7 +939,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>8</pointsize>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="text">
@@ -1124,36 +1129,6 @@ color: rgb(73, 192, 203);</string>
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLCDNumber" name="Box1_Time_h">
-      <property name="geometry">
-       <rect>
-        <x>743</x>
-        <y>42</y>
-        <width>41</width>
-        <height>23</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLCDNumber" name="Box1_Time_m">
-      <property name="geometry">
-       <rect>
-        <x>803</x>
-        <y>42</y>
-        <width>41</width>
-        <height>23</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLCDNumber" name="Box1_Time_s">
-      <property name="geometry">
-       <rect>
-        <x>863</x>
-        <y>42</y>
-        <width>41</width>
-        <height>23</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_B1_Time">
       <property name="geometry">
        <rect>
@@ -1165,7 +1140,8 @@ color: rgb(73, 192, 203);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>8</pointsize>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -1443,7 +1419,7 @@ color: rgb(73, 192, 203);</string>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>20</height>
+         <height>16</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_LeftSpout">
@@ -1624,7 +1600,7 @@ color: rgb(73, 192, 203);</string>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>20</height>
+         <height>16</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_RightSpout">
@@ -2885,6 +2861,27 @@ color: rgb(112, 112, 112);</string>
        <string>Action R Blocks:</string>
       </property>
      </widget>
+     <widget class="QLabel" name="chronometer">
+      <property name="geometry">
+       <rect>
+        <x>737</x>
+        <y>42</y>
+        <width>160</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
      <zorder>Background_B1_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>label_TaskSettings</zorder>
@@ -2897,9 +2894,6 @@ color: rgb(112, 112, 112);</string>
      <zorder>label_B1_AnimalPerformance</zorder>
      <zorder>label_B1_LickTrace_right</zorder>
      <zorder>label_B1_LickTrace_left</zorder>
-     <zorder>Box1_Time_h</zorder>
-     <zorder>Box1_Time_m</zorder>
-     <zorder>Box1_Time_s</zorder>
      <zorder>label_B1_Time</zorder>
      <zorder>Background_B1_Blocks</zorder>
      <zorder>Background_B1_LeftSpout</zorder>
@@ -2926,6 +2920,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>label_B1_ActionLBlocks</zorder>
      <zorder>Box1_Action_R_blocks</zorder>
      <zorder>label_B1_ActionRBlocks</zorder>
+     <zorder>chronometer</zorder>
     </widget>
     <widget class="QWidget" name="Box2">
      <attribute name="title">
