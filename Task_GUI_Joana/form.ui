@@ -427,7 +427,7 @@ background-color: rgb(255, 203, 198);</string>
         <rect>
          <x>60</x>
          <y>68</y>
-         <width>251</width>
+         <width>261</width>
          <height>31</height>
         </rect>
        </property>
@@ -467,12 +467,12 @@ background-color: rgb(255, 203, 198);</string>
        </item>
        <item>
         <property name="text">
-         <string>Adaptive Sensorimotor Task </string>
+         <string>Adaptive Sensorimotor Task</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Adaptive Sensorimot Task w/ Distractor</string>
+         <string>Adaptive Sensorimotor Task w/ Distractor</string>
         </property>
        </item>
       </widget>
@@ -1419,7 +1419,7 @@ color: rgb(73, 192, 203);</string>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_LeftSpout">
@@ -1600,7 +1600,7 @@ color: rgb(73, 192, 203);</string>
          <x>10</x>
          <y>9</y>
          <width>448</width>
-         <height>16</height>
+         <height>20</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="Layout_B1_RightSpout">
@@ -2861,7 +2861,7 @@ color: rgb(112, 112, 112);</string>
        <string>Action R Blocks:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="chronometer">
+     <widget class="QLabel" name="Box1_Chronometer">
       <property name="geometry">
        <rect>
         <x>737</x>
@@ -2920,7 +2920,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>label_B1_ActionLBlocks</zorder>
      <zorder>Box1_Action_R_blocks</zorder>
      <zorder>label_B1_ActionRBlocks</zorder>
-     <zorder>chronometer</zorder>
+     <zorder>Box1_Chronometer</zorder>
     </widget>
     <widget class="QWidget" name="Box2">
      <attribute name="title">

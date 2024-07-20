@@ -12,7 +12,7 @@ def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5):
     wave = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave
 
-def generate_white_noise(duration, sample_rate=44100, amplitude=0.2): # This amplitude will control how loud the noise is
+def generate_white_noise(duration, sample_rate=44100, amplitude=0.1): # This amplitude will control how loud the noise is
     # Generate white noise
     samples = np.random.normal(0, amplitude, int(sample_rate*duration))
     return samples
