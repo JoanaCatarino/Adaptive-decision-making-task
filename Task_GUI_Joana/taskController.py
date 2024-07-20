@@ -59,7 +59,7 @@ class TaskGui(QMainWindow):
             
         if self.current_task:
             self.current_task.start()
-            self.ui.Box1_Start.clicked.connect(self.Box1_Chronometer.start)
+            self.Box1_Chronometer.start()
         
     def stop_task(self):
         if self.current_task and hasattr(self.current_task, 'stop'):

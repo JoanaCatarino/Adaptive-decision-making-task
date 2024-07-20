@@ -12,7 +12,7 @@ class Chronometer(QObject):
 
     def __init__(self):
         super().__init__()
-        self.timer = QTimer(self)
+        self.timer = QTimer()
         self.timer.timeout.connect(self.updateTime)
         self.elapsed_time = 0
 
@@ -29,4 +29,3 @@ class Chronometer(QObject):
         minutes = (self.elapsed_time % 3600) // 60
         seconds = self.elapsed_time % 60
         self.timeChanged.emit(f"{hours:02} : {minutes:02} : {seconds:02}")
-
