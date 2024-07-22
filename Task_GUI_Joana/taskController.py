@@ -1,13 +1,15 @@
 # This Python file uses the following encoding: utf-8
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QTimer, Slot
+from PySide6.QtCore import QTimer, QDate, Slot
 from ui_form import Ui_TaskGui
 
 # Import different functions
 from animal_id_generator import animal_id
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from chronometer_generator import Chronometer
+from date_updater import DateUpdater
+from file_writer import write_task_start_file
 
 # Import task classes
 from task_test_rig import TestRig
@@ -22,6 +24,9 @@ class TaskGui(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
+        
+        # Create and configure a Qtimer to have the current date in the gui
+        self.date_updater = DateUpdater(self.ui.Box1_Date, font_size = 10)
         
         # Call function that has the list of animals to add to the dropdown menu of Animal_ID   
         font_size = 10 # Font size of the items in the dropdown menu
@@ -44,6 +49,11 @@ class TaskGui(QMainWindow):
         self.stop_task()
         
         selected_task = self.ui.Box1_Task.currentText()
+        
+        # Create file with data unless the selected task is 'Test rig'
+        if selected_task != 'Test rig':
+            write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID)
+        
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
         elif selected_task == 'Free Licking':

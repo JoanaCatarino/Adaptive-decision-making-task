@@ -23,3 +23,11 @@ class TestRig:
             self.ui.Box1_Punishment.clicked.disconnect(white_noise)
 
         self.stop = stop
+        
+        
+# Add tests for:
+    # Blue led (trial start cue)
+    # White led - left spout (distractor)
+    # White led - right spout (distractor)
+    # water reward - flush water when the spout is touched - when the button is clicked 
+                    # this function gets activated
