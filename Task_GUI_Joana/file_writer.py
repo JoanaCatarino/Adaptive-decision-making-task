@@ -35,15 +35,22 @@ def write_task_start_file(date_label, animal_id_combobox):
     # Fetch the selected animal ID
     animal_id = animal_id_combobox.currentText()
     
+    # Construct the directory path for the animal ID within the saved directory
+    animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
+    
+    # Create the directory if it does not exist
+    if not os.path.exists(animal_directory):
+        os.makedirs(animal_directory)
+    
     # Construct the base file name
     base_file_name = f"{animal_id}_{formatted_date}_{current_time}.txt"
-    file_path = os.path.join(SAVE_DIRECTORY, base_file_name)
+    file_path = os.path.join(animal_directory, base_file_name)
     
     # Ensure the file name is unique
     counter = 1
     while os.path.exists(file_path):
         file_name = f"{animal_id}_{formatted_date}_{current_time}_{counter}.txt"
-        file_path = os.path.join(SAVE_DIRECTORY, file_name)
+        file_path = os.path.join(animal_directory, file_name)
         counter += 1
     
     # Create the .txt file
