@@ -4,36 +4,15 @@ Created on Wed Jul 24 19:21:56 2024
 
 @author: JoanaCatarino
 """
-'''
+
 import asyncio
 import websockets
-import json
+from hardware import FunctionMap
 
 async def main():
-    uri = 'ws://10.237.65.85:8765' # server IP and port 
-    print('RPi trying to connect to PC...')
+    # Initiate FunctionMap
+    func_map = FunctionMap()
     
-    async with websockets.connect(uri) as websocket:
-        print ('RPi connected to PC')
-        while True:
-            packet_from_server = await websocket.recv()
-            print('RPi received message from PC:', packet_from_server)
-            
-            # Now reply to PC that RPi received the message
-            reply_packet = 'Confirmation of RPi received:' + packet_from_server
-            await websockets.send(reply_packet)
-            
-            
-if __name__ == '__main__':
-    asyncio.run(main())
-
-'''
-
-import asyncio
-import websockets
-from hardware import function_map
-
-async def main():
     uri = 'ws://10.237.66.177:8765' # server IP and port 
     print('RPi trying to connect to PC...')
     
@@ -43,11 +22,10 @@ async def main():
             command = await websocket.recv()
             print('RPi received command from PC:', command)
             
-            # Execute function based on received command
-            if command in function_map:
-                await function_map[command]()
-            
-            
+            # Execute command funtions with the same name
+            getattr(func_map, command)()
+
+           
             
 if __name__ == '__main__':
     asyncio.run(main())
