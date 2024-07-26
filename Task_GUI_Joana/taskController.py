@@ -190,7 +190,7 @@ class TaskGui(QMainWindow):
 
 
     async def send_command(self):
-        uri = 'ws://10.237.65.85:8765'
+        uri = 'ws://10.237.66.177:8765'
         async with websockets.connect(uri) as websocket:
             await websocket.send(command)
             

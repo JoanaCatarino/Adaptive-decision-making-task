@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 import asyncio
 import websockets
-from hardware import action_map
+from hardware import function_map
 
 async def main():
     uri = 'ws://10.237.65.85:8765' # server IP and port 
