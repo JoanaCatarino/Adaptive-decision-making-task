@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['ui_form.py', 'taskController.py', 'chronometer_generator.py', 'animal_id_generator.py', 'task_test_rig.py', 'date_updater.py', 'file_writer.py', 'form.ui', 'server_by_xiao.py', 'test_server.py']
+recent_files = ['ui_form.py', 'taskController.py', 'chronometer_generator.py', 'animal_id_generator.py', 'task_test_rig.py', 'date_updater.py', 'file_writer.py', 'form.ui', 'test_server.py']
 
 [main]
 version = 0.2.0
