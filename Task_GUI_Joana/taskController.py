@@ -94,6 +94,8 @@ if __name__ == "__main__":
 '''
 # This Python file uses the following encoding: utf-8
 import sys
+import asyncio
+import websockets
 from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtCore import QTimer, QDate, Slot
 from ui_form import Ui_TaskGui
@@ -135,6 +137,9 @@ class TaskGui(QMainWindow):
         # Connect Start button to the drop_down menu for the tasks and the Stop button to stop the task
         self.ui.Box1_Start.clicked.connect(self.execute_task)
         self.ui.Box1_Stop.clicked.connect(self.stop_task)
+        
+        # test led button
+        self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
         
         # Placeholder for the current task
         self.current_task = None
@@ -182,27 +187,24 @@ class TaskGui(QMainWindow):
         self.ui.Box1_Chronometer.setText(time_str)
 
 
-    # test led
-        self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
-
-    def send_command_sinc(self):
-        asyncio.run(self.send_command())
+    def send_command_sync(self, command):
+        asyncio.ensure_future(self.send_command(command))
 
 
-    async def send_command(self):
+    async def send_command(self, command):
         uri = 'ws://10.237.66.177:8765'
         async with websockets.connect(uri) as websocket:
             await websocket.send(command)
             
-def run_server():
-    import server
-    asyncio.run(server.main())    
+#def run_server():
+   # import server
+   # asyncio.run(server.main())    
 
 
 if __name__ == "__main__":
     
-    server_thread = Thread(target=run_server, daemon=True)
-    server_thread.start()
+   # server_thread = Thread(target=run_server, daemon=True)
+   # server_thread.start()
     
     app = QApplication(sys.argv)
     widget = TaskGui()

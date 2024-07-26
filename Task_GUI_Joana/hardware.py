@@ -24,10 +24,19 @@ led_red = LED(26)
 
 # Define actions for different commands 
 async def led_blue_action():
+    while True:
+        led.on()
+        sleep(1)
+        led.off()
+        sleep(1)
+
+
+'''
+async def led_blue_action():
     led_blue.on()
     await asyncio.sleep(1)
     led_blue.off()    
-    
+'''    
 async def led_red_action():
     led_red.on()
     await asyncio.sleep(1)
