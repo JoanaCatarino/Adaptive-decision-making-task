@@ -14,34 +14,32 @@ All the functions that I need to run the task will then be called in this script
 
 """
 
-# =============================================================================
 # from gpiozero import LED
 # from time import sleep
 # import asyncio
-# 
+
 # # Gpio map
 # led_blue = LED (22)
 # led_red = LED(26)
-# 
+
 # # Define actions for different commands
 # async def led_blue_action():
 #     led_blue.on()
 #     await asyncio.sleep(1)
 #     led_blue.off()    
-# 
+
 # async def led_red_action():
 #     led_red.on()
 #     await asyncio.sleep(1)
 #     led_red.off()  
-# 
-# 
+
+
 # # Function map - gives a command name to every function needed
 # function_map = {
 #     'led_blue': led_blue_action,
 #     'led_red': led_red_action}
 # =============================================================================
-
-# =============================================================================
+# 
 # xiao's code
 # from gpiozero import LED 
 # from time import sleep 
@@ -59,31 +57,43 @@ All the functions that I need to run the task will then be called in this script
 #         sleep(1)
 #         self.led = False
 #         print('LED id Off')
-#  
-# 
 # =============================================================================
-
-from gpiozero import LED 
-from time import sleep 
+ 
+from gpiozero import LED
+from time import sleep
 import asyncio
 
+# Gpio map
+led_blue = LED (22)
+led_red = LED(26)
 
-class FunctionMap:
-    def __init__(self):
-        self.led_blue = None
-        
-    def set_pin(self, pin):
-        self.led_blue = LED(22)
-        
-    def led_blue(self): 
-        if self.led_blue is None:
-            raise Value Error('Pin not set')
-        while True:
-        self.led_blue.on()
-        sleep()
-        self.led_blue.off()
-        sleep(3)
+# Define actions for different commands
+async def led_blue_action():
+    led_blue.on()
+    await asyncio.sleep(1)
+    led_blue.off()    
+
+async def led_red_action():
+    led_red.on()
+    await asyncio.sleep(1)
+    led_red.off()  
+
+
+# Function map - gives a command name to every function needed
+function_map = {
+    'led_blue': led_blue_action,
+    'led_red': led_red_action}
 
  
+class FunctionMap:
+    def __init__(self):
+        self.function_map = function_map
+        
+    async def execute_command(self, command):
+        if command in self.function_map:
+            await self.function_map[command]()
+        else:
+            print(f'Command {command} not found')
+
 
 
