@@ -51,7 +51,7 @@ class FunctionMap:
         
         
     def led_blue(self): 
-        self.led = True:
+        self.led = True
         print ('LED is ON')
         sleep(1)
         self.led = False
