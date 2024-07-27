@@ -609,12 +609,12 @@ background-color: rgb(255, 203, 198);</string>
         <string>5KHz Tone</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_Reward">
+      <widget class="QRadioButton" name="Box1_Reward_right">
        <property name="geometry">
         <rect>
          <x>276</x>
          <y>198</y>
-         <width>111</width>
+         <width>131</width>
          <height>20</height>
         </rect>
        </property>
@@ -624,7 +624,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>Water - Reward</string>
+        <string>Reward - right spout</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="Box1_Punishment">
@@ -1003,6 +1003,24 @@ border-color: rgb(227, 153, 100);</string>
        </property>
        <property name="text">
         <string>UPDATE</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="Box1_Reward_2">
+       <property name="geometry">
+        <rect>
+         <x>156</x>
+         <y>258</y>
+         <width>130</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Reward - left spout</string>
        </property>
       </widget>
      </widget>
@@ -3000,6 +3018,1521 @@ color: rgb(112, 112, 112);</string>
      <attribute name="title">
       <string>Ephys Rig</string>
      </attribute>
+    </widget>
+    <widget class="QWidget" name="Overview">
+     <attribute name="title">
+      <string>Overview</string>
+     </attribute>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>301</width>
+        <height>801</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border-color: rgb(112, 255, 122);
+</string>
+      </property>
+      <property name="title">
+       <string>Box 1</string>
+      </property>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(189, 189, 189);</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_6" native="true">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>339</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(230, 248, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Chronometer_2">
+       <property name="geometry">
+        <rect>
+         <x>93</x>
+         <y>44</y>
+         <width>160</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Time_2">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>45</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>TIME :</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Omissions_2">
+       <property name="geometry">
+        <rect>
+         <x>98</x>
+         <y>753</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Omissions: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_CorrectTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>675</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_IncorrectTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>716</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>637</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>637</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Omissions_2">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>755</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_IncorrectTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>73</x>
+         <y>716</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Incorrect Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_CorrectTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>81</x>
+         <y>676</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Correct Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>59</x>
+         <y>600</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 113, 85);</string>
+       </property>
+       <property name="text">
+        <string>Current Trial:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>600</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>324</x>
+        <y>19</y>
+        <width>301</width>
+        <height>801</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+border-color: rgb(112, 255, 122);</string>
+      </property>
+      <property name="title">
+       <string>Box 2</string>
+      </property>
+      <widget class="QWidget" name="widget_2" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(189, 189, 189);</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_7" native="true">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>339</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(230, 248, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Chronometer_3">
+       <property name="geometry">
+        <rect>
+         <x>93</x>
+         <y>44</y>
+         <width>160</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Time_3">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>45</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>TIME :</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Omissions_3">
+       <property name="geometry">
+        <rect>
+         <x>98</x>
+         <y>753</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Omissions: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_CorrectTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>675</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_IncorrectTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>716</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>637</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>637</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Omissions_3">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>755</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_IncorrectTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>73</x>
+         <y>716</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Incorrect Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_CorrectTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>81</x>
+         <y>676</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Correct Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_5">
+       <property name="geometry">
+        <rect>
+         <x>59</x>
+         <y>600</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 113, 85);</string>
+       </property>
+       <property name="text">
+        <string>Current Trial:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_5">
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>600</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>638</x>
+        <y>19</y>
+        <width>301</width>
+        <height>801</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+border-color: rgb(112, 255, 122);</string>
+      </property>
+      <property name="title">
+       <string>Box 3</string>
+      </property>
+      <widget class="QWidget" name="widget_3" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(189, 189, 189);</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_8" native="true">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>339</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(230, 248, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Chronometer_4">
+       <property name="geometry">
+        <rect>
+         <x>93</x>
+         <y>44</y>
+         <width>160</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Time_4">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>45</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>TIME :</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Omissions_4">
+       <property name="geometry">
+        <rect>
+         <x>98</x>
+         <y>753</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Omissions: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_CorrectTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>675</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_IncorrectTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>716</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>637</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>637</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Omissions_4">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>755</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_IncorrectTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>73</x>
+         <y>716</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Incorrect Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_CorrectTrials_4">
+       <property name="geometry">
+        <rect>
+         <x>81</x>
+         <y>676</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Correct Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_7">
+       <property name="geometry">
+        <rect>
+         <x>59</x>
+         <y>600</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 113, 85);</string>
+       </property>
+       <property name="text">
+        <string>Current Trial:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_7">
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>600</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="geometry">
+       <rect>
+        <x>952</x>
+        <y>19</y>
+        <width>301</width>
+        <height>801</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+border-color: rgb(112, 255, 122);</string>
+      </property>
+      <property name="title">
+       <string>Box 4</string>
+      </property>
+      <widget class="QWidget" name="widget_5" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(189, 189, 189);</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_10" native="true">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>339</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(230, 248, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Chronometer_6">
+       <property name="geometry">
+        <rect>
+         <x>93</x>
+         <y>44</y>
+         <width>160</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Time_6">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>45</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>TIME :</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Omissions_6">
+       <property name="geometry">
+        <rect>
+         <x>98</x>
+         <y>753</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Omissions: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_CorrectTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>675</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_IncorrectTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>716</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_10">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>637</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_10">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>637</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Omissions_6">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>755</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_IncorrectTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>73</x>
+         <y>716</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Incorrect Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_CorrectTrials_6">
+       <property name="geometry">
+        <rect>
+         <x>81</x>
+         <y>676</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Correct Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_11">
+       <property name="geometry">
+        <rect>
+         <x>59</x>
+         <y>600</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 113, 85);</string>
+       </property>
+       <property name="text">
+        <string>Current Trial:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_11">
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>600</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="geometry">
+       <rect>
+        <x>1264</x>
+        <y>19</y>
+        <width>301</width>
+        <height>801</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+border-color: rgb(112, 255, 122);</string>
+      </property>
+      <property name="title">
+       <string>Ephys Rig</string>
+      </property>
+      <widget class="QWidget" name="widget_13" native="true">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(189, 189, 189);</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="widget_14" native="true">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>339</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(230, 248, 255);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Chronometer_8">
+       <property name="geometry">
+        <rect>
+         <x>93</x>
+         <y>44</y>
+         <width>160</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Time_8">
+       <property name="geometry">
+        <rect>
+         <x>49</x>
+         <y>45</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>TIME :</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_Omissions_8">
+       <property name="geometry">
+        <rect>
+         <x>98</x>
+         <y>753</y>
+         <width>71</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Omissions: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_CorrectTrials_8">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>675</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_IncorrectTrials_8">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>716</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_14">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>637</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_14">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>637</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_Omissions_8">
+       <property name="geometry">
+        <rect>
+         <x>182</x>
+         <y>755</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_IncorrectTrials_8">
+       <property name="geometry">
+        <rect>
+         <x>73</x>
+         <y>716</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Incorrect Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_CorrectTrials_8">
+       <property name="geometry">
+        <rect>
+         <x>81</x>
+         <y>676</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Correct Trials: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_TotalTrials_15">
+       <property name="geometry">
+        <rect>
+         <x>59</x>
+         <y>600</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 113, 85);</string>
+       </property>
+       <property name="text">
+        <string>Current Trial:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="Box1_TotalTrials_15">
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>600</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>

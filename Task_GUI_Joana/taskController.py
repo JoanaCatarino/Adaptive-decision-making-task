@@ -52,8 +52,15 @@ class TaskGui(QMainWindow):
         self.ui.Box1_Start.clicked.connect(self.execute_task)
         self.ui.Box1_Stop.clicked.connect(self.stop_task)
         
-        # test led button
+        # Commands to test rig components
         self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
+        self.ui.Box1_WhiteLED_Left.clicked.connect(lambda: self.send_command_sync('led_white_L'))
+        self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_R'))
+        self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
+        self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
+        self.ui.Box1_Reward.clicked.connect(lambda: self.send_command_sync('reward'))
+        self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
+        
         
         # Placeholder for the current task
         self.current_task = None

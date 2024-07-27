@@ -13,31 +13,6 @@ the different functions.
 All the functions that I need to run the task will then be called in this script
 
 """
-
-# from gpiozero import LED
-# from time import sleep
-# import asyncio
-
-# # Gpio map
-# led_blue = LED (22)
-# led_red = LED(26)
-
-# # Define actions for different commands
-# async def led_blue_action():
-#     led_blue.on()
-#     await asyncio.sleep(1)
-#     led_blue.off()    
-
-# async def led_red_action():
-#     led_red.on()
-#     await asyncio.sleep(1)
-#     led_red.off()  
-
-
-# # Function map - gives a command name to every function needed
-# function_map = {
-#     'led_blue': led_blue_action,
-#     'led_red': led_red_action}
 # =============================================================================
 # 
 # xiao's code
@@ -63,26 +38,22 @@ from gpiozero import LED
 from time import sleep
 import asyncio
 
-# Gpio map
-led_blue = LED (22)
-led_red = LED(26)
-
-# Define actions for different commands
-async def led_blue_action():
-    led_blue.on()
-    await asyncio.sleep(1)
-    led_blue.off()    
-
-async def led_red_action():
-    led_red.on()
-    await asyncio.sleep(1)
-    led_red.off()  
+# Functions to import
+from gpio_map import * # Import everything from gpio map (all the pins)
+from sound_generator import tone_10KHz, tone_5KHz, white_noise
+from task_test_rig import led_blue_action, led_white_l_action, led_white_r_action
 
 
 # Function map - gives a command name to every function needed
 function_map = {
     'led_blue': led_blue_action,
-    'led_red': led_red_action}
+    'led_white_L': led_white_l_action,
+    'led_white_R': led_white_r_action,
+    'tone_10khz': tone_10KHz,
+    'tone_5khz': tone_5KHz,
+    'reward': reward_water_action,
+    'white_noise': white_noise
+    }
 
  
 class FunctionMap:
