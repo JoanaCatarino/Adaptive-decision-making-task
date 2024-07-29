@@ -49,3 +49,7 @@ async def led_white_r_action():
     led_blue.on()
     await asyncio.sleep(1)
     led_blue.off() 
+    
+    
+# Need to define functions to flush water on right spout and left spout
+    

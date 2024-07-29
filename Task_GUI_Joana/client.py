@@ -36,7 +36,7 @@ Created on Wed Jul 24 19:21:56 2024
 
 import asyncio
 import websockets
-from hardware import FunctionMap
+from function_map import FunctionMap
 
 async def main():
     # Initiate FunctionMap

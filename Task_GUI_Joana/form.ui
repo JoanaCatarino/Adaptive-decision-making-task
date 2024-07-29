@@ -576,7 +576,7 @@ background-color: rgb(255, 203, 198);</string>
       <widget class="QRadioButton" name="Box1_10Tone">
        <property name="geometry">
         <rect>
-         <x>156</x>
+         <x>179</x>
          <y>198</y>
          <width>89</width>
          <height>20</height>
@@ -594,7 +594,7 @@ background-color: rgb(255, 203, 198);</string>
       <widget class="QRadioButton" name="Box1_5Tone">
        <property name="geometry">
         <rect>
-         <x>156</x>
+         <x>179</x>
          <y>228</y>
          <width>89</width>
          <height>20</height>
@@ -612,7 +612,7 @@ background-color: rgb(255, 203, 198);</string>
       <widget class="QRadioButton" name="Box1_Reward_right">
        <property name="geometry">
         <rect>
-         <x>276</x>
+         <x>331</x>
          <y>198</y>
          <width>131</width>
          <height>20</height>
@@ -630,7 +630,7 @@ background-color: rgb(255, 203, 198);</string>
       <widget class="QRadioButton" name="Box1_Punishment">
        <property name="geometry">
         <rect>
-         <x>276</x>
+         <x>331</x>
          <y>228</y>
          <width>121</width>
          <height>20</height>
@@ -1005,12 +1005,12 @@ border-color: rgb(227, 153, 100);</string>
         <string>UPDATE</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_Reward_2">
+      <widget class="QRadioButton" name="Box1_Reward_left">
        <property name="geometry">
         <rect>
-         <x>156</x>
+         <x>179</x>
          <y>258</y>
-         <width>130</width>
+         <width>121</width>
          <height>20</height>
         </rect>
        </property>
@@ -3023,7 +3023,7 @@ color: rgb(112, 112, 112);</string>
      <attribute name="title">
       <string>Overview</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="OV_Box1">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -3325,7 +3325,7 @@ color: rgb(112, 112, 112);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_2">
+     <widget class="QGroupBox" name="OV_Box2">
       <property name="geometry">
        <rect>
         <x>324</x>
@@ -3627,7 +3627,7 @@ border-color: rgb(112, 255, 122);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_3">
+     <widget class="QGroupBox" name="OV_Box3">
       <property name="geometry">
        <rect>
         <x>638</x>
@@ -3929,7 +3929,7 @@ border-color: rgb(112, 255, 122);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_5">
+     <widget class="QGroupBox" name="OV_Box4">
       <property name="geometry">
        <rect>
         <x>952</x>
@@ -4231,7 +4231,7 @@ border-color: rgb(112, 255, 122);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="groupBox_6">
+     <widget class="QGroupBox" name="OV_Ephys">
       <property name="geometry">
        <rect>
         <x>1264</x>

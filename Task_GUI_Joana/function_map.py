@@ -51,7 +51,8 @@ function_map = {
     'led_white_R': led_white_r_action,
     'tone_10khz': tone_10KHz,
     'tone_5khz': tone_5KHz,
-    'reward': reward_water_action,
+    'reward_right': reward_right,
+    'reward_left': reward_left,
     'white_noise': white_noise
     }
 

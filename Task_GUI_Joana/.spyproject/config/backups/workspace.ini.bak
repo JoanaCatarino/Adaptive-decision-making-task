@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['hardware.py', 'server.py', 'client.py', 'taskController.py']
+recent_files = ['hardware.py', 'server.py', 'client.py', 'taskController.py', 'task_test_rig.py', 'form.ui', 'gpio_map.py', 'animal_id_generator.py', 'chronometer_generator.py', 'date_updater.py']
 
 [main]
 version = 0.2.0
