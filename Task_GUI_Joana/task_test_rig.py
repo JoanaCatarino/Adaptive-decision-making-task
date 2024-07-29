@@ -11,7 +11,7 @@ from the sound_generator file.
 - Functions to test LEDs (blue and white) are generated here
 - Functions to flush water are generated here with some components imported from file x
 """
-
+from gpio_map import *
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 
 class TestRig:
