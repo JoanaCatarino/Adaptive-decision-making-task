@@ -10,9 +10,9 @@ from gpiozero import LED, Button
 # Gpio map (pin numbers should be reproduced across boxes)
 
 led_blue = LED (22)
-led_white_L = LED()
-led_white_R = LED()
-button_reward = Button()
+led_white_L = LED(5) # Change pin number
+led_white_R = LED(6) # Change pin number
+button_reward = Button(26) # Change pin number
 
 
 # Specify which names to export when 'from gpio_pins import *' is used
