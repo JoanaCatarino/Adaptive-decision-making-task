@@ -58,8 +58,8 @@ class TaskGui(QMainWindow):
         self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_R'))
         self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
         self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
-        #self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
-        #self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
+        self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
+        self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
         self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
         
         
