@@ -37,6 +37,15 @@ class TaskGui(QMainWindow):
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
         
+        # Set the style sheet for disabled radio buttons
+        self.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+                              QRadioButton::indicator:disabled {border: 1px solid gray;
+                                                                background-color: transparent;
+                                                                border-radius: 7px;
+                                                                width: 14px;
+                                                                height: 14px;}''')
+             
+        
         # Create and configure a Qtimer to have the current date in the gui
         self.date_updater = DateUpdater(self.ui.Box1_Date, font_size = 10)
         
