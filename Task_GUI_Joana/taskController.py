@@ -15,12 +15,13 @@ from qasync import asyncSlot
 from qasync import QEventLoop, QApplication
 from server import Server
 
-# Import different functions
+# Import different functions/classes
 from animal_id_generator import animal_id
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from chronometer_generator import Chronometer
 from date_updater import DateUpdater
 from file_writer import write_task_start_file
+from box_controls import BoxControls
 
 # Import task classes
 from task_test_rig import TestRig
@@ -29,14 +30,14 @@ from task_spout_sampling import SpoutSampling
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
 from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistractor
-
+          
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
-        
+
         # Set the style sheet for disabled radio buttons
         self.setStyleSheet('''QRadioButton:disabled {color: gray;} 
                               QRadioButton::indicator:disabled {border: 1px solid gray;
@@ -44,85 +45,40 @@ class TaskGui(QMainWindow):
                                                                 border-radius: 7px;
                                                                 width: 14px;
                                                                 height: 14px;}''')
-             
-        
-        # Create and configure a Qtimer to have the current date in the gui
-        self.date_updater = DateUpdater(self.ui.Box1_Date, font_size = 10)
-        
-        # Call function that has the list of animals to add to the dropdown menu of Animal_ID   
-        font_size = 10 # Font size of the items in the dropdown menu
-        animal_id(self.ui.Box1_Animal_ID)
-        
-        # Initialize Chronometer
-        self.Box1_Chronometer = Chronometer()
-        self.Box1_Chronometer.timeChanged.connect(self.updateTime)
-        
-        # Connect Start button to the drop_down menu for the tasks and the Stop button to stop the task
-        self.ui.Box1_Start.clicked.connect(self.execute_task)
-        self.ui.Box1_Stop.clicked.connect(self.stop_task)
-        
-        # Commands to test rig components (initially disabled)
-        self.ui.Box1_BlueLED.setEnabled(False)
-        self.ui.Box1_WhiteLED_Left.setEnabled(False)
-        self.ui.Box1_WhiteLED_Right.setEnabled(False)
-        self.ui.Box1_10Tone.setEnabled(False)
-        self.ui.Box1_5Tone.setEnabled(False)
-        self.ui.Box1_Reward_left.setEnabled(False)
-        self.ui.Box1_Reward_right.setEnabled(False)
-        self.ui.Box1_Punishment.setEnabled(False)
-        
-        self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
-        self.ui.Box1_WhiteLED_Left.clicked.connect(lambda: self.send_command_sync('led_white_l'))
-        self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_r'))
-        self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
-        self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
-        #self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
-        #self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
-        self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
-        
-        
+
+        # Initialize BoxControls for each box
+        self.box_controls = {
+            1: BoxControls(self.ui, self.send_command_sync, 1, self.execute_task, self.stop_task, self.update_time), # Behavioral Box 1
+            2: BoxControls(self.ui, self.send_command_sync, 2, self.execute_task, self.stop_task, self.update_time), # Behavioral Box 2
+            3: BoxControls(self.ui, self.send_command_sync, 3, self.execute_task, self.stop_task, self.update_time), # Behavioral Box 3
+            4: BoxControls(self.ui, self.send_command_sync, 4, self.execute_task, self.stop_task, self.update_time), # Behavioral Box 4
+            5: BoxControls(self.ui, self.send_command_sync, 3, self.execute_task, self.stop_task, self.update_time) # Ephys rig  
+        }
+
         # Placeholder for the current task
         self.current_task = None
-        
-        # create Server
+
+        # Create Server
         self.server = Server(self)
         loop = asyncio.get_event_loop()
-        asyncio.run_coroutine_threadsafe(self.server.run(),loop)
+        asyncio.run_coroutine_threadsafe(self.server.run(), loop)
 
-    def enable_test_rig_controls(self):
-        self.ui.Box1_BlueLED.setEnabled(True)
-        self.ui.Box1_WhiteLED_Left.setEnabled(True)
-        self.ui.Box1_WhiteLED_Right.setEnabled(True)
-        self.ui.Box1_10Tone.setEnabled(True)
-        self.ui.Box1_5Tone.setEnabled(True)
-        self.ui.Box1_Reward_left.setEnabled(True)
-        self.ui.Box1_Reward_right.setEnabled(True)
-        self.ui.Box1_Punishment.setEnabled(True)
-        
-    def disable_test_rig_controls(self):
-        self.ui.Box1_BlueLED.setEnabled(False)
-        self.ui.Box1_WhiteLED_Left.setEnabled(False)
-        self.ui.Box1_WhiteLED_Right.setEnabled(False)
-        self.ui.Box1_10Tone.setEnabled(False)
-        self.ui.Box1_5Tone.setEnabled(False)
-        self.ui.Box1_Reward_left.setEnabled(False)
-        self.ui.Box1_Reward_right.setEnabled(False)
-        self.ui.Box1_Punishment.setEnabled(False)        
-
-        
     def execute_task(self):
         # Stop any currently running task
         self.stop_task()
-        
-        selected_task = self.ui.Box1_Task.currentText()
-        
+
+        # Select box (currently assuming Box1 for example purposes, replace with actual selection logic)
+        selected_box = 1
+        controls = self.box_controls[selected_box]
+        selected_task = controls.controls["Task"].currentText()
+
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
-            write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID)
-        
+            write_task_start_file(controls.controls["Date"], controls.controls["AnimalID"])
+
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
-            self.enable_test_rig_controls()
+            controls.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLicking()
         elif selected_task == 'Spout Sampling':
@@ -133,45 +89,42 @@ class TaskGui(QMainWindow):
             self.current_task = AdaptiveSensorimotorTask()
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor()
-            
+
         if self.current_task:
             self.current_task.start()
-            self.Box1_Chronometer.start()
+            controls.chronometer.start()
         else:
-            self.disable_test_rig_controls()
-        
+            controls.disable_controls()
+
     def stop_task(self):
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.current_task.stop()
             self.current_task = None
-        
-        # Stop the chronometer 
-        self.ui.Box1_Stop.clicked.connect(self.Box1_Chronometer.stop)
 
-        # Disable test rig controls
-        self.disable_test_rig_controls()
+        # Stop the chronometer for all boxes
+        for controls in self.box_controls.values():
+            controls.chronometer.stop()
 
+        # Disable test rig controls for all boxes
+        for controls in self.box_controls.values():
+            controls.disable_controls()
 
-    # Define function to have the chonometer with the hour, minute and second as the text
     @Slot(str)
-    def updateTime(self, time_str):
-        self.ui.Box1_Chronometer.setText(time_str)
-        
+    def update_time(self, time_str):
+        # Update the chronometer display for the currently active box
+        selected_box = 1  # Replace with actual logic to determine the active box
+        controls = self.box_controls[selected_box]
+        controls.controls["ChronometerDisplay"].setText(time_str)
+
     @asyncSlot()
     async def send_command_sync(self, command):
         await self.send_command(command)
-        
 
     async def send_command(self, command):
         for ws in self.server.websocket_handle:
             await ws.send(command)
-            
 
 if __name__ == "__main__":
-    
-   # server_thread = Thread(target=run_server, daemon=True)
-   # server_thread.start()
-    
     app = QApplication(sys.argv)
     loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
@@ -179,3 +132,4 @@ if __name__ == "__main__":
     widget.show()
     with loop:
         loop.run_forever()
+        
