@@ -13,26 +13,7 @@ the different functions.
 All the functions that I need to run the task will then be called in this script
 
 """
-# =============================================================================
-# 
-# xiao's code
-# from gpiozero import LED 
-# from time import sleep 
-# import asyncio
-# 
-# 
-# class FunctionMap:
-#     def __init__(self):
-#         self.led = False
-#         
-# 
-#     def led_blue(self): 
-#         self.led = True
-#         print ('LED is ON')
-#         sleep(1)
-#         self.led = False
-#         print('LED id Off')
-# =============================================================================
+
  
 from gpiozero import LED
 from time import sleep
