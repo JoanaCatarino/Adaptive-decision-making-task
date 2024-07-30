@@ -13,7 +13,7 @@ from the sound_generator file.
 """
 import asyncio
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
-from gpio_map import *
+
 
 class TestRig:
     def __init__(self, ui):
