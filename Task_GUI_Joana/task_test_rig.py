@@ -11,7 +11,14 @@ from the sound_generator file.
 - Functions to test LEDs (blue and white) are generated here
 - Functions to flush water are generated here with some components imported from file x
 """
+# virtual pin factory
+from gpiozero.pins.mock import MockFactory
+from gpiozero import Device
+Device.pin_factory = MockFactory()
+
+
 import asyncio
+from gpio_map import *
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 
 
