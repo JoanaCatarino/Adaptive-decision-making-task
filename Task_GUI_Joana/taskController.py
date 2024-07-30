@@ -52,7 +52,16 @@ class TaskGui(QMainWindow):
         self.ui.Box1_Start.clicked.connect(self.execute_task)
         self.ui.Box1_Stop.clicked.connect(self.stop_task)
         
-        # Commands to test rig components
+        # Commands to test rig components (initially disabled)
+        self.ui.Box1_BlueLED.setEnabled(False)
+        self.ui.Box1_WhiteLED_Left.setEnabled(False)
+        self.ui.Box1_WhiteLED_Right.setEnabled(False)
+        self.ui.Box1_10Tone.setEnabled(False)
+        self.ui.Box1_5Tone.setEnabled(False)
+        self.ui.Box1_Reward_left.setEnabled(False)
+        self.ui.Box1_Reward_right.setEnabled(False)
+        self.ui.Box1_Punishment.setEnabled(False)
+        
         self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
         self.ui.Box1_WhiteLED_Left.clicked.connect(lambda: self.send_command_sync('led_white_l'))
         self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_r'))
@@ -71,6 +80,26 @@ class TaskGui(QMainWindow):
         loop = asyncio.get_event_loop()
         asyncio.run_coroutine_threadsafe(self.server.run(),loop)
 
+    def enable_test_rig_controls(self):
+        self.ui.Box1_BlueLED.setEnabled(True)
+        self.ui.Box1_WhiteLED_Left.setEnabled(True)
+        self.ui.Box1_WhiteLED_Right.setEnabled(True)
+        self.ui.Box1_10Tone.setEnabled(True)
+        self.ui.Box1_5Tone.setEnabled(True)
+        self.ui.Box1_Reward_left.setEnabled(True)
+        self.ui.Box1_Reward_right.setEnabled(True)
+        self.ui.Box1_Punishment.setEnabled(True)
+        
+    def disable_test_rig_controls(self):
+        self.ui.Box1_BlueLED.setEnabled(False)
+        self.ui.Box1_WhiteLED_Left.setEnabled(False)
+        self.ui.Box1_WhiteLED_Right.setEnabled(False)
+        self.ui.Box1_10Tone.setEnabled(False)
+        self.ui.Box1_5Tone.setEnabled(False)
+        self.ui.Box1_Reward_left.setEnabled(False)
+        self.ui.Box1_Reward_right.setEnabled(False)
+        self.ui.Box1_Punishment.setEnabled(False)        
+
         
     def execute_task(self):
         # Stop any currently running task
@@ -84,6 +113,7 @@ class TaskGui(QMainWindow):
         
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
+            self.enable_test_rig_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLicking()
         elif selected_task == 'Spout Sampling':
@@ -98,6 +128,8 @@ class TaskGui(QMainWindow):
         if self.current_task:
             self.current_task.start()
             self.Box1_Chronometer.start()
+        else:
+            self.disable_test_rig_controls()
         
     def stop_task(self):
         if self.current_task and hasattr(self.current_task, 'stop'):
@@ -106,6 +138,9 @@ class TaskGui(QMainWindow):
         
         # Stop the chronometer 
         self.ui.Box1_Stop.clicked.connect(self.Box1_Chronometer.stop)
+
+        # Disable test rig controls
+        self.disable_test_rig_controls()
 
 
     # Define function to have the chonometer with the hour, minute and second as the text
