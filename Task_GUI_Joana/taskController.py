@@ -54,13 +54,13 @@ class TaskGui(QMainWindow):
         
         # Commands to test rig components
         self.ui.Box1_BlueLED.clicked.connect(lambda: self.send_command_sync('led_blue'))
-        #self.ui.Box1_WhiteLED_Left.clicked.connect(lambda: self.send_command_sync('led_white_L'))
-        #self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_R'))
-        #self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
-        #self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
+        self.ui.Box1_WhiteLED_Left.clicked.connect(lambda: self.send_command_sync('led_white_l'))
+        self.ui.Box1_WhiteLED_Right.clicked.connect(lambda: self.send_command_sync('led_white_r'))
+        self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
+        self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
         #self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
         #self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
-        #self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
+        self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
         
         
         # Placeholder for the current task

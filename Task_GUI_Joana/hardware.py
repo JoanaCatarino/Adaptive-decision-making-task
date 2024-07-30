@@ -41,11 +41,16 @@ import asyncio
 # Functions to import
 from gpio_map import * # Import everything from gpio map (all the pins)
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
-from task_test_rig import led_blue_action
+from task_test_rig import led_blue_action, led_white_l_action, led_white_r_action
 
 # Function map - gives a command name to every function needed
 function_map = {
-    'led_blue': led_blue_action,
+    'led_blue': led_blue_action
+    'led_white_l': led_white_l_action,
+    'led_white_r': led_white_r_action,
+    'tone_10khz': tone_10KHz,
+    'tone_5khz': tone_5KHz,
+    'white_noise': white_noise
     }
 
  
