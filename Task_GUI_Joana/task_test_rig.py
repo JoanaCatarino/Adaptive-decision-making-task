@@ -11,8 +11,9 @@ from the sound_generator file.
 - Functions to test LEDs (blue and white) are generated here
 - Functions to flush water are generated here with some components imported from file x
 """
-from gpio_map import *
+import asyncio
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
+from gpio_map import *
 
 class TestRig:
     def __init__(self, ui):
@@ -38,17 +39,19 @@ async def led_blue_action():
     await asyncio.sleep(1)
     led_blue.off() 
     
-# Test white LED on left spout
-async def led_white_l_action():
-    led_blue.on()
-    await asyncio.sleep(1)
-    led_blue.off() 
- 
-# Test white LED on right spout
-async def led_white_r_action():
-    led_blue.on()
-    await asyncio.sleep(1)
-    led_blue.off() 
+# =============================================================================
+# # Test white LED on left spout
+# async def led_white_l_action():
+#     led_blue.on()
+#     await asyncio.sleep(1)
+#     led_blue.off() 
+#  
+# # Test white LED on right spout
+# async def led_white_r_action():
+#     led_blue.on()
+#     await asyncio.sleep(1)
+#     led_blue.off() 
+# =============================================================================
     
     
 # Need to define functions to flush water on right spout and left spout
