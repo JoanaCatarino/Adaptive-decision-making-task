@@ -6,20 +6,29 @@ Created on Sat Jul 20 17:47:58 2024
 """
 import asyncio
 
-
-class FreeLicking:
-    def start (self):
-        self.send_command_sync('free_licking')
-        print ('Free licking starting')
-        
-        def stop():
-            print ('Free licking stopping')
-        self.stop = stop
-        
-
-async def free_licking():
-    quiet_window = 0 # defined variable
+async def test():
+    quiet_window = 0 # pre-defined variable
     print(quiet_window)
+
+
+
+
+# =============================================================================
+# 
+# class FreeLicking:
+#     def start (self):
+#         self.send_command_sync('free_licking')
+#         print ('Free licking starting')
+#         
+#         def stop():
+#             print ('Free licking stopping')
+#         self.stop = stop
+#         
+# 
+# async def free_licking():
+#     quiet_window = 0 # defined variable
+#     print(quiet_window)
+# =============================================================================
         
 
 # =============================================================================

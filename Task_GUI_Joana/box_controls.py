@@ -99,7 +99,7 @@ class BoxControls:
             self.enable_controls()
         elif selected_task == 'Free Licking':
             #self.current_task = FreeLicking()
-            self.send_command_sync('free_licking')
+            self.send_command_sync('test')
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSampling()
         elif selected_task == 'Two-Choice Auditory Task':
