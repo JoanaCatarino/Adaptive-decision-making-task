@@ -28,7 +28,7 @@ from file_writer import write_task_start_file
 
 # Import task classes
 from task_test_rig import TestRig
-from task_free_licking import FreeLicking
+from task_free_licking import test
 from task_spout_sampling import SpoutSampling
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
