@@ -7,13 +7,27 @@ Created on Sat Jul 20 17:47:58 2024
 import asyncio
 import time
 
+# =============================================================================
+# version that works
+# async def free_licking():
+#     print('Free Licking starting')
+#     quiet_window = 0 # pre-defined variable
+#     while True:
+#         print(f'Quiet window = {quiet_window}')
+#         await asyncio.sleep(1)
+# =============================================================================
+
 async def free_licking():
+    def start(self):
     print('Free Licking starting')
     quiet_window = 0 # pre-defined variable
     while True:
         print(f'Quiet window = {quiet_window}')
         await asyncio.sleep(1)
-
+        
+        def stop():
+            print('Free licking stopping')
+            self.stop = stop
 
 
 
