@@ -12,7 +12,7 @@ async def free_licking():
     quiet_window = 0 # pre-defined variable
     while True:
         print(f'Quiet window = {quiet_window}')
-        await async.sleep(1)
+        await asyncio.sleep(1)
 
 
 
