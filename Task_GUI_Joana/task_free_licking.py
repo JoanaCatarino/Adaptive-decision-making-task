@@ -4,7 +4,6 @@ Created on Sat Jul 20 17:47:58 2024
 
 @author: JoanaCatarino
 """
-import time
 import asyncio
 
 
@@ -20,7 +19,7 @@ async def free_licking():
     quiet_window = 0 # defined variable
     while True:
         print(quiet_window)
-        time.sleep(1)  # Sleep for 1 second
+        await asyncio.sleep(1)  # Sleep for 1 second
         
 
 # =============================================================================
