@@ -5,10 +5,14 @@ Created on Sat Jul 20 17:47:58 2024
 @author: JoanaCatarino
 """
 import asyncio
+import time
 
-async def test():
+async def free_licking():
+    print('Free Licking starting')
     quiet_window = 0 # pre-defined variable
-    print(quiet_window)
+    while True:
+        print(f'Quiet window = {quiet_window})
+        time.sleep(1)
 
 
 
