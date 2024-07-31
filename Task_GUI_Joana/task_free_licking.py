@@ -5,6 +5,7 @@ Created on Sat Jul 20 17:47:58 2024
 @author: JoanaCatarino
 """
 import time
+import asyncio
 
 
 class FreeLicking:
@@ -15,7 +16,7 @@ class FreeLicking:
         self.stop = stop
         
 
-def free_licking(self):
+async def free_licking(self):
     quiet_window = 0 # defined variable
     while True:
         print(quiet_window)
