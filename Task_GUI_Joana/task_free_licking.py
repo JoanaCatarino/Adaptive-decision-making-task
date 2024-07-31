@@ -17,9 +17,7 @@ class FreeLicking:
 
 async def free_licking():
     quiet_window = 0 # defined variable
-    while True:
-        print(quiet_window)
-        await asyncio.sleep(1)  # Sleep for 1 second
+    print(quiet_window)
         
 
 # =============================================================================
