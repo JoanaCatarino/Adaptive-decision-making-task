@@ -98,8 +98,8 @@ class BoxControls:
             self.current_task = TestRig(self.ui)
             self.enable_controls()
         elif selected_task == 'Free Licking':
-            self.current_task = FreeLicking()
-            self.send_command_sync("free_licking")  # Send the command
+            #self.current_task = FreeLicking()
+            self.ui.Box1_Start.clicked.connect(lambda: self.send_command_sync('free_licking'))
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSampling()
         elif selected_task == 'Two-Choice Auditory Task':
