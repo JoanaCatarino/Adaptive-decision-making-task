@@ -19,15 +19,15 @@ import time
 
 async def free_licking():
     def start(self):
-    print('Free Licking starting')
-    quiet_window = 0 # pre-defined variable
-    while True:
-        print(f'Quiet window = {quiet_window}')
-        await asyncio.sleep(1)
+        print('Free Licking starting')
+        quiet_window = 0 # pre-defined variable
+        while True:
+            print(f'Quiet window = {quiet_window}')
+            await asyncio.sleep(1)
         
-        def stop():
-            print('Free licking stopping')
-            self.stop = stop
+            def stop():
+                print('Free licking stopping')
+                self.stop = stop
 
 
 
