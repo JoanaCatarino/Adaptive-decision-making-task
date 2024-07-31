@@ -33,7 +33,7 @@ function_map = {
     'tone_10khz': tone_10KHz,
     'tone_5khz': tone_5KHz,
     'white_noise': white_noise,
-    'free_licking': free_licking
+    'free_licking': free_licking().start
     }
 
  
