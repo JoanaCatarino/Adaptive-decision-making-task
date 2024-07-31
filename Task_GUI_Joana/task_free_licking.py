@@ -9,7 +9,9 @@ import asyncio
 
 class FreeLicking:
     def start (self):
+        self.send_command_sync('free_licking')
         print ('Free licking starting')
+        
         def stop():
             print ('Free licking stopping')
         self.stop = stop
