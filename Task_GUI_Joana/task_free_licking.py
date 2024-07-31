@@ -11,7 +11,7 @@ async def free_licking():
     print('Free Licking starting')
     quiet_window = 0 # pre-defined variable
     while True:
-        print(f'Quiet window = {quiet_window})
+        print(f'Quiet window = {quiet_window}')
         time.sleep(1)
 
 
