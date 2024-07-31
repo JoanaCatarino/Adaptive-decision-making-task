@@ -23,6 +23,7 @@ import asyncio
 from gpio_map import * # Import everything from gpio map (all the pins)
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from task_test_rig import led_blue_action, led_white_l_action, led_white_r_action
+from task_free_licking import FreeLicking
 
 # Function map - gives a command name to every function needed
 function_map = {
@@ -32,6 +33,7 @@ function_map = {
     'tone_10khz': tone_10KHz,
     'tone_5khz': tone_5KHz,
     'white_noise': white_noise
+    'free_licking': free_licking
     }
 
  

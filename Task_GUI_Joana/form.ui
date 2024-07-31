@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>6</number>
     </property>
     <widget class="QWidget" name="Rbpi_Connection">
      <attribute name="title">
@@ -3071,7 +3071,7 @@ color: rgb(112, 112, 112);</string>
         <string notr="true">background-color: rgb(230, 248, 255);</string>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_Chronometer_2">
+      <widget class="QLabel" name="OV1_Chronometer">
        <property name="geometry">
         <rect>
          <x>93</x>
@@ -3092,7 +3092,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_Time_2">
+      <widget class="QLabel" name="label_OV1_Time">
        <property name="geometry">
         <rect>
          <x>49</x>

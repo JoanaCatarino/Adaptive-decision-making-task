@@ -18,8 +18,6 @@ from server import Server
 # Import different functions/classes
 from box_controls import BoxControls
 
-          
-
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -36,7 +34,7 @@ class TaskGui(QMainWindow):
              
         
         # Initialize BoxControls for Box 1
-        self.box1_controls = BoxControls(self.ui, self.send_command_sync)
+        self.box1_controls = BoxControls(self.ui, self.send_command_sync, self.updateTime)
         
         # Placeholder for the current task
         self.current_task = None
@@ -45,12 +43,12 @@ class TaskGui(QMainWindow):
         self.server = Server(self)
         loop = asyncio.get_event_loop()
         asyncio.run_coroutine_threadsafe(self.server.run(),loop)  
-        
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @Slot(str)
     def updateTime(self, time_str):
         self.ui.Box1_Chronometer.setText(time_str)
+        self.ui.OV1_Chronometer.setText(time_str)
         
     @asyncSlot()
     async def send_command_sync(self, command):

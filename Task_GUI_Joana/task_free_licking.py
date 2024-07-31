@@ -11,3 +11,7 @@ class FreeLicking:
         def stop():
             print ('Free licking stopping')
         self.stop = stop
+        
+    def free_licking(self):
+        quiet_window = 0
+        print(quiet_window)

@@ -26,6 +26,14 @@ from chronometer_generator import Chronometer
 from date_updater import DateUpdater
 from file_writer import write_task_start_file
 
+# Import task classes
+from task_test_rig import TestRig
+from task_free_licking import FreeLicking
+from task_spout_sampling import SpoutSampling
+from task_twochoice_auditory import TwoChoiceAuditoryTask
+from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
+from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistractor
+
 
 class BoxControls:
     
@@ -52,7 +60,6 @@ class BoxControls:
         self.ui.Box1_10Tone.clicked.connect(lambda: self.send_command_sync('tone_10khz'))
         self.ui.Box1_5Tone.clicked.connect(lambda: self.send_command_sync('tone_5khz'))
         self.ui.Box1_Punishment.clicked.connect(lambda: self.send_command_sync('white_noise'))
-        # Uncomment if needed
         # self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
         # self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
 
@@ -63,6 +70,9 @@ class BoxControls:
         # Initialize Chronometer
         self.Box1_Chronometer = Chronometer()
         self.Box1_Chronometer.timeChanged.connect(self.update_time_slot)
+        
+        self.OV1_Chronometer = Chronometer() # Chronometer for Box1 - Overview tab
+        self.OV1_Chronometer.timeChanged.connect(self.update_time_slot_ov1)
 
     def _populate_animal_id_dropdown(self):
         # Populate the dropdown menu for Animal_ID
@@ -89,6 +99,7 @@ class BoxControls:
             self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLicking()
+            self.send_command_sync("free_licking")  # Send the command
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSampling()
         elif selected_task == 'Two-Choice Auditory Task':
@@ -101,6 +112,8 @@ class BoxControls:
         if self.current_task:
             self.current_task.start()
             self.Box1_Chronometer.start()
+            self.OV1_Chronometer.start() # start overview chronometer for Box1
+            
         else:
             self.disable_controls()
 
@@ -111,6 +124,7 @@ class BoxControls:
         
         # Stop the chronometer 
         self.Box1_Chronometer.stop()
+        self.OV1_Chronometer.stop() # stop overview chronometer for Box1
 
         # Disable test rig controls
         self.disable_controls()
@@ -134,3 +148,14 @@ class BoxControls:
         self.ui.Box1_Reward_left.setEnabled(False)
         self.ui.Box1_Reward_right.setEnabled(False)
         self.ui.Box1_Punishment.setEnabled(False)
+
+# Define function to have the chonometer with the hour, minute and second as the text (for overview tab only)
+    @Slot(str)
+    def update_time_slot_ov1(self, time_str):
+        self.ui.OV1_Chronometer.setText(time_str)
+
+        # Check if the time is 1 hour (format expected: "hh:mm:ss")
+        hours, minutes, seconds = map(int, time_str.split(':'))
+        if hours >= 1:
+            self.ui.OV_Box1.setStyleSheet("background-color: yellow;") # Makes the background color of the overview box 1 yellow if the
+                                                                       # animal has been performing the task for 1h
