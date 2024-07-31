@@ -4,6 +4,7 @@ Created on Sat Jul 20 17:47:58 2024
 
 @author: JoanaCatarino
 """
+import time
 
 class FreeLicking:
     def start (self):
@@ -12,6 +13,10 @@ class FreeLicking:
             print ('Free licking stopping')
         self.stop = stop
         
+
     def free_licking(self):
-        quiet_window = 0
-        print(quiet_window)
+        quiet_window = 0 # defined variable
+        while True:
+            print(quiet_window)
+            time.sleep(1)  # Sleep for 1 second
+
