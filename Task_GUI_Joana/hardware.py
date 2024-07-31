@@ -32,7 +32,7 @@ function_map = {
     'led_white_r': led_white_r_action,
     'tone_10khz': tone_10KHz,
     'tone_5khz': tone_5KHz,
-    'white_noise': white_noise
+    'white_noise': white_noise,
     'free_licking': free_licking
     }
 
