@@ -98,6 +98,7 @@ class BoxControls:
             self.current_task = TestRig(self.ui)
             self.enable_controls()
         elif selected_task == 'Free Licking':
+            print ('Free Licking starting')
             self.send_command_sync('free_licking')
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSampling()
