@@ -42,7 +42,7 @@ class TaskGui(QMainWindow):
         # create Server
         self.server = Server(self)
         loop = asyncio.get_event_loop()
-        asyncio.run_coroutine_threadsafe(self.server.run(),loop)  
+        asyncio.run_coroutine_threadsafe(self.server.run(),loop)
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @Slot(str)
