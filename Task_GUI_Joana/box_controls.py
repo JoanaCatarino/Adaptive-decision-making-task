@@ -52,6 +52,7 @@ class BoxControls:
         self._populate_task_dropdown()
         self._connect_buttons()
         self._connect_text_changed_signals() # Connect QLineEdits' text changed signals
+        self.check_update_button_state()
         
         # Initialize button states (to enable/disable start and stop buttons)
         self.update_button_states()
@@ -155,6 +156,7 @@ class BoxControls:
             self.ui.Box1_Start.setEnabled(True)  # Enable start if no task is running
             self.ui.Box1_Stop.setEnabled(False)  # Disable stop if no task is running
         
+
     
     def execute_task(self):
         # Stop any currently running task
@@ -258,6 +260,10 @@ class BoxControls:
             print(f'Trial Duration = {trial_duration}')
         if valve_opening:
             print(f'Valve Opening = {valve_opening}')
+            
+        # Disable the Update button after the operation
+        self.ui.Box1_Update.setEnabled(False)
+
 
 # Define function to have the chonometer with the hour, minute and second as the text (for overview tab only)
     @Slot(str)

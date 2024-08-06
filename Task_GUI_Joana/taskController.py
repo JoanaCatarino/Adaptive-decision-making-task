@@ -7,8 +7,10 @@ Created on Sat Jul 20 17:32:26 2024
 import sys
 import asyncio
 import websockets
-from PySide6.QtWidgets import QApplication, QMainWindow
-from PySide6.QtCore import QTimer, QDate, Slot
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PySide6.QtCore import QTimer, QDate, Slot, QUrl
+from PySide6.QtMultimedia import QMediaPlayer
+from PySide6.QtMultimediaWidgets import QVideoWidget
 from ui_form import Ui_TaskGui
 from threading import Thread
 from qasync import asyncSlot
@@ -17,6 +19,7 @@ from server import Server
 
 # Import different functions/classes
 from box_controls import BoxControls
+
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
@@ -30,8 +33,35 @@ class TaskGui(QMainWindow):
                                                                 background-color: transparent;
                                                                 border-radius: 7px;
                                                                 width: 14px;
-                                                                height: 14px;}''')
-             
+                                                                height: 14px;}
+                              QPushButton:disabled {color:gray;}''')
+                        
+        
+        # Tests for the video part
+        
+        # Create a QMediaPlayer object
+        self.media_player = QMediaPlayer(self)
+        
+        # Replace the placeholder QWidget with QVideoWidget
+        self.video_widget = QVideoWidget(self)
+        
+        self.video_placeholder = self.findChild(QWidget, 'self.ui.Box1_Camera')
+        
+        # Get the layout of the placeholder widget and add QVideoWidget to it
+        layout = self.video_placeholder.layout()
+        layout.addWidget(self.video_widget)
+        self.video_placeholder.setLayout(layout)
+        
+        # Set the video output to the QVideoWidget
+        self.media_player.setVideoOutput(self.video_widget)
+        
+        def play_video(self):
+            # Set the media file (URL or local file path)
+            video_url = QUrl.fromLocalFile('C:/Users/JoanaCatarino/Joana/test_directory/test_video/video1.avi')
+            self.media_player.setSource(video_url)
+            self.media_player.play()
+        
+
         
         # Initialize BoxControls for Box 1
         self.box1_controls = BoxControls(self.ui, self.send_command_sync, self.updateTime)
