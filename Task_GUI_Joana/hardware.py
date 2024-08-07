@@ -11,7 +11,6 @@ to the raspberry pi while the function map will have the commands that execute
 the different functions.
 
 All the functions that I need to run the task will then be called in this script
-
 """
 
  

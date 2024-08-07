@@ -3,6 +3,11 @@
 Created on Sat Jul 20 17:47:58 2024
 
 @author: JoanaCatarino
+
+ -- Free Licking task --
+- The goal of this task is to make the animals familiarized with the spouts and the reward type they give (sucrose water)
+- In this task animals should receive a reward when they lick either of the spouts
+- Criterion: After 100 licks a Quiet window of 2000 ms is introduced - never on the first session 
 """
 import asyncio
 import time
@@ -31,7 +36,9 @@ async def free_licking():
 #         quiet_window = 0 # defined variable
 #         print(quiet_window)
 # =============================================================================
+
 #%%
+'''
 from gpiozero import AnalogInputDevice
 import time
 
@@ -83,6 +90,8 @@ except KeyboardInterrupt:
     # Handle any cleanup here if necessary
     print("Program interrupted, cleaning up...")
     print(f"Final counts - Left: {left_piezo_count}, Right: {right_piezo_count}, Total: {total_count}")
+
+'''
     
 #%% test with buttons
 
@@ -155,3 +164,5 @@ except KeyboardInterrupt:
     print("\nProgram interrupted, cleaning up...")
     print(f"Final counts - Left: {left_button_count}, Right: {right_button_count}, Total: {total_count}")
     print(f"Total early presses: {early_press_count}")
+
+
