@@ -48,14 +48,12 @@ from gpiozero import Device
 Device.pin_factory = MockFactory()
 
 from gpiozero import Button
+from gpio_map import * # Import pins required for this task from gpio_map
 import time
 import threading
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
-# Gpiozero pins - to be added in gpio_map.py file later
-button_blue = Button(26)
-button_red = Button(16)
 
 # Initialize counters:
 total_presses = 0
@@ -101,7 +99,7 @@ def button_blue_released():
             early_presses +=1
             last_valid_press_time = current_time #Reset the interval timer
             can_press_message_shown = False #Reset the flag after a valid press
-            print(f'Early press - Total early presses:{early_press}')
+            print(f'Early press - Total early presses:{early_presses}')
     update_plot_data()
     
 def button_red_pressed():
@@ -123,7 +121,7 @@ def button_red_released():
             early_presses +=1
             last_valid_press_time = current_time #Reset the interval timer
             can_press_message_shown = False #Reset the flag after a valid press
-            print(f'Early press - Total early presses:{early_press}')
+            print(f'Early press - Total early presses:{early_presses}')
     update_plot_data()    
     
 # Timer function to display the remaining time
@@ -155,7 +153,7 @@ def update_plot_data():
 def animate(i):
     plt.cla()
     plt.plot(times, button_blue_counts, label='Button blue presses', color='#3AA8C1')
-    plt.plot(times, button_red_coutns, label='Button red presses', color='#7C0902')
+    plt.plot(times, button_red_counts, label='Button red presses', color='#7C0902')
     plt.plot(times, early_press_counts, label='Early presses', color='#FF7538')
     plt.xlabel('Time(s)')
     plt.ylabel('Count')
@@ -167,6 +165,10 @@ button_blue.when_pressed = button_blue_pressed
 button_blue.when_released = button_blue_released
 button_red.when_pressed = button_red_pressed
 button_red.when_released = button_red_released
+
+# Start real-time plotting
+start_time = time.time()
+ani = FuncAnimation(plt.gcf(), animate, interval=100)
 
 print('Press the buttons...')
 
