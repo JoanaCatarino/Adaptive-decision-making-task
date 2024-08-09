@@ -47,7 +47,6 @@ from gpiozero.pins.mock import MockFactory
 from gpiozero import Device
 Device.pin_factory = MockFactory()
 
-from gpiozero import Button
 from gpio_map import * # Import pins required for this task from gpio_map
 import time
 import threading
