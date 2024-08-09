@@ -16,7 +16,6 @@ from gpiozero.pins.mock import MockFactory
 from gpiozero import Device
 Device.pin_factory = MockFactory()
 
-
 import asyncio
 from gpio_map import *
 from sound_generator import tone_10KHz, tone_5KHz, white_noise

@@ -7,20 +7,23 @@ Created on Sat Jul 20 17:47:58 2024
  -- Free Licking task --
 - The goal of this task is to make the animals familiarized with the spouts and the reward type they give (sucrose water)
 - In this task animals should receive a reward when they lick either of the spouts
-- Criterion: After 100 licks a Quiet window of 2000 ms is introduced - never on the first session 
+- Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
-import asyncio
-import time
 
+# =============================================================================
+# import asyncio
+# import time
+# 
+# 
+# async def free_licking():
+#     print('Free Licking starting')
+#     quiet_window = 0 # pre-defined variable
+#     while True:
+#         print(f'Quiet window = {quiet_window}')
+#         await asyncio.sleep(1)
+# =============================================================================
 
-async def free_licking():
-    print('Free Licking starting')
-    quiet_window = 0 # pre-defined variable
-    while True:
-        print(f'Quiet window = {quiet_window}')
-        await asyncio.sleep(1)
-
-
+# =============================================================================
 # =============================================================================
 # class FreeLicking:
 #     def start (self):
@@ -38,131 +41,144 @@ async def free_licking():
 # =============================================================================
 
 #%%
-'''
-from gpiozero import AnalogInputDevice
-import time
 
-# Custom class extending AnalogInputDevice
-class CustomAnalogInput(AnalogInputDevice):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Additional initialization if needed
+# virtual pin factory
+from gpiozero.pins.mock import MockFactory
+from gpiozero import Device
+Device.pin_factory = MockFactory()
 
-    def _read(self):
-        # Replace this method with your actual reading logic
-        # For example, if using another ADC library or direct GPIO reads
-        # Return a normalized value between 0 and 1
-        return 0.0  # Placeholder for actual analog read logic
-
-# Create instances for left and right piezo sensors
-left_piezo = CustomAnalogInput(channel=0)  # Replace channel with appropriate identifier
-right_piezo = CustomAnalogInput(channel=1)  # Replace channel with appropriate identifier
-
-# Define the threshold
-threshold = 0.2
-
-# Counters for the number of times each piezo registers a signal above the threshold
-left_piezo_count = 0
-right_piezo_count = 0
-total_count = 0
-
-try:
-    while True:
-        # Read normalized analog values from the custom analog input
-        left_signal = left_piezo.value
-        right_signal = right_piezo.value
-        
-        # Check if either signal is above the threshold
-        if left_signal > threshold:
-            left_piezo_count += 1
-            total_count += 1
-            print(f"correct (left), Total: {total_count}")
-        
-        if right_signal > threshold:
-            right_piezo_count += 1
-            total_count += 1
-            print(f"correct (right), Total: {total_count}")
-        
-        # Minimal delay to prevent high CPU usage
-        time.sleep(0.01)
-
-except KeyboardInterrupt:
-    # Handle any cleanup here if necessary
-    print("Program interrupted, cleaning up...")
-    print(f"Final counts - Left: {left_piezo_count}, Right: {right_piezo_count}, Total: {total_count}")
-
-'''
-    
-#%% test with buttons
 
 from gpiozero import Button
 import time
+import threading
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
-# Set up GPIO pins for the buttons (replace with actual GPIO pin numbers)
-left_button = Button(17)
-right_button = Button(27)
+# Gpiozero pins - to be added in gpio_map.py file later
+button_blue = Button(26)
+button_red = Button(16)
 
-# Threshold for the duration in seconds and mandatory interval in seconds
-press_threshold = 1.0  # 1 second
-interval_threshold = 3.0  # 3 seconds
+# Initialize counters:
+total_presses = 0
+button_blue_presses = 0
+button_red_presses = 0
+early_presses = 0
 
-# Counters for the number of times each button is pressed above the threshold duration
-left_button_count = 0
-right_button_count = 0
-total_count = 0
-early_press_count = 0
+# Define fixed variabled
+threshold = 1  # threshold of 1 second
 
-# Time of the last valid press
+# Dictionary to store the press start time and last valid press times
+press_start_times = {}
 last_valid_press_time = 0
+quiet_window = 3 # seconds
 
-# Function to handle button presses and count them
-def handle_button_press(button, is_left):
-    global left_button_count, right_button_count, total_count, early_press_count, last_valid_press_time
+# Global variable to indicate the remaining time for the interval
+remaining_time = 0
+can_press_message_shown = False # Flag to track whether the message has been shown
 
-    # Record the current time
+# Data lists for plotting
+times = []
+button_blue_counts = []
+button_red_counts = []
+early_press_counts = []
+
+# Define callback functions for each button
+def button_blue_pressed():
+    press_start_times[26] = time.time()
+    
+def button_blue_released():
+    global total_presses, button_blue_presses, early_presses, last_valid_press_time, can_press_message_shown
+    press_duration = time.time() - press_start_times[26]
     current_time = time.time()
     
-    # Check if the current press is an early press
-    if current_time - last_valid_press_time < interval_threshold:
-        early_press_count += 1
-        print("early press")
-        # Reset the last valid press time to enforce the mandatory interval
-        last_valid_press_time = current_time
-        return
-
-    # Record the time when the button was pressed
-    start_time = current_time
-    
-    # Wait until the button is released
-    button.wait_for_release()
-    
-    # Calculate the duration the button was pressed
-    press_duration = time.time() - start_time
-    
-    # Check if the press duration is above the threshold
-    if press_duration > press_threshold:
-        if is_left:
-            left_button_count += 1
-            print(f"correct (left), Total: {total_count + 1}")
+    if press_duration >= 1: #Threshold of 1 second
+        if current_time - last_valid_press_time >= quiet_window:
+            total_presses += 1
+            button_blue_presses += 1
+            last_valid_press_time = current_time
+            can_press_message_shown = False #Reset the flag after a valid press
+            print(f'Pressed blue - Total presses:{total_presses}, button blue presses:{button_blue_presses}')
         else:
-            right_button_count += 1
-            print(f"correct (right), Total: {total_count + 1}")
-        total_count += 1
-        # Update the last valid press time
-        last_valid_press_time = current_time
-
-# Assign the handle_button_press function to both buttons
-left_button.when_pressed = lambda: handle_button_press(left_button, is_left=True)
-right_button.when_pressed = lambda: handle_button_press(right_button, is_left=False)
-
-# Keep the program running
-try:
+            early_presses +=1
+            last_valid_press_time = current_time #Reset the interval timer
+            can_press_message_shown = False #Reset the flag after a valid press
+            print(f'Early press - Total early presses:{early_press}')
+    update_plot_data()
+    
+def button_red_pressed():
+    press_start_times[16] = time.time()
+    
+def button_red_released():
+    global total_presses, button_red_presses, early_presses, last_valid_press_time, can_press_message_shown
+    press_duration = time.time() - press_start_times[16]
+    current_time = time.time()
+    
+    if press_duration >= 1: #Threshold of 1 second
+        if current_time - last_valid_press_time >= quiet_window:
+            total_presses += 1
+            button_red_presses += 1
+            last_valid_press_time = current_time
+            can_press_message_shown = False #Reset the flag after a valid press
+            print(f'Pressed red - Total presses:{total_presses}, button red presses:{button_red_presses}')
+        else:
+            early_presses +=1
+            last_valid_press_time = current_time #Reset the interval timer
+            can_press_message_shown = False #Reset the flag after a valid press
+            print(f'Early press - Total early presses:{early_press}')
+    update_plot_data()    
+    
+# Timer function to display the remaining time
+def display_timer():
+    global remaining_time, can_press_message_shown
     while True:
-        time.sleep(0.1)  # Keep the loop running, minimal delay to save CPU
-except KeyboardInterrupt:
-    # Cleanup and print final counts
-    print("\nProgram interrupted, cleaning up...")
-    print(f"Final counts - Left: {left_button_count}, Right: {right_button_count}, Total: {total_count}")
-    print(f"Total early presses: {early_press_count}")
+        current_time = time.time()
+        if last_valid_press_time:
+            remaining_time = quiet_window - (current_time - last_valid_press_time)
+            if remaining_time > 0:
+                print (f'Time until next valid press:{remaining_time:.1f} seconds', end='\r')
+            elif not can_press_message_shown:
+                print ('You can press a button now!', end='\r')
+                can_press_message_shown = True #Set the flag to indicate that the message has been shown
+        time.sleep(0.1) #Update every 100ms
+        
+# Start the timer display in a separate thread
+timer_thread = threading.Thread(target = display_timer, daemon=True)
+timer_thread.start()
+
+def update_plot_data():
+    current_time = time.time() - start_time
+    times.append(current_time)
+    button_blue_counts.append(button_blue_presses)
+    button_red_counts.append(button_red_presses)
+    early_press_counts.append(early_presses)
+    
+# Plotting function for real-time updates
+def animate(i):
+    plt.cla()
+    plt.plot(times, button_blue_counts, label='Button blue presses', color='#3AA8C1')
+    plt.plot(times, button_red_coutns, label='Button red presses', color='#7C0902')
+    plt.plot(times, early_press_counts, label='Early presses', color='#FF7538')
+    plt.xlabel('Time(s)')
+    plt.ylabel('Count')
+    plt.legend(loc='upper left')
+    plt.tight_layout()
+    
+# Attach the callback functions to the button press events
+button_blue.when_pressed = button_blue_pressed
+button_blue.when_released = button_blue_released
+button_red.when_pressed = button_red_pressed
+button_red.when_released = button_red_released
+
+print('Press the buttons...')
+
+plt.show()
+
+# Keep the program running to detect button presses
+input('Press Enter to exit...\n')
+ 
+
+
+
+
 
 
