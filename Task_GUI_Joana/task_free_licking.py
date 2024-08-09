@@ -42,17 +42,19 @@ Created on Sat Jul 20 17:47:58 2024
 
 #%%
 
-# virtual pin factory
-from gpiozero.pins.mock import MockFactory
-from gpiozero import Device
-Device.pin_factory = MockFactory()
+#uncomment this part if we need to run tests on the windows/server side - needs to be comment for RPi
+# virtual pin factory 
+# =============================================================================
+# from gpiozero.pins.mock import MockFactory
+# from gpiozero import Device
+# Device.pin_factory = MockFactory()
+# =============================================================================
 
 from gpio_map import * # Import pins required for this task from gpio_map
 import time
 import threading
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
 
 # Initialize counters:
 total_presses = 0
