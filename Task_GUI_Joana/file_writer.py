@@ -3,17 +3,24 @@
 Created on Mon Jul 22 16:52:36 2024
 
 @author: JoanaCatarino
+
+- This script is currently creating a .csv file for data and .json file that contains info about the session(animal_id,
+date, time, task)
+
 """
 import os
+import csv
+import json
 from PySide6.QtCore import QTime, QDate
+from PySide6.QtWidgets import QTabWidget
 
 # Define the save directory path directly here
-SAVE_DIRECTORY = "C:/Users/JoanaCatarino/Joana/test_directory"  # Update this path to your desired directory
+SAVE_DIRECTORY = "C:/Users/JoanaCatarino/Joana/test_directory" 
 
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
-def write_task_start_file(date_label, animal_id_combobox):
+def write_task_start_file(date_label, animal_id_combobox, task_combobox, tab_widget):
     # Check if the save directory is set
     if not SAVE_DIRECTORY:
         raise ValueError("Save directory not set")
@@ -29,11 +36,21 @@ def write_task_start_file(date_label, animal_id_combobox):
     except Exception as e:
         raise ValueError(f"Error parsing date: {e}")
     
-    # Fetch the current time
+    # Find the current time
     current_time = QTime.currentTime().toString("HHmm")
     
-    # Fetch the selected animal ID
+    # Find the selected animal ID
     animal_id = animal_id_combobox.currentText()
+    
+    # Find the selected task
+    task = task_combobox.currentText()
+    
+    # Get the box number from the current tab's name
+    current_index = tab_widget.currentIndex()
+    tab_name = tab_widget.tabText(current_index)
+    
+    # Extract the box number from the tab 
+    box_number = extract_box_number(tab_name)
     
     # Construct the directory path for the animal ID within the saved directory
     animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
@@ -42,20 +59,46 @@ def write_task_start_file(date_label, animal_id_combobox):
     if not os.path.exists(animal_directory):
         os.makedirs(animal_directory)
     
-    # Construct the base file name
-    base_file_name = f"{animal_id}_{formatted_date}_{current_time}.txt"
-    file_path = os.path.join(animal_directory, base_file_name)
+    # Construct the base file name (for both csv and json file)
+    base_file_name = f"{animal_id}_{formatted_date}_{current_time}"
+    csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
+    json_file_path = os.path.join(animal_directory, base_file_name + '.json')
     
-    # Ensure the file name is unique
+    # Ensure the file name is unique for both csv and json files
     counter = 1
-    while os.path.exists(file_path):
-        file_name = f"{animal_id}_{formatted_date}_{current_time}_{counter}.txt"
-        file_path = os.path.join(animal_directory, file_name)
+    while os.path.exists(csv_file_path) or os.path.exists(json_file_path):
+        file_name = f'{animal_id}_{formatted_date}_{current_time}_{counter}'
+        csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
+        json_file_path = os.path.join(animal_directory, base_file_name + '.json')
         counter += 1
+   
+    # Create the CSV file and leave it open so tha the different heads can be defined per task 
+    with open(csv_file_path, 'w', newline='') as csv_file:
+       writer = csv.writer(csv_file)
+   
+    # Create the json file and write important info to keep track of different sessions
+    session_info = {'animal_id': animal_id,
+                   'date': formatted_date,
+                   'time': current_time,
+                   'task': task,
+                   'box_number': box_number}
+   
+    with open(json_file_path, 'w') as json_file:
+       json.dump(session_info, json_file, indent=4)
+
+    return csv_file_path, json_file_path
+
+
+def extract_box_number(tab_name):
+    # split the tab name into parts based on whitespace
+    parts = tab_name.split()
     
-    # Create the .txt file
-    with open(file_path, 'w') as file:
-        file.write(f"Task started for animal ID: {animal_id} at {current_time} on {formatted_date}\n")
+    for i, part in enumerate(parts):
+        if part == 'BOX':
+            return parts [i + 1].rstrip(':')
+        
+    return 'Unknown' # Default if not found
     
-    return file_path
+
+    
 

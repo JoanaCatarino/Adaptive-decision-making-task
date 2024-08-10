@@ -30,7 +30,7 @@ from file_writer import write_task_start_file
 
 # Import task classes
 from task_test_rig import TestRig
-from task_free_licking import free_licking
+#from task_free_licking import free_licking
 from task_spout_sampling import SpoutSampling
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
@@ -166,7 +166,7 @@ class BoxControls:
         
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
-            write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID)
+            write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID, self.ui.Box1_Task, self.ui.Boxes)
         
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)

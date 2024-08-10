@@ -43,8 +43,8 @@ Created on Sat Jul 20 17:47:58 2024
 #%%
 
 #uncomment this part if we need to run tests on the windows/server side - needs to be comment for RPi
-# virtual pin factory 
 # =============================================================================
+# #virtual pin factory 
 # from gpiozero.pins.mock import MockFactory
 # from gpiozero import Device
 # Device.pin_factory = MockFactory()
@@ -55,6 +55,8 @@ import time
 import threading
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import csv
+import os
 
 # Initialize counters:
 total_presses = 0
@@ -79,6 +81,14 @@ times = []
 button_blue_counts = []
 button_red_counts = []
 early_press_counts = []
+
+# Define the directory and filename for the CSV file
+csv_directory = 'C:/Users/JoanaCatarino/Joana/test_directory'  # Replace with your directory path
+csv_filename = 'fl_counts.csv'  # Replace with your desired filename
+csv_file_path = os.path.join(csv_directory, csv_filename)
+
+# Ensure the directory exists
+os.makedirs(csv_directory, exist_ok=True)
 
 # Define callback functions for each button
 def button_blue_pressed():
@@ -123,7 +133,7 @@ def button_red_released():
             last_valid_press_time = current_time #Reset the interval timer
             can_press_message_shown = False #Reset the flag after a valid press
             print(f'Early press - Total early presses:{early_presses}')
-    update_plot_data()    
+    update_plot_data() 
     
 # Timer function to display the remaining time
 def display_timer():
@@ -160,7 +170,16 @@ def animate(i):
     plt.ylabel('Count')
     plt.legend(loc='upper left')
     plt.tight_layout()
-    
+
+
+def write_total_counts_to_csv():
+    """ Write the total counts to the CSV file. """
+    with open(csv_file_path, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['Total Presses', 'Button Blue Presses', 'Button Red Presses', 'Early Presses'])
+        writer.writerow([total_presses, button_blue_presses, button_red_presses, early_presses])
+
+
 # Attach the callback functions to the button press events
 button_blue.when_pressed = button_blue_pressed
 button_blue.when_released = button_blue_released
