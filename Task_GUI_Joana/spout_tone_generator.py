@@ -8,13 +8,14 @@ Created on Sat Aug 10 17:20:02 2024
 import csv
 import os
 import random
+from collections import Counter
 
 # Define the spouts and tones
 spouts = ['Left', 'Right']
 tones = ['5KHz', '10KHz']
 
 # List of animals that need assigment of pairs
-animals = ['452688', '542729', '757457', '754563']
+animals = ['452694', '542735', '757463', '754569', '234567']
 
 # Directory and filename for csv with assignments
 directory = 'C:/Users/JoanaCatarino/Joana/test_directory'
@@ -41,20 +42,60 @@ def generate_assignments():
         assignments.append((pair, comp_pair))
     return assignments
 
+
+def read_existing_assignments(filename):
+    # Read the existing .csv file to get the count of different tone-spout pairs and existing animals
+    pair_counts = Counter()
+    existing_animals = []
+
+    if not os.path.isfile(filename):
+        return pair_counts, existing_animals
+
+    with open(filename, mode='r') as file:
+        reader = csv.reader(file)
+        header = next(reader)  # Skip header
+        for row in reader:
+            existing_animals.append(row[0])
+            spout_5khz = (row[1], '5KHz')
+            spout_10khz = (row[2], '10KHz')
+            pair_counts[spout_5khz] += 1
+            pair_counts[spout_10khz] += 1
+
+    return pair_counts, existing_animals   
+
  
-def assign_pairs(animals):
+def assign_pairs(animals, existing_counts):
     
     assignments = generate_assignments()
+    
+    # Shuffle the assignments to introduce randomness
+    random.shuffle(assignments)
     
     #Create a dictionary to hold animal assignments
     animal_assignments = {}
    
     # Randomly assign pairs to subjects, allowing repeats
-    for animal in animals:
-        pair_assignment = random.choice(assignments)
-        animal_assignments[animal] = pair_assignment
+    #for animal in animals:
+        #pair_assignment = random.choice(assignments)
+        #animal_assignments[animal] = pair_assignment
     
-    return animal_assignments    
+    #return animal_assignments   
+
+    for animal in animals:
+        # Sort pairs by current count to prefer underrepresented pairs
+        assignments.sort(key=lambda x: existing_counts[x[0]] + existing_counts[x[1]])
+        
+        # Choose the least represented pair
+        chosen_pair, comp_pair = assignments[0]
+
+        # Update counts with the chosen pair
+        existing_counts[chosen_pair] += 1
+        existing_counts[complementary_pair] += 1
+
+        animal_assignments[animal] = (chosen_pair, comp_pair)
+
+    return animal_assignments
+
 
 def save_assignments(assignments, directory, filename):
     # Ensure the directory exists
@@ -84,12 +125,22 @@ def save_assignments(assignments, directory, filename):
                 row.append(pair[0])  # 'L' or 'R' for 10KHz
             writer.writerow(row) 
 
-# Get the assignments
-assignments = assign_pairs(animals)
 
+# Read existing assignments to get the current pair counts and existing animals
+existing_counts, existing_animals = read_existing_assignments(os.path.join(directory, filename))
 
-# Save the assignments to a .csv file 
-save_assignments(assignments, directory, filename)
+# Filter out any subjects that already exist in the file
+new_animals = [animal for animal in animals if animal not in existing_animals]
+
+if not new_animals:
+    print("No new subjects to add.")
+else:
+    # Get the assignments, ensuring an even distribution of pairs
+    assignments = assign_pairs(animals, existing_counts)
+
+    # Save the assignments to the CSV file
+    save_assignments(assignments, directory, filename)
+
 
 # Print the results
 for animal, (pair, comp_pair) in assignments.items():

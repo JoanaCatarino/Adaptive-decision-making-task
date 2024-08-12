@@ -767,7 +767,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>489</y>
+         <y>566</y>
          <width>131</width>
          <height>19</height>
         </rect>
@@ -790,7 +790,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>173</x>
-         <y>525</y>
+         <y>602</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -808,7 +808,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>524</y>
+         <y>601</y>
          <width>51</width>
          <height>22</height>
         </rect>
@@ -823,7 +823,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>23</x>
-         <y>525</y>
+         <y>602</y>
          <width>90</width>
          <height>20</height>
         </rect>
@@ -841,7 +841,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>595</y>
+         <y>666</y>
          <width>131</width>
          <height>19</height>
         </rect>
@@ -861,7 +861,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>635</y>
+         <y>706</y>
          <width>161</width>
          <height>20</height>
         </rect>
@@ -879,7 +879,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>21</x>
-         <y>665</y>
+         <y>736</y>
          <width>161</width>
          <height>20</height>
         </rect>
@@ -986,6 +986,47 @@ border-color: rgb(227, 153, 100);</string>
        </property>
        <property name="text">
         <string>Reward - left spout</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_B1_RewardParams_2">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>480</y>
+         <width>131</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Association trials :</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="geometry">
+        <rect>
+         <x>22</x>
+         <y>513</y>
+         <width>141</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Play tone - spout pairs </string>
        </property>
       </widget>
      </widget>
