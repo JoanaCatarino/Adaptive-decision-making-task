@@ -241,6 +241,7 @@ class BoxControls:
         self.ui.Box1_ResponseWindow.setEnabled(enable)
         self.ui.Box1_TrialDuration.setEnabled(enable)
         self.ui.Box1_ValveOpening.setEnabled(enable)
+        self.ui.Box1_AssociationTrials.setEnabled(enable)
     
     # Test to use the Update button to print the value of the variables in real-time 
     # Not yet written to print on the client side

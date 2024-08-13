@@ -26,7 +26,7 @@ filename = 'spout_tone_generator.csv'
 pairs = [(spout, tone) for spout in spouts for tone in tones]
 
 # Create complementary pair for each assignment
-# Example: If a subject is assigned (Left, 5KHz), the complementary pair for Right will be (Right, 10KHz)
+# Example: If an animal is assigned (Left, 5KHz), the complementary pair for Right will be (Right, 10KHz)
 def complementary_pair(pair):
     spout, tone = pair
     # Find the complementary spout and tone
@@ -74,7 +74,7 @@ def assign_pairs(animals, existing_counts):
     #Create a dictionary to hold animal assignments
     animal_assignments = {}
    
-    # Randomly assign pairs to subjects, allowing repeats
+    # Randomly assign pairs to animals, allowing repeats
     #for animal in animals:
         #pair_assignment = random.choice(assignments)
         #animal_assignments[animal] = pair_assignment
@@ -113,7 +113,7 @@ def save_assignments(assignments, directory, filename):
         if not file_exists:
             writer.writerow(['Animal', '5KHz', '10KHz'])
         
-        # Write the subject assignments
+        # Write the animal assignments
         for animal, (pair, comp_pair) in assignments.items():
             row = [animal]
             # Determine which spout is assigned to 5KHz and 10KHz
@@ -129,11 +129,11 @@ def save_assignments(assignments, directory, filename):
 # Read existing assignments to get the current pair counts and existing animals
 existing_counts, existing_animals = read_existing_assignments(os.path.join(directory, filename))
 
-# Filter out any subjects that already exist in the file
+# Filter out any animals that already exist in the file
 new_animals = [animal for animal in animals if animal not in existing_animals]
 
 if not new_animals:
-    print("No new subjects to add.")
+    print("No new animals to add.")
 else:
     # Get the assignments, ensuring an even distribution of pairs
     assignments = assign_pairs(animals, existing_counts)

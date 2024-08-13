@@ -1011,7 +1011,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Association trials :</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="Box1_AssociationTrials">
        <property name="geometry">
         <rect>
          <x>22</x>
