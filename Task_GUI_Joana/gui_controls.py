@@ -41,7 +41,16 @@ class GuiControls:
         animal_id(self.ui.ddm_Animal_ID)  
         
     def OV_animalID(self):
-        selected_animal = int(self.ui.ddm_Animal_ID.currentText()) # Covert string to integer
+        selected_animal = self.ui.ddm_Animal_ID.currentText() # Covert string to integer
+    
+        # Check if the selected value is numeric (integer or float)
+        if selected_animal.replace('.', '', 1).isdigit():  # Checks for integers and floats
+            if '.' in selected_animal:
+                selected_animal = float(selected_animal)  # Convert to float if it has a decimal point
+            else:
+                selected_animal = int(selected_animal)  # Convert to integer if no decimal point
+                
+        # Update the txt, whether it's a string or a number
         self.ui.OV_txt_AnimalID.setText(f'{selected_animal}')
         
         
