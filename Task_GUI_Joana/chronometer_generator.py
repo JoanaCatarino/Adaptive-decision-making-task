@@ -5,10 +5,10 @@ Created on Tue Jul 16 11:24:48 2024
 @author: JoanaCatarino
 """
 
-from PySide6.QtCore import QTimer, Signal, QObject
+from PyQt5.QtCore import QTimer, pyqtSignal, QObject
 
 class Chronometer(QObject):
-    timeChanged = Signal(str)
+    timeChanged = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
