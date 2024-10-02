@@ -30,4 +30,4 @@ class GuiControls:
         
     def populate_ddm_task(self):
         font_size = 9
-        task(self.ui.Box1_Task)
+        task(self.ui.ddm_Task)
