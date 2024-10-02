@@ -55,7 +55,7 @@ class GuiControls:
         
 
 
-
+'''
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
     def updateTime(self, time_str):
