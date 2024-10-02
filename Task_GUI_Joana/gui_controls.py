@@ -51,7 +51,7 @@ class GuiControls:
         self.ui.txt_Chronometer.timeChanged.connect(self.updateTime_slot)
         
         self.ui.OV_txt_Chronometer = Chronometer() # Chronometer Overview tab
-        self.ui.OV_txt_Chronometer.timeChanged.connect(self.updateTime_slot_ov)
+        self.ui.OV_txt_Chronometer.timeChanged.connect(self.updateTime_slot)
         
 
 
