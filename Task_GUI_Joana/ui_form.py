@@ -1115,7 +1115,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(1)
+        self.Boxes.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(TaskGui)
