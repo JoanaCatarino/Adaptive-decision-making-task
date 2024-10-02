@@ -27,7 +27,7 @@ class TaskGui(QMainWindow):
     @pyqtSlot(str)
     def updateTime(self, time_str):
         self.ui.txt_Chronometer.setText(time_str) # Chronometer in the Box page
-        self.ui.OV1_Chronometer.setText(time_str) # Chronometer in the Overview page
+        self.ui.OV_box_Chronometer.setText(time_str) # Chronometer in the Overview page
 
         # Check if the time is 1 hour (format expected: "hh:mm:ss")
         hours, minutes, seconds = map(int, time_str.split(':'))

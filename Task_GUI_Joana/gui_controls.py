@@ -25,14 +25,24 @@ class GuiControls:
         
         # initialize components:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
+        self.OV_animalID() # txt with animal ID in overview tab
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
+        self.connect_buttons() # Start and Stop buttons
+        
+        
+        # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
+        self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
         
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
         animal_id(self.ui.ddm_Animal_ID)  
+        
+    def OV_animalID(self):
+        selected_animal = int(self.ui.ddm_Animal_ID.currentText()) # Covert string to integer
+        self.ui.OV_txt_AnimalID.setText(f'{selected_animal}')
         
         
     def populate_ddm_task(self):
@@ -47,11 +57,17 @@ class GuiControls:
         
     def setup_chronometer(self):
         # Initialize Chronometer
-        self.txt_Chronometer = Chronometer() # Chronometer for general box tab
-        self.txt_Chronometer.timeChanged.connect(self.updateTime_slot)
+        self.ui.txt_Chronometer = Chronometer() # Chronometer for general box tab
+        self.ui.txt_Chronometer.timeChanged.connect(self.updateTime_slot)
         
-        self.OV_txt_Chronometer = Chronometer() # Chronometer Overview tab
-        self.OV_txt_Chronometer.timeChanged.connect(self.updateTime_slot)
+        self.ui.OV_box_Chronometer = Chronometer() # Chronometer Overview tab
+        self.ui.OV_box_Chronometer.timeChanged.connect(self.updateTime_slot)
         
 
+    def _connect_buttons(self):
+        # Connect Start and Stop buttons + update button
+        self.ui.btn_Start.clicked.connect(self.execute_task)
+        self.ui.btn_Stop.clicked.connect(self.stop_task)
+        #self.ui.Box1_Update.clicked.connect(self.print_variables)
+   
 
