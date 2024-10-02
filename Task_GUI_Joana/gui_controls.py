@@ -11,6 +11,7 @@ from form_updt import Ui_TaskGui
 
 # Import different functions/classes
 from animal_id_generator import animal_id
+from task_generator import task
 
 class GuiControls:
     
