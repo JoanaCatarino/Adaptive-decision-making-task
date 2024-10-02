@@ -34,300 +34,7 @@
     <property name="currentIndex">
      <number>1</number>
     </property>
-    <widget class="QWidget" name="Rbpi_Connection">
-     <attribute name="title">
-      <string>Rbpi connection</string>
-     </attribute>
-     <widget class="QLabel" name="label_10">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>191</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>BOX 1</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>185</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>185</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_11">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>272</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>BOX 2</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_6">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>266</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_7">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>266</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_12">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>352</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>BOX 3</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_8">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>346</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_9">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>346</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_13">
-      <property name="geometry">
-       <rect>
-        <x>470</x>
-        <y>191</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>BOX 4</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_10">
-      <property name="geometry">
-       <rect>
-        <x>630</x>
-        <y>185</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_11">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>185</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>442</x>
-        <y>271</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Ephys Rig</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_12">
-      <property name="geometry">
-       <rect>
-        <x>630</x>
-        <y>265</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_13">
-      <property name="geometry">
-       <rect>
-        <x>530</x>
-        <y>265</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_16">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>711</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>1) Start by connecting the Server        2) Connect the server to the raspberry pi controlling each behavior box</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_15">
-      <property name="geometry">
-       <rect>
-        <x>50</x>
-        <y>97</y>
-        <width>61</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>11</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>SERVER</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_14">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>92</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Disconnect</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>92</y>
-        <width>81</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Connect</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="Box1">
+    <widget class="QWidget" name="Box">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -340,7 +47,7 @@
       <string/>
      </property>
      <attribute name="title">
-      <string>BOX 1</string>
+      <string>BOX </string>
      </attribute>
      <widget class="QWidget" name="TaskSettings" native="true">
       <property name="geometry">
@@ -354,7 +61,7 @@
       <property name="styleSheet">
        <string notr="true">background-color: rgb(231, 231, 231);</string>
       </property>
-      <widget class="QLabel" name="label_B1_AnimalID">
+      <widget class="QLabel" name="lbl_AnimalID">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -372,7 +79,7 @@
         <string>Animal_ID :</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="Box1_Start">
+      <widget class="QPushButton" name="btn_Start">
        <property name="geometry">
         <rect>
          <x>349</x>
@@ -389,7 +96,7 @@ font: 700 8pt &quot;Segoe UI&quot;;</string>
         <string>START</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="Box1_Stop">
+      <widget class="QPushButton" name="btn_Stop">
        <property name="geometry">
         <rect>
          <x>420</x>
@@ -406,7 +113,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>STOP</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="Box1_Animal_ID">
+      <widget class="QComboBox" name="ddm_Animal_ID">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -422,7 +129,7 @@ background-color: rgb(255, 203, 198);</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QComboBox" name="Box1_Task">
+      <widget class="QComboBox" name="ddm_Task">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -441,7 +148,7 @@ background-color: rgb(255, 203, 198);</string>
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_Task">
+      <widget class="QLabel" name="lbl_Task">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -459,7 +166,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Task :</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_TaskTimeline">
+      <widget class="QLabel" name="lbl_TaskTimeline">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -482,7 +189,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Task Timeline Params :</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_RigParams">
+      <widget class="QLabel" name="lbl_RigParams">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -502,7 +209,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Test Rig Params :</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_BlueLED">
+      <widget class="QRadioButton" name="chk_BlueLED">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -520,7 +227,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Blue LED</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_WhiteLED_Left">
+      <widget class="QRadioButton" name="chk_WhiteLED_Left">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -538,7 +245,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>White LED - Left</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_10Tone">
+      <widget class="QRadioButton" name="chk_10Tone">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -556,7 +263,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>10KHz Tone</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_5Tone">
+      <widget class="QRadioButton" name="chk_5Tone">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -574,7 +281,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>5KHz Tone</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_Reward_right">
+      <widget class="QRadioButton" name="chk_Reward_right">
        <property name="geometry">
         <rect>
          <x>331</x>
@@ -592,7 +299,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Reward - right spout</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_Punishment">
+      <widget class="QRadioButton" name="chk_Punishment">
        <property name="geometry">
         <rect>
          <x>331</x>
@@ -610,7 +317,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>WN - Punishment</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_QuietWindow">
+      <widget class="QLabel" name="lbl_QuietWindow">
        <property name="geometry">
         <rect>
          <x>23</x>
@@ -628,7 +335,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Quiet Window</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Box1_QuietWindow">
+      <widget class="QLineEdit" name="txt_QuietWindow">
        <property name="geometry">
         <rect>
          <x>110</x>
@@ -643,7 +350,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_QW_ms">
+      <widget class="QLabel" name="lbl_QW_ms">
        <property name="geometry">
         <rect>
          <x>173</x>
@@ -661,7 +368,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>[ms]</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_RW_ms">
+      <widget class="QLabel" name="lbl_RW_ms">
        <property name="geometry">
         <rect>
          <x>193</x>
@@ -679,7 +386,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>[ms]</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Box1_ResponseWindow">
+      <widget class="QLineEdit" name="txt_ResponseWindow">
        <property name="geometry">
         <rect>
          <x>130</x>
@@ -694,7 +401,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_ResponseWindow">
+      <widget class="QLabel" name="lbl_ResponseWindow">
        <property name="geometry">
         <rect>
          <x>24</x>
@@ -712,7 +419,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Response Window</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Box1_TrialDuration">
+      <widget class="QLineEdit" name="txt_TrialDuration">
        <property name="geometry">
         <rect>
          <x>111</x>
@@ -727,7 +434,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_TrialDuration">
+      <widget class="QLabel" name="lbl_TrialDuration">
        <property name="geometry">
         <rect>
          <x>24</x>
@@ -745,7 +452,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Trial Duration</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_TD_ms">
+      <widget class="QLabel" name="lbl_TD_ms">
        <property name="geometry">
         <rect>
          <x>174</x>
@@ -763,7 +470,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>[ms]</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_RewardParams">
+      <widget class="QLabel" name="lbl_RewardParams">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -786,7 +493,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Reward Params :</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_VO_ms">
+      <widget class="QLabel" name="lbl_VO_ms">
        <property name="geometry">
         <rect>
          <x>173</x>
@@ -804,7 +511,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>[ms]</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="Box1_ValveOpening">
+      <widget class="QLineEdit" name="txt_ValveOpening">
        <property name="geometry">
         <rect>
          <x>110</x>
@@ -819,7 +526,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_ValveOpening">
+      <widget class="QLabel" name="lbl_ValveOpening">
        <property name="geometry">
         <rect>
          <x>23</x>
@@ -837,7 +544,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Valve Opening</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_OptoProtocols">
+      <widget class="QLabel" name="lbl_OptoProtocols">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -857,7 +564,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Optotagging Protocols :</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="Box1_OptoShort">
+      <widget class="QCheckBox" name="chk_OptoShort">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -875,7 +582,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Short pulses protocol</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="Box1_OptoLong">
+      <widget class="QCheckBox" name="chk_OptoLong">
        <property name="geometry">
         <rect>
          <x>21</x>
@@ -893,7 +600,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Long pulses protocol</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_WhiteLED_Right">
+      <widget class="QRadioButton" name="chk_WhiteLED_Right">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -911,7 +618,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>White LED - Right</string>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_Date">
+      <widget class="QLabel" name="txt_Date">
        <property name="geometry">
         <rect>
          <x>60</x>
@@ -929,7 +636,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>TextLabel</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_Date">
+      <widget class="QLabel" name="lbl_Date">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -947,7 +654,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Date :</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="Box1_Update">
+      <widget class="QPushButton" name="btn_Update">
        <property name="geometry">
         <rect>
          <x>378</x>
@@ -970,7 +677,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>UPDATE</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="Box1_Reward_left">
+      <widget class="QRadioButton" name="chk_Reward_left">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -988,7 +695,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Reward - left spout</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_RewardParams_2">
+      <widget class="QLabel" name="lbl_AssociationTrials">
        <property name="geometry">
         <rect>
          <x>21</x>
@@ -1011,7 +718,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Association trials :</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="Box1_AssociationTrials">
+      <widget class="QCheckBox" name="chk_AssociationTrials">
        <property name="geometry">
         <rect>
          <x>22</x>
@@ -1030,7 +737,7 @@ border-color: rgb(227, 153, 100);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="label_TaskSettings">
+     <widget class="QLabel" name="lbl_TaskSettings">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1058,7 +765,7 @@ border-color: rgb(227, 153, 100);</string>
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_Visualization">
+     <widget class="QLabel" name="lbl_Visualization">
       <property name="geometry">
        <rect>
         <x>559</x>
@@ -1097,7 +804,7 @@ color: rgb(73, 192, 203);</string>
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QWidget" name="Box1_Camera" native="true">
+     <widget class="QWidget" name="plt_Camera" native="true">
       <property name="geometry">
        <rect>
         <x>590</x>
@@ -1110,7 +817,7 @@ color: rgb(73, 192, 203);</string>
        <string notr="true">background-color: rgb(234, 238, 255);</string>
       </property>
      </widget>
-     <widget class="QWidget" name="Box1_AnimalsPerfomance" native="true">
+     <widget class="QWidget" name="plt_AnimalsPerfomance" native="true">
       <property name="geometry">
        <rect>
         <x>1120</x>
@@ -1123,7 +830,7 @@ color: rgb(73, 192, 203);</string>
        <string notr="true">background-color: rgb(234, 238, 255);</string>
       </property>
      </widget>
-     <widget class="QWidget" name="Box1_LickTrace_Right" native="true">
+     <widget class="QWidget" name="plt_LickTrace_Right" native="true">
       <property name="geometry">
        <rect>
         <x>1120</x>
@@ -1136,7 +843,7 @@ color: rgb(73, 192, 203);</string>
        <string notr="true">background-color: rgb(234, 238, 255);</string>
       </property>
      </widget>
-     <widget class="QWidget" name="Box1_LickTrace_Left" native="true">
+     <widget class="QWidget" name="plt_LickTrace_Left" native="true">
       <property name="geometry">
        <rect>
         <x>1120</x>
@@ -1149,7 +856,7 @@ color: rgb(73, 192, 203);</string>
        <string notr="true">background-color: rgb(234, 238, 255);</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_AnimalPerformance">
+     <widget class="QLabel" name="lbl_AnimalPerformance">
       <property name="geometry">
        <rect>
         <x>1131</x>
@@ -1170,7 +877,7 @@ color: rgb(73, 192, 203);</string>
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_LickTrace_right">
+     <widget class="QLabel" name="lbl_LickTrace_right">
       <property name="geometry">
        <rect>
         <x>1130</x>
@@ -1191,7 +898,7 @@ color: rgb(73, 192, 203);</string>
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_LickTrace_left">
+     <widget class="QLabel" name="lbl_LickTrace_left">
       <property name="geometry">
        <rect>
         <x>1130</x>
@@ -1212,7 +919,7 @@ color: rgb(73, 192, 203);</string>
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_Time">
+     <widget class="QLabel" name="lbl_Time">
       <property name="geometry">
        <rect>
         <x>693</x>
@@ -1231,7 +938,7 @@ color: rgb(73, 192, 203);</string>
        <string>TIME :</string>
       </property>
      </widget>
-     <widget class="QWidget" name="Background_B1_Blocks" native="true">
+     <widget class="QWidget" name="bkg_Blocks" native="true">
       <property name="geometry">
        <rect>
         <x>574</x>
@@ -1484,7 +1191,7 @@ color: rgb(73, 192, 203);</string>
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="Background_B1_LeftSpout" native="true">
+     <widget class="QWidget" name="bkg_LeftSpout" native="true">
       <property name="geometry">
        <rect>
         <x>574</x>
@@ -1665,7 +1372,7 @@ color: rgb(73, 192, 203);</string>
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="Background_B1_RightSpout" native="true">
+     <widget class="QWidget" name="bkg_RightSpout" native="true">
       <property name="geometry">
        <rect>
         <x>574</x>
@@ -1846,7 +1553,7 @@ color: rgb(73, 192, 203);</string>
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="Background_B1_Trials" native="true">
+     <widget class="QWidget" name="bkg_Trials" native="true">
       <property name="geometry">
        <rect>
         <x>574</x>
@@ -2474,7 +2181,7 @@ color: rgb(73, 192, 203);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="label_B1_TrialMonitor">
+     <widget class="QLabel" name="lbl_TrialMonitor">
       <property name="geometry">
        <rect>
         <x>734</x>
@@ -2495,7 +2202,7 @@ color: rgb(73, 192, 203);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_TrialMonitor_Legend">
+     <widget class="QLabel" name="lbl_LegendTrialMonitor">
       <property name="geometry">
        <rect>
         <x>580</x>
@@ -2520,7 +2227,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_Blocks">
+     <widget class="QLabel" name="lbl_Blocks">
       <property name="geometry">
        <rect>
         <x>550</x>
@@ -2542,7 +2249,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_LeftSpout">
+     <widget class="QLabel" name="lbl_LeftSpout">
       <property name="geometry">
        <rect>
         <x>556</x>
@@ -2564,7 +2271,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_RightSpout">
+     <widget class="QLabel" name="lbl_RightSpout">
       <property name="geometry">
        <rect>
         <x>551</x>
@@ -2586,7 +2293,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_Trials">
+     <widget class="QLabel" name="lbl_Trials">
       <property name="geometry">
        <rect>
         <x>551</x>
@@ -2608,7 +2315,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_TotalTrials">
+     <widget class="QLabel" name="lbl_TotalTrials">
       <property name="geometry">
        <rect>
         <x>571</x>
@@ -2626,7 +2333,7 @@ color: rgb(112, 112, 112);</string>
        <string>Total Trials: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_CorrectTrials">
+     <widget class="QLabel" name="lbl_CorrectTrials">
       <property name="geometry">
        <rect>
         <x>738</x>
@@ -2644,7 +2351,7 @@ color: rgb(112, 112, 112);</string>
        <string>Correct Trials: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_IncorrectTrials">
+     <widget class="QLabel" name="lbl_IncorrectTrials">
       <property name="geometry">
        <rect>
         <x>737</x>
@@ -2662,7 +2369,7 @@ color: rgb(112, 112, 112);</string>
        <string>Incorrect Trials: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_Omissions">
+     <widget class="QLabel" name="box_Omissions">
       <property name="geometry">
        <rect>
         <x>648</x>
@@ -2686,7 +2393,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_Omissions">
+     <widget class="QLabel" name="lbl_Omissions">
       <property name="geometry">
        <rect>
         <x>571</x>
@@ -2704,7 +2411,7 @@ color: rgb(112, 112, 112);</string>
        <string>Omissions: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_EarlyLicks">
+     <widget class="QLabel" name="lbl_EarlyLicks">
       <property name="geometry">
        <rect>
         <x>573</x>
@@ -2722,7 +2429,7 @@ color: rgb(112, 112, 112);</string>
        <string>Early licks:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_EarlyLicks">
+     <widget class="QLabel" name="box_EarlyLicks">
       <property name="geometry">
        <rect>
         <x>648</x>
@@ -2746,7 +2453,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_TotalTrials">
+     <widget class="QLabel" name="box_TotalTrials">
       <property name="geometry">
        <rect>
         <x>648</x>
@@ -2770,7 +2477,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_IncorrectTrials">
+     <widget class="QLabel" name="box_IncorrectTrials">
       <property name="geometry">
        <rect>
         <x>837</x>
@@ -2794,7 +2501,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_CorrectTrials">
+     <widget class="QLabel" name="box_CorrectTrials">
       <property name="geometry">
        <rect>
         <x>836</x>
@@ -2818,7 +2525,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_SoundBlocks">
+     <widget class="QLabel" name="box_SoundBlocks">
       <property name="geometry">
        <rect>
         <x>837</x>
@@ -2842,7 +2549,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_SoundBlocks">
+     <widget class="QLabel" name="lbl_SoundBlocks">
       <property name="geometry">
        <rect>
         <x>739</x>
@@ -2860,7 +2567,7 @@ color: rgb(112, 112, 112);</string>
        <string>Sound Blocks:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_Action_L_blocks">
+     <widget class="QLabel" name="box_Action_L_blocks">
       <property name="geometry">
        <rect>
         <x>1015</x>
@@ -2884,7 +2591,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_ActionLBlocks">
+     <widget class="QLabel" name="lbl_ActionLBlocks">
       <property name="geometry">
        <rect>
         <x>917</x>
@@ -2902,7 +2609,7 @@ color: rgb(112, 112, 112);</string>
        <string>Action L Blocks:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_Action_R_blocks">
+     <widget class="QLabel" name="box_Action_R_blocks">
       <property name="geometry">
        <rect>
         <x>1015</x>
@@ -2926,7 +2633,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="label_B1_ActionRBlocks">
+     <widget class="QLabel" name="lbl_ActionRBlocks">
       <property name="geometry">
        <rect>
         <x>917</x>
@@ -2944,7 +2651,7 @@ color: rgb(112, 112, 112);</string>
        <string>Action R Blocks:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="Box1_Chronometer">
+     <widget class="QLabel" name="txt_Chronometer">
       <property name="geometry">
        <rect>
         <x>737</x>
@@ -2965,71 +2672,95 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <zorder>Background_B1_Trials</zorder>
+     <widget class="QLabel" name="lbl_Bias">
+      <property name="geometry">
+       <rect>
+        <x>980</x>
+        <y>737</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Bias:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="box_Bias">
+      <property name="geometry">
+       <rect>
+        <x>1016</x>
+        <y>737</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(234, 234, 234);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
-     <zorder>label_TaskSettings</zorder>
-     <zorder>label_Visualization</zorder>
+     <zorder>lbl_TaskSettings</zorder>
+     <zorder>lbl_Visualization</zorder>
      <zorder>line</zorder>
-     <zorder>Box1_Camera</zorder>
-     <zorder>Box1_AnimalsPerfomance</zorder>
-     <zorder>Box1_LickTrace_Right</zorder>
-     <zorder>Box1_LickTrace_Left</zorder>
-     <zorder>label_B1_AnimalPerformance</zorder>
-     <zorder>label_B1_LickTrace_right</zorder>
-     <zorder>label_B1_LickTrace_left</zorder>
-     <zorder>label_B1_Time</zorder>
-     <zorder>Background_B1_Blocks</zorder>
-     <zorder>Background_B1_LeftSpout</zorder>
-     <zorder>Background_B1_RightSpout</zorder>
-     <zorder>label_B1_TrialMonitor</zorder>
-     <zorder>label_B1_TrialMonitor_Legend</zorder>
-     <zorder>label_B1_Blocks</zorder>
-     <zorder>label_B1_LeftSpout</zorder>
-     <zorder>label_B1_RightSpout</zorder>
-     <zorder>label_B1_Trials</zorder>
-     <zorder>label_B1_TotalTrials</zorder>
-     <zorder>label_B1_CorrectTrials</zorder>
-     <zorder>label_B1_IncorrectTrials</zorder>
-     <zorder>Box1_Omissions</zorder>
-     <zorder>label_B1_Omissions</zorder>
-     <zorder>label_B1_EarlyLicks</zorder>
-     <zorder>Box1_EarlyLicks</zorder>
-     <zorder>Box1_TotalTrials</zorder>
-     <zorder>Box1_IncorrectTrials</zorder>
-     <zorder>Box1_CorrectTrials</zorder>
-     <zorder>Box1_SoundBlocks</zorder>
-     <zorder>label_B1_SoundBlocks</zorder>
-     <zorder>Box1_Action_L_blocks</zorder>
-     <zorder>label_B1_ActionLBlocks</zorder>
-     <zorder>Box1_Action_R_blocks</zorder>
-     <zorder>label_B1_ActionRBlocks</zorder>
-     <zorder>Box1_Chronometer</zorder>
-    </widget>
-    <widget class="QWidget" name="Box2">
-     <attribute name="title">
-      <string>BOX 2</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="Box3">
-     <attribute name="title">
-      <string>BOX 3</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="Box4">
-     <attribute name="title">
-      <string>BOX 4</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="Ephys_Rig">
-     <attribute name="title">
-      <string>Ephys Rig</string>
-     </attribute>
+     <zorder>plt_Camera</zorder>
+     <zorder>plt_AnimalsPerfomance</zorder>
+     <zorder>plt_LickTrace_Right</zorder>
+     <zorder>plt_LickTrace_Left</zorder>
+     <zorder>lbl_AnimalPerformance</zorder>
+     <zorder>lbl_LickTrace_right</zorder>
+     <zorder>lbl_LickTrace_left</zorder>
+     <zorder>lbl_Time</zorder>
+     <zorder>bkg_Blocks</zorder>
+     <zorder>bkg_LeftSpout</zorder>
+     <zorder>bkg_RightSpout</zorder>
+     <zorder>lbl_TrialMonitor</zorder>
+     <zorder>lbl_LegendTrialMonitor</zorder>
+     <zorder>lbl_Blocks</zorder>
+     <zorder>lbl_LeftSpout</zorder>
+     <zorder>lbl_RightSpout</zorder>
+     <zorder>lbl_Trials</zorder>
+     <zorder>lbl_TotalTrials</zorder>
+     <zorder>lbl_CorrectTrials</zorder>
+     <zorder>lbl_IncorrectTrials</zorder>
+     <zorder>box_Omissions</zorder>
+     <zorder>lbl_Omissions</zorder>
+     <zorder>lbl_EarlyLicks</zorder>
+     <zorder>box_EarlyLicks</zorder>
+     <zorder>box_TotalTrials</zorder>
+     <zorder>box_IncorrectTrials</zorder>
+     <zorder>box_CorrectTrials</zorder>
+     <zorder>box_SoundBlocks</zorder>
+     <zorder>lbl_SoundBlocks</zorder>
+     <zorder>box_Action_L_blocks</zorder>
+     <zorder>lbl_ActionLBlocks</zorder>
+     <zorder>box_Action_R_blocks</zorder>
+     <zorder>lbl_ActionRBlocks</zorder>
+     <zorder>txt_Chronometer</zorder>
+     <zorder>lbl_Bias</zorder>
+     <zorder>box_Bias</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
       <string>Overview</string>
      </attribute>
-     <widget class="QGroupBox" name="OV_Box1">
+     <widget class="QGroupBox" name="OV_Box">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -3049,9 +2780,9 @@ color: rgb(112, 112, 112);</string>
 </string>
       </property>
       <property name="title">
-       <string>Box 1</string>
+       <string/>
       </property>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="OV_plt_Camera" native="true">
        <property name="geometry">
         <rect>
          <x>15</x>
@@ -3064,7 +2795,7 @@ color: rgb(112, 112, 112);</string>
         <string notr="true">background-color: rgb(189, 189, 189);</string>
        </property>
       </widget>
-      <widget class="QWidget" name="widget_6" native="true">
+      <widget class="QWidget" name="OV_plt_AnimalPerformance" native="true">
        <property name="geometry">
         <rect>
          <x>16</x>
@@ -3077,7 +2808,7 @@ color: rgb(112, 112, 112);</string>
         <string notr="true">background-color: rgb(230, 248, 255);</string>
        </property>
       </widget>
-      <widget class="QLabel" name="OV1_Chronometer">
+      <widget class="QLabel" name="OV_box_Chronometer">
        <property name="geometry">
         <rect>
          <x>93</x>
@@ -3098,7 +2829,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_OV1_Time">
+      <widget class="QLabel" name="OV_lbl_Time">
        <property name="geometry">
         <rect>
          <x>49</x>
@@ -3117,7 +2848,7 @@ color: rgb(112, 112, 112);</string>
         <string>TIME :</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_Omissions_2">
+      <widget class="QLabel" name="OV_lbl_Omissions">
        <property name="geometry">
         <rect>
          <x>98</x>
@@ -3135,7 +2866,7 @@ color: rgb(112, 112, 112);</string>
         <string>Omissions: </string>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_CorrectTrials_2">
+      <widget class="QLabel" name="OV_box_CorrectTrials">
        <property name="geometry">
         <rect>
          <x>182</x>
@@ -3159,7 +2890,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_IncorrectTrials_2">
+      <widget class="QLabel" name="OV_box_IncorrectTrials">
        <property name="geometry">
         <rect>
          <x>182</x>
@@ -3183,7 +2914,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_2">
+      <widget class="QLabel" name="OV_box_TotalTrials">
        <property name="geometry">
         <rect>
          <x>182</x>
@@ -3207,7 +2938,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_2">
+      <widget class="QLabel" name="OV_lbl_TotalTrials">
        <property name="geometry">
         <rect>
          <x>97</x>
@@ -3225,7 +2956,7 @@ color: rgb(112, 112, 112);</string>
         <string>Total Trials: </string>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_Omissions_2">
+      <widget class="QLabel" name="OV_box_Omissions">
        <property name="geometry">
         <rect>
          <x>182</x>
@@ -3249,7 +2980,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_IncorrectTrials_2">
+      <widget class="QLabel" name="OV_lbl_IncorrectTrials">
        <property name="geometry">
         <rect>
          <x>73</x>
@@ -3267,7 +2998,7 @@ color: rgb(112, 112, 112);</string>
         <string>Incorrect Trials: </string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_CorrectTrials_2">
+      <widget class="QLabel" name="OV_lbl_CorrectTrials">
        <property name="geometry">
         <rect>
          <x>81</x>
@@ -3285,7 +3016,7 @@ color: rgb(112, 112, 112);</string>
         <string>Correct Trials: </string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_3">
+      <widget class="QLabel" name="OV_lbl_CurrentTrial">
        <property name="geometry">
         <rect>
          <x>59</x>
@@ -3306,7 +3037,7 @@ color: rgb(112, 112, 112);</string>
         <string>Current Trial:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_3">
+      <widget class="QLabel" name="OV_box_CurrentTrial">
        <property name="geometry">
         <rect>
          <x>151</x>
@@ -3331,1211 +3062,53 @@ color: rgb(112, 112, 112);</string>
        </property>
       </widget>
      </widget>
-     <widget class="QGroupBox" name="OV_Box2">
+     <widget class="QWidget" name="OV_bkg_AnimalID" native="true">
       <property name="geometry">
        <rect>
-        <x>324</x>
-        <y>19</y>
-        <width>301</width>
-        <height>801</height>
+        <x>90</x>
+        <y>10</y>
+        <width>141</width>
+        <height>21</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
       <property name="styleSheet">
-       <string notr="true">
-border-color: rgb(112, 255, 122);</string>
+       <string notr="true">background-color: rgb(220, 231, 255);</string>
       </property>
-      <property name="title">
-       <string>Box 2</string>
-      </property>
-      <widget class="QWidget" name="widget_2" native="true">
+      <widget class="QLabel" name="OV_lbl_AnimalID">
        <property name="geometry">
         <rect>
-         <x>15</x>
-         <y>100</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(189, 189, 189);</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="widget_7" native="true">
-       <property name="geometry">
-        <rect>
-         <x>16</x>
-         <y>339</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(230, 248, 255);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Chronometer_3">
-       <property name="geometry">
-        <rect>
-         <x>93</x>
-         <y>44</y>
-         <width>160</width>
+         <x>14</x>
+         <y>-1</y>
+         <width>81</width>
          <height>21</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Time_3">
-       <property name="geometry">
-        <rect>
-         <x>49</x>
-         <y>45</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
+         <pointsize>9</pointsize>
          <bold>true</bold>
         </font>
        </property>
        <property name="text">
-        <string>TIME :</string>
+        <string>Animal ID:</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_B1_Omissions_3">
+      <widget class="QLabel" name="OV_txt_AnimalID">
        <property name="geometry">
         <rect>
-         <x>98</x>
-         <y>753</y>
-         <width>71</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Omissions: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_CorrectTrials_3">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>675</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_IncorrectTrials_3">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>716</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>637</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>97</x>
-         <y>637</y>
-         <width>71</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Total Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Omissions_3">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>755</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_IncorrectTrials_3">
-       <property name="geometry">
-        <rect>
-         <x>73</x>
-         <y>716</y>
-         <width>91</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Incorrect Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_CorrectTrials_3">
-       <property name="geometry">
-        <rect>
-         <x>81</x>
-         <y>676</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Correct Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_5">
-       <property name="geometry">
-        <rect>
-         <x>59</x>
-         <y>600</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 113, 85);</string>
-       </property>
-       <property name="text">
-        <string>Current Trial:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_5">
-       <property name="geometry">
-        <rect>
-         <x>151</x>
-         <y>600</y>
-         <width>91</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="OV_Box3">
-      <property name="geometry">
-       <rect>
-        <x>638</x>
-        <y>19</y>
-        <width>301</width>
-        <height>801</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-border-color: rgb(112, 255, 122);</string>
-      </property>
-      <property name="title">
-       <string>Box 3</string>
-      </property>
-      <widget class="QWidget" name="widget_3" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>100</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(189, 189, 189);</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="widget_8" native="true">
-       <property name="geometry">
-        <rect>
-         <x>16</x>
-         <y>339</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(230, 248, 255);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Chronometer_4">
-       <property name="geometry">
-        <rect>
-         <x>93</x>
-         <y>44</y>
-         <width>160</width>
+         <x>79</x>
+         <y>-1</y>
+         <width>60</width>
          <height>21</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>14</pointsize>
+         <pointsize>10</pointsize>
         </font>
        </property>
        <property name="text">
         <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Time_4">
-       <property name="geometry">
-        <rect>
-         <x>49</x>
-         <y>45</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>TIME :</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Omissions_4">
-       <property name="geometry">
-        <rect>
-         <x>98</x>
-         <y>753</y>
-         <width>71</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Omissions: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_CorrectTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>675</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_IncorrectTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>716</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>637</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>97</x>
-         <y>637</y>
-         <width>71</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Total Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Omissions_4">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>755</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_IncorrectTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>73</x>
-         <y>716</y>
-         <width>91</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Incorrect Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_CorrectTrials_4">
-       <property name="geometry">
-        <rect>
-         <x>81</x>
-         <y>676</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Correct Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_7">
-       <property name="geometry">
-        <rect>
-         <x>59</x>
-         <y>600</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 113, 85);</string>
-       </property>
-       <property name="text">
-        <string>Current Trial:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_7">
-       <property name="geometry">
-        <rect>
-         <x>151</x>
-         <y>600</y>
-         <width>91</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="OV_Box4">
-      <property name="geometry">
-       <rect>
-        <x>952</x>
-        <y>19</y>
-        <width>301</width>
-        <height>801</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-border-color: rgb(112, 255, 122);</string>
-      </property>
-      <property name="title">
-       <string>Box 4</string>
-      </property>
-      <widget class="QWidget" name="widget_5" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>100</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(189, 189, 189);</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="widget_10" native="true">
-       <property name="geometry">
-        <rect>
-         <x>16</x>
-         <y>339</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(230, 248, 255);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Chronometer_6">
-       <property name="geometry">
-        <rect>
-         <x>93</x>
-         <y>44</y>
-         <width>160</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Time_6">
-       <property name="geometry">
-        <rect>
-         <x>49</x>
-         <y>45</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>TIME :</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Omissions_6">
-       <property name="geometry">
-        <rect>
-         <x>98</x>
-         <y>753</y>
-         <width>71</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Omissions: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_CorrectTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>675</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_IncorrectTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>716</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_10">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>637</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_10">
-       <property name="geometry">
-        <rect>
-         <x>97</x>
-         <y>637</y>
-         <width>71</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Total Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Omissions_6">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>755</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_IncorrectTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>73</x>
-         <y>716</y>
-         <width>91</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Incorrect Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_CorrectTrials_6">
-       <property name="geometry">
-        <rect>
-         <x>81</x>
-         <y>676</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Correct Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_11">
-       <property name="geometry">
-        <rect>
-         <x>59</x>
-         <y>600</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 113, 85);</string>
-       </property>
-       <property name="text">
-        <string>Current Trial:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_11">
-       <property name="geometry">
-        <rect>
-         <x>151</x>
-         <y>600</y>
-         <width>91</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="OV_Ephys">
-      <property name="geometry">
-       <rect>
-        <x>1264</x>
-        <y>19</y>
-        <width>301</width>
-        <height>801</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-border-color: rgb(112, 255, 122);</string>
-      </property>
-      <property name="title">
-       <string>Ephys Rig</string>
-      </property>
-      <widget class="QWidget" name="widget_13" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>100</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(189, 189, 189);</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="widget_14" native="true">
-       <property name="geometry">
-        <rect>
-         <x>16</x>
-         <y>339</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(230, 248, 255);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Chronometer_8">
-       <property name="geometry">
-        <rect>
-         <x>93</x>
-         <y>44</y>
-         <width>160</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Time_8">
-       <property name="geometry">
-        <rect>
-         <x>49</x>
-         <y>45</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>TIME :</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_Omissions_8">
-       <property name="geometry">
-        <rect>
-         <x>98</x>
-         <y>753</y>
-         <width>71</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Omissions: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_CorrectTrials_8">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>675</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_IncorrectTrials_8">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>716</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_14">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>637</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_14">
-       <property name="geometry">
-        <rect>
-         <x>97</x>
-         <y>637</y>
-         <width>71</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Total Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_Omissions_8">
-       <property name="geometry">
-        <rect>
-         <x>182</x>
-         <y>755</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_IncorrectTrials_8">
-       <property name="geometry">
-        <rect>
-         <x>73</x>
-         <y>716</y>
-         <width>91</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Incorrect Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_CorrectTrials_8">
-       <property name="geometry">
-        <rect>
-         <x>81</x>
-         <y>676</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Correct Trials: </string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_B1_TotalTrials_15">
-       <property name="geometry">
-        <rect>
-         <x>59</x>
-         <y>600</y>
-         <width>81</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 113, 85);</string>
-       </property>
-       <property name="text">
-        <string>Current Trial:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="Box1_TotalTrials_15">
-       <property name="geometry">
-        <rect>
-         <x>151</x>
-         <y>600</y>
-         <width>91</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(234, 234, 234);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </widget>
