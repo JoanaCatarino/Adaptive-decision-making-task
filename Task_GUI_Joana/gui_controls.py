@@ -47,11 +47,11 @@ class GuiControls:
         
     def setup_chronometer(self):
         # Initialize Chronometer
-        self.ui.txt_Chronometer = Chronometer() # Chronometer for general box tab
-        self.ui.txt_Chronometer.timeChanged.connect(self.updateTime_slot)
+        self.txt_Chronometer = Chronometer() # Chronometer for general box tab
+        self.txt_Chronometer.timeChanged.connect(self.updateTime_slot)
         
-        self.ui.OV_txt_Chronometer = Chronometer() # Chronometer Overview tab
-        self.ui.OV_txt_Chronometer.timeChanged.connect(self.updateTime_slot)
+        self.OV_txt_Chronometer = Chronometer() # Chronometer Overview tab
+        self.OV_txt_Chronometer.timeChanged.connect(self.updateTime_slot)
         
 
 
