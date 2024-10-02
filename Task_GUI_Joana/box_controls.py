@@ -88,7 +88,6 @@ class BoxControls:
         # self.ui.Box1_Reward_right.clicked.connect(lambda: self.send_command_sync('reward_right'))
         # self.ui.Box1_Reward_left.clicked.connect(lambda: self.send_command_sync('reward_left'))
         
-
     def _apply_stylesheet(self):
         # Apply stylesheet to the buttons
         self.ui.Box1_Start.setStyleSheet(self.stylesheet)

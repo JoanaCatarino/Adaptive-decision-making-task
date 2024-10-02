@@ -6,11 +6,11 @@ Created on Sat Jul 13 17:44:52 2024
 """
 
 import sys
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
-from PySide6.QtGui import QFont  # Import QFont for font manipulation
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
+from PyQt5.QtGui import QFont  # Import QFont for font manipulation
 
 def animal_id(combobox, font_size=10):
-    items = ["Test-animal","52345", "53455", "12846", "12364","34456"]
+    items = ["Test-animal","524345", "536455", "126846", "122364","344656"]
     
     # Create a font with the specified size
     font = QFont()
