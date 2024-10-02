@@ -110,7 +110,7 @@ class BoxControls:
     def _populate_animal_id_dropdown(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 10  # Font size of the items in the dropdown menu
-        animal_id(self.ui.Box1_Animal_ID)
+        animal_id(self.ui.ddm_Animal_ID)
 
         
     def _populate_task_dropdown(self):

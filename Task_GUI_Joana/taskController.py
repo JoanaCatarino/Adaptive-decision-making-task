@@ -7,9 +7,9 @@ Created on Sat Jul 20 17:32:26 2024
 import sys
 import asyncio
 import websockets
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
-from PySide6.QtCore import QTimer, QDate, Slot, QUrl
-from ui_form import Ui_TaskGui
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+#from PySide6.QtCore import QTimer, QDate, Slot, QUrl
+from form_updt import Ui_TaskGui
 from threading import Thread
 from qasync import asyncSlot
 from qasync import QEventLoop, QApplication
@@ -46,19 +46,19 @@ class TaskGui(QMainWindow):
         asyncio.run_coroutine_threadsafe(self.server.run(),loop)
 
     # Define function to have the chonometer with the hour, minute and second as the text
-    @Slot(str)
-    def updateTime(self, time_str):
-        self.ui.Box1_Chronometer.setText(time_str)
-        self.ui.OV1_Chronometer.setText(time_str)
+    #@Slot(str)
+   # def updateTime(self, time_str):
+        #self.ui.Box1_Chronometer.setText(time_str)
+        #self.ui.OV1_Chronometer.setText(time_str)
         
-    @asyncSlot()
-    async def send_command_sync(self, command):
-        await self.send_command(command)
+   # @asyncSlot()
+   # async def send_command_sync(self, command):
+       # await self.send_command(command)
         
 
-    async def send_command(self, command):
-        for ws in self.server.websocket_handle:
-            await ws.send(command)
+    #async def send_command(self, command):
+       # for ws in self.server.websocket_handle:
+           # await ws.send(command)
             
 
 if __name__ == "__main__":
