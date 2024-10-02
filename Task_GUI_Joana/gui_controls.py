@@ -55,18 +55,3 @@ class GuiControls:
         
 
 
-'''
-    # Define function to have the chonometer with the hour, minute and second as the text
-    @pyqtSlot(str)
-    def updateTime(self, time_str):
-        self.ui.txt_Chronometer.setText(time_str) # Chronometer in the Box page
-        self.ui.OV1_Chronometer.setText(time_str) # Chronometer in the Overview page
-
-        # Check if the time is 1 hour (format expected: "hh:mm:ss")
-        hours, minutes, seconds = map(int, time_str.split(':'))
-        if hours == 1:
-            self.ui.OV_Box.setStyleSheet("background-color: yellow;")  # Makes the background color of the overview box 1 yellow if the
-                                                                       # animal has been performing the task for 1h
-                                                                       
-        if hours == 2:
-            self.ui.OV_Box.setStyleSheet("background-color: red;")  # Background becomes red when animals is in the task for 2h
