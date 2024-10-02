@@ -119,8 +119,8 @@ class GuiControls:
             self.txt_Chronometer.start()
             self.OV_box_Chronometer.start() # start overview chronometer for Box1
             
-        else:
-            self.disable_controls()
+        #else:
+            #self.disable_controls()
             
             
         # Update QLineEdit states based on the selected task
