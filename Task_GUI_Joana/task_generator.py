@@ -6,10 +6,10 @@ Created on Sun Aug  4 16:15:34 2024
 """
 
 import sys
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
-from PySide6.QtGui import QFont  # Import QFont for font manipulation
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
+from PyQt5.QtGui import QFont  # Import QFont for font manipulation
 
-def task (combobox, font_size=10):
+def task (combobox, font_size=9):
     items = ['',
              'Test rig',
              'Free Licking',
