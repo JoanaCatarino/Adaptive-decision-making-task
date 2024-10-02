@@ -27,7 +27,7 @@ class GuiControls:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
-        
+        self.setup_chronometer() # Chronometer
         
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID

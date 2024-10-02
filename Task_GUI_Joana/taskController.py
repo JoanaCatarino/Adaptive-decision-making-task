@@ -19,7 +19,7 @@ class TaskGui(QMainWindow):
         self.ui.setupUi(self)
         
         # Initialize BoxControls for Box 1
-        self.gui_controls =GuiControls(self.ui)
+        self.gui_controls =GuiControls(self.ui, self.updateTime)
         
       
 if __name__ == "__main__":
