@@ -83,7 +83,7 @@ class GuiControls:
         self.OV_box_Chronometer.timeChanged.connect(self.updateTime_slot)
         
 
-    def _connect_buttons(self):
+    def connect_buttons(self):
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
