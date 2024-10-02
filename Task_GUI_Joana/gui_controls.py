@@ -29,7 +29,7 @@ class GuiControls:
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
-        self.connect_buttons() # Start and Stop buttons
+        #self.connect_buttons() # Start and Stop buttons
         
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
