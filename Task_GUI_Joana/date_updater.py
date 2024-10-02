@@ -5,8 +5,8 @@ Created on Mon Jul 22 16:27:08 2024
 @author: JoanaCatarino
 """
 
-from PySide6.QtCore import QTimer, QDate
-from PySide6.QtGui import QFont
+from PyQt5.QtCore import QTimer, QDate
+from PyQt5.QtGui import QFont
 
 class DateUpdater:
     def __init__(self, label, font_size=10):

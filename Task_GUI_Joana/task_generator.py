@@ -9,7 +9,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
 from PyQt5.QtGui import QFont  # Import QFont for font manipulation
 
-def task (combobox, font_size=9):
+def task (combobox, font_size=8):
     items = ['',
              'Test rig',
              'Free Licking',
