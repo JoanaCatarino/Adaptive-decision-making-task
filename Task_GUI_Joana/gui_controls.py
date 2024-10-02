@@ -31,6 +31,7 @@ class GuiControls:
     def __init__(self, ui, updateTime_slot):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
+        self.current_task = None
         
         # initialize components:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
