@@ -11,16 +11,15 @@ date, time, task)
 import os
 import csv
 import json
-from PySide6.QtCore import QTime, QDate
-from PySide6.QtWidgets import QTabWidget
+from PyQt5.QtCore import QTimer, QDate
 
 # Define the save directory path directly here
-SAVE_DIRECTORY = "C:/Users/JoanaCatarino/Joana/test_directory" 
+SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir" 
 
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
-def write_task_start_file(date_label, animal_id_combobox, task_combobox, tab_widget):
+def write_task_start_file(date_label, animal_id_combobox, task_combobox):
     # Check if the save directory is set
     if not SAVE_DIRECTORY:
         raise ValueError("Save directory not set")
@@ -44,13 +43,6 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, tab_wid
     
     # Find the selected task
     task = task_combobox.currentText()
-    
-    # Get the box number from the current tab's name
-    current_index = tab_widget.currentIndex()
-    tab_name = tab_widget.tabText(current_index)
-    
-    # Extract the box number from the tab 
-    box_number = extract_box_number(tab_name)
     
     # Construct the directory path for the animal ID within the saved directory
     animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
@@ -80,25 +72,13 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, tab_wid
     session_info = {'animal_id': animal_id,
                    'date': formatted_date,
                    'time': current_time,
-                   'task': task,
-                   'box_number': box_number}
+                   'task': task}
    
     with open(json_file_path, 'w') as json_file:
        json.dump(session_info, json_file, indent=4)
 
     return csv_file_path, json_file_path
 
-
-def extract_box_number(tab_name):
-    # split the tab name into parts based on whitespace
-    parts = tab_name.split()
-    
-    for i, part in enumerate(parts):
-        if part == 'BOX':
-            return parts [i + 1].rstrip(':')
-        
-    return 'Unknown' # Default if not found
-    
 
     
 
