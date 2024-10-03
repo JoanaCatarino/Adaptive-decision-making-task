@@ -33,14 +33,13 @@ class TaskGui(QMainWindow):
         hours, minutes, seconds = map(int, time_str.split(':'))
         
         # Reset the color if the time is reset (e.g., to "00:00:00")
-        if hours == 0 and minutes == 0 and seconds == 0:
-            self.ui.OV_Box.setStyleSheet("background-color: none;")  # Reset to default color (or specify default)
-            return  # Exit the function since no other color change is needed        
+        if hours == 0 and minutes == 0:
+            self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color 
         
-        if minutes == 3:
+        if minutes == 1:
             self.ui.OV_Box.setStyleSheet("background-color: yellow;")  # Makes the background color of the overview box 1 yellow if the
                                                                        # animal has been performing the task for 1h                                                           
-        if minutes == 5:
+        if minutes == 2:
             self.ui.OV_Box.setStyleSheet("background-color: red;")  # Background becomes red when animals is in the task for 2h        
     
     
