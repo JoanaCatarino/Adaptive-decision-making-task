@@ -14,6 +14,7 @@ from the sound_generator file.
         
 import asyncio
 from gpio_map import *
+from time import sleep
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
 
@@ -47,21 +48,21 @@ class TestRig:
         self.stop = stop
         
 # Test blue LED
-async def blueLED():
+def blueLED():
     led_blue.on()
-    await asyncio.sleep(1)
+    sleep(1)
     led_blue.off() 
     
 # Test white LED on left spout
-async def whiteLLED():
+def whiteLLED():
     led_white_l.on()
-    await asyncio.sleep(1)
+    sleep(1)
     led_white_l.off() 
  
 # Test white LED on right spout
-async def whiteRLED():
+def whiteRLED():
     led_white_r.on()
-    await asyncio.sleep(1)
+    sleep(1)
     led_white_r.off() 
     
     
