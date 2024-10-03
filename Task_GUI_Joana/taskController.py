@@ -6,7 +6,7 @@ Created on Sat Jul 20 17:32:26 2024
 
 import sys
 import websockets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from form_updt import Ui_TaskGui
 
@@ -22,6 +22,14 @@ class TaskGui(QMainWindow):
         # Initialize BoxControls for Box 1
         self.gui_controls =GuiControls(self.ui, self.updateTime)
             
+        # Style sheet to set colors to start button
+        self.ui.btn_Start.setStyleSheet('''QPushButton{background-color:#85b79d} ''')
+
+
+
+
+
+
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
