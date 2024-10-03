@@ -11,7 +11,7 @@ date, time, task)
 import os
 import csv
 import json
-from PyQt5.QtCore import QTimer, QDate
+from PyQt5.QtCore import QTimer, QDate, QTime
 
 # Define the save directory path directly here
 SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir" 
@@ -36,7 +36,7 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox):
         raise ValueError(f"Error parsing date: {e}")
     
     # Find the current time
-    current_time = QTimer.currentTime().toString("HHmm")
+    current_time = QTime.currentTime().toString("HHmm")
     
     # Find the selected animal ID
     animal_id = animal_id_combobox.currentText()
