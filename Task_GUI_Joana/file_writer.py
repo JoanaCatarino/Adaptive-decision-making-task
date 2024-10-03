@@ -36,7 +36,7 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox):
         raise ValueError(f"Error parsing date: {e}")
     
     # Find the current time
-    current_time = QTime.currentTime().toString("HHmm")
+    current_time = QTimer.currentTime().toString("HHmm")
     
     # Find the selected animal ID
     animal_id = animal_id_combobox.currentText()
