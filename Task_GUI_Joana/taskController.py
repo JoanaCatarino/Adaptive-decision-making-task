@@ -23,8 +23,12 @@ class TaskGui(QMainWindow):
         self.gui_controls =GuiControls(self.ui, self.updateTime)
             
         # Style sheet to set colors to start button
-        self.ui.btn_Start.setStyleSheet('''QPushButton{background-color:#85b79d} ''')
-
+        self.ui.btn_Start.setStyleSheet('''QPushButton{background-color:#85b79d)
+                                                        color: white;           
+                                                        border: 2px solid #27ae60; 
+                                                        border-radius: 10px;
+                                                        padding: 10px;}''')
+   
 
 
 
