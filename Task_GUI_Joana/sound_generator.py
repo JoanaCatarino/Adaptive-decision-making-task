@@ -7,6 +7,7 @@ Created on Sat Jul 13 18:38:00 2024
 
 import numpy as np
 import pyaudio
+import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 # A thread pool for running blocking operations
