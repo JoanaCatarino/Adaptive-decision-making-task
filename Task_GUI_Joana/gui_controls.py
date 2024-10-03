@@ -102,7 +102,7 @@ class GuiControls:
             write_task_start_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task)
         
         if selected_task == 'Test rig':
-            self.current_task = TestRig()
+            self.current_task = TestRig(self.ui)
             #self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask()

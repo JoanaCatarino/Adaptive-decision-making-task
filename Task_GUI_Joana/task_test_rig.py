@@ -33,7 +33,7 @@ class TestRig:
         #self.ui.chk_Reward_Right.clicked.connect()
         
         
-        def stop(self):
+        def stop():
             print('Test rig stopping')
             self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
             self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)

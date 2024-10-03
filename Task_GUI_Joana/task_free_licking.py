@@ -18,6 +18,3 @@ class FreeLickingTask:
         self.stop = stop
 
 
-
-
-
