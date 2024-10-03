@@ -101,8 +101,9 @@ class GuiControls:
            # write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID, self.ui.Box1_Task, self.ui.Boxes)
         
         if selected_task == 'Test rig':
-            self.current_task = TestRig(self.ui)
-            self.enable_controls()
+            self.current_task == TestRig()
+            #self.current_task = TestRig(self.ui)
+            #self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task == FreeLickingTask()
         elif selected_task == 'Spout Sampling':

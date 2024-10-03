@@ -31,10 +31,10 @@ class TaskGui(QMainWindow):
 
         # Check if the time is 1 hour (format expected: "hh:mm:ss")
         hours, minutes, seconds = map(int, time_str.split(':'))
-        if hours == 1:
+        if minutes == 3:
             self.ui.OV_Box.setStyleSheet("background-color: yellow;")  # Makes the background color of the overview box 1 yellow if the
                                                                        # animal has been performing the task for 1h                                                           
-        if hours == 2:
+        if minutes == 5:
             self.ui.OV_Box.setStyleSheet("background-color: red;")  # Background becomes red when animals is in the task for 2h        
     
     
