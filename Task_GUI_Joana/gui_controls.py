@@ -53,8 +53,10 @@ class GuiControls:
                                                         border-radius: 0px;
                                                         padding: 1px;
                                                         font-size: 12px;
-                                                        font-weight: bold}''')    
-        
+                                                        font-weight: bold}    
+                                       QPushButton:hover {background-color: #27ae60;}''')
+                                       
+                                       
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
