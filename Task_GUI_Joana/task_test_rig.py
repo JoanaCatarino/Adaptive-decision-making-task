@@ -23,7 +23,7 @@ class TestRig:
 
     def start(self):
         print('Test rig starting')
-        self.ui.chk_10Tone.clicked.connect(tone_10Khz)
+        self.ui.chk_10Tone.clicked.connect(tone_10KHz)
         self.ui.chk_5Tone.clicked.connect(tone_5KHz)
         self.ui.chk_Punishment.clicked.connect(white_noise)
         self.ui.chk_BlueLED.clicked.connect(blueLED)
