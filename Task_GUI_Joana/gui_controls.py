@@ -45,7 +45,15 @@ class GuiControls:
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
- 
+
+        # Style sheet to set colors to start, stop and update buttons
+        self.ui.btn_Stop.setStyleSheet('''QPushButton{ background-color:#EF8354;
+                                                        color: black;           
+                                                        border: 0px solid #EF8354; 
+                                                        border-radius: 0px;
+                                                        padding: 1px;
+                                                        font-size: 12px;
+                                                        font-weight: bold}''')    
         
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
