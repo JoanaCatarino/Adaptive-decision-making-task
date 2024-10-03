@@ -47,15 +47,29 @@ class GuiControls:
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
 
         # Style sheet to set colors to start, stop and update buttons
+        self.ui.btn_Start.setStyleSheet('''QPushButton{ background-color:#85b79d;
+                                                        color: black;           
+                                                        border: 0px solid #85b79d; 
+                                                        border-radius: 0px;
+                                                        padding: 1px;
+                                                        font-size: 12px;
+                                                        font-weight: bold}''')
+
         self.ui.btn_Stop.setStyleSheet('''QPushButton{ background-color:#EF8354;
                                                         color: black;           
                                                         border: 0px solid #EF8354; 
                                                         border-radius: 0px;
                                                         padding: 1px;
                                                         font-size: 12px;
-                                                        font-weight: bold}    
-                                       QPushButton:hover {background-color: #27ae60;}''')
-                                       
+                                                        font-weight: bold}''')
+        
+        self.ui.btn_Update.setStyleSheet('''QPushButton{ background-color:#BA94BD;
+                                                        color: black;           
+                                                        border: 0px solid #BA94BD; 
+                                                        border-radius: 0px;
+                                                        padding: 1px;
+                                                        font-size: 12px;
+                                                        font-weight: bold}''')
                                        
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID

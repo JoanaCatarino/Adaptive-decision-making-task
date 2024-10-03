@@ -22,20 +22,6 @@ class TaskGui(QMainWindow):
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
             
-        # Style sheet to set colors to start, stop and update buttons
-        self.ui.btn_Start.setStyleSheet('''QPushButton{ background-color:#85b79d;
-                                                        color: black;           
-                                                        border: 0px solid #85b79d; 
-                                                        border-radius: 0px;
-                                                        padding: 1px;
-                                                        font-size: 12px;
-                                                        font-weight: bold}''')
-   
-
-
-
-
-
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
