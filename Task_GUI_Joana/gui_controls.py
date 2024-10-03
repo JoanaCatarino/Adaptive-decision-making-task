@@ -16,6 +16,7 @@ from animal_id_generator import animal_id
 from task_generator import task
 from date_updater import DateUpdater
 from chronometer_generator import Chronometer
+from file_writer import write_task_start_file
 
 # Import task classes
 from task_test_rig import TestRig
@@ -97,8 +98,8 @@ class GuiControls:
         selected_task = self.ui.ddm_Task.currentText()
         
         # Create file with data unless the selected task is 'Test rig'
-        #if selected_task != 'Test rig':
-           # write_task_start_file(self.ui.Box1_Date, self.ui.Box1_Animal_ID, self.ui.Box1_Task, self.ui.Boxes)
+        if selected_task != 'Test rig':
+            write_task_start_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task)
         
         if selected_task == 'Test rig':
             self.current_task = TestRig()
