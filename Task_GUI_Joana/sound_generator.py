@@ -7,7 +7,6 @@ Created on Sat Jul 13 18:38:00 2024
 
 import numpy as np
 import pyaudio
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 # A thread pool for running blocking operations
@@ -33,6 +32,10 @@ def play_sound_blocking(sound, sample_rate=44100):
     stream.close()
     p.terminate()
 
+def play_sound(sound, sample_rate=44100):
+    loop = asyncio.get_event_loop()
+    loop.run_in_executor(executor, play_sound_blocking, sound, sample_rate)
+
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
     duration = 0.2  # Duration in seconds
@@ -53,7 +56,14 @@ def white_noise():
     sound = generate_white_noise(duration, sample_rate)
     play_sound(sound, sample_rate)
 
-
+if __name__ == '__main__':
+    # To test the sounds asynchronously
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(white_noise())
+    finally:
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
 
 '''    
 # Use this to test the sounds with this script  
