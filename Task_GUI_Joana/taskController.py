@@ -27,7 +27,7 @@ class TaskGui(QMainWindow):
                                                         color: black;           
                                                         border: 0px solid #85b79d; 
                                                         border-radius: 0px;
-                                                        padding: 20px;}''')
+                                                        padding: 3px;}''')
    
 
 
