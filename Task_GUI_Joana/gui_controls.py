@@ -48,15 +48,12 @@ class GuiControls:
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
 
-           
-                                         
-                                         
-                                         
                                          
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
         animal_id(self.ui.ddm_Animal_ID)  
+        
         
     def OV_animalID(self):
         selected_animal = self.ui.ddm_Animal_ID.currentText() # Covert string to integer
@@ -99,24 +96,24 @@ class GuiControls:
         
     # set enable and disable functions for the test rig controls
     def enable_controls(self):
-        self.ui.Box1_BlueLED.setEnabled(True)
-        self.ui.Box1_WhiteLED_Left.setEnabled(True)
-        self.ui.Box1_WhiteLED_Right.setEnabled(True)
-        self.ui.Box1_10Tone.setEnabled(True)
-        self.ui.Box1_5Tone.setEnabled(True)
-        self.ui.Box1_Reward_left.setEnabled(True)
-        self.ui.Box1_Reward_right.setEnabled(True)
-        self.ui.Box1_Punishment.setEnabled(True)
+        self.ui.chk_BlueLED.setEnabled(True)
+        self.ui.chk_WhiteLED_Left.setEnabled(True)
+        self.ui.chk_WhiteLED_Right.setEnabled(True)
+        self.ui.chk_10Tone.setEnabled(True)
+        self.ui.chk_5Tone.setEnabled(True)
+        self.ui.chk_Reward_left.setEnabled(True)
+        self.ui.chk_Reward_right.setEnabled(True)
+        self.ui.chk_Punishment.setEnabled(True)
 
     def disable_controls(self):
-        self.ui.Box1_BlueLED.setEnabled(False)
-        self.ui.Box1_WhiteLED_Left.setEnabled(False)
-        self.ui.Box1_WhiteLED_Right.setEnabled(False)
-        self.ui.Box1_10Tone.setEnabled(False)
-        self.ui.Box1_5Tone.setEnabled(False)
-        self.ui.Box1_Reward_left.setEnabled(False)
-        self.ui.Box1_Reward_right.setEnabled(False)
-        self.ui.Box1_Punishment.setEnabled(False)        
+        self.ui.chk_BlueLED.setEnabled(False)
+        self.ui.chk_WhiteLED_Left.setEnabled(False)
+        self.ui.chk_WhiteLED_Right.setEnabled(False)
+        self.ui.chk_10Tone.setEnabled(False)
+        self.ui.chk_5Tone.setEnabled(False)
+        self.ui.chk_Reward_left.setEnabled(False)
+        self.ui.chk_Reward_right.setEnabled(False)
+        self.ui.chk_Punishment.setEnabled(False)        
         
    
     def execute_task(self):
@@ -131,7 +128,7 @@ class GuiControls:
         
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
-            #self.enable_controls()
+            self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask()
         elif selected_task == 'Spout Sampling':
@@ -148,8 +145,8 @@ class GuiControls:
             self.txt_Chronometer.start()
             self.OV_box_Chronometer.start() # start overview chronometer for Box1
             
-        #else:
-            #self.disable_controls()
+        else:
+            self.disable_controls()
             
             
         # Update QLineEdit states based on the selected task
@@ -168,7 +165,7 @@ class GuiControls:
         self.OV_box_Chronometer.stop() # stop overview chronometer for Box1
 
         # Disable test rig controls
-        #self.disable_controls()
+        self.disable_controls()
         
         # Update start/stop button states
         #self.update_button_states()
