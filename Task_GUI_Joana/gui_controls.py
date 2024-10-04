@@ -96,7 +96,7 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        self.ui.Box1_Update.clicked.connect(self.print_variables)
+        self.ui.btn_Update.clicked.connect(self.print_variables)
         
    
     def update_button_states(self):
