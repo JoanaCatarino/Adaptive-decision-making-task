@@ -30,11 +30,10 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 class GuiControls:
     
-    def __init__(self, ui, updateTime_slot, stylesheet):
+    def __init__(self, ui, updateTime_slot):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
         self.current_task = None
-        self.stylesheet = stylesheet
         
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs

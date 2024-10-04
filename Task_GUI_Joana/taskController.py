@@ -12,6 +12,7 @@ from form_updt import Ui_TaskGui
 
 # Import different functions/classes
 from gui_controls import GuiControls
+from stylesheet import stylesheet
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
@@ -20,7 +21,7 @@ class TaskGui(QMainWindow):
         self.ui.setupUi(self)
         
         # Initialize Gui controls
-        self.gui_controls = GuiControls(self.ui, self.updateTime)
+        self.gui_controls = GuiControls(self.ui, self.updateTime, self.stylesheet)
             
 
     # Define function to have the chonometer with the hour, minute and second as the text
