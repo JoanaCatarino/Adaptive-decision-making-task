@@ -102,26 +102,26 @@ def stylesheet(ui):
                                                                 width: 14px;
                                                                 height: 14px;}''')   
 
-    ui.btn_Start.setStyleSheet('''QPushButton:disabled{ background-color:gray;
-                                                    color: black;           
-                                                    border: 0px solid gray; 
-                                                    border-radius: 0px;
-                                                    padding: 1px;
-                                                    font-size: 12px;
-                                                    font-weight: bold}''')
+    #ui.btn_Start.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    #color: black;           
+                                                    #border: 0px solid gray; 
+                                                    #border-radius: 0px;
+                                                    #padding: 1px;
+                                                    #font-size: 12px;
+                                                    #font-weight: bold}''')
                         
-    ui.btn_Stop.setStyleSheet('''QPushButton:disabled{ background-color:gray;
-                                                    color: black;           
-                                                    border: 0px solid gray; 
-                                                    border-radius: 0px;
-                                                    padding: 1px;
-                                                    font-size: 12px;
-                                                    font-weight: bold}''')                        
+    #ui.btn_Stop.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    #color: black;           
+                                                   # border: 0px solid gray; 
+                                                    #border-radius: 0px;
+                                                    #padding: 1px;
+                                                    #font-size: 12px;
+                                                    #font-weight: bold}''')                        
                         
-    ui.btn_Update.setStyleSheet('''QPushButton:disabled{ background-color:gray;
-                                                    color: black;           
-                                                    border: 0px solid gray; 
-                                                    border-radius: 0px;
-                                                    padding: 1px;
-                                                    font-size: 12px;
-                                                    font-weight: bold}''')                        
+    #ui.btn_Update.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    #color: black;           
+                                                    #border: 0px solid gray; 
+                                                    #border-radius: 0px;
+                                                    #padding: 1px;
+                                                    #font-size: 12px;
+                                                    #font-weight: bold}''')                        
