@@ -17,6 +17,7 @@ from task_generator import task
 from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
+from stylesheet import stylesheet
 
 # Import task classes
 from task_test_rig import TestRig
@@ -34,43 +35,24 @@ class GuiControls:
         self.updateTime_slot = updateTime_slot
         self.current_task = None
         
-        # initialize components:
+        # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
         self.OV_animalID() # txt with animal ID in overview tab
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start and Stop buttons
-        
+        self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
+        self.stylesheet()
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
 
-        # Style sheet to set colors to start, stop and update buttons
-        self.ui.btn_Start.setStyleSheet('''QPushButton{ background-color:#85b79d;
-                                                        color: black;           
-                                                        border: 0px solid #85b79d; 
-                                                        border-radius: 0px;
-                                                        padding: 1px;
-                                                        font-size: 12px;
-                                                        font-weight: bold}''')
-
-        self.ui.btn_Stop.setStyleSheet('''QPushButton{ background-color:#EF8354;
-                                                        color: black;           
-                                                        border: 0px solid #EF8354; 
-                                                        border-radius: 0px;
-                                                        padding: 1px;
-                                                        font-size: 12px;
-                                                        font-weight: bold}''')
-        
-        self.ui.btn_Update.setStyleSheet('''QPushButton{ background-color:#BA94BD;
-                                                        color: black;           
-                                                        border: 0px solid #BA94BD; 
-                                                        border-radius: 0px;
-                                                        padding: 1px;
-                                                        font-size: 12px;
-                                                        font-weight: bold}''')
-                                       
+           
+                                         
+                                         
+                                         
+                                         
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
@@ -114,6 +96,28 @@ class GuiControls:
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         #self.ui.Box1_Update.clicked.connect(self.print_variables)
+        
+    # set enable and disable functions for the test rig controls
+    def enable_controls(self):
+        self.ui.Box1_BlueLED.setEnabled(True)
+        self.ui.Box1_WhiteLED_Left.setEnabled(True)
+        self.ui.Box1_WhiteLED_Right.setEnabled(True)
+        self.ui.Box1_10Tone.setEnabled(True)
+        self.ui.Box1_5Tone.setEnabled(True)
+        self.ui.Box1_Reward_left.setEnabled(True)
+        self.ui.Box1_Reward_right.setEnabled(True)
+        self.ui.Box1_Punishment.setEnabled(True)
+
+    def disable_controls(self):
+        self.ui.Box1_BlueLED.setEnabled(False)
+        self.ui.Box1_WhiteLED_Left.setEnabled(False)
+        self.ui.Box1_WhiteLED_Right.setEnabled(False)
+        self.ui.Box1_10Tone.setEnabled(False)
+        self.ui.Box1_5Tone.setEnabled(False)
+        self.ui.Box1_Reward_left.setEnabled(False)
+        self.ui.Box1_Reward_right.setEnabled(False)
+        self.ui.Box1_Punishment.setEnabled(False)        
+        
    
     def execute_task(self):
         # Stop any currently running task
