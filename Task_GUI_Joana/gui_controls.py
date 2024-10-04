@@ -96,7 +96,7 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        #self.ui.Box1_Update.clicked.connect(self.print_variables)
+        self.ui.Box1_Update.clicked.connect(self.print_variables)
         
    
     def update_button_states(self):
@@ -185,3 +185,25 @@ class GuiControls:
         
         # Update start/stop button states
         self.update_button_states()
+   
+        
+    # Test to use the Update button to print the value of the variables in real-time 
+    def print_variables(self):
+        # Get the text from each QLineEdit widget in the gui
+        quiet_window = self.ui.txt_QuietWindow.text()
+        response_window = self.ui.txt_ResponseWindow.text()
+        trial_duration = self.ui.txt_TrialDuration.text()
+        valve_opening = self.ui.txt_ValveOpening.text()
+        
+        # Check if it os not empty and print it (only if it is not)
+        if quiet_window:
+            print(f'Quiet Window = {quiet_window}')
+        if response_window:
+            print(f'Response Window = {response_window}')
+        if trial_duration:
+            print(f'Trial Duration = {trial_duration}')
+        if valve_opening:
+            print(f'Valve Opening = {valve_opening}')
+            
+        # Disable the Update button after the operation
+        self.ui.btn_Update.setEnabled(False)
