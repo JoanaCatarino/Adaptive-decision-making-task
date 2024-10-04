@@ -41,5 +41,39 @@ def stylesheet(ui):
                                                      font-size: 12px;
                                                      font-weight: bold}''')
 
-    return 0 
+
 # Style sheet to set style for disabled buttons                              
+
+    ui.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+                        QRadioButton::indicator:disabled {border: 1px solid gray;
+                                                                background-color: transparent;
+                                                                border-radius: 7px;
+                                                                width: 14px;
+                                                                height: 14px;}
+                        QPushButton:disabled {color:gray;}''')
+                        
+                        
+    ui.btn_Start.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    color: black;           
+                                                    border: 0px solid gray; 
+                                                    border-radius: 0px;
+                                                    padding: 1px;
+                                                    font-size: 12px;
+                                                    font-weight: bold}''')
+                        
+                        
+    ui.btn_Stop.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    color: black;           
+                                                    border: 0px solid gray; 
+                                                    border-radius: 0px;
+                                                    padding: 1px;
+                                                    font-size: 12px;
+                                                    font-weight: bold}''')                        
+                        
+    ui.btn_Update.setStyleSheet('''QPushButton:disabled{ background-color:gray;
+                                                    color: black;           
+                                                    border: 0px solid gray; 
+                                                    border-radius: 0px;
+                                                    padding: 1px;
+                                                    font-size: 12px;
+                                                    font-weight: bold}''')                        
