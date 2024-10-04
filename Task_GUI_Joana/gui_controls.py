@@ -50,7 +50,7 @@ class GuiControls:
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
 
         # Initialize button states (to enable/disable start and stop buttons)
-        self.update_button_states()
+       # self.update_button_states()
 
                                          
     def populate_ddm_animalID(self):
@@ -119,14 +119,14 @@ class GuiControls:
         self.ui.chk_Reward_right.setEnabled(False)
         self.ui.chk_Punishment.setEnabled(False)       
         
-    def update_button_states(self):
+   # def update_button_states(self):
         # Update the enabled/disabled state of the Start and Stop buttons
-        if self.current_task:
-            self.ui.btn_Start.setEnabled(False) # Disable start if task is running
-            self.ui.btn_Stop.setEnabled(True)   # Enable stop if a task is running
-        else:
-            self.ui.btn_Start.setEnabled(True)  # Enable start if no task is running
-            self.ui.btn_Stop.setEnabled(False)  # Disable stop if no task is running
+        #if self.current_task:
+            #self.ui.btn_Start.setEnabled(False) # Disable start if task is running
+            #self.ui.btn_Stop.setEnabled(True)   # Enable stop if a task is running
+        #else:
+            #self.ui.btn_Start.setEnabled(True)  # Enable start if no task is running
+            #self.ui.btn_Stop.setEnabled(False)  # Disable stop if no task is running
         
    
     def execute_task(self):
@@ -166,9 +166,10 @@ class GuiControls:
         #self.update_qlineedit_states()
         
         # Update start/stop button states
-        self.update_button_states()
+       #self.update_button_states()
 
     def stop_task(self):
+       
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.current_task.stop()
             self.current_task = None
@@ -181,4 +182,4 @@ class GuiControls:
         self.disable_controls()
         
         # Update start/stop button states
-        self.update_button_states()
+        #self.update_button_states()
