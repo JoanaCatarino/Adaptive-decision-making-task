@@ -37,10 +37,10 @@ class TaskGui(QMainWindow):
             self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color 
         
         if minutes == 1:
-            self.ui.OV_Box.setStyleSheet("background-color: yellow;")  # Makes the background color of the overview box 1 yellow if the
+            self.ui.OV_Box.setStyleSheet("background-color: #F5E268;")  # Makes the background color of the overview box 1 yellow if the
                                                                        # animal has been performing the task for 1h                                                           
         if minutes == 2:
-            self.ui.OV_Box.setStyleSheet("background-color: red;")  # Background becomes red when animals is in the task for 2h        
+            self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h        
     
     
 if __name__ == "__main__":
