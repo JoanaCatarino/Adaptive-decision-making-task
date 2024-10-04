@@ -23,6 +23,22 @@ class TaskGui(QMainWindow):
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
             
+        # Set the style sheet for disabled radio buttons
+        self.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+                              QRadioButton::indicator:disabled {border: 1px solid gray;
+                                                                background-color: transparent;
+                                                                border-radius: 7px;
+                                                                width: 14px;
+                                                                height: 14px;}
+                              QPushButton:disabled {color:gray;}''')
+                  
+
+
+
+
+
+
+
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
