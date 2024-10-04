@@ -30,8 +30,8 @@ class TestRig:
         self.ui.chk_BlueLED.clicked.connect(blueLED)
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
-        #self.ui.chk_Reward_Left.clicked.connect()
-        #self.ui.chk_Reward_Right.clicked.connect()
+        #self.ui.chk_Reward_left.clicked.connect()
+        #self.ui.chk_Reward_right.clicked.connect()
         
         
         def stop():
@@ -42,8 +42,8 @@ class TestRig:
             self.ui.chk_BlueLED.clicked.disconnect(blueLED)
             self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
             self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
-            #self.ui.chk_Reward_Left.clicked.disconnect()
-            #self.ui.chk_Reward_Right.clicked.disconnect()
+            #self.ui.chk_Reward_left.clicked.disconnect()
+            #self.ui.chk_Reward_right.clicked.disconnect()
         
         self.stop = stop
         
