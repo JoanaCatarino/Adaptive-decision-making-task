@@ -33,6 +33,9 @@ class GuiControls:
     def __init__(self, ui, updateTime_slot):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
+        style = stylesheet(self.ui)
+        if style == 0:
+            print('good')
         self.current_task = None
         
         # initialize components defined by functions:
@@ -43,7 +46,7 @@ class GuiControls:
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start and Stop buttons
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
-        self.stylesheet()
+        stylesheet(self.ui)
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)

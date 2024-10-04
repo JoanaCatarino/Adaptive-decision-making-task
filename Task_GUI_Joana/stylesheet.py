@@ -14,10 +14,10 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from form_updt import Ui_TaskGui
 
-def stylesheet(self): 
+def stylesheet(ui): 
     
-    # Style sheet to set colors to start, stop and update buttons
-    self.ui.btn_Start.setStyleSheet('''QPushButton{ background-color:#85b79d;
+    # Stylesheet to set colors to start, stop and update buttons
+    ui.btn_Start.setStyleSheet('''QPushButton{ background-color:#85b79d;
                                                     color: black;           
                                                     border: 0px solid #85b79d; 
                                                     border-radius: 0px;
@@ -25,7 +25,7 @@ def stylesheet(self):
                                                     font-size: 12px;
                                                     font-weight: bold}''')
 
-    self.ui.btn_Stop.setStyleSheet('''QPushButton{  background-color:#EF8354;
+    ui.btn_Stop.setStyleSheet('''QPushButton{  background-color:#EF8354;
                                                     color: black;           
                                                     border: 0px solid #EF8354; 
                                                     border-radius: 0px;
@@ -33,7 +33,7 @@ def stylesheet(self):
                                                     font-size: 12px;
                                                     font-weight: bold}''')
 
-    self.ui.btn_Update.setStyleSheet('''QPushButton{ background-color:#BA94BD;
+    ui.btn_Update.setStyleSheet('''QPushButton{ background-color:#BA94BD;
                                                      color: black;           
                                                      border: 0px solid #BA94BD; 
                                                      border-radius: 0px;
@@ -41,4 +41,5 @@ def stylesheet(self):
                                                      font-size: 12px;
                                                      font-weight: bold}''')
 
+    return 0 
 # Style sheet to set style for disabled buttons                              
