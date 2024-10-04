@@ -24,10 +24,11 @@ def stylesheet(ui):
                                                     padding: 1px;
                                                     font-size: 12px;
                                                     font-weight: bold}
-                                  QPushButton:disabled { background-color: grey; color: dark grey;}''')
+                                  QPushButton:disabled {background-color:#C2C6C2; 
+                                                        color:#757875;}''')
 
                                
-    ui.btn_Stop.setStyleSheet('''QPushButton{  background-color:#EF8354;
+    ui.btn_Stop.setStyleSheet('''QPushButton{  background-color:#EF8354;    
                                                     color: black;           
                                                     border: 0px solid #EF8354; 
                                                     border-radius: 0px;
@@ -104,8 +105,4 @@ def stylesheet(ui):
                                                                 width: 14px;
                                                                 height: 14px;}''')   
 
-    #ui.btn_Start.setStyleSheet('''QPushButton:disabled{color:gray}''')
-                        
-    #ui.btn_Stop.setStyleSheet('''QPushButton:disabled{color:gray}''')                        
-                        
-    #ui.btn_Update.setStyleSheet('''QPushButton:disabled{color:gray}''')                        
+                   
