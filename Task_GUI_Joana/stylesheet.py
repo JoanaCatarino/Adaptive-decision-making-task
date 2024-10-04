@@ -65,7 +65,7 @@ def stylesheet(ui):
                                                                 width: 14px;
                                                                 height: 14px;}''')
                         
-    ui.chk_Reward_Left.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+    ui.chk_Reward_left.setStyleSheet('''QRadioButton:disabled {color: gray;} 
                                         QRadioButton::indicator:disabled {border: 1px solid gray;
                                                                 background-color: transparent;
                                                                 border-radius: 7px;
@@ -74,7 +74,7 @@ def stylesheet(ui):
                         
 
                                
-    ui.chk_Reward_Right.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+    ui.chk_Reward_right.setStyleSheet('''QRadioButton:disabled {color: gray;} 
                                          QRadioButton::indicator:disabled {border: 1px solid gray;
                                                                 background-color: transparent;
                                                                 border-radius: 7px;
