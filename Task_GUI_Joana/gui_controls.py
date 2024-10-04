@@ -166,7 +166,7 @@ class GuiControls:
         #self.update_qlineedit_states()
         
         # Update start/stop button states
-        #self.update_button_states()
+        self.update_button_states()
 
     def stop_task(self):
         if self.current_task and hasattr(self.current_task, 'stop'):
@@ -181,4 +181,4 @@ class GuiControls:
         self.disable_controls()
         
         # Update start/stop button states
-        #self.update_button_states()
+        self.update_button_states()
