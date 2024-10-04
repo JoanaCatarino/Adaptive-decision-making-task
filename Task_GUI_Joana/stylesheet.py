@@ -34,15 +34,20 @@ def stylesheet(ui):
                                                     border-radius: 0px;
                                                     padding: 1px;
                                                     font-size: 12px;
-                                                    font-weight: bold}''')
+                                                    font-weight: bold}
+                                  QPushButton:disabled {background-color:#C2C6C2; 
+                                                        color:#757875;}''')
 
+                              
     ui.btn_Update.setStyleSheet('''QPushButton{ background-color:#BA94BD;
                                                      color: black;           
                                                      border: 0px solid #BA94BD; 
                                                      border-radius: 0px;
                                                      padding: 1px;
                                                      font-size: 12px;
-                                                     font-weight: bold}''')
+                                                     font-weight: bold}
+                                  QPushButton:disabled {background-color:#C2C6C2; 
+                                                        color:#757875;}''')
 
 
 # Style sheet to set style for disabled buttons                              
