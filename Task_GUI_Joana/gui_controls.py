@@ -9,6 +9,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
+from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
 
 # Import different functions/classes
@@ -44,6 +45,8 @@ class GuiControls:
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start and Stop buttons
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
+        self.update_button_states() # Enables or disables the update button based on the content of the QlineEdit
+        self.connect_text_changes() # inputs received in the QLineEdits
         stylesheet(self.ui)
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
@@ -51,6 +54,12 @@ class GuiControls:
 
         # Initialize button states (to enable/disable start and stop buttons)
         self.update_button_states()
+        
+        # Initialize validators for QLineEdit widgets - to only accept numbers as input
+        self.setup_validators()
+        
+        # Connect the task combobox to the method for enabling/disabling QLineEdits
+        self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
 
                                          
     def populate_ddm_animalID(self):
@@ -97,8 +106,16 @@ class GuiControls:
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         self.ui.btn_Update.clicked.connect(self.print_variables)
+  
         
-   
+    def connect_text_changes(self):
+        # Check for inputs received in the QLineEdits
+        self.ui.txt_QuietWindow.textChanged.connect(self.update_button_states)
+        self.ui.txt_ResponseWindow.textChanged.connect(self.update_button_states)
+        self.ui.txt_TrialDuration.textChanged.connect(self.update_button_states)
+        self.ui.txt_ValveOpening.textChanged.connect(self.update_button_states)          
+    
+    
     def update_button_states(self):
         # Update the enabled/disabled state of the Start and Stop buttons
         if self.current_task:
@@ -106,8 +123,44 @@ class GuiControls:
             self.ui.btn_Stop.setEnabled(True)   # Enable stop if a task is running
         else:
             self.ui.btn_Start.setEnabled(True)  # Enable start if no task is running
-            self.ui.btn_Stop.setEnabled(False)  # Disable stop if no task is running        
+            self.ui.btn_Stop.setEnabled(False)  # Disable stop if no task is running     
+            
+   
+    def setup_validators(self):
+        # Create validators
+        self.int_validator = QIntValidator()
+        self.float_validator = QDoubleValidator()
         
+        #Set validators to QLineEdit widgets - To only accept numbers as input
+        self.ui.txt_QuietWindow.setValidator(self.float_validator)
+        self.ui.txt_ResponseWindow.setValidator(self.float_validator)
+        self.ui.txt_TrialDuration.setValidator(self.float_validator)
+        self.ui.txt_ValveOpening.setValidator(self.float_validator)
+        
+    
+    def check_update_state(self):
+        # Enable or disable the update button based on the QLineEdit content
+        quiet_window = self.ui.txt_QuietWindow.text().strip()
+        response_window = self.ui.txt_ResponseWindow.text().strip()
+        trial_duration = self.ui.txt_TrialDuration.text().strip()
+        valve_opening = self.ui.txt_ValveOpening.text().strip()
+        
+        if quiet_window or response_window or trial_duration or valve_opening:
+            self.ui.btn_Update.setEnabled(True)
+        else:
+            self.ui.btn_Update.setEnabled(False)
+            
+            
+    def update_qlineedit_states(self):
+        # Enable or disable QLineEdits based on the selected task
+        selected_task = self.ui.ddm_Task.currentText()
+        enable = selected_task not in ('','Test rig') # Make the QLineEdits be disabled when no task is selected or when test rig is selected
+        self.ui.txt_QuietWindow.setEnabled(enable)
+        self.ui.txt_ResponseWindow.setEnabled(enable)
+        self.ui.txt_TrialDuration.setEnabled(enable)
+        self.ui.txt_ValveOpening.setEnabled(enable)
+        self.ui.txt_AssociationTrials.setEnabled(enable)
+            
         
     # set enable and disable functions for the test rig controls
     def enable_controls(self):
@@ -165,7 +218,7 @@ class GuiControls:
             
             
         # Update QLineEdit states based on the selected task
-        #self.update_qlineedit_states()
+        self.update_qlineedit_states()
         
         # Update start/stop button states
         self.update_button_states()
