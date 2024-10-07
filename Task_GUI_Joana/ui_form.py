@@ -1092,7 +1092,7 @@ class Ui_TaskGui(object):
         self.OV_box_CurrentTrial.setAlignment(Qt.AlignCenter)
         self.OV_bkg_AnimalID = QWidget(self.Overview)
         self.OV_bkg_AnimalID.setObjectName(u"OV_bkg_AnimalID")
-        self.OV_bkg_AnimalID.setGeometry(QRect(90, 10, 141, 21))
+        self.OV_bkg_AnimalID.setGeometry(QRect(77, 10, 170, 21))
         self.OV_bkg_AnimalID.setStyleSheet(u"background-color: rgb(220, 231, 255);")
         self.OV_lbl_AnimalID = QLabel(self.OV_bkg_AnimalID)
         self.OV_lbl_AnimalID.setObjectName(u"OV_lbl_AnimalID")
@@ -1100,7 +1100,7 @@ class Ui_TaskGui(object):
         self.OV_lbl_AnimalID.setFont(font8)
         self.OV_txt_AnimalID = QLabel(self.OV_bkg_AnimalID)
         self.OV_txt_AnimalID.setObjectName(u"OV_txt_AnimalID")
-        self.OV_txt_AnimalID.setGeometry(QRect(79, -1, 60, 21))
+        self.OV_txt_AnimalID.setGeometry(QRect(79, -1, 71, 21))
         self.OV_txt_AnimalID.setFont(font)
         self.Boxes.addTab(self.Overview, "")
         TaskGui.setCentralWidget(self.centralwidget)
@@ -1118,7 +1118,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(0)
+        self.Boxes.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(TaskGui)

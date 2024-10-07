@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -3070,9 +3070,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QWidget" name="OV_bkg_AnimalID" native="true">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>77</x>
         <y>10</y>
-        <width>141</width>
+        <width>170</width>
         <height>21</height>
        </rect>
       </property>
@@ -3103,7 +3103,7 @@ color: rgb(112, 112, 112);</string>
         <rect>
          <x>79</x>
          <y>-1</y>
-         <width>60</width>
+         <width>71</width>
          <height>21</height>
         </rect>
        </property>

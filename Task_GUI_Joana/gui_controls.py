@@ -47,6 +47,7 @@ class GuiControls:
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
         self.update_button_states() # Enables or disables the update button based on the content of the QlineEdit
         self.connect_text_changes() # inputs received in the QLineEdits
+        self.check_update_state()
         stylesheet(self.ui)
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
