@@ -159,7 +159,7 @@ class GuiControls:
         self.ui.txt_ResponseWindow.setEnabled(enable)
         self.ui.txt_TrialDuration.setEnabled(enable)
         self.ui.txt_ValveOpening.setEnabled(enable)
-        self.ui.txt_AssociationTrials.setEnabled(enable)
+        self.ui.chk_AssociationTrials.setEnabled(enable)
             
         
     # set enable and disable functions for the test rig controls
