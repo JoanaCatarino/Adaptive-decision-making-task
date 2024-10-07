@@ -45,7 +45,6 @@ class GuiControls:
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start and Stop buttons
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
-        self.update_button_states() # Enables or disables the update button based on the content of the QlineEdit
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
         stylesheet(self.ui)
@@ -111,10 +110,10 @@ class GuiControls:
         
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
-        self.ui.txt_QuietWindow.textChanged.connect(self.update_button_states)
-        self.ui.txt_ResponseWindow.textChanged.connect(self.update_button_states)
-        self.ui.txt_TrialDuration.textChanged.connect(self.update_button_states)
-        self.ui.txt_ValveOpening.textChanged.connect(self.update_button_states)          
+        self.ui.txt_QuietWindow.textChanged.connect(self.check_update_state)
+        self.ui.txt_ResponseWindow.textChanged.connect(self.check_update_state)
+        self.ui.txt_TrialDuration.textChanged.connect(self.check_update_state)
+        self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)          
     
     
     def update_button_states(self):
