@@ -25,7 +25,7 @@ import pyqtgraph as pg
 
 from form_updt import Ui_TaskGui
 
-class VideoPlayer(QWidget):
+class VideoPlayer:
     def __init__(self, video_path):
         super().__init__()
 
