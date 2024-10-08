@@ -14,6 +14,10 @@ from form_updt import Ui_TaskGui
 from gui_controls import GuiControls
 from stylesheet import stylesheet
 
+#test
+import pyqtgraph as pg
+from graphs import VideoPlayer
+
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -22,6 +26,24 @@ class TaskGui(QMainWindow):
         
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
+
+
+    #test
+        # Initialize the VideoPlayer and set the video path
+        video_path = '/home/rasppi-ephys/Downloads/test_video.avi'
+        self.video_player = VideoPlayer(video_path)
+
+        # Embed the VideoPlayer in the plt_Camera widget
+        self.embed_video_player()
+
+    def embed_video_player(self):
+        # Check if plt_Camera already has a layout, if not create one
+        layout = self.ui.plt_Camera.layout()
+        if layout is None:
+            layout = QVBoxLayout(self.ui.plt_Camera)
+        
+        # Add the VideoPlayer widget to the plt_Camera layout
+        layout.addWidget(self.video_player)
 
 
     # Define function to have the chonometer with the hour, minute and second as the text
@@ -37,10 +59,10 @@ class TaskGui(QMainWindow):
         if hours == 0 and minutes == 0:
             self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color 
         
-        if minutes == 1:
+        if hours == 1:
             self.ui.OV_Box.setStyleSheet("background-color: #F5E268;")  # Makes the background color of the overview box 1 yellow if the
                                                                        # animal has been performing the task for 1h                                                           
-        if minutes == 2:
+        if hours == 2:
             self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h        
     
     
