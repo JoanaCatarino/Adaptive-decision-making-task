@@ -28,23 +28,6 @@ class TaskGui(QMainWindow):
         self.gui_controls = GuiControls(self.ui, self.updateTime)
 
 
-    #test
-        # Initialize the VideoPlayer and set the video path
-        video_path = '/home/rasppi-ephys/Downloads/test_video.avi'
-        self.video_player = VideoPlayer(video_path)
-
-        # Embed the VideoPlayer in the plt_Camera widget
-        self.embed_video_player()
-
-    def embed_video_player(self):
-        # Check if plt_Camera already has a layout, if not create one
-        layout = self.ui.plt_Camera.layout()
-        if layout is None:
-            layout = QVBoxLayout(self.ui.plt_Camera)
-        
-        # Add the VideoPlayer widget to the plt_Camera layout
-        layout.addWidget(self.video_player)
-
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
