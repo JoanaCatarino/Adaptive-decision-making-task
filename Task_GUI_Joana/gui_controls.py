@@ -19,6 +19,7 @@ from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
+from camera import Camera, MovieThread
 
 # Import task classes
 from task_test_rig import TestRig
@@ -48,6 +49,7 @@ class GuiControls:
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
         stylesheet(self.ui)
+        self.camera = Camera(0)
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
@@ -60,6 +62,12 @@ class GuiControls:
         
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
+        
+        # Camera related commands
+        self.ui.plt_Camera = ImageView()
+        self.update_timer = QTimer()
+        self.update_timer.timeout.connect(self.update_movie)
+        
 
                                          
     def populate_ddm_animalID(self):
@@ -104,6 +112,7 @@ class GuiControls:
     def connect_buttons(self):
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
+        self.ui.btn_Start.clicked.connect(self.start_movie)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         self.ui.btn_Update.clicked.connect(self.print_variables)
   
