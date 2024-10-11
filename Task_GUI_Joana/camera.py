@@ -6,7 +6,6 @@ Created on Mon Oct  7 18:22:28 2024
 """
 import cv2
 import numpy as np
-from PyQt5 import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt, QThread, QTimer
 from pyqtgraph import ImageView
 
