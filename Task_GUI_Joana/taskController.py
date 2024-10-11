@@ -16,7 +16,7 @@ from stylesheet import stylesheet
 
 #test
 import pyqtgraph as pg
-from graphs import VideoPlayer
+
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
@@ -26,7 +26,6 @@ class TaskGui(QMainWindow):
         
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
-
 
 
     # Define function to have the chonometer with the hour, minute and second as the text
