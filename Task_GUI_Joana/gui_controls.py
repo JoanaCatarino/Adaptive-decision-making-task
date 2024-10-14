@@ -115,7 +115,6 @@ class GuiControls:
     def connect_buttons(self):
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
-        self.ui.btn_Start.clicked.connect(self.start_movie)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         self.ui.btn_Update.clicked.connect(self.print_variables)
   
@@ -199,6 +198,8 @@ class GuiControls:
     def execute_task(self):
         # Stop any currently running task
         self.stop_task()
+        
+        self.start_movie()
         
         selected_task = self.ui.ddm_Task.currentText()
         
