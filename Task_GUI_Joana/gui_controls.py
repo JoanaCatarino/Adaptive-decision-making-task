@@ -63,12 +63,15 @@ class GuiControls:
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
         
-        # Camera related commands
-        self.ui.plt_Camera = ImageView()
-        self.update_timer = QTimer()
-        self.update_timer.timeout.connect(self.update_movie)
-        
+        # Initialize the camera
+        self.camera = Camera(0)
+        self.camera.initialize()  # Initialize the camera
 
+        # Camera-related UI setup
+        self.ui.plt_Camera = ImageView()  # Assuming you are using PyQtGraph's ImageView
+        self.update_timer = QTimer()
+        self.update_timer.timeout.connect(self.update_movie) 
+    
                                          
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -245,10 +248,32 @@ class GuiControls:
         # Disable test rig controls
         self.disable_controls()
         
+        # Stop the camera feed and movie thread
+        if hasattr(self, 'movie_thread'):
+            self.movie_thread.stop()
+            self.movie_thread.wait()  # Ensure the thread finishes
+
+        # Stop updating the movie
+        self.update_timer.stop()
+        if self.camera.cap.isOpened():
+            self.camera.close_camera()  # Release the camera
+        
         # Update start/stop button states
         self.update_button_states()
-   
-        
+
+    def start_movie(self):
+        # Start the movie thread and the timer to update the GUI
+        self.movie_thread = MovieThread(self.camera)  # Create a thread for the camera
+        self.movie_thread.start()  # Start the thread
+        self.update_timer.start(30)  # 30ms interval for frame updates (approx 33fps)
+    
+
+    def update_movie(self):
+        # Get the latest frame and update the ImageView
+        frame = self.camera.get_frame()  # Fetch the latest frame
+        if frame is not None:
+            self.ui.plt_Camera.setImage(frame.T)  # Update the PyQtGraph ImageView
+    
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
         # Get the text from each QLineEdit widget in the gui
