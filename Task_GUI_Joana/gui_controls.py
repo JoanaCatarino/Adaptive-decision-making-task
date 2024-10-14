@@ -267,7 +267,6 @@ class GuiControls:
         self.movie_thread.start()  # Start the thread
         self.update_timer.start(30)  # 30ms interval for frame updates (approx 33fps)
     
-
     def update_movie(self):
         # Get the latest frame and update the ImageView
         frame = self.camera.get_frame()  # Fetch the latest frame
