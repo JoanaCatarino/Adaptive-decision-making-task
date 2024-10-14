@@ -66,12 +66,13 @@ class GuiControls:
         # Initialize the camera
         self.camera = Camera(0)
         self.camera.initialize()  # Initialize the camera
-        self.start_movie()
 
         # Camera-related UI setup
         self.ui.plt_Camera = ImageView()  # Assuming you are using PyQtGraph's ImageView
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_movie) 
+
+        self.start_movie()
     
                                          
     def populate_ddm_animalID(self):
