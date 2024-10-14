@@ -11,6 +11,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
+from pyqtgraph import ImageView
 
 # Import different functions/classes
 from animal_id_generator import animal_id
