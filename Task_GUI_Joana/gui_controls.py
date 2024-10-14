@@ -274,6 +274,7 @@ class GuiControls:
     def update_movie(self):
         # Get the latest frame and update the ImageView
         self.ui.plt_Camera.setImage(self.camera.last_frame.T)
+        print(self.camera.last_frame.T)
     
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
