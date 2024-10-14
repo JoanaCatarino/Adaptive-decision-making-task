@@ -200,7 +200,7 @@ class GuiControls:
    
     def execute_task(self):
         # Stop any currently running task
-        self.stop_task()
+        #self.stop_task()
         
         self.start_movie()
         
