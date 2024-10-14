@@ -49,7 +49,7 @@ class GuiControls:
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
         stylesheet(self.ui)
-        self.camera = Camera(0)
+        self.start_movie()
         
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
