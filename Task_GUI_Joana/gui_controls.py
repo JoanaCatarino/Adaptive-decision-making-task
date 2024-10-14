@@ -70,7 +70,7 @@ class GuiControls:
 
         # Camera-related UI setup
         self.image_view = ImageView()
-        self.ui.plt_Camera(self.image_view)  # Assuming you are using PyQtGraph's ImageView
+        self.ui.plt_Camera = self.image_view()  # Assuming you are using PyQtGraph's ImageView
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_movie) 
 
