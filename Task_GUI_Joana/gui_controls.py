@@ -69,7 +69,8 @@ class GuiControls:
         self.camera.initialize()  # Initialize the camera
 
         # Camera-related UI setup
-        self.ui.plt_Camera = ImageView()  # Assuming you are using PyQtGraph's ImageView
+        self.image_view = ImageView()
+        self.ui.plt_Camera(self.image_view)  # Assuming you are using PyQtGraph's ImageView
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_movie) 
 
@@ -273,9 +274,7 @@ class GuiControls:
     
     def update_movie(self):
         # Get the latest frame and update the ImageView
-        frame = self.camera.get_frame()  # Fetch the latest frame
-        if frame is not None:
-            self.ui.plt_Camera.setImage(frame.T)  # Update the PyQtGraph ImageView
+        self.image_view.setImage(self.camera.last_frame.T)
     
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
