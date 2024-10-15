@@ -253,7 +253,7 @@ class GuiControls:
         self.update_button_states()
 
     
-    def start_camera(self);:
+    def start_camera(self):
         # Initialize the camera
         self.cap = cv2.VideoCapture(0)  # Use the correct camera index
 
