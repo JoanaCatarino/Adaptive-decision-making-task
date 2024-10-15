@@ -279,22 +279,22 @@ class GuiControls:
 
     
     def update_camera_feed(self):
-    if self.cap.isOpened():
-        ret, frame = self.cap.read()
-        if ret:
-            # Convert the frame to RGB format
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-            # Create a QImage from the frame
-            h, w, ch = frame.shape
-            bytes_per_line = ch * w
-            q_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
-
-            # Set the QImage to the QLabel
-            self.ui.plt_Camera.setPixmap(QPixmap.fromImage(q_img))
-
-        # Schedule the next frame update
-        QTimer.singleShot(30, self.update_camera_feed)  # Adjust the interval as needed
+        if self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if ret:
+                # Convert the frame to RGB format
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    
+                # Create a QImage from the frame
+                h, w, ch = frame.shape
+                bytes_per_line = ch * w
+                q_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+    
+                # Set the QImage to the QLabel
+                self.ui.plt_Camera.setPixmap(QPixmap.fromImage(q_img))
+    
+            # Schedule the next frame update
+            QTimer.singleShot(30, self.update_camera_feed)  # Adjust the interval as needed
 
 
     # Test to use the Update button to print the value of the variables in real-time 
