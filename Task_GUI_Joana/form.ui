@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -122,6 +122,11 @@ background-color: rgb(255, 203, 198);</string>
          <height>21</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
@@ -140,7 +145,7 @@ background-color: rgb(255, 203, 198);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>24</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -807,19 +812,6 @@ color: rgb(73, 192, 203);</string>
       </property>
       <property name="orientation">
        <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-     <widget class="QWidget" name="plt_Camera" native="true">
-      <property name="geometry">
-       <rect>
-        <x>590</x>
-        <y>90</y>
-        <width>421</width>
-        <height>281</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(234, 238, 255);</string>
       </property>
      </widget>
      <widget class="QWidget" name="plt_AnimalsPerfomance" native="true">
@@ -2719,12 +2711,27 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="plt_Camera">
+      <property name="geometry">
+       <rect>
+        <x>600</x>
+        <y>90</y>
+        <width>411</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
      <zorder>lbl_Visualization</zorder>
      <zorder>line</zorder>
-     <zorder>plt_Camera</zorder>
      <zorder>plt_AnimalsPerfomance</zorder>
      <zorder>plt_LickTrace_Right</zorder>
      <zorder>plt_LickTrace_Left</zorder>
@@ -2760,6 +2767,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>txt_Chronometer</zorder>
      <zorder>lbl_Bias</zorder>
      <zorder>box_Bias</zorder>
+     <zorder>plt_Camera</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
