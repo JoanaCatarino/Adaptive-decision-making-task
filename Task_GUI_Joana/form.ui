@@ -3065,7 +3065,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>100</y>
+         <y>99</y>
          <width>271</width>
          <height>221</height>
         </rect>
@@ -3074,7 +3074,7 @@ color: rgb(112, 112, 112);</string>
         <string notr="true">background-color: rgb(122, 122, 122);</string>
        </property>
        <property name="text">
-        <string/>
+        <string>TextLabel</string>
        </property>
       </widget>
      </widget>
