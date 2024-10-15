@@ -2724,7 +2724,7 @@ color: rgb(112, 112, 112);</string>
        <string notr="true">background-color: rgb(233, 237, 254);</string>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
      </widget>
      <zorder>bkg_Trials</zorder>

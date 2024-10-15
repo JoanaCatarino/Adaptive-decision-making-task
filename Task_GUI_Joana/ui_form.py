@@ -1254,7 +1254,7 @@ class Ui_TaskGui(object):
         self.txt_Chronometer.setText("")
         self.lbl_Bias.setText(QCoreApplication.translate("TaskGui", u"Bias:", None))
         self.box_Bias.setText("")
-        self.plt_Camera.setText(QCoreApplication.translate("TaskGui", u"TextLabel", None))
+        self.plt_Camera.setText("")
         self.Boxes.setTabText(self.Boxes.indexOf(self.Box), QCoreApplication.translate("TaskGui", u"GUI", None))
         self.OV_Box.setTitle("")
         self.OV_box_Chronometer.setText("")
