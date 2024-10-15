@@ -72,7 +72,7 @@ class GuiControls:
         
         # Initialize the Qlabel where the camera will be displayed
         self.video_label = QLabel(self.ui.plt_Camera)
-        self.video_label.setScaledContents(True)
+        self.video_label.setScaledContents(False)
         
     
     
