@@ -201,10 +201,7 @@ class GuiControls:
             write_task_start_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task)
         
         # Initialize the camera
-        self.cap = cv2.VideoCapture(0)  # Ensure to use the correct camera index 
-
-        if self.cap.isOpened():
-            self.update_camera_feed()  # Start the camera feed update function        
+        self.start_camera()   
         
         
         if selected_task == 'Test rig':
@@ -256,6 +253,18 @@ class GuiControls:
         self.update_button_states()
 
     
+    def start_camera(self);:
+        # Initialize the camera
+        self.cap = cv2.VideoCapture(0)  # Use the correct camera index
+
+        # Set camera resolution
+        if self.cap.isOpened():
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  # Set width
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)  # Set height
+            self.update_camera_feed()  # Start the camera feed update function        
+   
+    
+   
     def update_camera_feed(self):
         if self.cap.isOpened():
             ret, frame = self.cap.read()
@@ -277,10 +286,11 @@ class GuiControls:
     
     def stop_camera(self):
         # Check if the camera is opened and release it
-        if self.cap is not None and self.cap.isOpened():
-            self.cap.release()
-            self.cap = None # Set to None to avoid reusing the same object
-
+        if self.cap is not None:  # Ensure cap is not None
+            if self.cap.isOpened():
+                self.cap.release()
+            self.cap = None  # Set to None to avoid reusing the same object
+    
         # Clear the QLabel to remove the current pixmap
         self.ui.plt_Camera.clear()
 
