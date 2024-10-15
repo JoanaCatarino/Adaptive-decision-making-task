@@ -11,8 +11,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
-from pyqtgraph import ImageView
-import cv2
+
 
 # Import different functions/classes
 from animal_id_generator import animal_id
@@ -21,7 +20,6 @@ from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
-from camera import Camera, MovieThread
 
 # Import task classes
 from task_test_rig import TestRig
@@ -64,22 +62,8 @@ class GuiControls:
         
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
-        
-        # Initialize the camera
-        self.camera = Camera(0)
-        self.camera.initialize()  # Initialize the camera
-
-        # Camera-related UI setup
-        self.video_layout = QVBoxLayout(self.ui.plt_Camera)
-        self.image_view = ImageView()
-        self.video_layout.addWidget(self.image_view)
-
-        self.update_timer = QTimer()
-        self.update_timer.timeout.connect(self.update_movie) 
-
-        self.start_movie()
     
-                                         
+    
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
@@ -204,9 +188,8 @@ class GuiControls:
    
     def execute_task(self):
         # Stop any currently running task
-        #self.stop_task()
+        self.stop_task()
         
-        self.start_movie()
         
         selected_task = self.ui.ddm_Task.currentText()
         
@@ -256,30 +239,9 @@ class GuiControls:
         # Disable test rig controls
         self.disable_controls()
         
-        # Stop the camera feed and movie thread
-        if hasattr(self, 'movie_thread'):
-            self.movie_thread.stop()
-            self.movie_thread.wait()  # Ensure the thread finishes
-
-        # Stop updating the movie
-        self.update_timer.stop()
-        if self.camera.cap.isOpened():
-            self.camera.close_camera()  # Release the camera
-        
         # Update start/stop button states
         self.update_button_states()
 
-    def start_movie(self):
-        # Start the movie thread and the timer to update the GUI
-        self.movie_thread = MovieThread(self.camera)  # Create a thread for the camera
-        self.movie_thread.start()  # Start the thread
-        self.update_timer.start(30)  # 30ms interval for frame updates (approx 33fps)
-    
-    def update_movie(self):
-        # Get the latest frame and update the ImageView
-        if self.camera.last_frame is not None:
-            frame_rgb = cv2.cvtColor(self.camera.last_frame, cv2.COLOR_BGR2RGB)
-            self.image_view.setImage(frame_rgb.T)
     
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
