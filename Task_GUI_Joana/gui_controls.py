@@ -195,13 +195,12 @@ class GuiControls:
    
     def execute_task(self):
         
-        # Always stop the camera first to unsure a clean restart
-        self.stop_camera()
-        
         # Stop any currently running task
+        if self.current_task and hasattr(self.current_task, 'stop'):
         self.stop_task()
         
-        # Initialize camera
+        # Ensure the camera is stopped and restarted
+        self.stop_camera()        
         self.start_camera()
         
         selected_task = self.ui.ddm_Task.currentText()
