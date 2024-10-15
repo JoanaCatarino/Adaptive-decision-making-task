@@ -6,8 +6,9 @@ Created on Wed Oct  2 15:09:03 2024
 """
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
-from PyQt5.QtGui import QFont
+import cv2
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
+from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
@@ -62,6 +63,17 @@ class GuiControls:
         
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
+        
+        
+        # Camera attributes
+        self.camera_timer = QTimer()
+        self.camera_timer.timeout.connect(self.update_frame)
+        self.cap = None # Video capture object
+        
+        # Initialize the Qlabel where the camera will be displayed
+        self.video_label = QLabel(self.ui.plt_Camera)
+        self.video_label.setScaledContents(True)
+        
     
     
     def populate_ddm_animalID(self):
@@ -190,6 +202,8 @@ class GuiControls:
         # Stop any currently running task
         self.stop_task()
         
+        self.start_camera()
+        
         
         selected_task = self.ui.ddm_Task.currentText()
         
@@ -236,11 +250,48 @@ class GuiControls:
         self.txt_Chronometer.stop()
         self.OV_box_Chronometer.stop() # stop overview chronometer for Box1
 
+        # Stop the camera
+        self.stop_camera()
+
         # Disable test rig controls
         self.disable_controls()
         
         # Update start/stop button states
         self.update_button_states()
+
+
+    def start_camera(self):
+        # Open the video capture
+        self.cap = cv2.VideoCapture(0)  # 0 for the default USB camera
+        if not self.cap.isOpened():
+            print("Error: Camera not accessible")
+            return
+
+        # Start the timer to capture frames
+        self.camera_timer.start(30)  # Capture a frame every 30ms (~33fps)
+
+    def stop_camera(self):
+        # Stop the timer and release the camera
+        self.camera_timer.stop()
+        if self.cap:
+            self.cap.release()
+        cv2.destroyAllWindows()
+
+    def update_frame(self):
+        # Capture a frame from the camera
+        ret, frame = self.cap.read()
+        if ret:
+            # Convert the frame to RGB format (as OpenCV uses BGR)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # Convert the frame to QImage format
+            height, width, channel = frame.shape
+            bytes_per_line = 3 * width
+            qimg = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+
+            # Set the QImage to the QLabel
+            self.video_label.setPixmap(QPixmap.fromImage(qimg))
+
 
     
     # Test to use the Update button to print the value of the variables in real-time 
