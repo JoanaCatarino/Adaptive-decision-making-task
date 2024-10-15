@@ -38,6 +38,8 @@ class GuiControls:
         self.updateTime_slot = updateTime_slot
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None
+        self.cap = None # Initialize camera variable
+        
         
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -63,12 +65,7 @@ class GuiControls:
         
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
-        
-        
-        # Camera attributes
-        self.camera_timer = QTimer()
-        self.camera_timer.timeout.connect(self.update_frame)
-        self.cap = None # Video capture object
+
         
     
     def populate_ddm_animalID(self):
@@ -209,6 +206,7 @@ class GuiControls:
         if self.cap.isOpened():
             self.update_camera_feed()  # Start the camera feed update function        
         
+        
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
             self.enable_controls()
@@ -257,26 +255,6 @@ class GuiControls:
         # Update start/stop button states
         self.update_button_states()
 
-
-    def start_camera(self):
-        # Open the video capture
-        self.cap = cv2.VideoCapture(0)  # 0 for the default USB camera
-        if not self.cap.isOpened():
-            print("Error: Camera not accessible")
-            return
-
-        # Start the timer to capture frames
-        self.camera_timer.start(30)  # Capture a frame every 30ms (~33fps)
-
-    def stop_camera(self):
-        # Check if the camera is opened and release it
-        if self.cap is not None and self.cap.isOpened():
-            self.cap.release()
-            self.cap = None # Set to None to avoid reusing the same object
-
-        # Clear the QLabel to remove the current pixmap
-        self.ui.plt_Camera.clear()
-
     
     def update_camera_feed(self):
         if self.cap.isOpened():
@@ -295,6 +273,16 @@ class GuiControls:
     
             # Schedule the next frame update
             QTimer.singleShot(30, self.update_camera_feed)  # Adjust the interval as needed
+            
+    
+    def stop_camera(self):
+        # Check if the camera is opened and release it
+        if self.cap is not None and self.cap.isOpened():
+            self.cap.release()
+            self.cap = None # Set to None to avoid reusing the same object
+
+        # Clear the QLabel to remove the current pixmap
+        self.ui.plt_Camera.clear()
 
 
     # Test to use the Update button to print the value of the variables in real-time 
