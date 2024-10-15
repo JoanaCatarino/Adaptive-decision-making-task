@@ -34,19 +34,6 @@ class Camera:
     def __str__(self):
         return 'OpenCV Camera {}'.format(self.cam_num)
 
-    
-    def update_image(self):
-        frame = self.camera.get_frame()
-        self.image_view.setImage(frame.T)
-
-    def update_movie(self):
-        self.image_view.setImage(self.camera.last_frame.T)
-
-    def start_movie(self):
-        self.movie_thread = MovieThread(self.camera)
-        self.movie_thread.start()
-        self.update_timer.start(30)
-
 
 class MovieThread(QThread):
     def __init__(self, camera):

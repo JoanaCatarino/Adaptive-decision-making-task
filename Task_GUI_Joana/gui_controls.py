@@ -51,7 +51,7 @@ class GuiControls:
         self.check_update_state()
         stylesheet(self.ui)
         
-        
+    
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
 
@@ -273,8 +273,9 @@ class GuiControls:
     
     def update_movie(self):
         # Get the latest frame and update the ImageView
-        self.ui.plt_Camera.setImage(self.camera.last_frame.T)
-        print(self.camera.last_frame.T)
+        if self.camera.last_frame is not None:
+            frame_rgb = cv2.cvtColor(self.camera.last_frame, cv2.COLOR_BGR2RGB)
+            self.ui.plt_Camera.setImage(frame_rgb.T)
     
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
