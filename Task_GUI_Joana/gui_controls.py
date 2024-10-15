@@ -286,7 +286,7 @@ class GuiControls:
 
             # Set the image to the QLabel and scale it to fit
             pixmap = QPixmap.fromImage(qimg)
-            self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=Qt.ignoreAspectRatio))  # 1 is Qt.KeepAspectRatio
+            self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))  # 1 is Qt.KeepAspectRatio
 
 
     # Test to use the Update button to print the value of the variables in real-time 
