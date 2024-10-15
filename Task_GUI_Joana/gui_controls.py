@@ -6,7 +6,7 @@ Created on Wed Oct  2 15:09:03 2024
 """
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
