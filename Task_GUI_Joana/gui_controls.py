@@ -9,7 +9,7 @@ import sys
 import cv2
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
 from PyQt5.QtGui import QFont, QImage, QPixmap
-from PyQt5.QtCore import pyqtSlot, QTimer, QDate
+from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
 
