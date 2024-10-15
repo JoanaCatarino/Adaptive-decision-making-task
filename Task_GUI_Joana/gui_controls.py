@@ -197,14 +197,17 @@ class GuiControls:
         # Stop any currently running task
         self.stop_task()
         
-        self.start_camera()
-        
-        
         selected_task = self.ui.ddm_Task.currentText()
         
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
             write_task_start_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task)
+        
+        # Initialize the camera
+        self.cap = cv2.VideoCapture(0)  # Ensure to use the correct camera index 
+
+        if self.cap.isOpened():
+            self.update_camera_feed()  # Start the camera feed update function        
         
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
@@ -269,25 +272,29 @@ class GuiControls:
         # Check if the camera is opened and release it
         if self.cap is not None and self.cap.isOpened():
             self.cap.release()
+            self.cap = None # Set to None to avoid reusing the same object
 
         # Clear the QLabel to remove the current pixmap
         self.ui.plt_Camera.clear()
 
-    def update_frame(self):
-        # Capture a frame from the camera
+    
+    def update_camera_feed(self):
+    if self.cap.isOpened():
         ret, frame = self.cap.read()
         if ret:
-            # Convert the frame to RGB format (as OpenCV uses BGR)
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Convert the frame to RGB format
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # Convert the frame to QImage
-            height, width, channel = frame_rgb.shape
-            bytes_per_line = 3 * width
-            qimg = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            # Create a QImage from the frame
+            h, w, ch = frame.shape
+            bytes_per_line = ch * w
+            q_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
 
-            # Set the image to the QLabel and scale it to fit
-            pixmap = QPixmap.fromImage(qimg)
-            self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))  # 1 is Qt.KeepAspectRatio
+            # Set the QImage to the QLabel
+            self.ui.plt_Camera.setPixmap(QPixmap.fromImage(q_img))
+
+        # Schedule the next frame update
+        QTimer.singleShot(30, self.update_camera_feed)  # Adjust the interval as needed
 
 
     # Test to use the Update button to print the value of the variables in real-time 
