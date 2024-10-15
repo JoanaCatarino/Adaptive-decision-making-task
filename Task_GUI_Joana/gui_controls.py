@@ -266,11 +266,12 @@ class GuiControls:
         self.camera_timer.start(30)  # Capture a frame every 30ms (~33fps)
 
     def stop_camera(self):
-        # Stop the timer and release the camera
-        self.camera_timer.stop()
-        if self.cap:
+        # Check if the camera is opened and release it
+        if self.cap is not None and self.cap.isOpened():
             self.cap.release()
-        cv2.destroyAllWindows()
+
+        # Clear the QLabel to remove the current pixmap
+        self.ui.plt_Camera.clear()
 
     def update_frame(self):
         # Capture a frame from the camera
