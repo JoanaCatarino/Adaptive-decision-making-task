@@ -290,6 +290,9 @@ class GuiControls:
             pixmap = QPixmap.fromImage(qimg)
             self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))  # 1 is Qt.KeepAspectRatio
 
+            # Update the QLabel in the Overview tab
+            self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
+
 
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
