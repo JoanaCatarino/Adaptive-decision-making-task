@@ -70,11 +70,6 @@ class GuiControls:
         self.camera_timer.timeout.connect(self.update_frame)
         self.cap = None # Video capture object
         
-        # Initialize the Qlabel where the camera will be displayed
-        self.video_label = QLabel(self.ui.plt_Camera)
-        self.video_label.setScaledContents(True)
-        
-    
     
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -282,15 +277,16 @@ class GuiControls:
         ret, frame = self.cap.read()
         if ret:
             # Convert the frame to RGB format (as OpenCV uses BGR)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            # Convert the frame to QImage format
-            height, width, channel = frame.shape
+            # Convert the frame to QImage
+            height, width, channel = frame_rgb.shape
             bytes_per_line = 3 * width
-            qimg = QImage(frame.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            qimg = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
 
-            # Set the QImage to the QLabel
-            self.video_label.setPixmap(QPixmap.fromImage(qimg))
+            # Set the image to the QLabel and scale it to fit
+            pixmap = QPixmap.fromImage(qimg)
+            self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=1))  # 1 is Qt.KeepAspectRatio
 
 
     
