@@ -197,14 +197,15 @@ class GuiControls:
         # Stop any currently running task
         self.stop_task()
         
-        self.start_camera()
-        
-        
         selected_task = self.ui.ddm_Task.currentText()
         
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
             write_task_start_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task)
+        
+        # Initialize camera
+        self.start_camera()
+        
         
         if selected_task == 'Test rig':
             self.current_task = TestRig(self.ui)
