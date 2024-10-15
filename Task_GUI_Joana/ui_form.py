@@ -1023,13 +1023,9 @@ class Ui_TaskGui(object):
         self.OV_Box.setFont(font7)
         self.OV_Box.setStyleSheet(u"border-color: rgb(112, 255, 122);\n"
 "")
-        self.OV_plt_Camera = QWidget(self.OV_Box)
-        self.OV_plt_Camera.setObjectName(u"OV_plt_Camera")
-        self.OV_plt_Camera.setGeometry(QRect(15, 100, 271, 221))
-        self.OV_plt_Camera.setStyleSheet(u"background-color: rgb(189, 189, 189);")
         self.OV_plt_AnimalPerformance = QWidget(self.OV_Box)
         self.OV_plt_AnimalPerformance.setObjectName(u"OV_plt_AnimalPerformance")
-        self.OV_plt_AnimalPerformance.setGeometry(QRect(16, 339, 271, 221))
+        self.OV_plt_AnimalPerformance.setGeometry(QRect(15, 339, 271, 221))
         self.OV_plt_AnimalPerformance.setStyleSheet(u"background-color: rgb(230, 248, 255);")
         self.OV_box_Chronometer = QLabel(self.OV_Box)
         self.OV_box_Chronometer.setObjectName(u"OV_box_Chronometer")
@@ -1091,6 +1087,10 @@ class Ui_TaskGui(object):
         self.OV_box_CurrentTrial.setFont(font)
         self.OV_box_CurrentTrial.setStyleSheet(u"background-color: rgb(234, 234, 234);")
         self.OV_box_CurrentTrial.setAlignment(Qt.AlignCenter)
+        self.OV_plt_Camera = QLabel(self.OV_Box)
+        self.OV_plt_Camera.setObjectName(u"OV_plt_Camera")
+        self.OV_plt_Camera.setGeometry(QRect(15, 100, 271, 221))
+        self.OV_plt_Camera.setStyleSheet(u"background-color: rgb(122, 122, 122);")
         self.OV_bkg_AnimalID = QWidget(self.Overview)
         self.OV_bkg_AnimalID.setObjectName(u"OV_bkg_AnimalID")
         self.OV_bkg_AnimalID.setGeometry(QRect(77, 10, 170, 21))
@@ -1119,7 +1119,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(0)
+        self.Boxes.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(TaskGui)
@@ -1269,6 +1269,7 @@ class Ui_TaskGui(object):
         self.OV_lbl_CorrectTrials.setText(QCoreApplication.translate("TaskGui", u"Correct Trials: ", None))
         self.OV_lbl_CurrentTrial.setText(QCoreApplication.translate("TaskGui", u"Current Trial:", None))
         self.OV_box_CurrentTrial.setText("")
+        self.OV_plt_Camera.setText("")
         self.OV_lbl_AnimalID.setText(QCoreApplication.translate("TaskGui", u"Animal ID:", None))
         self.OV_txt_AnimalID.setText("")
         self.Boxes.setTabText(self.Boxes.indexOf(self.Overview), QCoreApplication.translate("TaskGui", u"Overview", None))

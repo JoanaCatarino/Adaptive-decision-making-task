@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -2795,23 +2795,10 @@ color: rgb(112, 112, 112);</string>
       <property name="title">
        <string/>
       </property>
-      <widget class="QWidget" name="OV_plt_Camera" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>100</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(189, 189, 189);</string>
-       </property>
-      </widget>
       <widget class="QWidget" name="OV_plt_AnimalPerformance" native="true">
        <property name="geometry">
         <rect>
-         <x>16</x>
+         <x>15</x>
          <y>339</y>
          <width>271</width>
          <height>221</height>
@@ -3072,6 +3059,22 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="OV_plt_Camera">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>100</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(122, 122, 122);</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>
