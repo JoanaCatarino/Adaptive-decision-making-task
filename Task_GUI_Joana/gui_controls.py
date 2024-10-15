@@ -197,7 +197,7 @@ class GuiControls:
         
         # Stop any currently running task
         if self.current_task and hasattr(self.current_task, 'stop'):
-        self.stop_task()
+            self.stop_task()
         
         # Ensure the camera is stopped and restarted
         self.stop_camera()        
