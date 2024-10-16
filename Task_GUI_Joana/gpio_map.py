@@ -10,6 +10,7 @@ from gpiozero import LED, Button, OutputDevice
 # Gpio map (pin numbers should be reproduced across boxes) - Pin numbers should be changed when the rig is being built
 
 led_blue = LED(22)
+led_red = LED(25) # Free licking script with buttons
 led_white_l = LED(5)
 led_white_r = LED(6)
 button_blue = Button(26) # Free licking script with buttons
