@@ -21,7 +21,7 @@ class FreeLickingTask:
 import asyncio
 from gpiozero import *
 
-class FreeLicking:
+class FreeLickingTask:
     # Function to handle button press asynchronously
     async def handle_button_press(led, color):
         print(f'{color} button pressed! LED on!')
