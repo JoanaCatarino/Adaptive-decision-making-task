@@ -13,8 +13,8 @@ led_blue = LED(22)
 led_red = LED(25) # Free licking script with buttons
 led_white_l = LED(5)
 led_white_r = LED(6)
-button_blue = Button(26, bounce_time=0.1) # Free licking script with buttons
-button_red = Button(16, bounce_time=0.1) # Free licking script with buttons
+button_blue = Button(26) # Free licking script with buttons
+button_red = Button(16) # Free licking script with buttons
 #pump = OutputDevice(26) this is the module we use to connect the pumps
 
 # Specify which names to export when 'from gpio_pins import *' is used
