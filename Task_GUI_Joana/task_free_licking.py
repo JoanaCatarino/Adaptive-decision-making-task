@@ -19,7 +19,7 @@ class FreeLickingTask:
 '''
 
 import asyncio
-from gpiozero import *
+from gpio_map import *
 
 class FreeLickingTask:
     # Function to handle button press asynchronously
