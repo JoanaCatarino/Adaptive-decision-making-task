@@ -45,3 +45,8 @@ class FreeLickingTask:
     async def main():
         await monitor_buttons()
 
+if __name__ == '__main__':
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Program interrupted.")
