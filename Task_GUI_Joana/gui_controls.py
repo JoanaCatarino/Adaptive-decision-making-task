@@ -21,6 +21,7 @@ from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
+from camera import start_camera, stop_camera, update_frame
 
 # Import task classes
 from task_test_rig import TestRig
@@ -49,6 +50,8 @@ class GuiControls:
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
+        self.camera_timer = QTimer() 
+        self.cap = cv2.VideoCapture() # initializing cam without open
         stylesheet(self.ui)
         
     
@@ -63,12 +66,6 @@ class GuiControls:
         
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
-        
-        
-        # Camera attributes
-        self.camera_timer = QTimer()
-        self.camera_timer.timeout.connect(self.update_frame)
-        self.cap = None # Video capture object
         
     
     def populate_ddm_animalID(self):
@@ -108,6 +105,16 @@ class GuiControls:
         
         self.OV_box_Chronometer = Chronometer() # Chronometer Overview tab
         self.OV_box_Chronometer.timeChanged.connect(self.updateTime_slot)
+        
+    
+    def start_camera(self):
+        start_camera(self.cap, self.camera_timer, self.update_frame)
+
+    def stop_camera(self):
+        stop_camera(self.cap, self.ui.plt_Camera)
+
+    def update_frame(self):
+        update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
         
 
     def connect_buttons(self):
@@ -258,45 +265,7 @@ class GuiControls:
         # Update start/stop button states
         self.update_button_states()
 
-
-    def start_camera(self):
-        # Open the video capture
-        self.cap = cv2.VideoCapture(0)  # 0 for the default USB camera
-        if not self.cap.isOpened():
-            print("Error: Camera not accessible")
-            return
-
-        # Start the timer to capture frames
-        self.camera_timer.start(30)  # Capture a frame every 30ms (~33fps)
-
-    def stop_camera(self):
-        # Check if the camera is opened and release it
-        if self.cap is not None and self.cap.isOpened():
-            self.cap.release()
-
-        # Clear the QLabel to remove the current pixmap
-        self.ui.plt_Camera.clear()
-
-    def update_frame(self):
-        # Capture a frame from the camera
-        ret, frame = self.cap.read()
-        if ret:
-            # Convert the frame to RGB format (as OpenCV uses BGR)
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-            # Convert the frame to QImage
-            height, width, channel = frame_rgb.shape
-            bytes_per_line = 3 * width
-            qimg = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
-
-            # Set the image to the QLabel and scale it to fit
-            pixmap = QPixmap.fromImage(qimg)
-            self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))  # 1 is Qt.KeepAspectRatio
-
-            # Update the QLabel in the Overview tab
-            self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
-
-
+        
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
         # Get the text from each QLineEdit widget in the gui

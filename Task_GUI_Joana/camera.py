@@ -5,70 +5,47 @@ Created on Mon Oct  7 18:22:28 2024
 @author: JoanaCatarino
 """
 import cv2
-import numpy as np
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import Qt
 
+def start_camera(cap, timer, update_frame_slot):
+    # Open the video capture
+    cap.open(0)  # 0 for the default USB camera
+    if not cap.isOpened():
+        print("Error: Camera not accessible")
+        return
 
-cap = cv2.VideoCapture
+    # Start the timer to capture frames
+    timer.timeout.connect(update_frame_slot)
+    timer.start(30)  # Capture a frame every 30ms (~33fps)
 
-while (True):
+def stop_camera(cap, label):
+    # Check if the camera is opened and release it
+    if cap.isOpened():
+        cap.release()
+
+    # Clear the QLabel to remove the current pixmap
+    label.clear()
+
+def update_frame(cap, label, ov_label):
+    # Capture a frame from the camera
     ret, frame = cap.read()
-    
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    
-    cv2.imshow('frame', gray)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-    
-cap.release()
-cv2.destroyAllWindows()
+    if ret:
+        # Convert the frame to RGB format (as OpenCV uses BGR)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+        # Convert the frame to QImage
+        height, width, channel = frame_rgb.shape
+        bytes_per_line = 3 * width
+        qimg = QImage(frame_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
 
-
-
-
-
-
-
-
-
-#import cv2
-#import numpy as np
-#from PyQt5.QtCore import Qt, QThread, QTimer
-#from pyqtgraph import ImageView
-
-#class Camera:
-    #def __init__(self, cam_num):
-        #self.cam_num = cam_num
-        #self.cap = None
-        #self.last_frame = np.zeros((1,1))
-
-   # def initialize(self):
-       # self.cap = cv2.VideoCapture(self.cam_num)
+        # Set the image to the QLabel and scale it to fit
+        pixmap = QPixmap.fromImage(qimg)
+        label.setPixmap(pixmap.scaled(label.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
         
-   # def get_frame(self):
-        #ret, self.last_frame = self.cap.read()
-        #return self.last_frame
+        # Update the QLabel in the Overview tab
+        ov_label.setPixmap(pixmap.scaled(ov_label.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
 
-   # def acquire_movie(self, num_frames):
-        #movie = []
-        #for _ in range(num_frames):
-           # movie.append(self.get_frame())
-        #return movie
-
-    #def close_camera(self):
-        #self.cap.release()
-
-    #def __str__(self):
-        #return 'OpenCV Camera {}'.format(self.cam_num)
-
-
-#class MovieThread(QThread):
-    #def __init__(self, camera):
-       # super().__init__()
-        #self.camera = camera
-
-   # def run(self):
-        #self.camera.acquire_movie(200)
 
 
 
