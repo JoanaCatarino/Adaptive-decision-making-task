@@ -19,6 +19,7 @@ class FreeLickingTask:
 '''
 
 import asyncio
+from signal import pause
 from gpio_map import *
 
 class FreeLickingTask:
