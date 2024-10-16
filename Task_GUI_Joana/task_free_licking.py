@@ -34,10 +34,10 @@ class FreeLickingTask:
     # Function to monitor button presses
     async def monitor_buttons():
         while True:
-            if red_button.is_pressed:
-                await handle_button_press(red_led, "Red")
-            if blue_button.is_pressed:
-                await handle_button_press(blue_led, "Blue")
+            if button_red.is_pressed:
+                await handle_button_press(led_red, "Red")
+            if button_blue.is_pressed:
+                await handle_button_press(led_blue, "Blue")
             await asyncio.sleep(0.1)  # Small delay to prevent CPU overuse
     
     
