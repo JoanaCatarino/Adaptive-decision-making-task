@@ -22,31 +22,36 @@ import asyncio
 from gpio_map import *
 
 class FreeLickingTask:
-    # Function to handle button press asynchronously
-    async def handle_button_press(led, color):
-        print(f'{color} button pressed! LED on!')
+    # Function to handle LED control
+    async def handle_led(led, duration, color):
+        print(f"{color} button pressed! Turning on {color} LED...")
         led.on()
-        await asyncio.sleep(1)  # Keep LED on for 1 second
+        await asyncio.sleep(duration)  # Keep LED on for the specified duration
         led.off()
-        print(f'{color} LED off.')
+        print(f"{color} LED off.")
     
+    # Setup button press event listeners
+    def on_red_button_press():
+        print("Red button detected")
+        asyncio.create_task(handle_led(led_red, 1, "Red"))
     
-    # Function to monitor button presses
-    async def monitor_buttons():
-        while True:
-            if button_red.is_pressed:
-                await handle_button_press(led_red, "Red")
-            if button_blue.is_pressed:
-                await handle_button_press(led_blue, "Blue")
-            await asyncio.sleep(0.1)  # Small delay to prevent CPU overuse
+    def on_blue_button_press():
+        print("Blue button detected")
+        asyncio.create_task(handle_led(led_blue, 1, "Blue"))
     
-    
-    # Main function to start the asyncio loop
+    # Main function
     async def main():
-        await monitor_buttons()
+        # Assign button press callbacks
+        button_red.when_pressed = on_button_red_press
+        button_blue.when_pressed = on_button_blue_press
+    
+        # Run asyncio event loop
+        print("Monitoring buttons. Press Ctrl+C to exit.")
+        while True:
+            await asyncio.sleep(1)  # Keep the loop alive
 
 if __name__ == '__main__':
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("Program interrupted.")
+        print("Program interrupted. Exiting...")
