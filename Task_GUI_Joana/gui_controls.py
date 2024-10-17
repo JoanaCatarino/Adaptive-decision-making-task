@@ -222,7 +222,7 @@ class GuiControls:
             self.current_task = TestRig(self.ui)
             self.enable_controls()
         elif selected_task == 'Free Licking':
-            self.current_task = threading.Thread(target=self.start_free_licking_task)
+            self.current_task = FreeLickingTask
             self.current_task.start()
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
@@ -271,13 +271,6 @@ class GuiControls:
         self.update_button_states()
 
 
-    def start_free_licking_task(self):
-        # Run the free licking task
-        import free_licking  # Ensure this is in the method so it's executed in the thread
-        free_licking.run()  # Assuming there's a run() function in free_licking.py that starts the task
-        
-    
-        
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
         # Get the text from each QLineEdit widget in the gui
