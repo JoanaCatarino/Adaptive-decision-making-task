@@ -7,6 +7,7 @@ Created on Wed Oct  2 15:09:03 2024
 
 import sys
 import cv2
+import threading 
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
@@ -221,7 +222,8 @@ class GuiControls:
             self.current_task = TestRig(self.ui)
             self.enable_controls()
         elif selected_task == 'Free Licking':
-            self.current_task = FreeLickingTask()
+            self.current_task = threading.Thread(target=self.start_free_licking_task)
+            self.current_task.start()
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
         elif selected_task == 'Two-Choice Auditory Task':
@@ -231,7 +233,10 @@ class GuiControls:
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor()
             
-        if self.current_task:
+        if isinstance(self.current_task, threading.Thread):
+            #If the current task is a thread, we don't need to call start
+            pass
+        elif self.current_task:
             self.current_task.start()
             self.txt_Chronometer.start()
             self.OV_box_Chronometer.start() # start overview chronometer for Box1
@@ -265,6 +270,13 @@ class GuiControls:
         # Update start/stop button states
         self.update_button_states()
 
+
+    def start_free_licking_task(self):
+        # Run the free licking task
+        import free_licking  # Ensure this is in the method so it's executed in the thread
+        free_licking.run()  # Assuming there's a run() function in free_licking.py that starts the task
+        
+        
         
     # Test to use the Update button to print the value of the variables in real-time 
     def print_variables(self):
