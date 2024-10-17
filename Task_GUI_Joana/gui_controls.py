@@ -275,6 +275,7 @@ class GuiControls:
         # Run the free licking task
         import free_licking  # Ensure this is in the method so it's executed in the thread
         free_licking.run()  # Assuming there's a run() function in free_licking.py that starts the task
+        
     
         
     # Test to use the Update button to print the value of the variables in real-time 
