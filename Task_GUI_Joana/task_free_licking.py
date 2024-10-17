@@ -124,23 +124,23 @@ def display_timer():
 timer_thread = threading.Thread(target = display_timer, daemon=True)
 timer_thread.start()
 
-def update_plot_data():
-    current_time = time.time() - start_time
-    times.append(current_time)
-    button_blue_counts.append(button_blue_presses)
-    button_red_counts.append(button_red_presses)
-    early_press_counts.append(early_presses)
+#def update_plot_data():
+    #current_time = time.time() - start_time
+    #times.append(current_time)
+    #button_blue_counts.append(button_blue_presses)
+    #button_red_counts.append(button_red_presses)
+    #early_press_counts.append(early_presses)
     
 # Plotting function for real-time updates
-def animate(i):
-    plt.cla()
-    plt.plot(times, button_blue_counts, label='Button blue presses', color='#3AA8C1')
-    plt.plot(times, button_red_counts, label='Button red presses', color='#7C0902')
-    plt.plot(times, early_press_counts, label='Early presses', color='#FF7538')
-    plt.xlabel('Time(s)')
-    plt.ylabel('Count')
-    plt.legend(loc='upper left')
-    plt.tight_layout()
+#def animate(i):
+   # plt.cla()
+    #plt.plot(times, button_blue_counts, label='Button blue presses', color='#3AA8C1')
+    #plt.plot(times, button_red_counts, label='Button red presses', color='#7C0902')
+    #plt.plot(times, early_press_counts, label='Early presses', color='#FF7538')
+    #plt.xlabel('Time(s)')
+    #plt.ylabel('Count')
+    #plt.legend(loc='upper left')
+    #plt.tight_layout()
 
 
 #def write_total_counts_to_csv():
@@ -163,7 +163,7 @@ ani = FuncAnimation(plt.gcf(), animate, interval=100)
 
 print('Press the buttons...')
 
-plt.show()
+#plt.show()
 
 # Keep the program running to detect button presses
 input('Press Enter to exit...\n')
