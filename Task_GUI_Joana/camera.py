@@ -19,13 +19,14 @@ def start_camera(cap, timer, update_frame_slot):
     timer.timeout.connect(update_frame_slot)
     timer.start(30)  # Capture a frame every 30ms (~33fps)
 
-def stop_camera(cap, label):
+def stop_camera(cap, label, ov_label):
     # Check if the camera is opened and release it
     if cap.isOpened():
         cap.release()
 
-    # Clear the QLabel to remove the current pixmap
+    # Clear the QLabel to remove the current pixmap for both Gui and Overview tab
     label.clear()
+    ov_label.clear()
 
 def update_frame(cap, label, ov_label):
     # Capture a frame from the camera
