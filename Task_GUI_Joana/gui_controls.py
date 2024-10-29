@@ -17,6 +17,7 @@ from form_updt import Ui_TaskGui
 
 # Import different functions/classes
 from animal_id_generator import animal_id
+from box_generator import box
 from task_generator import task
 from date_updater import DateUpdater
 from chronometer_generator import Chronometer
@@ -43,7 +44,9 @@ class GuiControls:
         
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
+        self.populate_ddm_box() # dropdown menu with box numbers
         self.OV_animalID() # txt with animal ID in overview tab
+        self.OV_box() # txt with box number in the overview tab
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
@@ -58,6 +61,9 @@ class GuiControls:
     
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
+        
+        # Connect dropdown menu with box number to the box txt in the overview tab
+        self.ui.ddm_Box.currentIndexChanged.connect(self.OV_box)
 
         # Initialize button states (to enable/disable start and stop buttons)
         self.update_button_states()
@@ -88,6 +94,21 @@ class GuiControls:
         # Update the txt, whether it's a string or a number
         self.ui.OV_txt_AnimalID.setText(f'{selected_animal}')
         
+    def populate_ddm_box(self):
+        # populate the dropdown menu for box
+        font_size = 8
+        box(self.ui.ddm_Box)
+        
+    def OV_box(self):
+        selected_box = self.ui.ddm_Box.currentText() 
+        
+        if selected_box.replace('.', '', 1).isdigit():
+            if '.' in selected_box:
+                selected_box = float(selected_box)
+            else:
+                selected_box = int(selected_box)
+                
+        self.ui.OV_txt_Box.setText(f'{selected_box}')
         
     def populate_ddm_task(self):
         font_size = 8
