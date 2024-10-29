@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -746,7 +746,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Play tone - spout pairs </string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_AnimalID_2">
+      <widget class="QLabel" name="lbl_Box">
        <property name="geometry">
         <rect>
          <x>251</x>
@@ -764,7 +764,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Box:</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="ddm_Animal_ID_2">
+      <widget class="QComboBox" name="ddm_Box">
        <property name="geometry">
         <rect>
          <x>281</x>
@@ -2828,7 +2828,7 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">border-color: rgb(112, 255, 122);
+       <string notr="true">border-color: rgb(81, 81, 81);
 </string>
       </property>
       <property name="title">
@@ -3120,7 +3120,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QWidget" name="OV_bkg_AnimalID" native="true">
       <property name="geometry">
        <rect>
-        <x>77</x>
+        <x>24</x>
         <y>10</y>
         <width>170</width>
         <height>21</height>
@@ -3161,6 +3161,50 @@ color: rgb(112, 112, 112);</string>
         <font>
          <pointsize>10</pointsize>
         </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="OV_bkg_Box" native="true">
+      <property name="geometry">
+       <rect>
+        <x>204</x>
+        <y>10</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(185, 217, 206);</string>
+      </property>
+      <widget class="QLabel" name="OV_lbl_Box">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>2</y>
+         <width>31</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Box:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="OV_txt_Box">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>3</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
        </property>
        <property name="text">
         <string/>
