@@ -75,9 +75,9 @@ class GuiControls:
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
         
         # Connect dropdown menu changes to check start button state method (so that you need to select animal info before starting the task)
-        self.ui.ddm_Animal_ID.currentIndexChanged(self.check_start_button_state)
-        self.ui.ddm_Task.currentIndexChanged(self.check_start_button_state)
-        self.ui.ddm_Box.currentIndexChanged(self.check_start_button_state)
+        self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.check_start_button_state)
+        self.ui.ddm_Task.currentIndexChanged.connect(self.check_start_button_state)
+        self.ui.ddm_Box.currentIndexChanged.connect(self.check_start_button_state)
         
         # Initial buttom state check
         self.check_start_button_state
