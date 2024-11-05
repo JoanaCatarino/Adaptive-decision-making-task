@@ -45,7 +45,7 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
     task = task_combobox.currentText()
     
     # Find the box in which the animal is was trained that day
-    box = box_combox.current_task()
+    box = box_combobox.current_task()
     
     # Construct the directory path for the animal ID within the saved directory
     animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
