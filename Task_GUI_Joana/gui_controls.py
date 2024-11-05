@@ -74,6 +74,15 @@ class GuiControls:
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
         
+        # Connect dropdown menu changes to check start button state method (so that you need to select animal info before starting the task)
+        self.ui.ddm_Animal_ID.currentIndexChanged(self.check_start_button_state)
+        self.ui.ddm_Task.currentIndexChanged(self.check_start_button_state)
+        self.ui.ddm_Box.currentIndexChanged(self.check_start_button_state)
+        
+        # Initial buttom state check
+        self.check_start_button_state
+        
+        
     
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -138,6 +147,16 @@ class GuiControls:
     def update_frame(self):
         update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
         
+
+    def check_start_button_state(self):
+        # Check if all dropdown menus have a selected value
+        animal_selected = self.ui.ddm_Animal_ID.currentText() != ''
+        task_selected = self.ui.ddm_Task.currentText() != ''
+        box_selected = self.ui.ddm_Box.currentText() != ''
+        
+        # Enable the Start button only if all dropdown menus have something selected
+        self.ui.btn_Start.setEnabled(animal_selected and task_selected and box_selected)
+
 
     def connect_buttons(self):
         # Connect Start and Stop buttons + update button

@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
 from PyQt5.QtGui import QFont  # Import QFont for font manipulation
 
 def box(combobox, font_size=8):
-    items = [" ","1","2", "3", "4", "ephys"]
+    items = [" ","1","2", "3", "4", "Ephys"]
     
     # Create a font with the specified size
     font = QFont()
