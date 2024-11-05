@@ -44,6 +44,9 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox):
     # Find the selected task
     task = task_combobox.currentText()
     
+    # Find the box in which the animal is was trained that day
+    box = box_combox.current_task()
+    
     # Construct the directory path for the animal ID within the saved directory
     animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
     
@@ -72,7 +75,8 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox):
     session_info = {'animal_id': animal_id,
                    'date': formatted_date,
                    'time': current_time,
-                   'task': task}
+                   'task': task,
+                   'box' : box}
    
     with open(json_file_path, 'w') as json_file:
        json.dump(session_info, json_file, indent=4)

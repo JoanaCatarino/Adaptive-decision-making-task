@@ -3120,7 +3120,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QWidget" name="OV_bkg_AnimalID" native="true">
       <property name="geometry">
        <rect>
-        <x>24</x>
+        <x>20</x>
         <y>10</y>
         <width>170</width>
         <height>21</height>
@@ -3170,9 +3170,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QWidget" name="OV_bkg_Box" native="true">
       <property name="geometry">
        <rect>
-        <x>204</x>
+        <x>200</x>
         <y>10</y>
-        <width>91</width>
+        <width>101</width>
         <height>21</height>
        </rect>
       </property>
@@ -3202,7 +3202,7 @@ color: rgb(112, 112, 112);</string>
         <rect>
          <x>40</x>
          <y>3</y>
-         <width>41</width>
+         <width>51</width>
          <height>16</height>
         </rect>
        </property>
