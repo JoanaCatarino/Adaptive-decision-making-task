@@ -19,7 +19,7 @@ SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir"
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
-def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_combox):
+def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_combobox):
     # Check if the save directory is set
     if not SAVE_DIRECTORY:
         raise ValueError("Save directory not set")
