@@ -83,7 +83,6 @@ class GuiControls:
         self.check_start_button_state
         
         
-    
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8 
