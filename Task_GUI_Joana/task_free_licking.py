@@ -19,7 +19,7 @@ import time
 class FreeLickingTask:
 
     # Define Quiet window time
-    quiet_window = 2 # seconds
+    quiet_window = 0 # seconds
 
     def __init__(self):
         
@@ -71,7 +71,9 @@ class FreeLickingTask:
                     
                     
             # Display the remaining time when the quiet window is greater than 0
-            if self.quiet_window > 0:
+            if self.quiet_window > 0 and 
+            ((button == 'red' and self.last_red_press_time > 0) or 
+             (button == 'blue' and self.last_blue_press_time > 0)):
                 print(f"Time until next {button} press: {time_remaining:.1f} seconds")
             
             # Sleep briefly to avoid excessive printing
@@ -88,7 +90,6 @@ class FreeLickingTask:
             self.total_presses += 1
             self.red_led_on_count += 1
             led_red.on() # Turn LED on
-            self.last_red_press_time = current_time
             print('red button pressed')
         
         # When quiet window is greater than 0
@@ -122,7 +123,6 @@ class FreeLickingTask:
             self.total_presses += 1
             self.blue_led_on_count += 1
             led_blue.on() # Turn LED on
-            self.last_blue_press_time = current_time
             print('blue button pressed')        
 
         # When quiet window is greater than 0
