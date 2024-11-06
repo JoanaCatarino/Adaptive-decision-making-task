@@ -45,6 +45,7 @@ class FreeLickingTask:
     def start(self):
         print('Free Licking Task starting')
         self.running = True # Set running to True to start threads
+        self.attach_callbacks()
         
         # Start countdowns in seperated threads
         threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
@@ -85,7 +86,6 @@ class FreeLickingTask:
 
     def red_btn_released(self):
         led_red.off()
-        pass
     
     
     def blue_btn_pressed(self):
@@ -107,7 +107,6 @@ class FreeLickingTask:
 
     def blue_btn_released(self):
         led_blue.off()
-        pass
 
 
     def attach_callbacks(self, button_red, button_blue):
