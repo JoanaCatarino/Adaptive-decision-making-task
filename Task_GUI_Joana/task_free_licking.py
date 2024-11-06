@@ -71,7 +71,7 @@ class FreeLickingTask:
                 if time_remaining > 0:
                     print(f"Time until next {button} press: {time_remaining:.1f} seconds")
                 
-                elif time_remaining == 0 and not remaining_time_zero:
+                elif time_remaining == 0 and not self.red_remaining_time_zero:
                     # print once when time reaches 0, then stop printing
                     print(f"Time until next {button} press: 0 seconds")
                     self.red_remaining_time_zero = True
@@ -86,7 +86,7 @@ class FreeLickingTask:
                 if time_remaining > 0:
                     print(f"Time until next {button} press: {time_remaining:.1f} seconds")
                 
-                elif time_remaining == 0 and not remaining_time_zero:
+                elif time_remaining == 0 and not self.blue_remaining_time_zero:
                     # print once when time reaches 0, then stop printing
                     print(f"Time until next {button} press: 0 seconds")
                     self.blue_remaining_time_zero = True # Set flag to prevent further printing                   
