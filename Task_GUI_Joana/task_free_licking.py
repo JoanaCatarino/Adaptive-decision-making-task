@@ -114,7 +114,7 @@ class FreeLickingTask:
         pass
 
 
-    def attach_callbacks(self):
+    def attach_callbacks(self, button_red, button_blue):
         # Attach callbacks to button events
         button_red.when_pressed = self.red_btn_pressed
         button_blue.when_pressed = self.blue_btn_pressed
