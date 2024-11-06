@@ -47,8 +47,8 @@ class FreeLickingTask:
         self.running = True # Set running to True to start threads
         
         # Start countdowns in seperated threads
-        threading.Thread(target=start_countdown, args=("red",), daemon=True).start()
-        threading.Thread(target=start_countdown, args=("blue",), daemon=True).start()
+        threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
+        threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
 
 
     def start_countdown(self, button):
