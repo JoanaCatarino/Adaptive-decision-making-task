@@ -53,6 +53,9 @@ class FreeLickingTask:
 
 
     def start_countdown(self, button):
+        
+        remaining_time_zero = False #Track if the remaining time in the quiet window has reached zero
+        
         while self.running: # Only runs while self.running is True
             current_time = time.time()
             
@@ -75,11 +78,16 @@ class FreeLickingTask:
                 
                 if time_remaining > 0:
                     print(f"Time until next {button} press: {time_remaining:.1f} seconds")
-                    printed = True
+                    remaining_time_zero = False # Reset flag to false when time is not zero
+                
+                elif time_remaining == 0 and not remaining_time_zero:
+                    # print once when time reaches 0, then stop printing
+                    print(f"Time until next {button} press: 0 seconds")
+                    remaining_time_zero = True # Set flag to true so that we don't print again
                     
-                elif time_remaining == 0 and printed:
-                    # stop printing when countdown gets to 0
-                    break # exit the loop and stop printing
+            # Reset the flag when the button is pressed to allow countdown printing again
+            if ((button == 'red' and self.last_red_press_time > 0) or (button == 'blue' and self.last_blue_press_time > 0)):
+                remaining_time_zero = False
                 
             
             # Sleep briefly to avoid excessive printing
