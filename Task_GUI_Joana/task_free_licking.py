@@ -19,7 +19,7 @@ import time
 class FreeLickingTask:
 
     # Define Quiet window time
-    quiet_window = 2
+    quiet_window = 2 # seconds
 
     def __init__(self):
         
@@ -48,18 +48,31 @@ class FreeLickingTask:
         # Start countdowns in seperated threads
         threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
         threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
+        
+        pause() # Keeps the script alive and listens for events like button press
 
 
     def start_countdown(self, button):
         while self.running: # Only runs while self.running is True
             current_time = time.time()
-            if button == "red":
-                time_remaining = max(0, self.quiet_window - (current_time - self.last_red_press_time))
-            elif button == "blue":
-                time_remaining = max(0, self.quiet_window - (current_time - self.last_blue_press_time))
             
-            # Display the remaining time
-            print(f"Time until next {button} press: {time_remaining:.1f} seconds")
+            # Determine the time remaining based on the quiet window
+            if button == "red":
+                if self.quiet_window > 0:
+                    time_remaining = max(0, self.quiet_window - (current_time - self.last_red_press_time))
+                else:
+                    time_remaining = 0 # Quiet window is 0, so no countdown
+            
+            elif button == "blue":
+                if self.quiet_window > 0:
+                    time_remaining = max(0, self.quiet_window - (current_time - self.last_blue_press_time))
+                else:
+                    time_remaining = 0 # Quiet window is 0, so no countdown
+                    
+                    
+            # Display the remaining time when the quiet window is greater than 0
+            if self.quiet_window > 0:
+                print(f"Time until next {button} press: {time_remaining:.1f} seconds")
             
             # Sleep briefly to avoid excessive printing
             time.sleep(0.1)
@@ -69,12 +82,24 @@ class FreeLickingTask:
         print('red button pressed')
         current_time = time.time()
         
-        if self.quiet_window > 0 and current_time - self.last_red_press_time < self.quiet_window:
+        # If quiet window is 0, allow the LED to turn on with each press
+        if self.quiet_window == 0:
+            self.red_btn_presses += 1
+            self.total_presses += 1
+            self.red_led_on_count += 1
+            led_red.on() # Turn LED on
+            self.last_red_press_time = current_time
+            print('red button pressed')
+        
+        # When quiet window is greater than 0
+        # If pressed during the quiet window, reset the timer and don't turn on the LED
+        elif self.quiet_window > 0 and current_time - self.last_red_press_time < self.quiet_window:
             self.red_early_presses += 1
             self.early_presses += 1  # Total presses - combines both red and blue
             self.last_red_press_time = current_time  # Reset last press time
-            print("Red button early press, countdown reset")
+            print("Red early press")
         else:
+            # If pressed outside the quiet window, allow LED to turn on
             self.red_btn_presses += 1
             self.total_presses += 1
             self.red_led_on_count += 1
@@ -91,12 +116,24 @@ class FreeLickingTask:
         print('blue button pressed')
         current_time = time.time()
         
-        if self.quiet_window > 0 and current_time - self.last_blue_press_time < self.quiet_window:
+        # If quiet window is 0, allow the LED to turn on with each press
+        if self.quiet_window == 0:
+            self.blue_btn_presses += 1
+            self.total_presses += 1
+            self.blue_led_on_count += 1
+            led_blue.on() # Turn LED on
+            self.last_blue_press_time = current_time
+            print('blue button pressed')        
+
+        # When quiet window is greater than 0
+        # If pressed during the quiet window, reset the timer and don't turn on the LED        
+        elif self.quiet_window > 0 and current_time - self.last_blue_press_time < self.quiet_window:
             self.blue_early_presses += 1
             self.early_presses += 1  # Increment combined early presses counter
             self.last_blue_press_time = current_time  # Reset last press time
-            print("Blue button early press, countdown reset")
+            print("Blue early press")
         else:
+            # If pressed outside the quiet window, allow LED to turn on
             self.blue_btn_presses += 1
             self.total_presses += 1
             self.blue_led_on_count += 1
