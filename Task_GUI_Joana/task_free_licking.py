@@ -9,7 +9,7 @@ Created on Sat Jul 20 17:47:58 2024
 - In this task animals should receive a reward when they lick either of the spouts
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
-from gpiozero import *
+from gpio_map import *
 from signal import pause
 import os
 import threading
