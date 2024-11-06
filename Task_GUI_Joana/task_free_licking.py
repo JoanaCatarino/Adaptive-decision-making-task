@@ -109,7 +109,7 @@ class FreeLickingTask:
         led_blue.off()
 
 
-    def attach_callbacks(self, button_red, button_blue):
+    def attach_callbacks(self):
         # Attach callbacks to button events
         button_red.when_pressed = self.red_btn_pressed
         button_blue.when_pressed = self.blue_btn_pressed

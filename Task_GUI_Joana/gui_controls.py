@@ -263,7 +263,6 @@ class GuiControls:
             self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask()
-            self.current_task.attach_callbacks(button_red, button_blue)
             self.current_task.start()
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
