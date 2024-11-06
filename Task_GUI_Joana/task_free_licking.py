@@ -72,14 +72,21 @@ class FreeLickingTask:
                     
             # Display the remaining time when the quiet window is greater than 0
             if self.quiet_window > 0 and ((button == 'red' and self.last_red_press_time > 0) or (button == 'blue' and self.last_blue_press_time > 0)):
-                print(f"Time until next {button} press: {time_remaining:.1f} seconds")
+                
+                if time_remaining > 0:
+                    print(f"Time until next {button} press: {time_remaining:.1f} seconds")
+                    printed = True
+                    
+                elif time_remaining == 0 and printed:
+                    # stop printing when countdown gets to 0
+                    break # exit the loop and stop printing
+                
             
             # Sleep briefly to avoid excessive printing
             time.sleep(0.1)
 
 
     def red_btn_pressed(self):
-        print('red button pressed')
         current_time = time.time()
         
         # If quiet window is 0, allow the LED to turn on with each press
@@ -112,7 +119,6 @@ class FreeLickingTask:
     
     
     def blue_btn_pressed(self):
-        print('blue button pressed')
         current_time = time.time()
         
         # If quiet window is 0, allow the LED to turn on with each press
