@@ -19,7 +19,7 @@ import time
 class FreeLickingTask:
 
     # Define Quiet window time
-    quiet_window = 2 # seconds
+    quiet_window = 0 # seconds
 
     def __init__(self):
         
