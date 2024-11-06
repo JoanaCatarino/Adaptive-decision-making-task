@@ -39,24 +39,20 @@ class FreeLickingTask:
         self.last_red_press_time = 0
         self.last_blue_press_time = 0
         
-        # Flag to control thread execution
-        self.running = False
+        self.running = False  # Control flag for threads
 
 
     def start(self):
         print('Free Licking Task starting')
-        self.running = True
-        self.start_countdowns()
+        self.running = True # Set running to True to start threads
         
-        
-    def start_countdowns(self):
         # Start countdowns in seperated threads
         threading.Thread(target=start_countdown, args=("red",), daemon=True).start()
         threading.Thread(target=start_countdown, args=("blue",), daemon=True).start()
-        
+
 
     def start_countdown(self, button):
-        while self.running: # Check the running flag to keep the thread active
+        while self.running: # Only runs while self.running is True
             current_time = time.time()
             if button == "red":
                 time_remaining = max(0, self.quiet_window - (current_time - self.last_red_press_time))
