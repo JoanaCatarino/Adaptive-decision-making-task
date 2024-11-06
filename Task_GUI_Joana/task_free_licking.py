@@ -109,7 +109,7 @@ class FreeLickingTask:
             print("Blue button valid press")
 
 
-    def blue_btn_released():
+    def blue_btn_released(self):
         led_blue.off()
         pass
 
