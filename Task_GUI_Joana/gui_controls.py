@@ -24,6 +24,7 @@ from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
+from gpio_map import *
 
 # Import task classes
 from task_test_rig import TestRig
