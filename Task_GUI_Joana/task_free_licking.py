@@ -71,9 +71,7 @@ class FreeLickingTask:
                     
                     
             # Display the remaining time when the quiet window is greater than 0
-            if self.quiet_window > 0 and 
-            ((button == 'red' and self.last_red_press_time > 0) or 
-             (button == 'blue' and self.last_blue_press_time > 0)):
+            if self.quiet_window > 0 and ((button == 'red' and self.last_red_press_time > 0) or (button == 'blue' and self.last_blue_press_time > 0)):
                 print(f"Time until next {button} press: {time_remaining:.1f} seconds")
             
             # Sleep briefly to avoid excessive printing
