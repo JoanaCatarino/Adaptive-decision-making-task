@@ -11,11 +11,9 @@ Created on Sat Jul 20 17:47:58 2024
 """
 from gpiozero import *
 from signal import pause
-from datetime import datetime
 import os
 import threading
 import time
-
 
 
 class FreeLickingTask:
@@ -45,7 +43,7 @@ class FreeLickingTask:
     def start(self):
         print('Free Licking Task starting')
         self.running = True # Set running to True to start threads
-        self.attach_callbacks(button_blue, button_red)
+        self.attach_callbacks()
         
         # Start countdowns in seperated threads
         threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
@@ -109,7 +107,7 @@ class FreeLickingTask:
         led_blue.off()
 
 
-    def attach_callbacks(self, button_blue, button_red):
+    def attach_callbacks(self):
         # Attach callbacks to button events
         button_red.when_pressed = self.red_btn_pressed
         button_blue.when_pressed = self.blue_btn_pressed
