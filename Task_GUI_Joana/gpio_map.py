@@ -30,7 +30,7 @@ button_red = Button(16) # Free licking script with buttons
 
 
 # Specify which names to export when 'from gpio_pins import *' is used
-__all__ = ['led_blue', 'led_white_l', 'led_white_r', 'button_blue', 'button_red']
+__all__ = ['led_blue', 'led_red', 'led_white_l', 'led_white_r', 'button_blue', 'button_red']
 
 # Updated all
 #__all__= ['led_white_l', 'led_white_r', 'led_blue', 'pump_l', 'pump_r', 'laser', 'btn_l', 'btn_r']

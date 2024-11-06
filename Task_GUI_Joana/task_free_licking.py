@@ -66,6 +66,7 @@ class FreeLickingTask:
 
 
     def red_btn_pressed(self):
+        print('red button pressed')
         current_time = time.time()
         
         if self.quiet_window > 0 and current_time - self.last_red_press_time < self.quiet_window:
@@ -87,6 +88,7 @@ class FreeLickingTask:
     
     
     def blue_btn_pressed(self):
+        print('blue button pressed')
         current_time = time.time()
         
         if self.quiet_window > 0 and current_time - self.last_blue_press_time < self.quiet_window:
