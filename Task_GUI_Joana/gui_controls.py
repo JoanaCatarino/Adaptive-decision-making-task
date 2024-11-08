@@ -180,7 +180,7 @@ class GuiControls:
         self.task_instance.update_variables(new_qw_value)
         self.task_instance.qw_updated = True
         print(f'Updated QW to {new_qw_value}_gui print')
-        #self.task_instance.start_fl()
+        self.task_instance.start_fl()
 
     
     def update_button_states(self):
