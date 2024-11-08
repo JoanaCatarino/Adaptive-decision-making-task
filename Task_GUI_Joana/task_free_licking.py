@@ -44,7 +44,7 @@ class FreeLickingTask:
         self.running = False  # Control flag for threads
         
         # Flag to control Quiet Window updates
-        self.qw_update = False
+        self.qw_updated = False
 
 
     def start_fl(self):
