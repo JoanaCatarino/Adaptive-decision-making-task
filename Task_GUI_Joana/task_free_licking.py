@@ -54,6 +54,12 @@ class FreeLickingTask:
         threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
         
         pause() # Keeps the script alive and listens for events like button press
+        
+        def stop(self):
+            print('Free Licking task stopping')
+            self.running = False  # Stop the countdown threads
+    self.stop = stop
+        
 
 
     def start_countdown(self, button):
@@ -177,9 +183,4 @@ class FreeLickingTask:
         button_red.when_released = self.red_btn_released
         button_blue.when_released = self.blue_btn_released
 
-    
-    def stop(self):
-        print('Free Licking task stopping')
-        self.running = False  # Stop the countdown threads
-    self.stop = stop
     
