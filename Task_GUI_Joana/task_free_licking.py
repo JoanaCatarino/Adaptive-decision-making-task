@@ -55,10 +55,11 @@ class FreeLickingTask:
         
         pause() # Keeps the script alive and listens for events like button press
         
-        def stop(self):
+        def stop():
             print('Free Licking task stopping')
             self.running = False  # Stop the countdown threads
-
+    
+    self.stop = stop
         
 
 
