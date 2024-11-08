@@ -59,7 +59,7 @@ class FreeLickingTask:
             print('Free Licking task stopping')
             self.running = False  # Stop the countdown threads
     
-    self.stop = stop
+        self.stop = stop
         
 
 
