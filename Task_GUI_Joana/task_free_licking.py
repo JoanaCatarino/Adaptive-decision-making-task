@@ -71,7 +71,7 @@ class FreeLickingTask:
             # Determine the time remaining based on the quiet window
             if button == "red":
                 if self.quiet_window > 0:
-                    print(f' executing task with quet window = {self.quiet_window}')
+                    #print(f' executing task with quet window = {self.quiet_window}')
                     time_remaining = max(0, self.quiet_window - (current_time - self.last_red_press_time))
                 else:
                     time_remaining = 0 # Quiet window is 0, so no countdown
