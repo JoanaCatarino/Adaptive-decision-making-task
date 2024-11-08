@@ -181,7 +181,7 @@ class GuiControls:
         if new_qw_value:
             try:
                 new_qw_value = float(new_qw_value)
-                self.free_licking_task.quiet_window = new_qw_value # Directly upate task variable
+                self.task_instance.quiet_window = new_qw_value # Directly upate task variable
                 print(f'Updated QW to {new_qw_value}')
                 
             except ValueError:
