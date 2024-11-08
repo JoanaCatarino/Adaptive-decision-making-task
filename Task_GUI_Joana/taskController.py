@@ -12,6 +12,7 @@ from form_updt import Ui_TaskGui
 
 # Import different functions/classes
 from gui_controls import GuiControls
+from task_free_licking import FreeLickingTask
 from stylesheet import stylesheet
 
 #test
@@ -24,8 +25,11 @@ class TaskGui(QMainWindow):
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
         
+        # Instantiate FreeLickingTask
+        self.free_licking_task = FreeLickingTask()
+        
         # Initialize Gui controls
-        self.gui_controls = GuiControls(self.ui, self.updateTime)
+        self.gui_controls = GuiControls(self.ui, self.updateTime, self.free_licking_task)
  
 
     # Define function to have the chonometer with the hour, minute and second as the text

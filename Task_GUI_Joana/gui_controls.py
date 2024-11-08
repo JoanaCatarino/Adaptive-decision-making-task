@@ -37,9 +37,11 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 class GuiControls:
     
-    def __init__(self, ui, updateTime_slot):
+    def __init__(self, ui, updateTime_slot, task_instance):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
+        self.task_instance = task_instance # store reference to FreeLickingTask instance
+        
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None
         
@@ -51,7 +53,7 @@ class GuiControls:
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
-        self.connect_buttons() # Start and Stop buttons
+        self.connect_buttons() # Start, Stop and Update buttons
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
@@ -162,15 +164,28 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        self.ui.btn_Update.clicked.connect(self.print_variables)
-  
+        #self.ui.btn_Update.clicked.connect(self.print_variables)
+        self.ui.btn_Update.clicked.connect(self.update_variables)
         
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
         self.ui.txt_QuietWindow.textChanged.connect(self.check_update_state)
         self.ui.txt_ResponseWindow.textChanged.connect(self.check_update_state)
         self.ui.txt_TrialDuration.textChanged.connect(self.check_update_state)
-        self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)          
+        self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)   
+        
+    def update_variables (self):
+        # Get the value from the Gui's QLineEdit for quiet window in the free licking script
+        new_qw_value = self.ui.txt_QuietWindow.text().strip()
+        
+        if new_qw_value:
+            try:
+                new_qw_value = float(new_qw_value)
+                self.free_licking_task.quiet_window = new_qw_value # Directly upate task variable
+                print(f'Updated QW to {new_qw_value}')
+                
+            except ValueError:
+                print('Invalid input for QW')
     
     
     def update_button_states(self):

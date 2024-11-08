@@ -23,6 +23,9 @@ class FreeLickingTask:
 
     def __init__(self):
         
+        # Define Quiet window time
+        self.quiet_window = 0 # seconds
+        
         # Initializer counters:
         self.red_btn_presses = 0
         self.blue_btn_presses = 0
@@ -161,6 +164,12 @@ class FreeLickingTask:
 
     def blue_btn_released(self):
         led_blue.off()
+        
+        
+    def update_variables(self, value):
+        # Method to handle the update if needed
+        self.quiet_window = value
+        print(f'QW updated to {value}')
 
 
     def attach_callbacks(self):
