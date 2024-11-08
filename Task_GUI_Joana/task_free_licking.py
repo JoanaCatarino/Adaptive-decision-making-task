@@ -18,9 +18,6 @@ import time
 
 class FreeLickingTask:
 
-    # Define Quiet window time
-    quiet_window = 0 # seconds
-
     def __init__(self):
         
         # Define Quiet window time
@@ -47,7 +44,7 @@ class FreeLickingTask:
         self.running = False  # Control flag for threads
 
 
-    def start(self):
+    def start_fl(self):
         print('Free Licking Task starting')
         self.running = True # Set running to True to start threads
         self.attach_callbacks()
@@ -67,6 +64,7 @@ class FreeLickingTask:
             # Determine the time remaining based on the quiet window
             if button == "red":
                 if self.quiet_window > 0:
+                    print(f' executing task with quet window = {self.quiet_window}')
                     time_remaining = max(0, self.quiet_window - (current_time - self.last_red_press_time))
                 else:
                     time_remaining = 0 # Quiet window is 0, so no countdown
