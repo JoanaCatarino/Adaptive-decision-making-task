@@ -42,6 +42,9 @@ class FreeLickingTask:
         self.blue_remaining_time_zero = False
         
         self.running = False  # Control flag for threads
+        
+        # Flag to control Quiet Window updates
+        self.qw_update = False
 
 
     def start_fl(self):
@@ -175,6 +178,7 @@ class FreeLickingTask:
     def update_variables(self, value):
         # Method to handle the update if needed
         self.quiet_window = value
+        self.qw_updated = True # Set flag to indicate that QW was updated
         print(f'QW updated to {value}')
         
     
@@ -184,7 +188,7 @@ class FreeLickingTask:
             if self.qw_updated: #Flag to indicate if an update was received
                 print(f'QW updated to {self.quiet_window}')
                 self.qw_updated = False # Reset the flag
-            time.sleep(0.1) # Small sleep to prevent excessive cpu usage
+            time.sleep(0.5) # Small sleep to prevent excessive cpu usage
         
 
     def attach_callbacks(self):
