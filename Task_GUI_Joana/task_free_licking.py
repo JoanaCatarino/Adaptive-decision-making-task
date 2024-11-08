@@ -107,6 +107,35 @@ class FreeLickingTask:
             time.sleep(0.1)
 
 
+    def monitor_qw (self):
+        # Continuously check if the quiet window value has been updated
+        while self.running:
+            print(f'QW updated to {self.quiet_window}')
+            time.sleep(1) # Small sleep to prevent excessive cpu usage
+           
+
+    
+    def update_variables(self, value):
+        # Method to handle the update if needed
+        self.quiet_window = value
+        print(f'QW updated to {value}s')
+        
+    
+
+    def attach_callbacks(self):
+        # Attach callbacks to button events
+        button_red.when_pressed = self.red_btn_pressed
+        button_blue.when_pressed = self.blue_btn_pressed
+        button_red.when_released = self.red_btn_released
+        button_blue.when_released = self.blue_btn_released
+
+    
+    def stop(self):
+        print('Free Licking task stopping')
+        self.running = False  # Stop the countdown threads
+        
+        
+
     def red_btn_pressed(self):
         current_time = time.time()
         
@@ -175,27 +204,3 @@ class FreeLickingTask:
         led_blue.off()
         
         
-    def update_variables(self, value):
-        # Method to handle the update if needed
-        self.quiet_window = value
-        self.qw_updated = True # Set flag to indicate that QW was updated
-        print(f'QW updated to {value}')
-        
-    
-    def monitor_qw (self):
-        # Continuously check if the quiet window value has been updated
-        while self.running:
-            if self.qw_updated: #Flag to indicate if an update was received
-                print(f'QW updated to {self.quiet_window}')
-                self.qw_updated = False # Reset the flag
-            time.sleep(0.5) # Small sleep to prevent excessive cpu usage
-        
-
-    def attach_callbacks(self):
-        # Attach callbacks to button events
-        button_red.when_pressed = self.red_btn_pressed
-        button_blue.when_pressed = self.blue_btn_pressed
-        button_red.when_released = self.red_btn_released
-        button_blue.when_released = self.blue_btn_released
-
-    

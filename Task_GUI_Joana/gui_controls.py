@@ -176,10 +176,10 @@ class GuiControls:
         
     def update_variables (self):
         # Get the value from the Gui's QLineEdit for quiet window in the free licking script
-        new_qw_value = int(self.ui.txt_QuietWindow.text())
-        self.task_instance.update_variables(new_qw_value)
-        self.task_instance.qw_updated = True
-        print(f'Updated QW to {new_qw_value}_gui print')
+        new_qw_value = float(self.ui.txt_QuietWindow.text())
+        if new_qw_value >= 0:
+            self.task_instance.update_variables(new_qw_value)
+            print(f'Updated QW to {new_qw_value}_gui print')
 
     
     def update_button_states(self):
