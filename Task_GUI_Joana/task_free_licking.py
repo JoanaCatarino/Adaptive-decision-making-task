@@ -118,7 +118,7 @@ class FreeLickingTask:
     def update_variables(self, new_qw_value):
         # Method to handle the update if needed
         self.quiet_window = new_qw_value
-        print(f'QW updated to {value}s')
+        print(f'QW updated to {new_qw_value}s')
         
     
 
