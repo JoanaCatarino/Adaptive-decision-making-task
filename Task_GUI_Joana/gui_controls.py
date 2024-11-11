@@ -164,7 +164,7 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        #self.ui.btn_Update.clicked.connect(self.print_variables)
+        self.ui.btn_Update.clicked.connect(self.print_variables)
         self.ui.btn_Update.clicked.connect(self.update_variables)
         
     def connect_text_changes(self):
@@ -251,6 +251,9 @@ class GuiControls:
         
    
     def execute_task(self):
+        
+        # Ensure QLineWidgets remain editable when task starts
+        self.ui.txt_QuietWindow.setReadOnly(False)
         
         # Stop any currently running task
         if self.current_task and hasattr(self.current_task, 'stop'):
