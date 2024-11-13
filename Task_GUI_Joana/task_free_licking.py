@@ -21,7 +21,7 @@ class FreeLickingTask:
     def __init__(self):
         
         # Define Quiet window time
-        self.quiet_window = 0 # seconds
+        self.quiet_window = 2 # seconds
         
         # Initializer counters:
         self.red_btn_presses = 0
