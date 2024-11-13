@@ -174,12 +174,18 @@ class GuiControls:
         self.ui.txt_TrialDuration.textChanged.connect(self.check_update_state)
         self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)   
         
-    def update_variables (self):
+    def update_variables(self):
         # Get the value from the Gui's QLineEdit for quiet window in the free licking script
-        new_qw_value = float(self.ui.txt_QuietWindow.text())
-        if new_qw_value >= 0:
-            self.task_instance.update_variables(new_qw_value)
-            print(f'Updated QW to {new_qw_value}_gui print')
+        try:
+            new_qw_value = float(self.ui.txt_QuietWindow.text())
+            if new_qw_value >= 0:
+                # Call the method in the free licking task to update the quiet window
+                self.task_instance.update_variables(new_qw_value)
+                print(f'Updated QW to {new_qw_value}_gui print')
+            else:
+                print('invalid input')
+        except ValueError:
+            print('invalid input: please enter valid number')
 
     
     def update_button_states(self):

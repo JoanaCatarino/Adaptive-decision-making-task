@@ -21,7 +21,7 @@ class FreeLickingTask:
     def __init__(self):
         
         # Define Quiet window time
-        self.quiet_window = 2 # seconds
+        self.quiet_window = 0 # seconds
         
         # Initializer counters:
         self.red_btn_presses = 0
@@ -118,7 +118,7 @@ class FreeLickingTask:
     def update_variables(self, new_qw_value):
         # Method to handle the update if needed
         self.quiet_window = new_qw_value
-        print(f'QW updated to {new_qw_value}s')
+        print(f'QW updated to {new_qw_value}s - FL script')
         
     
 
