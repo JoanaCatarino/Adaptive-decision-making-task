@@ -10,7 +10,7 @@ Created on Sat Jul 20 17:47:58 2024
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
 from gpio_map import *
-from PyQt5.qtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QThread, pyqtSignal
 from signal import pause
 import os
 import threading
