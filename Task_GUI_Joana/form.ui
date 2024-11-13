@@ -2727,38 +2727,6 @@ color: rgb(112, 112, 112);</string>
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="plt_LickTrace_Right">
-      <property name="geometry">
-       <rect>
-        <x>1120</x>
-        <y>334</y>
-        <width>441</width>
-        <height>210</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(233, 237, 254);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="plt_LickTrace_Left">
-      <property name="geometry">
-       <rect>
-        <x>1120</x>
-        <y>593</y>
-        <width>441</width>
-        <height>211</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(233, 237, 254);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
      <widget class="QLabel" name="plt_AnimalPerformance">
       <property name="geometry">
        <rect>
@@ -2773,6 +2741,32 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="plt_LickTrace_Right" native="true">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>335</y>
+        <width>431</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="plt_LickTrace_Left" native="true">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>597</y>
+        <width>431</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
       </property>
      </widget>
      <zorder>bkg_Trials</zorder>
@@ -2813,9 +2807,9 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Bias</zorder>
      <zorder>box_Bias</zorder>
      <zorder>plt_Camera</zorder>
+     <zorder>plt_AnimalPerformance</zorder>
      <zorder>plt_LickTrace_Right</zorder>
      <zorder>plt_LickTrace_Left</zorder>
-     <zorder>plt_AnimalPerformance</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
