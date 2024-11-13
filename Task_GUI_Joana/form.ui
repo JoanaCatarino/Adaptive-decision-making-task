@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -853,45 +853,6 @@ color: rgb(73, 192, 203);</string>
        <enum>Qt::Vertical</enum>
       </property>
      </widget>
-     <widget class="QWidget" name="plt_AnimalsPerfomance" native="true">
-      <property name="geometry">
-       <rect>
-        <x>1120</x>
-        <y>50</y>
-        <width>441</width>
-        <height>211</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(234, 238, 255);</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="plt_LickTrace_Right" native="true">
-      <property name="geometry">
-       <rect>
-        <x>1120</x>
-        <y>322</y>
-        <width>441</width>
-        <height>211</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(234, 238, 255);</string>
-      </property>
-     </widget>
-     <widget class="QWidget" name="plt_LickTrace_Left" native="true">
-      <property name="geometry">
-       <rect>
-        <x>1120</x>
-        <y>594</y>
-        <width>441</width>
-        <height>211</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(234, 238, 255);</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="lbl_AnimalPerformance">
       <property name="geometry">
        <rect>
@@ -917,7 +878,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>1130</x>
-        <y>298</y>
+        <y>309</y>
         <width>141</width>
         <height>20</height>
        </rect>
@@ -2766,14 +2727,59 @@ color: rgb(112, 112, 112);</string>
        <string/>
       </property>
      </widget>
+     <widget class="QLabel" name="plt_LickTrace_Right">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>334</y>
+        <width>441</width>
+        <height>210</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plt_LickTrace_Left">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>593</y>
+        <width>441</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="plt_AnimalPerformance">
+      <property name="geometry">
+       <rect>
+        <x>1120</x>
+        <y>50</y>
+        <width>431</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(233, 237, 254);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
      <zorder>lbl_Visualization</zorder>
      <zorder>line</zorder>
-     <zorder>plt_AnimalsPerfomance</zorder>
-     <zorder>plt_LickTrace_Right</zorder>
-     <zorder>plt_LickTrace_Left</zorder>
      <zorder>lbl_AnimalPerformance</zorder>
      <zorder>lbl_LickTrace_right</zorder>
      <zorder>lbl_LickTrace_left</zorder>
@@ -2807,6 +2813,9 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Bias</zorder>
      <zorder>box_Bias</zorder>
      <zorder>plt_Camera</zorder>
+     <zorder>plt_LickTrace_Right</zorder>
+     <zorder>plt_LickTrace_Left</zorder>
+     <zorder>plt_AnimalPerformance</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
@@ -2834,19 +2843,6 @@ color: rgb(112, 112, 112);</string>
       <property name="title">
        <string/>
       </property>
-      <widget class="QWidget" name="OV_plt_AnimalPerformance" native="true">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>339</y>
-         <width>271</width>
-         <height>221</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(230, 248, 255);</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="OV_box_Chronometer">
        <property name="geometry">
         <rect>
@@ -3113,7 +3109,23 @@ color: rgb(112, 112, 112);</string>
         <string notr="true">background-color: rgb(122, 122, 122);</string>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="OV_plt_AnimalPerformance">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>340</y>
+         <width>271</width>
+         <height>221</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(221, 255, 244);</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>
@@ -3190,6 +3202,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
+         <pointsize>9</pointsize>
          <bold>true</bold>
         </font>
        </property>

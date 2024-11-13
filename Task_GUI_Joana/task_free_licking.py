@@ -19,7 +19,7 @@ import time
 
 class FreeLickingTask(QThread):
     
-    task_finished = pyqtSignal()
+    update_qw = pyqtSignal(float)
         
     def __init__(self, parent=None):
         
