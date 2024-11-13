@@ -10,15 +10,20 @@ Created on Sat Jul 20 17:47:58 2024
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
 from gpio_map import *
+from PyQt5.qtCore import QThread, pyqtSignal
 from signal import pause
 import os
 import threading
 import time
 
 
-class FreeLickingTask:
-
-    def __init__(self):
+class FreeLickingTask(QThread):
+    
+    task_finished = pyqtSignal()
+        
+    def __init__(self, parent=None):
+        
+        super().__init__(parent)
         
         # Define Quiet window time
         self.quiet_window = 0 # seconds
@@ -58,6 +63,8 @@ class FreeLickingTask:
         threading.Thread(target=self.monitor_qw, daemon=True).start()
         
         pause() # Keeps the script alive and listens for events like button press
+        
+        self.task_finished.emit()
         
         def stop():
             print('Free Licking task stopping')
