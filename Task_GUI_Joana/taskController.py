@@ -24,7 +24,7 @@ class TaskGui(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
-        
+
         # Instantiate FreeLickingTask
         self.free_licking_task = FreeLickingTask()
         # Initialize Gui controls
@@ -39,18 +39,18 @@ class TaskGui(QMainWindow):
 
         # Check if the time is 1 hour (format expected: "hh:mm:ss")
         hours, minutes, seconds = map(int, time_str.split(':'))
-        
+
         # Reset the color if the time is reset (e.g., to "00:00:00")
         if hours == 0 and minutes == 0:
-            self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color 
-        
+            self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color
+
         if hours == 1:
             self.ui.OV_Box.setStyleSheet("background-color: #F5E268;")  # Makes the background color of the overview box 1 yellow if the
-                                                                       # animal has been performing the task for 1h                                                           
+                                                                       # animal has been performing the task for 1h
         if hours == 2:
-            self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h        
-    
-    
+            self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = TaskGui()
