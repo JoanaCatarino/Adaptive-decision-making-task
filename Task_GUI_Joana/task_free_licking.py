@@ -50,6 +50,9 @@ class FreeLickingTask(QThread):
         
         # Flag to control Quiet Window updates
         self.qw_updated = False
+        
+        # Connect the signal to the method that updates
+        self.update_qw.connect(self.update_variables)
 
 
     def start_fl(self):
