@@ -12,14 +12,11 @@ import cv2
 import threading
 import serial
 import time
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from form_updt import Ui_TaskGui
-
 
 # Import different functions/classes
 from animal_id_generator import animal_id
@@ -30,6 +27,7 @@ from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
+from piezo import LivePlotWidget
 from gpio_map import *
 
 # Import task classes
@@ -42,14 +40,13 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 
 class GuiControls:
-
     def __init__(self, ui, updateTime_slot, task_instance):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
         self.task_instance = task_instance # store reference to FreeLickingTask instance
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
-        self.current_task = None
+        self.current_task = None # set the initial task value
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -63,37 +60,100 @@ class GuiControls:
         self.disable_controls() # Disable all the controls for the test rig 'task' - Can only be activated when task is selected
         self.connect_text_changes() # inputs received in the QLineEdits
         self.check_update_state()
-        self.camera_timer = QTimer() # Camera timer
+        self.camera_timer = QTimer()
         self.cap = cv2.VideoCapture() # initializing cam without open
         stylesheet(self.ui)
-
-        # Connect piezo window to ploting window
-        #self.ui.plt_LickTrace_Left.connect(self.initialize_left_Piezo_graph)
-
         # Connect dropdown menu with animal ID in box tab to the animal ID txt in the overview tab
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
-
         # Connect dropdown menu with box number to the box txt in the overview tab
         self.ui.ddm_Box.currentIndexChanged.connect(self.OV_box)
-
         # Initialize button states (to enable/disable start and stop buttons)
         self.update_button_states()
-
         # Initialize validators for QLineEdit widgets - to only accept numbers as input
         self.setup_validators()
-
         # Connect the task combobox to the method for enabling/disabling QLineEdits
         self.ui.ddm_Task.currentIndexChanged.connect(self.update_qlineedit_states)
-
         # Connect dropdown menu changes to check start button state method (so that you need to select animal info before starting the task)
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.check_start_button_state)
         self.ui.ddm_Task.currentIndexChanged.connect(self.check_start_button_state)
         self.ui.ddm_Box.currentIndexChanged.connect(self.check_start_button_state)
-
         # Initial buttom state check
         self.check_start_button_state
+        self.setup_serial_connection() # Set up the serial port
+        self.setup_piezo_plots() # Set up the piezo plot
 
 
+        # Initialize the timer to update piezo plots
+        self.piezo_timer = QTimer()
+        self.piezo_timer.timeout.connect(self.update_piezo_plots)
+        self.piezo_timer.setInterval(20)  # Refresh every 20 ms
+
+
+    # Set up the serial connection
+    def setup_serial_connection(self):
+        self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Adjust port if necessary
+        # Parameters for the data processing
+        self.packet_size = 6  # Each data packet is 6 bytes
+        self.max_data_points = 600 # keep the most recent 600 points
+        self.piezo_adder1 = []
+        self.piezo_adder2 = []
+        self.buffer = bytearray()
+
+    def read_serial_data(self):
+        """Reads data from the serial port and updates the buffer."""
+        try:
+            # Read a chunk of data
+            bytes_to_read = self.packet_size * 10
+            self.buffer.extend(self.ser.read(bytes_to_read))
+            #print("Reading serial...")
+
+            # Process packets in the buffer
+            while len(self.buffer) >= self.packet_size:
+                # Check for start and end bytes in each packet
+                if self.buffer[0] == 0x7F and self.buffer[5] == 0x80:
+                    # Extract data for piezo sensors
+                    self.piezo_adder1.append(self.buffer[1])
+                    self.piezo_adder2.append(self.buffer[3])
+
+                    # Trim data lists to maintain max data points
+                    if len(self.piezo_adder1) > self.max_data_points:
+                        self.piezo_adder1.pop(0)
+                    if len(self.piezo_adder2) > self.max_data_points:
+                        self.piezo_adder2.pop(0)
+
+                    # Remove the processed packet from the buffer
+                    self.buffer = self.buffer[self.packet_size:]
+                else:
+                    # Remove one byte if packet format is incorrect
+                    self.buffer.pop(0)
+        except serial.SerialException as e:
+            print(f"Serial error: {e}")
+
+
+    #Piezo funcitons
+    def setup_piezo_plots(self):
+
+        # Place live plots into GUI layout
+        plt_layout1 = QVBoxLayout(self.ui.plt_LickTrace_Left)
+        self.live_plot1 = LivePlotWidget(self.max_data_points, parent=self.ui.plt_LickTrace_Left)
+        self.live_plot1.setFixedSize(450, 220)
+        plt_layout1.addWidget(self.live_plot1)
+        self.ui.plt_LickTrace_Left.setLayout(plt_layout1)
+
+        plt_layout2 = QVBoxLayout(self.ui.plt_LickTrace_Right)
+        self.live_plot2 = LivePlotWidget(self.max_data_points, parent=self.ui.plt_LickTrace_Right)
+        self.live_plot2.setFixedSize(450, 220)
+        plt_layout2.addWidget(self.live_plot2)
+        self.ui.plt_LickTrace_Right.setLayout(plt_layout2)
+
+
+    def update_piezo_plots(self):
+
+        # read serial data
+        self.read_serial_data()
+        # Update each piezo plot with new data
+        self.live_plot1.update_plot(self.piezo_adder1)  # Update Right Piezo Plot
+        self.live_plot2.update_plot(self.piezo_adder2)  # Update Left Piezo Plot
 
 
     def populate_ddm_animalID(self):
@@ -279,6 +339,11 @@ class GuiControls:
         self.stop_camera()
         self.start_camera()
 
+        # Ensure piezo are stopped and Start the piezo update timer
+        self.piezo_timer.stop()
+        self.piezo_timer.start()
+
+        # Read the selected task from the dropdown menu
         selected_task = self.ui.ddm_Task.currentText()
 
         # Create file with data unless the selected task is 'Test rig'
@@ -319,6 +384,7 @@ class GuiControls:
         # Update start/stop button states
         self.update_button_states()
 
+
     def stop_task(self):
 
         if self.current_task and hasattr(self.current_task, 'stop'):
@@ -331,6 +397,10 @@ class GuiControls:
 
         # Stop the camera
         self.stop_camera()
+
+        # Stop the piezo update timer
+        if self.piezo_timer.isActive():
+            self.piezo_timer.stop()
 
         # Disable test rig controls
         self.disable_controls()
