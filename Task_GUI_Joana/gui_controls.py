@@ -186,8 +186,9 @@ class GuiControls:
                     print(f'Updated QW to {new_qw_value}_gui print')
                  else:
                     print('invalid input')
-            except ValueError:
-                print('invalid input: please enter valid number')
+                    
+        except ValueError:
+            print('invalid input: please enter valid number')
 
     
     def update_button_states(self):
