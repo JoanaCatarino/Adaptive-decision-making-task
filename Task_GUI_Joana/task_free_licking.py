@@ -68,7 +68,6 @@ class FreeLickingTask(QThread):
             # Start countdowns in seperated threads
             threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
             threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
-            threading.Thread(target=self.monitor_qw, daemon=True).start()
             
             pause() # Keeps the script alive and listens for events like button press
         
