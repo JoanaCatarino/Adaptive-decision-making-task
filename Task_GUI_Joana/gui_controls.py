@@ -182,9 +182,9 @@ class GuiControls:
             if new_qw_value >= 0:
                  # Check if the task instance is a Free licking task and update it
                  if isinstance(self.task_instance, FreeLickingTask):
-                     self.task_instance.update_variables(new_qw_value)
+                    self.task_instance.update_variables(new_qw_value)
                     print(f'Updated QW to {new_qw_value}_gui print')
-                else:
+                 else:
                     print('invalid input')
             except ValueError:
                 print('invalid input: please enter valid number')
