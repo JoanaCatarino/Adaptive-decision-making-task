@@ -284,7 +284,7 @@ class GuiControls:
             self.enable_controls()
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask()
-            self.current_task.run()
+            self.current_task.run(self)
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
         elif selected_task == 'Two-Choice Auditory Task':
