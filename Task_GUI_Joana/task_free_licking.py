@@ -21,7 +21,9 @@ class FreeLickingTask(QThread):
     
     update_qw = pyqtSignal(float)
         
-    def __init__(self, parent=None):
+    def __init__(self, ui, parent=None):
+        
+        self.ui = ui
         
         super().__init__(parent)
         
