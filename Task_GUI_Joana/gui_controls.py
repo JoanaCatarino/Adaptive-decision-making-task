@@ -234,7 +234,7 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        self.ui.btn_Update.clicked.connect(self.print_variables)
+        #self.ui.btn_Update.clicked.connect(self.print_variables)
         self.ui.btn_Update.clicked.connect(self.update_variables)
 
     def connect_text_changes(self):
@@ -248,12 +248,15 @@ class GuiControls:
         # Get the value from the Gui's QLineEdit for quiet window in the free licking script
         try:
             new_qw_value = float(self.ui.txt_QuietWindow.text())
+            
             if new_qw_value >= 0:
-                # Call the method in the free licking task to update the quiet window
-                self.task_instance.update_variables(new_qw_value)
-                print(f'Updated QW to {new_qw_value}_gui print')
-            else:
-                print('invalid input')
+                 # Check if the task instance is a Free licking task and update it
+                 if isinstance(self.task_instance, FreeLickingTask):
+                    self.task_instance.update_variables(new_qw_value)
+                    print(f'Updated QW to {new_qw_value}_gui print')
+                 else:
+                    print('invalid input')
+                    
         except ValueError:
             print('invalid input: please enter valid number')
 
@@ -356,9 +359,14 @@ class GuiControls:
             self.enable_controls()
 
         elif selected_task == 'Free Licking':
+<<<<<<< HEAD
             self.current_task = FreeLickingTask()
             self.current_task.start_fl()
 
+=======
+            self.current_task = FreeLickingTask(self.ui)
+            self.current_task.run()
+>>>>>>> 38395d885f454afc8a6df8ecfd475fd79837e5bf
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
 

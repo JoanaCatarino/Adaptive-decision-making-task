@@ -27,6 +27,7 @@ class TaskGui(QMainWindow):
 
         # Instantiate FreeLickingTask
         self.free_licking_task = FreeLickingTask()
+        
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime, self.free_licking_task)
 

@@ -21,7 +21,9 @@ class FreeLickingTask(QThread):
     
     update_qw = pyqtSignal(float)
         
-    def __init__(self, parent=None):
+    def __init__(self, ui, parent=None):
+        
+        self.ui = ui
         
         super().__init__(parent)
         
@@ -48,26 +50,29 @@ class FreeLickingTask(QThread):
         
         self.running = False  # Control flag for threads
         
-        # Flag to control Quiet Window updates
-        self.qw_updated = False
-        
         # Connect the signal to the method that updates
         self.update_qw.connect(self.update_variables)
 
+    
+    def update_variables(self, new_qw_value):
+        # Method to handle the update if needed
+        self.quiet_window = new_qw_value
+        print(f'QW updated to {new_qw_value}s - FL script')
 
-    def start_fl(self):
+
+    def run(self):
         print('Free Licking Task starting')
         self.running = True # Set running to True to start threads
-        self.attach_callbacks()
         
-        # Start countdowns in seperated threads
-        threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
-        threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
-        threading.Thread(target=self.monitor_qw, daemon=True).start()
+        while self.running:
+            self.attach_callbacks()
+            
+            # Start countdowns in seperated threads
+            threading.Thread(target=self.start_countdown, args=("red",), daemon=True).start()
+            threading.Thread(target=self.start_countdown, args=("blue",), daemon=True).start()
+            
+            pause() # Keeps the script alive and listens for events like button press
         
-        pause() # Keeps the script alive and listens for events like button press
-        
-        self.task_finished.emit()
         
         def stop():
             print('Free Licking task stopping')
@@ -115,22 +120,7 @@ class FreeLickingTask(QThread):
                     
             # Sleep briefly to avoid excessive printing
             time.sleep(0.1)
-
-
-    def monitor_qw (self):
-        # Continuously check if the quiet window value has been updated
-        while self.running:
-            print(f'QW updated to {self.quiet_window}')
-            time.sleep(1) # Small sleep to prevent excessive cpu usage
            
-
-    
-    def update_variables(self, new_qw_value):
-        # Method to handle the update if needed
-        self.quiet_window = new_qw_value
-        print(f'QW updated to {new_qw_value}s - FL script')
-        
-    
 
     def attach_callbacks(self):
         # Attach callbacks to button events
