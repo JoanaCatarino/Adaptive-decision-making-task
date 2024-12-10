@@ -5,7 +5,7 @@ Created on Sat Jul 20 17:32:26 2024
 '''
 
 import sys
-import websockets
+import asyncio
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from form_updt import Ui_TaskGui
@@ -52,7 +52,14 @@ class TaskGui(QMainWindow):
 
 
 if __name__ == "__main__":
+    from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
     app = QApplication(sys.argv)
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
     widget = TaskGui()
     widget.show()
+    # Use qasync to manage the event loop
+    with loop:
+        loop.run_forever()
+
     sys.exit(app.exec_())

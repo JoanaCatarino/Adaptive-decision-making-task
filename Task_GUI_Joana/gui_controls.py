@@ -12,10 +12,13 @@ import cv2
 import threading
 import serial
 import time
+import asyncio
+from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
 
 # Import different functions/classes
@@ -352,17 +355,25 @@ class GuiControls:
 
 
         if selected_task == 'Test rig':
+
+
+            # run test rig
             self.current_task = TestRig(self.ui)
             self.enable_controls()
+
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask()
             self.current_task.start_fl()
+
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
+
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()
+
         elif selected_task == 'Adaptive Sensorimotor Task':
             self.current_task = AdaptiveSensorimotorTask()
+
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor()
 
