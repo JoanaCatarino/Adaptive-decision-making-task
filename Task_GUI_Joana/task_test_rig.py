@@ -37,6 +37,10 @@ class TestRig:
         self.ui.chk_Reward_left.clicked.connect(pumpL)
         self.ui.chk_Reward_right.clicked.connect(pumpR)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
         def stop():
             print('Test rig stopping')
             self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
@@ -48,6 +52,7 @@ class TestRig:
             self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
             self.ui.chk_Reward_left.clicked.disconnect(pumpL)
             self.ui.chk_Reward_right.clicked.disconnect(pumpR)
+<<<<<<< HEAD
             #gpio_map.Device.close()
 
         self.stop = stop
@@ -60,6 +65,11 @@ class TestRig:
         print('LED blinking sequence completed')
 
 
+=======
+
+        self.stop = stop
+
+>>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
 # Test blue LED
 def blueLED():
     led_blue.on()
@@ -91,6 +101,7 @@ def pumpR():
     pump_r.off()
 
 
+<<<<<<< HEAD
 
 # Blink a specific LED in sequence
 async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
@@ -113,3 +124,6 @@ async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
 
 
 # Need to define functions to flush water on right spout and left spout
+=======
+# Need to define functions to flush water on right spout and left spout
+>>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
