@@ -5,7 +5,7 @@ Created on Sat Jul 20 17:32:26 2024
 '''
 
 import sys
-import websockets
+import asyncio
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate
 from form_updt import Ui_TaskGui
@@ -24,7 +24,7 @@ class TaskGui(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
-        
+
         # Instantiate FreeLickingTask
         self.free_licking_task = FreeLickingTask()
         
@@ -40,20 +40,30 @@ class TaskGui(QMainWindow):
 
         # Check if the time is 1 hour (format expected: "hh:mm:ss")
         hours, minutes, seconds = map(int, time_str.split(':'))
-        
+
         # Reset the color if the time is reset (e.g., to "00:00:00")
         if hours == 0 and minutes == 0:
-            self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color 
-        
+            self.ui.OV_Box.setStyleSheet("background-color: white;")  # Reset to default color
+
         if hours == 1:
             self.ui.OV_Box.setStyleSheet("background-color: #F5E268;")  # Makes the background color of the overview box 1 yellow if the
-                                                                       # animal has been performing the task for 1h                                                           
+                                                                       # animal has been performing the task for 1h
         if hours == 2:
-            self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h        
-    
-    
+            self.ui.OV_Box.setStyleSheet("background-color: #BD3C49;")  # Background becomes red when animals is in the task for 2h
+
+
 if __name__ == "__main__":
+    from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
     app = QApplication(sys.argv)
+    loop = QEventLoop(app)
+    asyncio.set_event_loop(loop)
     widget = TaskGui()
     widget.show()
+<<<<<<< HEAD
+    # Use qasync to manage the event loop
+    with loop:
+        loop.run_forever()
+
+=======
+>>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
     sys.exit(app.exec_())

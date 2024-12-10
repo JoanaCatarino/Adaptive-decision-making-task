@@ -66,17 +66,15 @@ if __name__ == '__main__':
         loop.run_until_complete(loop.shutdown_asyncgens())
         loop.close()
 
-'''    
-# Use this to test the sounds with this script  
+'''
+# Use this to test the sounds with this script
 if __name__ == '__main__':
-   
-    #tone_10KHz()
-    
+
+    tone_10KHz()
+
     #tone_5KHz()
-    
-    white_noise()
-'''  
-    
-    
-    
-    
+
+    #white_noise()
+'''
+
+
