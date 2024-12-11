@@ -12,11 +12,9 @@ import cv2
 import threading
 import serial
 import time
-<<<<<<< HEAD
+
 import asyncio
-from PyQt5 import QtWidgets
-=======
->>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
+
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
@@ -368,17 +366,10 @@ class GuiControls:
             self.enable_controls()
 
         elif selected_task == 'Free Licking':
-<<<<<<< HEAD
+
             self.current_task = FreeLickingTask()
             self.current_task.start_fl()
 
-<<<<<<< HEAD
-=======
-=======
-            self.current_task = FreeLickingTask(self.ui)
-            self.current_task.run()
->>>>>>> 38395d885f454afc8a6df8ecfd475fd79837e5bf
->>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
 
