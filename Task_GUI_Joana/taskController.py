@@ -59,11 +59,9 @@ if __name__ == "__main__":
     asyncio.set_event_loop(loop)
     widget = TaskGui()
     widget.show()
-<<<<<<< HEAD
+
     # Use qasync to manage the event loop
     with loop:
         loop.run_forever()
 
-=======
->>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
     sys.exit(app.exec_())
