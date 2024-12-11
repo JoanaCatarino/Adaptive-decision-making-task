@@ -48,7 +48,7 @@ class TestRig:
         self.ui = ui
         
         # Define LED sequence
-        self.leds = ['pump_l', 'pump_r', 'led_white_r', 'led_white_l']
+        self.leds = [pump_l, pump_r, led_white_r, led_white_l]
         for led in self.leds:
             led.off()
         
