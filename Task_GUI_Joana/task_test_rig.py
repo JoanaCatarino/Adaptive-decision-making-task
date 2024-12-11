@@ -98,7 +98,7 @@ def pumpR():
     pump_r.off()
 
 
-<<<<<<< HEAD
+
 
 # Blink a specific LED in sequence
 async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
@@ -121,6 +121,6 @@ async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
 
 
 # Need to define functions to flush water on right spout and left spout
-=======
+
 # Need to define functions to flush water on right spout and left spout
->>>>>>> 5afeb96e6fb29f2f9fa5d08e8b1d8d244f44f61c
+

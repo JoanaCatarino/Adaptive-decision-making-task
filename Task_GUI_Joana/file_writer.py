@@ -14,7 +14,7 @@ import json
 from PyQt5.QtCore import QTimer, QDate, QTime
 
 # Define the save directory path directly here
-SAVE_DIRECTORY = "/home/pielem/Desktop/test_dir"
+SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir"
 
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
