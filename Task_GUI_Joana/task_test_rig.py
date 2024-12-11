@@ -28,10 +28,10 @@ class TestRig:
         self.ui.chk_10Tone.clicked.connect(tone_10KHz)
         self.ui.chk_5Tone.clicked.connect(tone_5KHz)
         self.ui.chk_Punishment.clicked.connect(white_noise)
-        #self.ui.chk_BlueLED.clicked.connect(blueLED)
-        print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
-        self.ui.chk_BlueLED.clicked.connect(lambda: print("Blink LEDs button clicked"))
-        self.ui.chk_BlueLED.clicked.connect(lambda checked: asyncio.create.task(self.blink_leds(checked)))
+        self.ui.chk_BlueLED.clicked.connect(blueLED)
+        #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
+        #self.ui.chk_BlueLED.clicked.connect(lambda: print("Blink LEDs button clicked"))
+        #self.ui.chk_BlueLED.clicked.connect(lambda checked: asyncio.create.task(self.blink_leds(checked)))
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
         self.ui.chk_Reward_left.clicked.connect(pumpL)
@@ -53,7 +53,7 @@ class TestRig:
             #gpio_map.Device.close()
 
         self.stop = stop
-
+'''
    # @asyncSlot(bool) #use asyncSlot to handle async method
     async def blink_leds(self, checked):
         leds = [led_blue, led_white_l, led_white_r]
@@ -65,7 +65,7 @@ class TestRig:
 
 
         self.stop = stop
-
+'''
 
 # Test blue LED
 def blueLED():
@@ -98,8 +98,7 @@ def pumpR():
     pump_r.off()
 
 
-
-
+'''
 # Blink a specific LED in sequence
 async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
     """
@@ -124,3 +123,4 @@ async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
 
 # Need to define functions to flush water on right spout and left spout
 
+'''
