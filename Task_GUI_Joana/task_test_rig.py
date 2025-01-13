@@ -51,7 +51,15 @@ class TestRig:
         self.leds = [pump_l, pump_r, led_white_r, led_white_l]
         for led in self.leds:
             led.off()
-        
+
+    @asyncSlot()
+    async def start_led_sequence(self):
+        '''
+        Start the LED blink sequence when the blue led button is clicked
+        '''
+        print ('Starting LED sequence...')
+            
+        await blink_led_sequence(self.leds, cycles=5, on_time=0.5, off_time=0.5)    
         
     
 
@@ -72,16 +80,6 @@ class TestRig:
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
         self.ui.chk_Reward_left.clicked.connect(pumpL)
         self.ui.chk_Reward_right.clicked.connect(pumpR)
-        
-        
-        @asyncSlot()
-        async def start_led_sequence(self):
-            '''
-            Start the LED blink sequence when the blue led button is clicked
-            '''
-            print ('Starting LED sequence...')
-            
-            await blink_led_sequence(self.leds, cycles=5, on_time=0.5, off_time=0.5)
 
 
         def stop(self):
