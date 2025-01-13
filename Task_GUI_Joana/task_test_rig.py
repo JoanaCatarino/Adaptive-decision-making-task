@@ -20,28 +20,9 @@ from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
 from qasync import asyncSlot  # Import asyncSlot decorator
 
-# Define the blink led sequence 
-async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
-    
-    '''
-    Blink a list of leds in a sequence
-    
-    Args:
-    - leds (list): List of LED GPIO pins
-    - cycles (int): Number of times the sequence should repeat
-    - on_time (float): Duration for which each LED stays ON
-    - off_time (float): Duration for which each LED stays OFF
-    
-    '''
-    for _ in range (cycles):
-        for led in leds:
-            led.on()
-            await asyncio.sleep(on_time)
-            led.off()
-            await asyncio.sleep(off_tme)
-        
-        
-        
+from led_functions import setup_led_sequence
+
+
         
 class TestRig:
     def __init__(self, ui):
@@ -49,18 +30,11 @@ class TestRig:
         
         # Define LED sequence
         self.leds = [pump_l, pump_r, led_white_r, led_white_l]
+        
+        # Turn off all LEDs initially
         for led in self.leds:
             led.off()
 
-    @asyncSlot()
-    async def start_led_sequence(self):
-        '''
-        Start the LED blink sequence when the blue led button is clicked
-        '''
-        print ('Starting LED sequence...')
-            
-        await blink_led_sequence(self.leds, cycles=5, on_time=0.5, off_time=0.5)    
-        
     
 
     def start(self):
@@ -70,8 +44,9 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.ui.chk_BlueLED.clicked.connect(self.start_led_sequence)
-        
+        # Use the setup_led_sequence_button function for the Blue LED button
+        setup_led_sequence_button(self.ui.chk_BlueLED, self.leds, cycles=5, on_time=0.5, off_time=0.5)
+
         
         #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
         #self.ui.chk_BlueLED.clicked.connect(lambda: print("Blink LEDs button clicked"))
@@ -97,19 +72,7 @@ class TestRig:
             #gpio_map.Device.close()
 
         self.stop = stop
-'''
-   # @asyncSlot(bool) #use asyncSlot to handle async method
-    async def blink_leds(self, checked):
-        leds = [led_blue, led_white_l, led_white_r]
-        print('Starting LED blinking sequence')
-        await blink_led_sequence(leds, cycles=5, on_time=1, off_time=1)
-        print('LED blinking sequence completed')
 
-
-
-
-        self.stop = stop
-'''
 
 # Test blue LED
 def blueLED():
@@ -167,4 +130,15 @@ async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
 
 # Need to define functions to flush water on right spout and left spout
 
+'''
+
+'''
+   # @asyncSlot(bool) #use asyncSlot to handle async method
+    async def blink_leds(self, checked):
+        leds = [led_blue, led_white_l, led_white_r]
+        print('Starting LED blinking sequence')
+        await blink_led_sequence(leds, cycles=5, on_time=1, off_time=1)
+        print('LED blinking sequence completed')
+
+        self.stop = stop
 '''

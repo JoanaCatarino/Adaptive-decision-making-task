@@ -35,7 +35,7 @@ from piezo import LivePlotWidget
 from gpio_map import *
 
 # Import task classes
-from task_test_rig import TestRig, blink_led_sequence
+from task_test_rig import TestRig
 from task_free_licking import FreeLickingTask
 from task_spout_sampling import SpoutSamplingTask
 from task_twochoice_auditory import TwoChoiceAuditoryTask
@@ -365,7 +365,6 @@ class GuiControls:
             # run test rig
             self.current_task = TestRig(self.ui)
             self.enable_controls()
-            self.current_task.start()
 
         elif selected_task == 'Free Licking':
 
