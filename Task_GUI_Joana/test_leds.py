@@ -45,9 +45,9 @@ def setup_led_sequence_button(ui_element, leds, cycles=3, on_time=1, off_time=1)
         on_time (float): Duration for which each LED stays ON.
         off_time (float): Duration for which each LED stays OFF.
     """
-    @asyncSlot()
+
     async def start_led_sequence():
         print('Starting LED sequence...')
         await blink_led_sequence(leds, cycles, on_time, off_time)
 
-    self.ui.chk_BlueLED.clicked.connect(start_led_sequence)
+
