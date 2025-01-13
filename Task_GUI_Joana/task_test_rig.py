@@ -80,7 +80,7 @@ class TestRig:
         """Start the LED blinking sequence when the button is pressed."""
         
         # Set the default parameter here
-        cycles = 1
+        cycles = 2
         on_time = 0.5
         off_time = 0.5
         
