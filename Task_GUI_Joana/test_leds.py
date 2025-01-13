@@ -17,6 +17,8 @@ from form_updt import Ui_TaskGui
 from qasync import asyncSlot  # Import asyncSlot decorator
 
 
+leds = [led_white_l, led_white_r, pump_l, pump_r] 
+
 async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
     """
     Blink a list of LEDs in a sequence.
