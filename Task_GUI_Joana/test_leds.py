@@ -50,4 +50,4 @@ def setup_led_sequence_button(ui_element, leds, cycles=3, on_time=1, off_time=1)
         print('Starting LED sequence...')
         await blink_led_sequence(leds, cycles, on_time, off_time)
 
-    ui_element.clicked.connect(start_led_sequence)
+    self.ui.chk_BlueLED.clicked.connect(start_led_sequence)
