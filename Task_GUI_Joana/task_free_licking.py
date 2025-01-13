@@ -16,9 +16,39 @@ import os
 import threading
 import time
 
+from piezo_reader import PiezoReader
 
-class FreeLickingTask(QThread):
-    
+
+def print_piezo_values():
+    piezo_reader = PiezoReader()
+    piezo_reader.setup_serial_connection()
+    piezo_reader.start_reading()
+
+    try:
+        while True:
+            if piezo_reader.piezo_adder1:
+                print(f"Piezo Adder 1: {piezo_reader.piezo_adder1[-1]}")
+            time.sleep(0.1)  # Adjust this for the desired printing frequency
+    except KeyboardInterrupt:
+        print("Stopping...")
+        piezo_reader.stop()
+
+
+class FreeLickingTask():
+
+    print_piezo_values()
+
+
+
+
+
+
+
+
+
+
+
+'''    
     update_qw = pyqtSignal(float)
         
     def __init__(self, parent=None):
@@ -201,4 +231,4 @@ class FreeLickingTask(QThread):
     def blue_btn_released(self):
         led_blue.off()
         
-        
+'''        

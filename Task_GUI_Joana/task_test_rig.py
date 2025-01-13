@@ -53,6 +53,23 @@ class TestRig:
         self.ui.chk_Reward_right.clicked.connect(pumpR)
 
 
+        def stop(self):
+            print('Test rig stopping')
+            self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
+            self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
+            self.ui.chk_Punishment.clicked.disconnect(white_noise)
+            #self.ui.chk_BlueLED.clicked.disconnect(blueLED)
+            
+            self.ui.chk_BlueLED.clicked.disconnect(lambda checked: self.start_led_sequence())   
+            
+            self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
+            self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
+            self.ui.chk_Reward_left.clicked.disconnect(pumpL)
+            self.ui.chk_Reward_right.clicked.disconnect(pumpR)
+            
+        self.stop = stop
+
+
     @asyncSlot()
     async def start_led_sequence(self):
         """Start the LED blinking sequence when the button is pressed."""
@@ -66,22 +83,7 @@ class TestRig:
         
         await start_blinking(cycles, on_time, off_time) # pass the default parameters
 
-    def stop(self):
-        print('Test rig stopping')
-        self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
-        self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
-        self.ui.chk_Punishment.clicked.disconnect(white_noise)
-        #self.ui.chk_BlueLED.clicked.disconnect(blueLED)
-            
-        self.ui.chk_BlueLED.clicked.disconnect(lambda checked: self.start_led_sequence())   
-            
-        self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
-        self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
-        self.ui.chk_Reward_left.clicked.disconnect(pumpL)
-        self.ui.chk_Reward_right.clicked.disconnect(pumpR)
 
-            
-    self.stop = stop
 
 # Test blue LED
 def blueLED():
