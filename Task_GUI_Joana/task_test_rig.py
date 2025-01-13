@@ -46,12 +46,10 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.ui.chk_BlueLED.clicked.connect(self.start_led_sequence)       
+        self.ui.chk_BlueLED.clicked.connect(lambda checked: self.start_led_sequence())       
 
         
-        #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
-        #self.ui.chk_BlueLED.clicked.connect(lambda: print("Blink LEDs button clicked"))
-        #self.ui.chk_BlueLED.clicked.connect(lambda checked: asyncio.create.task(self.blink_leds(checked)))
+
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
         self.ui.chk_Reward_left.clicked.connect(pumpL)
@@ -64,7 +62,9 @@ class TestRig:
             self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
             self.ui.chk_Punishment.clicked.disconnect(white_noise)
             #self.ui.chk_BlueLED.clicked.disconnect(blueLED)
-            self.ui.chk_BlueLED.clicked.disconnect(self.start_led_sequence)
+            
+            self.ui.chk_BlueLED.clicked.disconnect(lambda checked: self.start_led_sequence())   
+            
             self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
             self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
             self.ui.chk_Reward_left.clicked.disconnect(pumpL)
