@@ -20,7 +20,7 @@ from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
 from qasync import asyncSlot  # Import asyncSlot decorator
 
-from test_leds import setup_led_sequence_button
+from test_leds import start_blinking
 
 
         
@@ -44,8 +44,7 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        # Use the setup_led_sequence_button function for the Blue LED button
-        setup_led_sequence_button(self.ui.chk_BlueLED, self.leds, cycles=5, on_time=0.5, off_time=0.5)
+        self.ui.chk_BlueLED.clicked.connect(start_blinking)       
 
         
         #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")

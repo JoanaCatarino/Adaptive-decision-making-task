@@ -7,7 +7,41 @@ Created on Mon Jan 13 10:30:50 2025
 file to try to do the led sequence
 
 """
+import asyncio
+from gpio_map import *
 
+# List of LEDs to include in the sequence
+leds = [led_white_l, led_white_r, pump_r, pump_l]
+
+async def blink_led(led, duration=0.5):
+    """Turn on an LED for the specified duration."""
+    led.on()
+    await asyncio.sleep(duration)
+    led.off()
+
+async def sequence_lights(leds, delay=0.5):
+    """Cycle through LEDs in sequence with a delay between them."""
+    while True:
+        for led in leds:
+            await blink_led(led, duration=delay)
+
+async def start_blinking():
+    # Set up the LED sequence task
+    sequence_task = asyncio.create_task(sequence_lights(leds, delay=0.5))
+    
+    try:
+        # Run the sequence indefinitely
+        await asyncio.gather(sequence_task)
+    except asyncio.CancelledError:
+        # Clean up when the program is stopped
+        for led in leds:
+            led.off()
+
+
+
+
+
+'''
 import asyncio
 from gpio_map import *
 from gpiozero import LED
@@ -51,5 +85,5 @@ def setup_led_sequence_button(ui_element, leds, cycles=3, on_time=1, off_time=1)
     async def start_led_sequence():
         print('Starting LED sequence...')
         await blink_led_sequence(leds, cycles, on_time, off_time)
-
+'''
 
