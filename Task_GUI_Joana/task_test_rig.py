@@ -78,8 +78,15 @@ class TestRig:
     @asyncSlot()
     async def start_led_sequence(self):
         """Start the LED blinking sequence when the button is pressed."""
+        
+        # Set the default parameter here
+        cycles = 1
+        on_time = 0.5
+        off_time = 0.5
+        
         print("Starting LED sequence...")
-        await start_blinking()
+        
+        await start_blinking(cycles, on_time, off_time) # pass the default parameters
 
 
 

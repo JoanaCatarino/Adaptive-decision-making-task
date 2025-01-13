@@ -13,33 +13,40 @@ from gpio_map import *
 # List of LEDs to include in the sequence
 leds = [led_white_r, led_white_l, pump_l, pump_r]
 
-async def blink_led(led, duration=0.5):
+async def blink_led(led, on_time=0.5, off_time=0.5):
     """Turn on an LED for the specified duration."""
     led.on()
-    await asyncio.sleep(duration)
+    await asyncio.sleep(on_time)
     led.off()
+    await asyncio.sleep(off_time) # Wait for off_time before proceeding to next LED
 
-async def sequence_lights(leds, delay=0.5):
-    """Cycle through LEDs in sequence with a delay between them."""
-    while True:
+async def sequence_lights(leds, cycles=1, on_time=0.5, off_time=0.5):
+    """Cycle through LEDs in sequence for a specified number of cycles."""
+    for _ in range(cycles):  # Repeat the sequence for the specified number of cycles
         for led in leds:
-            await blink_led(led, duration=delay)
+            await blink_led(led, on_time, off_time)
 
-async def start_blinking():
+async def start_blinking(cycles=1, on_time=0.5, off_time=0.5):
     """
     Start the blinking sequence for the LEDs.
 
-    This function can be awaited or used within a GUI context
-    to trigger the sequence.
+    Args:
+    cycles(int): Number of times the sequence should repeat
+    on_time (float): Duration for which each LED stays ON
+    off_time (float): Duration for which each LED stays OFF
+
     """
+    
     print("Starting LED sequence...")
     try:
         # Create the sequence task and let it run indefinitely
-        await sequence_lights(leds, delay=0.5)
+        await sequence_lights(leds, on_time, off_time)
+    
     except asyncio.CancelledError:
         # Turn off all LEDs when the task is canceled
         for led in leds:
             led.off()
+       
         print("LED sequence stopped.")
 
 
