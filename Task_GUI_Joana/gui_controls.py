@@ -363,7 +363,8 @@ class GuiControls:
 
 
             # run test rig
-            self.current_task = TestRig(self.ui)
+            #self.current_task = TestRig(self.ui)
+            self.current_task = TestRig()
             self.enable_controls()
 
         elif selected_task == 'Free Licking':
