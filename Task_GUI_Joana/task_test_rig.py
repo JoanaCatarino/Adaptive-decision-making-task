@@ -46,7 +46,7 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.ui.chk_BlueLED.clicked.connect(self.start_led_sequence)       
+        self.ui.chk_BlueLED.clicked.connect(start_led_sequence)       
 
         
         #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
