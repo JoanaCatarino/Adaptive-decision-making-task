@@ -11,7 +11,7 @@ import asyncio
 from gpio_map import *
 
 # List of LEDs to include in the sequence
-leds = [led_white_l, led_white_r, pump_r, pump_l]
+leds = [led_white_r, led_white_l, pump_l, pump_r]
 
 async def blink_led(led, duration=0.5):
     """Turn on an LED for the specified duration."""
@@ -29,15 +29,6 @@ async def start_blinking():
     # Set up the LED sequence task
     sequence_task = asyncio.create_task(sequence_lights(leds, delay=0.5))
     
-    try:
-        # Run the sequence indefinitely
-        await asyncio.gather(sequence_task)
-    except asyncio.CancelledError:
-        # Clean up when the program is stopped
-        for led in leds:
-            led.off()
-
-
 
 
 
