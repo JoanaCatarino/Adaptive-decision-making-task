@@ -26,10 +26,21 @@ async def sequence_lights(leds, delay=0.5):
             await blink_led(led, duration=delay)
 
 async def start_blinking():
-    # Set up the LED sequence task
-    sequence_task = asyncio.create_task(sequence_lights(leds, delay=0.5))
-    
+    """
+    Start the blinking sequence for the LEDs.
 
+    This function can be awaited or used within a GUI context
+    to trigger the sequence.
+    """
+    print("Starting LED sequence...")
+    try:
+        # Create the sequence task and let it run indefinitely
+        await sequence_lights(leds, delay=0.5)
+    except asyncio.CancelledError:
+        # Turn off all LEDs when the task is canceled
+        for led in leds:
+            led.off()
+        print("LED sequence stopped.")
 
 
 '''
