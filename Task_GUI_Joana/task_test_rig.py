@@ -29,7 +29,7 @@ class TestRig:
         self.ui = ui
         
         # Define LED sequence
-        self.leds = [pump_l, pump_r, led_white_r, led_white_l]
+        self.leds = [led_white_r, led_white_l, pump_l, pump_r]
         
         # Turn off all LEDs initially
         for led in self.leds:
@@ -44,7 +44,7 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.ui.chk_BlueLED.clicked.connect(start_blinking)       
+        self.ui.chk_BlueLED.clicked.connect(self.start_led_sequence)       
 
         
         #print(f"chk_BlueLED: {self.ui.chk_BlueLED}")
@@ -71,6 +71,14 @@ class TestRig:
             #gpio_map.Device.close()
 
         self.stop = stop
+
+
+        @asyncSlot()
+        async def start_led_sequence(self):
+            """Start the LED blinking sequence when the button is pressed."""
+            print("Starting LED sequence...")
+            await start_blinking()
+
 
 
 # Test blue LED

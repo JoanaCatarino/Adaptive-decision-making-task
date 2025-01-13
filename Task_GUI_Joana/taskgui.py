@@ -1,13 +1,13 @@
 # This Python file uses the following encoding: utf-8
+
 import sys
-
 from PyQt5.QtWidgets import QApplication, QMainWindow
-
-# Important:
-# You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
 from ui_form import Ui_TaskGui
+
+import asyncio #added
+from qasync import QEventLoop # added
+
+
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
@@ -18,6 +18,16 @@ class TaskGui(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    
+    # Use qasync's QEventLoop to integrate asyncio
+    loop = QEventLoop(app) #added
+    asyncio.set_event_loop(loop) #added
+    
     widget = TaskGui()
     widget.show()
-    sys.exit(app.exec())
+    
+    # Run both the PyQt and asyncio event loops
+    with loop:
+        loop.run_forever() #added
+    
+    #sys.exit(app.exec())
