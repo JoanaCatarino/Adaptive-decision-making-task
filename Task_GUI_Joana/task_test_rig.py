@@ -34,6 +34,8 @@ class TestRig:
         # Turn off all LEDs initially
         for led in self.leds:
             led.off()
+            
+        self.start()
 
     
 
