@@ -94,6 +94,7 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
 
 
+
     # Set up the serial connection
     def setup_serial_connection(self):
         self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Adjust port if necessary
@@ -346,9 +347,8 @@ class GuiControls:
             self.enable_controls()
 
         elif selected_task == 'Free Licking':
-
             self.current_task = FreeLickingTask(self.ui)
-            #self.current_task.start_fl()
+
 
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
