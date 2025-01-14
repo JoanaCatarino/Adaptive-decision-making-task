@@ -362,10 +362,7 @@ class GuiControls:
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor()
 
-        if isinstance(self.current_task, threading.Thread):
-            #If the current task is a thread, we don't need to call start
-            pass
-        elif self.current_task:
+        if self.current_task:
             self.current_task.start()
             self.txt_Chronometer.start()
             self.OV_box_Chronometer.start() # start overview chronometer for Box1
