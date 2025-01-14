@@ -45,7 +45,7 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.blue_led_connetion = lambda checked: self.start_led_sequence()
+        self.blue_led_connection = lambda checked: self.start_led_sequence()
         self.ui.chk_BlueLED.clicked.connect(self.blue_led_connection)       
 
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
