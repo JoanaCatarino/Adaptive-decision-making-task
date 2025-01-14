@@ -44,7 +44,7 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 
 class GuiControls:
-    def __init__(self, ui, updateTime_slot, task_instance, test_rig):
+    def __init__(self, ui, updateTime_slot, test_rig):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
         self.test_rig = test_rig
