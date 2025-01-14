@@ -238,8 +238,7 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        #self.ui.btn_Update.clicked.connect(self.print_variables)
-        self.ui.btn_Update.clicked.connect(self.update_variables)
+        self.ui.btn_Update.clicked.connect(self.print_variables)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
