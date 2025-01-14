@@ -17,17 +17,7 @@ class TaskGui(QMainWindow):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    
-    # Use qasync's QEventLoop to integrate asyncio
-    loop = QEventLoop(app) #added
-    asyncio.set_event_loop(loop) #added
-    
+    app = QApplication(sys.argv)   
     widget = TaskGui()
-    widget.show()
-    
-    # Run both the PyQt and asyncio event loops
-    with loop:
-        loop.run_forever() #added
-    
-    #sys.exit(app.exec())
+    widget.show()    
+    sys.exit(app.exec())
