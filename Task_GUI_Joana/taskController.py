@@ -33,7 +33,7 @@ class TaskGui(QMainWindow):
         self.test_rig = TestRig(self.ui)
         
         # Initialize Gui controls
-        self.gui_controls = GuiControls(self.ui, self.updateTime, self.free_licking_task, self.test_rig)
+        self.gui_controls = GuiControls(self.ui, self.updateTime, self.test_rig)
 
 
     # Define function to have the chonometer with the hour, minute and second as the text
