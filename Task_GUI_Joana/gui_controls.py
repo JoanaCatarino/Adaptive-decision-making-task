@@ -36,7 +36,7 @@ from gpio_map import *
 
 # Import task classes
 from task_test_rig import TestRig
-from task_free_licking import FreeLickingTask, print_piezo_values
+from task_free_licking import FreeLickingTask
 from task_spout_sampling import SpoutSamplingTask
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
