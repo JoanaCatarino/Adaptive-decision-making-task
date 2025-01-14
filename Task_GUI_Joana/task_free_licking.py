@@ -9,6 +9,83 @@ Created on Sat Jul 20 17:47:58 2024
 - In this task animals should receive a reward when they lick either of the spouts
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
+
+import threading
+import time
+
+class FreeLickingTask:
+    def __init__(self, ui):
+        """
+        Initialize the Free Licking Task with a reference to the GUI object.
+        """
+        self.ui = ui  # Reference to the GUI object
+        self.running = False
+        self.thread = None
+
+    def start(self):
+        """
+        Starts the Free Licking Task by initializing the serial connection, starting piezo plots,
+        and launching a thread to monitor and print piezo values.
+        """
+        if not self.running:
+            print("Free Licking Task starting...")
+            self.running = True
+
+            # Set up the serial connection and piezo plots in the GUI
+            self.ui.setup_serial_connection()
+            self.ui.setup_piezo_plots()
+
+            # Start the piezo update timer in the GUI
+            self.ui.piezo_timer.start()
+
+            # Launch a thread to monitor and print piezo values
+            self.thread = threading.Thread(target=self._print_piezo_values)
+            self.thread.start()
+
+    def stop(self):
+        """
+        Stops the Free Licking Task by stopping the piezo timer and the thread.
+        """
+        if self.running:
+            print("Stopping Free Licking Task...")
+            self.running = False
+
+            # Stop the piezo update timer in the GUI
+            self.ui.piezo_timer.stop()
+
+            # Wait for the thread to finish
+            if self.thread:
+                self.thread.join()
+
+            print("Free Licking Task stopped.")
+
+    def _print_piezo_values(self):
+        """
+        Continuously prints the piezo_adder1 values while the task is running.
+        """
+        try:
+            while self.running:
+                if self.ui.piezo_adder1:
+                    print(f"Piezo Adder 1: {self.ui.piezo_adder1[-1]}")
+                time.sleep(0.1)  # Adjust this for the desired printing frequency
+        except Exception as e:
+            print(f"Error during piezo reading: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 from gpio_map import *
 from PyQt5.QtCore import QThread, pyqtSignal
 from signal import pause
@@ -45,12 +122,7 @@ class FreeLickingTask:
             print('Done printing')
             
         self.stop = stop
-
-
-
-
-
-
+'''
 
 
 
