@@ -34,11 +34,15 @@ def print_piezo_values():
         piezo_reader.stop()
 
 
-class FreeLickingTask():
-
-    print_piezo_values()
-
-
+class FreeLickingTask:
+    
+    def start(self):
+        print_piezo_values()
+        
+        def stop():
+            print('Done printing')
+            
+        self.stop = stop
 
 
 
