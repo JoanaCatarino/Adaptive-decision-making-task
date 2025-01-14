@@ -12,7 +12,7 @@ Created on Sat Jul 20 17:47:58 2024
 
 import threading
 import time
-from form_updt import Ui_TaskGui
+
 
 class FreeLickingTask:
     def __init__(self, ui):
@@ -32,12 +32,6 @@ class FreeLickingTask:
             print("Free Licking Task starting...")
             self.running = True
 
-            # Set up the serial connection and piezo plots in the GUI
-            self.ui.setup_serial_connection()
-            self.ui.setup_piezo_plots()
-
-            # Start the piezo update timer in the GUI
-            self.ui.piezo_timer.start()
 
             # Launch a thread to monitor and print piezo values
             self.thread = threading.Thread(target=self._print_piezo_values)
