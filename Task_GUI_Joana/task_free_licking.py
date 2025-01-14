@@ -12,6 +12,7 @@ Created on Sat Jul 20 17:47:58 2024
 
 import threading
 import time
+from form_updt import Ui_TaskGui
 
 class FreeLickingTask:
     def __init__(self, ui):
