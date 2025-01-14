@@ -45,7 +45,8 @@ class TestRig:
         self.ui.chk_Punishment.clicked.connect(white_noise)
         #self.ui.chk_BlueLED.clicked.connect(blueLED)
         
-        self.ui.chk_BlueLED.clicked.connect(lambda checked: self.start_led_sequence())       
+        self.blue_led_connetion = lambda checked: self.start_led_sequence()
+        self.ui.chk_BlueLED.clicked.connect(self.blue_led_connection)       
 
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
@@ -53,14 +54,14 @@ class TestRig:
         self.ui.chk_Reward_right.clicked.connect(pumpR)
 
 
-        def stop():
+        def stop(self):
             print('Test rig stopping')
             self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
             self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
             self.ui.chk_Punishment.clicked.disconnect(white_noise)
             #self.ui.chk_BlueLED.clicked.disconnect(blueLED)
             
-            self.ui.chk_BlueLED.clicked.disconnect(lambda checked: self.start_led_sequence())   
+            self.ui.chk_BlueLED.clicked.disconnect(self.blue_led_connection)   
             
             self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
             self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
