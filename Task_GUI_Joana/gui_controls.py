@@ -84,8 +84,8 @@ class GuiControls:
         self.ui.ddm_Box.currentIndexChanged.connect(self.check_start_button_state)
         # Initial buttom state check
         self.check_start_button_state
-        self.setup_serial_connection() # Set up the serial port
-        self.setup_piezo_plots() # Set up the piezo plot
+        #self.setup_serial_connection() # Set up the serial port
+        #self.setup_piezo_plots() # Set up the piezo plot
 
 
         # Initialize the timer to update piezo plots
