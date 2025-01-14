@@ -35,6 +35,9 @@ def print_piezo_values():
 
 
 class FreeLickingTask:
+
+    def __init__(self, ui):
+        self.ui = ui
     
     def start(self):
         print_piezo_values()
