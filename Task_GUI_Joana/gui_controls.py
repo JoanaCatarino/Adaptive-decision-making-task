@@ -368,7 +368,7 @@ class GuiControls:
 
         elif selected_task == 'Free Licking':
 
-            self.current_task = FreeLickingTask()
+            self.current_task = FreeLickingTask(self.ui)
             #self.current_task.start_fl()
 
         elif selected_task == 'Spout Sampling':
