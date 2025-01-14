@@ -27,7 +27,7 @@ class TaskGui(QMainWindow):
         self.ui.setupUi(self)
 
         # Instantiate FreeLickingTask
-        self.free_licking_task = FreeLickingTask(self.ui)
+        #self.free_licking_task = FreeLickingTask(self.ui)
         
         # Instantiate TestRigTask
         self.test_rig = TestRig(self.ui)
