@@ -16,7 +16,7 @@ import os
 import threading
 import time
 
-from piezo_reader import PiezoReader
+from gui_controls import GuiControls
 
 
 def print_piezo_values():
