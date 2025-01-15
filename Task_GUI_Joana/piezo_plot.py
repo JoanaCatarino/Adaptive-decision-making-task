@@ -20,9 +20,6 @@ class LivePlotWidget(QWidget):
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
         
-        # Apply tight layout to ensure everything fits
-        self.figure.tight_layout(pad=2.0)  # Adjust the padding as needed
-
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)

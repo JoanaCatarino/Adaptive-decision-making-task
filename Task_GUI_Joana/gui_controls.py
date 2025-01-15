@@ -100,7 +100,6 @@ class GuiControls:
         plt_layout1 = QVBoxLayout(self.ui.plt_LickTrace_Left)
         plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
-
         self.live_plot1 = LivePlotWidget(self.piezo_reader.max_data_points, parent=self.ui.plt_LickTrace_Left)
         #self.live_plot1.setFixedSize(450, 220)
         self.live_plot1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -109,6 +108,8 @@ class GuiControls:
         
 
         plt_layout2 = QVBoxLayout(self.ui.plt_LickTrace_Right)
+        plt_layout2.setContentsMargins(0, 0, 0, 0)
+        plt_layout2.setSpacing(0)
         self.live_plot2 = LivePlotWidget(self.piezo_reader.max_data_points, parent=self.ui.plt_LickTrace_Right)
         #self.live_plot2.setFixedSize(450, 220)
         self.live_plot2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
