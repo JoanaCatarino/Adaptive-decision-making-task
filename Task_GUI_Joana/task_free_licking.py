@@ -29,7 +29,7 @@ class FreeLickingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader
         self.running = False
-        self.threshold = 10 # Threshold for the lick to count as a lick
+        self.threshold = 5 # Threshold for the lick to count as a lick
 
     def start(self):
         """Starts the FreeLicking task."""
