@@ -304,8 +304,7 @@ class GuiControls:
 
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask(self)
-            # Connect the total_trials_updated signal to update_total_trials
-            self.current_task.total_trials_updated.connect(self.update_total_trials)
+
 
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
