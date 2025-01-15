@@ -298,14 +298,14 @@ class GuiControls:
 
         if selected_task == 'Test rig':
 
-
             # run test rig
             self.current_task = TestRig(self.ui)
             self.enable_controls()
 
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask(self)
-
+            # Connect the total_trials_updated signal to update_total_trials
+            self.current_task.total_trials_updated.connect(self.update_total_trials)
 
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask()
@@ -357,6 +357,11 @@ class GuiControls:
 
         # Update start/stop button states
         self.update_button_states()
+
+
+    def update_total_trials(self, total_trials):
+        # Update the QLabel with the total trials count
+        self.ui.box_TotalTrials.setText(f'{total_trials}')
 
 
     # Test to use the Update button to print the value of the variables in real-time

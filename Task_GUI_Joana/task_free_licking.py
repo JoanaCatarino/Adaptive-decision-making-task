@@ -19,6 +19,7 @@ from gpio_map import *
 
 
 class FreeLickingTask:
+    
     def __init__(self, gui_controls):
         """
         Initializes the FreeLickingTask class.
@@ -67,6 +68,8 @@ class FreeLickingTask:
                         time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.off()
                         self.total_trials += 1 # Implement total trials
+                        self.gui_controls.update_total_trials(self.total_trials) # Update the total trials in the GUI
+                
                 
                 # Monitor piezo_adder2 (right spout) and control pump_r
                 if self.piezo_reader.piezo_adder2:
@@ -80,6 +83,8 @@ class FreeLickingTask:
                         time.sleep(self.led_on_duration)
                         pump_r.off()
                         self.total_trials += 1 # Implement total trials
+                        self.gui_controls.update_total_trials(self.total_trials) # Update the total trials in the GUI
+
                         
                 # Print the total trials count
                 print(f'Total Trials = {self.total_trials}')
@@ -89,78 +94,6 @@ class FreeLickingTask:
         except Exception as e:
             pump_l.off()  # Turn off pump_l in case of error
             pump_r.off()  # Turn off pump_r in case of error
-
-
-
-
-'''
-import threading
-import time
-
-
-class FreeLickingTask:
-    def __init__(self, gui_controls):
-        """
-        Initialize the Free Licking Task with a reference to the GUI object.
-        """
-        self.ui = ui  # Reference to the GUI object
-        self.running = False
-        self.thread = None
-
-    def start(self):
-        """
-        Starts the Free Licking Task by initializing the serial connection, starting piezo plots,
-        and launching a thread to monitor and print piezo values.
-        """
-        if not self.running:
-            print("Free Licking Task starting...")
-            self.running = True
-
-
-            # Launch a thread to monitor and print piezo values
-            self.thread = threading.Thread(target=self._print_piezo_values)
-            self.thread.start()
-
-    def stop(self):
-        """
-        Stops the Free Licking Task by stopping the piezo timer and the thread.
-        """
-        if self.running:
-            print("Stopping Free Licking Task...")
-            self.running = False
-
-            # Stop the piezo update timer in the GUI
-            self.ui.piezo_timer.stop()
-
-            # Wait for the thread to finish
-            if self.thread:
-                self.thread.join()
-
-            print("Free Licking Task stopped.")
-
-    def _print_piezo_values(self):
-        """
-        Continuously prints the piezo_adder1 values while the task is running.
-        """
-        try:
-            while self.running:
-                if self.ui.piezo_adder1:
-                    print(f"Piezo Adder 1: {self.ui.piezo_adder1[-1]}")
-                time.sleep(0.1)  # Adjust this for the desired printing frequency
-        except Exception as e:
-            print(f"Error during piezo reading: {e}")
-'''
-
-
-
-
-
-
-
-
-
-
-
 
 
 
