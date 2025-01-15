@@ -10,6 +10,59 @@ Created on Sat Jul 20 17:47:58 2024
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
 
+from PyQt5.QtCore import QTimer
+from piezo_reader import PiezoReader
+
+class FreeLickingTask:
+    def __init__(self, gui_controls):
+        """
+        Initializes the FreeLickingTask class.
+
+        Args:
+            gui_controls: An instance of GuiControls to access piezo_reader and UI components.
+        """
+        self.gui_controls = gui_controls
+        self.piezo_reader = gui_controls.piezo_reader
+
+        # Timer to periodically print piezo_adder1
+        self.print_timer = QTimer()
+        self.print_timer.timeout.connect(self.print_piezo_adder1)
+
+    def start(self):
+        """Starts the FreeLicking task."""
+        print("Starting Free Licking Task...")
+        self.print_timer.start(500)  # Call every 500 ms
+
+    def stop(self):
+        """Stops the FreeLicking task."""
+        print("Stopping Free Licking Task...")
+        self.print_timer.stop()
+
+    def print_piezo_adder1(self):
+        """Periodically print the values of piezo_adder1."""
+        if self.piezo_reader.piezo_adder1:
+            print(f"Piezo Adder1: {self.piezo_reader.piezo_adder1}")
+        else:
+            print("Piezo Adder1 is empty.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 import threading
 import time
 
@@ -65,7 +118,7 @@ class FreeLickingTask:
                 time.sleep(0.1)  # Adjust this for the desired printing frequency
         except Exception as e:
             print(f"Error during piezo reading: {e}")
-
+'''
 
 
 
