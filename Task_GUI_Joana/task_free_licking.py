@@ -15,7 +15,7 @@ import time
 
 
 class FreeLickingTask:
-    def __init__(self, ui):
+    def __init__(self, gui_controls):
         """
         Initialize the Free Licking Task with a reference to the GUI object.
         """

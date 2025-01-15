@@ -31,7 +31,8 @@ from chronometer_generator import Chronometer
 from file_writer import write_task_start_file
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
-from piezo import LivePlotWidget
+from piezo_plot import LivePlotWidget
+from piezo_reader import PiezoReader
 from gpio_map import *
 
 # Import task classes
@@ -84,17 +85,15 @@ class GuiControls:
         self.ui.ddm_Box.currentIndexChanged.connect(self.check_start_button_state)
         # Initial buttom state check
         self.check_start_button_state
-        #self.setup_serial_connection() # Set up the serial port
-        #self.setup_piezo_plots() # Set up the piezo plot
 
-
-        # Initialize the timer to update piezo plots
+        # Initialize funtions related to piezo
+        self.piezo_reader = PiezoReader() # Initialize piezo reader
+        self.setup_piezo_plots() # Set up the piezo plot
         self.piezo_timer = QTimer()
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
 
-
-
+'''
     # Set up the serial connection
     def setup_serial_connection(self):
         self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Adjust port if necessary
@@ -134,9 +133,9 @@ class GuiControls:
                     self.buffer.pop(0)
         except serial.SerialException as e:
             print(f"Serial error: {e}")
+'''
 
-
-    #Piezo funcitons
+    #Piezo functions
     def setup_piezo_plots(self):
 
         # Place live plots into GUI layout

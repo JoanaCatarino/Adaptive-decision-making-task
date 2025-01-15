@@ -8,7 +8,6 @@ piezo reader  - new file just to test the printing of the piezo info
 """
 
 import serial
-import threading
 
 class PiezoReader:
     def __init__(self):
@@ -42,10 +41,3 @@ class PiezoReader:
         except serial.SerialException as e:
             print(f"Serial error: {e}")
 
-    def start_reading(self):
-        threading.Thread(target=self.read_serial_data, daemon=True).start()
-
-    def stop(self):
-        self.running = False
-        if self.ser:
-            self.ser.close()
