@@ -23,6 +23,9 @@ class FreeLickingTask:
         """
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader
+        
+        # Variable to store the last piezo_adder1 value
+        self.last_piezo_adder1 = None
 
         # Timer to periodically print piezo_adder1
         self.print_timer = QTimer()
@@ -40,11 +43,12 @@ class FreeLickingTask:
 
     def print_piezo_adder1(self):
         """Periodically print the values of piezo_adder1."""
-        if self.piezo_reader.piezo_adder1:
-            print(f"Piezo Adder1: {self.piezo_reader.piezo_adder1}")
+        current_value = self.piezo_reader.piezo_adder1
+        if current_value:
+            self.last_piezo_adder1 = current_value
+            print(f"Piezo Adder1: {self.last_piezo_adder1}")
         else:
             print("Piezo Adder1 is empty.")
-
 
 
 
