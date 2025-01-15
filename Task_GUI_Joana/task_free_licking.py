@@ -53,6 +53,8 @@ class FreeLickingTask:
         """
         try:
             while self.running:
+                
+                # Monitor piezo_adder1 (left spout) and control pump_l
                 if self.piezo_reader.piezo_adder1:
                     latest_value = self.piezo_reader.piezo_adder1[-1]
                     print(f"Piezo Adder 1: {latest_value}")
@@ -63,12 +65,20 @@ class FreeLickingTask:
                         pump_l.on()
                         time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.off()
-                else:
-                    print("Piezo Adder 1 is empty.")
+                
+                # Monitor piezo_adder2 (right spout) and control pump_r
+                if self.piezo_reader.piezo_adder2:
+                    latest_value = self.piezo_reader.piezo_adder2[-1]
+                    print('Threshold exceeded! Flashing pump_r')
+                    pump_r.on()
+                    time.sleep(self.led_on_duration)
+                    pump_r.off()
 
                 time.sleep(0.1)  # Adjust for the desired frequency
+        
         except Exception as e:
             pump_l.off()  # Turn off pump_l in case of error
+            pump_r.off()  # Turn off pump_r in case of error
 
 
 
