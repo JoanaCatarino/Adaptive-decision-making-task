@@ -31,6 +31,8 @@ class LivePlotWidget(QWidget):
         # Set up layout for the widget
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
+        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        layout.setSpacing(0)  # Remove spacing
         self.setLayout(layout)
         
         #  new!! test to see if it improves layout of the plots
