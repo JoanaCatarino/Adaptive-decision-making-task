@@ -45,10 +45,9 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 
 class GuiControls:
-    def __init__(self, ui, updateTime_slot, test_rig):
+    def __init__(self, ui, updateTime_slot):
         self.ui = ui
         self.updateTime_slot = updateTime_slot
-        self.test_rig = test_rig
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value

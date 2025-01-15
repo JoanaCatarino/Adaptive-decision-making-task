@@ -25,12 +25,9 @@ class TaskGui(QMainWindow):
         super().__init__(parent)
         self.ui = Ui_TaskGui()
         self.ui.setupUi(self)
-
-        # Instantiate TestRigTask
-        self.test_rig = TestRig(self.ui)
         
         # Initialize Gui controls
-        self.gui_controls = GuiControls(self.ui, self.updateTime, self.test_rig)
+        self.gui_controls = GuiControls(self.ui, self.updateTime)
         
 
     # Define function to have the chonometer with the hour, minute and second as the text
