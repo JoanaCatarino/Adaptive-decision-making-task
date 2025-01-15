@@ -31,6 +31,7 @@ class FreeLickingTask:
         self.running = False
         self.threshold = 5 # Threshold for the lick to count as a lick
         self.led_on_duration = 0.5 # time in seconds the LED stays on
+        self.total_trials = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
 
     def start(self):
         """Starts the FreeLicking task."""
@@ -65,6 +66,7 @@ class FreeLickingTask:
                         pump_l.on()
                         time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.off()
+                        self.total_trials += 1 # Implement total trials
                 
                 # Monitor piezo_adder2 (right spout) and control pump_r
                 if self.piezo_reader.piezo_adder2:
@@ -77,6 +79,10 @@ class FreeLickingTask:
                         pump_r.on()
                         time.sleep(self.led_on_duration)
                         pump_r.off()
+                        self.total_trials += 1 # Implement total trials
+                        
+                # Print the total trials count
+                print(f'Total Trials = {self.total_trials}')
 
                 time.sleep(0.1)  # Adjust for the desired frequency
         
