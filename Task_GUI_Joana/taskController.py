@@ -31,10 +31,6 @@ class TaskGui(QMainWindow):
         
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime, self.test_rig)
-
-        # Call the setup methods from the GuiControls instance
-        self.gui_controls.setup_serial_connection()
-        self.gui_controls.setup_piezo_plots()
         
 
     # Define function to have the chonometer with the hour, minute and second as the text
