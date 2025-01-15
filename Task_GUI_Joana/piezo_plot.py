@@ -48,6 +48,7 @@ class LivePlotWidget(QWidget):
         # Redraw the canvas
         self.ax.relim()
         self.ax.autoscale_view()  # Update scale if necessary
+        self.figure.tight_layout() # use tight layout # new
         self.canvas.draw()
 
 
