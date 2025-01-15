@@ -32,6 +32,9 @@ class LivePlotWidget(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         self.setLayout(layout)
+        
+        #  new!! test to see if it improves layout of the plots
+        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # Initialize data lists for x-axis and y-axis
         self.x_data = []
@@ -48,7 +51,6 @@ class LivePlotWidget(QWidget):
         # Redraw the canvas
         self.ax.relim()
         self.ax.autoscale_view()  # Update scale if necessary
-        self.figure.tight_layout() # use tight layout # new
         self.canvas.draw()
 
 
