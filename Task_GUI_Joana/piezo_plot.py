@@ -19,19 +19,24 @@ class LivePlotWidget(QWidget):
         # Set up the plot figure and canvas
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
+        
+        # Adjust plot layout to create more space for y-axis tick labels
+        self.figure.subplots_adjust(left=0.15, right=0.95, top=0.95, bottom=0.15)
 
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("")
-        self.line, = self.ax.plot([], [], lw=2)
+ 
+    
+        #self.line, = self.ax.plot([], [], lw=2)
         #self.ax.legend()
 
         # Set up layout for the widget
         layout = QVBoxLayout()
-        layout.addWidget(self.canvas)
-        layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
+        #layout.addWidget(self.canvas)
+        #layout.setContentsMargins(0, 0, 0, 0)  # Remove margins
         layout.setSpacing(0)  # Remove spacing
         self.setLayout(layout)
         

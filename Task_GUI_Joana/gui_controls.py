@@ -98,7 +98,7 @@ class GuiControls:
 
         # Place live plots into GUI layout
         plt_layout1 = QVBoxLayout(self.ui.plt_LickTrace_Left)
-        plt_layout1.setContentsMargins(0, 0, 0, 5)
+        plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
 
         self.live_plot1 = LivePlotWidget(self.piezo_reader.max_data_points, parent=self.ui.plt_LickTrace_Left)
