@@ -66,9 +66,8 @@ class FreeLickingTask:
                     print("Piezo Adder 1 is empty.")
 
                 time.sleep(0.1)  # Adjust for the desired frequency
-                
+        except Exception as e:
             pump_l.off()  # Turn off pump_l in case of error
-
 
 
 
