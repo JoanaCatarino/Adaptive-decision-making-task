@@ -10,10 +10,13 @@ Created on Sat Jul 20 17:47:58 2024
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
 """
 
-from PyQt5.QtCore import QTimer
-from piezo_reader import PiezoReader
 import threading
 import time
+
+from PyQt5.QtCore import QTimer
+from piezo_reader import PiezoReader
+from gpio_map import *
+
 
 class FreeLickingTask:
     def __init__(self, gui_controls):
@@ -26,6 +29,7 @@ class FreeLickingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader
         self.running = False
+        self.threshold = 10 # Threshold for the lick to count as a lick
 
     def start(self):
         """Starts the FreeLicking task."""
@@ -40,20 +44,30 @@ class FreeLickingTask:
         self.running = False
         if self.print_thread.is_alive():
             self.print_thread.join()
+        pump_l.off()
 
     def _print_piezo_values(self):
         """
-        Continuously prints the piezo_adder1 values while the task is running.
+        Continuously prints the piezo_adder1 values while the task is running and checks the threshold.
         """
         try:
             while self.running:
                 if self.piezo_reader.piezo_adder1:
-                    print(f"Piezo Adder 1: {self.piezo_reader.piezo_adder1[-1]}")
+                    latest_value = self.piezo_reader.piezo_adder1[-1]
+                    print(f"Piezo Adder 1: {latest_value}")
+                    
+                    # Check if the value exceeds the threshold
+                    if latest_value > self.threshold:
+                        print("Threshold exceeded! Flashing pump_l.")
+                        pump_l.on()
+                        time.sleep(0.2)  # Adjust this for the desired ON duration
+                        pump_l.off()
                 else:
                     print("Piezo Adder 1 is empty.")
-                time.sleep(0.1)  # Adjust this for the desired printing frequency
-        except Exception as e:
-            print(f"Error during piezo reading: {e}")
+
+                time.sleep(0.1)  # Adjust for the desired frequency
+                
+            pump_l.off()  # Turn off pump_l in case of error
 
 
 
