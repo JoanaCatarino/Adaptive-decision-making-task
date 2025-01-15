@@ -12,6 +12,8 @@ Created on Sat Jul 20 17:47:58 2024
 
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
+import threading
+import time
 
 class FreeLickingTask:
     def __init__(self, gui_controls):
@@ -23,35 +25,35 @@ class FreeLickingTask:
         """
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader
-        
-        # Variable to store the last piezo_adder1 value
-        self.last_piezo_adder1 = None
-
-        # Timer to periodically print piezo_adder1
-        self.print_timer = QTimer()
-        self.print_timer.timeout.connect(self.print_piezo_adder1)
+        self.running = False
 
     def start(self):
         """Starts the FreeLicking task."""
         print("Starting Free Licking Task...")
-        self.print_timer.start(500)  # Call every 500 ms
+        self.running = True
+        self.print_thread = threading.Thread(target=self._print_piezo_values, daemon=True)
+        self.print_thread.start()
 
     def stop(self):
-        """Stops the FreeLicking task."""
+        """Stops the Free Licking task."""
         print("Stopping Free Licking Task...")
-        self.print_timer.stop()
+        self.running = False
+        if self.print_thread.is_alive():
+            self.print_thread.join()
 
-    def print_piezo_adder1(self):
-        """Periodically print the values of piezo_adder1."""
-        current_value = self.piezo_reader.piezo_adder1
-        if current_value:
-            self.last_piezo_adder1 = current_value
-            print(f"Piezo Adder1: {self.last_piezo_adder1}")
-        else:
-            print("Piezo Adder1 is empty.")
-
-
-
+    def _print_piezo_values(self):
+        """
+        Continuously prints the piezo_adder1 values while the task is running.
+        """
+        try:
+            while self.running:
+                if self.piezo_reader.piezo_adder1:
+                    print(f"Piezo Adder 1: {self.piezo_reader.piezo_adder1[-1]}")
+                else:
+                    print("Piezo Adder 1 is empty.")
+                time.sleep(0.1)  # Adjust this for the desired printing frequency
+        except Exception as e:
+            print(f"Error during piezo reading: {e}")
 
 
 
