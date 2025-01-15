@@ -93,47 +93,7 @@ class GuiControls:
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
 
-'''
-    # Set up the serial connection
-    def setup_serial_connection(self):
-        self.ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Adjust port if necessary
-        # Parameters for the data processing
-        self.packet_size = 6  # Each data packet is 6 bytes
-        self.max_data_points = 600 # keep the most recent 600 points
-        self.piezo_adder1 = []
-        self.piezo_adder2 = []
-        self.buffer = bytearray()
 
-    def read_serial_data(self):
-        """Reads data from the serial port and updates the buffer."""
-        try:
-            # Read a chunk of data
-            bytes_to_read = self.packet_size * 10
-            self.buffer.extend(self.ser.read(bytes_to_read))
-            #print("Reading serial...")
-
-            # Process packets in the buffer
-            while len(self.buffer) >= self.packet_size:
-                # Check for start and end bytes in each packet
-                if self.buffer[0] == 0x7F and self.buffer[5] == 0x80:
-                    # Extract data for piezo sensors
-                    self.piezo_adder1.append(self.buffer[1])
-                    self.piezo_adder2.append(self.buffer[3])
-
-                    # Trim data lists to maintain max data points
-                    if len(self.piezo_adder1) > self.max_data_points:
-                        self.piezo_adder1.pop(0)
-                    if len(self.piezo_adder2) > self.max_data_points:
-                        self.piezo_adder2.pop(0)
-
-                    # Remove the processed packet from the buffer
-                    self.buffer = self.buffer[self.packet_size:]
-                else:
-                    # Remove one byte if packet format is incorrect
-                    self.buffer.pop(0)
-        except serial.SerialException as e:
-            print(f"Serial error: {e}")
-'''
 
     #Piezo functions
     def setup_piezo_plots(self):
