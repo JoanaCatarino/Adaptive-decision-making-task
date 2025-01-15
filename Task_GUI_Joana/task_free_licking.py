@@ -72,7 +72,7 @@ class FreeLickingTask:
                     print(f'Piezo Adder 2:{latest_value2}')
                     
                     # Check if the value exceeds the threshold
-                    if latest_value2 = self.threshold:
+                    if latest_value2 > self.threshold:
                     print('Threshold exceeded! Flashing pump_r')
                     pump_r.on()
                     time.sleep(self.led_on_duration)
