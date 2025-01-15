@@ -94,7 +94,6 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
 
 
-
     #Piezo functions
     def setup_piezo_plots(self):
 
@@ -115,10 +114,10 @@ class GuiControls:
     def update_piezo_plots(self):
 
         # read serial data
-        self.read_serial_data()
+        self.piezo_reader.read_serial_data()
         # Update each piezo plot with new data
-        self.live_plot1.update_plot(self.piezo_adder1)  # Update Right Piezo Plot
-        self.live_plot2.update_plot(self.piezo_adder2)  # Update Left Piezo Plot
+        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Right Piezo Plot
+        self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Left Piezo Plot
 
 
     def populate_ddm_animalID(self):
