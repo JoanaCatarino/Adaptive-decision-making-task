@@ -15,7 +15,7 @@ import time
 
 import asyncio
 
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
