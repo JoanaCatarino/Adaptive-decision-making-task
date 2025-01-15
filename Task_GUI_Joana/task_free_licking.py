@@ -30,6 +30,7 @@ class FreeLickingTask:
         self.piezo_reader = gui_controls.piezo_reader
         self.running = False
         self.threshold = 5 # Threshold for the lick to count as a lick
+        self.led_on_duration = 0.5 # time in seconds the LED stays on
 
     def start(self):
         """Starts the FreeLicking task."""
@@ -60,7 +61,7 @@ class FreeLickingTask:
                     if latest_value > self.threshold:
                         print("Threshold exceeded! Flashing pump_l.")
                         pump_l.on()
-                        time.sleep(0.2)  # Adjust this for the desired ON duration
+                        time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.off()
                 else:
                     print("Piezo Adder 1 is empty.")
