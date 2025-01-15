@@ -20,8 +20,6 @@ class LivePlotWidget(QWidget):
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
         
-        # Adjust plot layout to create more space for y-axis tick labels
-        self.figure.subplots_adjust(left=0.15, right=0.95, top=0.95, bottom=0.15)
 
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
