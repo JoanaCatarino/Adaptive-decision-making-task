@@ -19,7 +19,7 @@ class DateUpdater:
 
     def update_date(self):
         current_date = QDate.currentDate()
-        self.label.setText(current_date.toString("dd-MM-yyyy"))
+        self.label.setText(current_date.toString('yyyy-MM-dd'))
 
     def set_font_size(self, font_size):
         font = self.label.font()
