@@ -24,7 +24,7 @@ class LivePlotWidget(QWidget):
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)
-        self.ax.set_xlabel("", labelpad=10)
+        self.ax.set_xlabel("Time (s)", labelpad=10)
         self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2)
         #self.ax.legend()
@@ -40,7 +40,7 @@ class LivePlotWidget(QWidget):
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         # Apply tight layout to ensure everything fits 
-        #self.figure.tight_layout(pad=2.0)  # Adjust the padding as needed 
+        self.figure.tight_layout(pad=2.0)  # Adjust the padding as needed 
 
         # Initialize data lists for x-axis and y-axis
         self.x_data = []
