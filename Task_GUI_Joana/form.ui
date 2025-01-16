@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -360,7 +360,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_QW_ms">
+      <widget class="QLabel" name="lbl_QW_s">
        <property name="geometry">
         <rect>
          <x>173</x>
@@ -375,10 +375,10 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>[ms]</string>
+        <string>[s]</string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_RW_ms">
+      <widget class="QLabel" name="lbl_RW_s">
        <property name="geometry">
         <rect>
          <x>193</x>
@@ -393,7 +393,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>[ms]</string>
+        <string>[s]</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="txt_ResponseWindow">
@@ -462,7 +462,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>Trial Duration</string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_TD_ms">
+      <widget class="QLabel" name="lbl_TD_s">
        <property name="geometry">
         <rect>
          <x>174</x>
@@ -477,7 +477,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>[ms]</string>
+        <string>[s]</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_RewardParams">
@@ -518,7 +518,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>[ms]</string>
+        <string>[s]</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="txt_ValveOpening">
@@ -857,7 +857,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>1131</x>
-        <y>25</y>
+        <y>15</y>
         <width>131</width>
         <height>20</height>
        </rect>
@@ -878,7 +878,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>1130</x>
-        <y>309</y>
+        <y>302</y>
         <width>141</width>
         <height>20</height>
        </rect>
@@ -2333,7 +2333,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_CorrectTrials">
       <property name="geometry">
        <rect>
-        <x>738</x>
+        <x>744</x>
         <y>656</y>
         <width>81</width>
         <height>16</height>
@@ -2378,6 +2378,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2438,6 +2439,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2462,6 +2464,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2486,6 +2489,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2510,6 +2514,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2534,6 +2539,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2549,9 +2555,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_SoundBlocks">
       <property name="geometry">
        <rect>
-        <x>739</x>
+        <x>745</x>
         <y>737</y>
-        <width>91</width>
+        <width>81</width>
         <height>16</height>
        </rect>
       </property>
@@ -2576,6 +2582,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2618,6 +2625,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2699,6 +2707,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2731,7 +2740,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>1120</x>
-        <y>50</y>
+        <y>40</y>
         <width>431</width>
         <height>231</height>
        </rect>
@@ -2747,7 +2756,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>1120</x>
-        <y>335</y>
+        <y>328</y>
         <width>431</width>
         <height>211</height>
        </rect>
@@ -2772,8 +2781,8 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_LicksRight">
       <property name="geometry">
        <rect>
-        <x>940</x>
-        <y>770</y>
+        <x>943</x>
+        <y>775</y>
         <width>71</width>
         <height>21</height>
        </rect>
@@ -2790,8 +2799,8 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="box_LicksRight">
       <property name="geometry">
        <rect>
-        <x>1020</x>
-        <y>770</y>
+        <x>1017</x>
+        <y>776</y>
         <width>40</width>
         <height>20</height>
        </rect>
@@ -2799,6 +2808,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2815,7 +2825,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>650</x>
-        <y>770</y>
+        <y>774</y>
         <width>40</width>
         <height>20</height>
        </rect>
@@ -2823,6 +2833,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2839,7 +2850,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>570</x>
-        <y>770</y>
+        <y>774</y>
         <width>70</width>
         <height>20</height>
        </rect>
@@ -2857,7 +2868,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>770</x>
-        <y>770</y>
+        <y>778</y>
         <width>61</width>
         <height>16</height>
        </rect>
@@ -2874,8 +2885,8 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="box_LicksLeft">
       <property name="geometry">
        <rect>
-        <x>840</x>
-        <y>770</y>
+        <x>838</x>
+        <y>777</y>
         <width>40</width>
         <height>20</height>
        </rect>
@@ -2883,6 +2894,7 @@ color: rgb(112, 112, 112);</string>
       <property name="font">
        <font>
         <pointsize>10</pointsize>
+        <bold>true</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2893,6 +2905,114 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_TR_s">
+      <property name="geometry">
+       <rect>
+        <x>1538</x>
+        <y>303</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>[s]</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_ThresholdRight">
+      <property name="geometry">
+       <rect>
+        <x>1390</x>
+        <y>303</y>
+        <width>90</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 85, 0);</string>
+      </property>
+      <property name="text">
+       <string>Threshold Right</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txt_ThresholdRight">
+      <property name="geometry">
+       <rect>
+        <x>1480</x>
+        <y>302</y>
+        <width>51</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_TL_s">
+      <property name="geometry">
+       <rect>
+        <x>1538</x>
+        <y>573</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>[s]</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="txt_ThresholdLeft">
+      <property name="geometry">
+       <rect>
+        <x>1480</x>
+        <y>572</y>
+        <width>51</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_ThresholdLeft">
+      <property name="geometry">
+       <rect>
+        <x>1390</x>
+        <y>573</y>
+        <width>90</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 85, 0);</string>
+      </property>
+      <property name="text">
+       <string>Threshold Left</string>
       </property>
      </widget>
      <zorder>bkg_Trials</zorder>
@@ -2942,6 +3062,12 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_TotalLicks</zorder>
      <zorder>lbl_LicksLeft</zorder>
      <zorder>box_LicksLeft</zorder>
+     <zorder>lbl_TR_s</zorder>
+     <zorder>lbl_ThresholdRight</zorder>
+     <zorder>txt_ThresholdRight</zorder>
+     <zorder>lbl_TL_s</zorder>
+     <zorder>txt_ThresholdLeft</zorder>
+     <zorder>lbl_ThresholdLeft</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
@@ -3013,7 +3139,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>760</y>
+         <y>767</y>
          <width>71</width>
          <height>20</height>
         </rect>
@@ -3031,7 +3157,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>700</y>
+         <y>701</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3039,6 +3165,7 @@ color: rgb(112, 112, 112);</string>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3055,7 +3182,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>730</y>
+         <y>734</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3063,6 +3190,7 @@ color: rgb(112, 112, 112);</string>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3087,6 +3215,7 @@ color: rgb(112, 112, 112);</string>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3121,7 +3250,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>180</x>
-         <y>760</y>
+         <y>767</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3129,6 +3258,7 @@ color: rgb(112, 112, 112);</string>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3144,8 +3274,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_IncorrectTrials">
        <property name="geometry">
         <rect>
-         <x>70</x>
-         <y>730</y>
+         <x>73</x>
+         <y>734</y>
          <width>91</width>
          <height>16</height>
         </rect>
@@ -3162,8 +3292,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_CorrectTrials">
        <property name="geometry">
         <rect>
-         <x>80</x>
-         <y>700</y>
+         <x>81</x>
+         <y>702</y>
          <width>81</width>
          <height>16</height>
         </rect>
@@ -3258,7 +3388,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>670</y>
+         <y>671</y>
          <width>71</width>
          <height>16</height>
         </rect>
@@ -3284,6 +3414,7 @@ color: rgb(112, 112, 112);</string>
        <property name="font">
         <font>
          <pointsize>10</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="styleSheet">
