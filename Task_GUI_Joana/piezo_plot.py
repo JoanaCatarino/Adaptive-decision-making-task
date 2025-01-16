@@ -20,11 +20,12 @@ class LivePlotWidget(QWidget):
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
         
+        
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)
         self.ax.set_xlabel("Time (s)")
-        self.ax.set_ylabel("", labelpad=4)
+        self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2)
         #self.ax.legend()
 
