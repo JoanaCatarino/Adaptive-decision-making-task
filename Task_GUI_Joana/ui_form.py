@@ -1036,7 +1036,7 @@ class Ui_TaskGui(object):
         self.txt_ThresholdLeft.setFont(font5)
         self.lbl_ThresholdLeft = QLabel(self.Box)
         self.lbl_ThresholdLeft.setObjectName(u"lbl_ThresholdLeft")
-        self.lbl_ThresholdLeft.setGeometry(QRect(1390, 573, 90, 20))
+        self.lbl_ThresholdLeft.setGeometry(QRect(1397, 573, 81, 20))
         self.lbl_ThresholdLeft.setFont(font5)
         self.lbl_ThresholdLeft.setStyleSheet(u"color: rgb(255, 85, 0);")
         self.Boxes.addTab(self.Box, "")
@@ -1218,7 +1218,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(1)
+        self.Boxes.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(TaskGui)

@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -2997,9 +2997,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_ThresholdLeft">
       <property name="geometry">
        <rect>
-        <x>1390</x>
+        <x>1397</x>
         <y>573</y>
-        <width>90</width>
+        <width>81</width>
         <height>20</height>
        </rect>
       </property>
