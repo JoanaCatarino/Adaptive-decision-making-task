@@ -32,7 +32,7 @@ class FreeLickingTask:
         self.running = False
         self.threshold = 5 # Threshold for the lick to count as a lick
         self.led_on_duration = 0.5 # time in seconds the LED stays on
-        self.total_trials = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
+        self.total_licks = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
         self.licks_left = 0 # Counts licks on the Left spout (above threshold - valid licks)
         self.licks_right = 0 # Counts licks on the Right spout (above threshold - valid licks)
 
@@ -71,8 +71,8 @@ class FreeLickingTask:
                         pump_l.off()
                         self.total_trials += 1 # Implement total trials
                         self.licks_left +=1 # Implement licks left
-                        self.gui_controls.update_total_trials(self.total_trials) # Update the total trials in the GUI
-                        self.gui_controls.update_total_trials(self.licks_left) # Update licks left in the GUI
+                        self.gui_controls.update_gui_variables(self.total_licks) # Update the total trials in the GUI
+                        self.gui_controls.update_gui_variables(self.licks_left) # Update licks left in the GUI
                 
                 
                 # Monitor piezo_adder2 (right spout) and control pump_r
@@ -88,12 +88,12 @@ class FreeLickingTask:
                         pump_r.off()
                         self.total_trials += 1 # Implement total trials
                         self.licks_right +=1 # Implement licks right
-                        self.gui_controls.update_total_trials(self.total_trials) # Update the total trials in the GUI
-                        self.gui_controls.update_total_trials(self.licks_right) # Update licks right in the GUI
+                        self.gui_controls.update_gui_variables(self.total_licks) # Update the total trials in the GUI
+                        self.gui_controls.update_gui_variables(self.licks_right) # Update licks right in the GUI
 
                         
                 # Print the total trials count
-                print(f'Total Trials = {self.total_trials}')
+                print(f'Total licks = {self.total_licks}')
 
                 time.sleep(0.1)  # Adjust for the desired frequency
         

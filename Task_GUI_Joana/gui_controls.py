@@ -365,10 +365,12 @@ class GuiControls:
         self.update_button_states()
 
 
-    def update_total_trials(self, total_trials):
+    def update_gui_variables(self, total_licks, licks_left, licks_right):
         # Update the QLabel with the total trials count
-        self.ui.box_TotalLicks.setText(f'{total_trials}')
-        self.ui.OV_box_TotalLicks.setText(f'{total_trials}')
+        self.ui.box_TotalLicks.setText(f'{total_licks}')
+        self.ui.OV_box_TotalLicks.setText(f'{total_licks}')
+        self.ui.box_LicksLeft.setText(f'{licks_left}')
+        self.ui.box_LicksRight.setText(f'{licks_right}')
 
 
     # Test to use the Update button to print the value of the variables in real-time
