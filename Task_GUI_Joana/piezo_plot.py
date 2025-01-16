@@ -38,6 +38,9 @@ class LivePlotWidget(QWidget):
         
         #  new!! test to see if it improves layout of the plots
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        # Apply tight layout to ensure everything fits 
+        self.figure.tight_layout(pad=2.0)  # Adjust the padding as needed 
 
         # Initialize data lists for x-axis and y-axis
         self.x_data = []
