@@ -2377,7 +2377,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2438,7 +2438,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2463,7 +2463,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2488,7 +2488,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2513,7 +2513,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2538,7 +2538,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2581,7 +2581,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2624,7 +2624,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2706,7 +2706,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2807,7 +2807,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2832,7 +2832,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2893,7 +2893,7 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>false</bold>
        </font>
       </property>
@@ -2928,15 +2928,15 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_ThresholdRight">
       <property name="geometry">
        <rect>
-        <x>1390</x>
+        <x>1379</x>
         <y>303</y>
-        <width>90</width>
+        <width>101</width>
         <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>9</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
@@ -2997,15 +2997,15 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_ThresholdLeft">
       <property name="geometry">
        <rect>
-        <x>1397</x>
+        <x>1387</x>
         <y>573</y>
-        <width>81</width>
+        <width>91</width>
         <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>9</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="styleSheet">
@@ -3139,7 +3139,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>100</x>
-         <y>767</y>
+         <y>764</y>
          <width>71</width>
          <height>20</height>
         </rect>
@@ -3164,7 +3164,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <bold>false</bold>
         </font>
        </property>
@@ -3189,7 +3189,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <bold>false</bold>
         </font>
        </property>
@@ -3214,7 +3214,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <bold>false</bold>
         </font>
        </property>
@@ -3257,7 +3257,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <bold>false</bold>
         </font>
        </property>
@@ -3413,7 +3413,7 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <bold>false</bold>
         </font>
        </property>
