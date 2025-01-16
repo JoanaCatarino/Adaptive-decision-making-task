@@ -24,7 +24,7 @@ class LivePlotWidget(QWidget):
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)
-        self.ax.set_xlabel("", labelpad=10)
+        self.ax.set_xlabel("")
         self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2)
         #self.ax.legend()
