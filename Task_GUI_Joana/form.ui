@@ -2377,8 +2377,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2438,8 +2438,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2463,8 +2463,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2488,8 +2488,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2513,8 +2513,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2538,8 +2538,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2581,8 +2581,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2624,8 +2624,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2706,8 +2706,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2807,8 +2807,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2832,8 +2832,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2893,8 +2893,8 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
-        <bold>true</bold>
+        <pointsize>12</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
@@ -2940,7 +2940,7 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 85, 0);</string>
+       <string notr="true">color: rgb(0, 85, 127);</string>
       </property>
       <property name="text">
        <string>Threshold Right</string>
@@ -3009,7 +3009,7 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color: rgb(255, 85, 0);</string>
+       <string notr="true">color: rgb(0, 85, 127);</string>
       </property>
       <property name="text">
        <string>Threshold Left</string>
@@ -3164,8 +3164,8 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3189,8 +3189,8 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3214,8 +3214,8 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3232,7 +3232,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>97</x>
-         <y>637</y>
+         <y>639</y>
          <width>71</width>
          <height>16</height>
         </rect>
@@ -3257,8 +3257,8 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
@@ -3413,8 +3413,8 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>10</pointsize>
-         <bold>true</bold>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="styleSheet">
