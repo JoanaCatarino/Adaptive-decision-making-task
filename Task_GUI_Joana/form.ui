@@ -2769,13 +2769,13 @@ color: rgb(112, 112, 112);</string>
        <string notr="true">background-color: rgb(233, 237, 254);</string>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_ActionLBlocks_2">
+     <widget class="QLabel" name="lbl_LicksRight">
       <property name="geometry">
        <rect>
-        <x>950</x>
+        <x>940</x>
         <y>770</y>
         <width>71</width>
-        <height>16</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -2787,7 +2787,7 @@ color: rgb(112, 112, 112);</string>
        <string>Licks Right:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_Action_L_blocks_2">
+     <widget class="QLabel" name="box_LicksRight">
       <property name="geometry">
        <rect>
         <x>1020</x>
@@ -2811,7 +2811,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="box_TotalTrials_2">
+     <widget class="QLabel" name="box_TotalLicks">
       <property name="geometry">
        <rect>
         <x>650</x>
@@ -2835,7 +2835,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_TotalTrials_2">
+     <widget class="QLabel" name="lbl_TotalLicks">
       <property name="geometry">
        <rect>
         <x>570</x>
@@ -2853,7 +2853,7 @@ color: rgb(112, 112, 112);</string>
        <string>Total Licks: </string>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_CorrectTrials_2">
+     <widget class="QLabel" name="lbl_LicksLeft">
       <property name="geometry">
        <rect>
         <x>770</x>
@@ -2871,7 +2871,7 @@ color: rgb(112, 112, 112);</string>
        <string>Licks Left:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_CorrectTrials_2">
+     <widget class="QLabel" name="box_LicksLeft">
       <property name="geometry">
        <rect>
         <x>840</x>
@@ -2936,12 +2936,12 @@ color: rgb(112, 112, 112);</string>
      <zorder>plt_AnimalPerformance</zorder>
      <zorder>plt_LickTrace_Right</zorder>
      <zorder>plt_LickTrace_Left</zorder>
-     <zorder>lbl_ActionLBlocks_2</zorder>
-     <zorder>box_Action_L_blocks_2</zorder>
-     <zorder>box_TotalTrials_2</zorder>
-     <zorder>lbl_TotalTrials_2</zorder>
-     <zorder>lbl_CorrectTrials_2</zorder>
-     <zorder>box_CorrectTrials_2</zorder>
+     <zorder>lbl_LicksRight</zorder>
+     <zorder>box_LicksRight</zorder>
+     <zorder>box_TotalLicks</zorder>
+     <zorder>lbl_TotalLicks</zorder>
+     <zorder>lbl_LicksLeft</zorder>
+     <zorder>box_LicksLeft</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
@@ -2953,7 +2953,7 @@ color: rgb(112, 112, 112);</string>
         <x>10</x>
         <y>20</y>
         <width>301</width>
-        <height>801</height>
+        <height>811</height>
        </rect>
       </property>
       <property name="font">
@@ -3012,8 +3012,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_Omissions">
        <property name="geometry">
         <rect>
-         <x>98</x>
-         <y>753</y>
+         <x>100</x>
+         <y>760</y>
          <width>71</width>
          <height>20</height>
         </rect>
@@ -3030,8 +3030,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_CorrectTrials">
        <property name="geometry">
         <rect>
-         <x>182</x>
-         <y>675</y>
+         <x>180</x>
+         <y>700</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3054,8 +3054,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_IncorrectTrials">
        <property name="geometry">
         <rect>
-         <x>182</x>
-         <y>716</y>
+         <x>180</x>
+         <y>730</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3078,8 +3078,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_TotalTrials">
        <property name="geometry">
         <rect>
-         <x>182</x>
-         <y>637</y>
+         <x>180</x>
+         <y>640</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3120,8 +3120,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_Omissions">
        <property name="geometry">
         <rect>
-         <x>182</x>
-         <y>755</y>
+         <x>180</x>
+         <y>760</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3144,8 +3144,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_IncorrectTrials">
        <property name="geometry">
         <rect>
-         <x>73</x>
-         <y>716</y>
+         <x>70</x>
+         <y>730</y>
          <width>91</width>
          <height>16</height>
         </rect>
@@ -3162,8 +3162,8 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_CorrectTrials">
        <property name="geometry">
         <rect>
-         <x>81</x>
-         <y>676</y>
+         <x>80</x>
+         <y>700</y>
          <width>81</width>
          <height>16</height>
         </rect>
@@ -3252,6 +3252,48 @@ color: rgb(112, 112, 112);</string>
        </property>
        <property name="text">
         <string/>
+       </property>
+      </widget>
+      <widget class="QLabel" name="OV_lbl_TotalLicks">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>670</y>
+         <width>71</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Licks: </string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="OV_box_TotalLicks">
+       <property name="geometry">
+        <rect>
+         <x>180</x>
+         <y>670</y>
+         <width>41</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(234, 234, 234);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </widget>
