@@ -4,10 +4,6 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from ui_form import Ui_TaskGui
 
-import asyncio #added
-from qasync import QEventLoop # added
-
-
 
 class TaskGui(QMainWindow):
     def __init__(self, parent=None):
