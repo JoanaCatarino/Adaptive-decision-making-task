@@ -371,10 +371,10 @@ class GuiControls:
         self.ui.OV_box_TotalLicks.setText(f'{total_licks}')
         
     def update_licks_left(self, licks_left):
-        self.ui.box_LicksLeft.setText(f'licks_left')
+        self.ui.box_LicksLeft.setText(f'{licks_left}')
         
     def update_licks_right(self, licks_right):
-        self.ui.box_LicksRight.setText(f'licks_right')
+        self.ui.box_LicksRight.setText(f'{licks_right}')
         
 
     # Test to use the Update button to print the value of the variables in real-time
