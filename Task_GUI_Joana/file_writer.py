@@ -16,6 +16,13 @@ from PyQt5.QtCore import QTimer, QDate, QTime
 # Define the save directory path directly here
 SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir"
 
+TASK_NICKNAME = {
+    'Free Licking': 'FreeLick',
+    'Spout Sampling': 'SpoutSamp',
+    'Two-Choice Auditory Task': '2ChoiceAuditory',
+    'Adaptive Sensorimotor Task': 'AdaptSensorimotor',
+    'Adaptive Sensorimotor Task w/Distractor': 'AdaptSensorimotor_distractor'}
+
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
@@ -46,6 +53,9 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
 
     # Find the box in which the animal is was trained that day
     box = box_combobox.currentText()
+    
+    # Get the short name for the task to save in the file name
+    task_nickname = TASK_NICKNAME.get(task, 'UNK') # unk is for unknown is the task selected is not defined in the dictionary
 
     # Construct the directory path for the animal ID within the saved directory
     animal_directory = os.path.join(SAVE_DIRECTORY, animal_id)
@@ -55,14 +65,14 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
         os.makedirs(animal_directory)
 
     # Construct the base file name (for both csv and json file)
-    base_file_name = f"{animal_id}_{formatted_date}_{current_time}_box{box}"
+    base_file_name = f'{task_nickname}_{animal_id}_{formatted_date}_{current_time}_box{box}'
     csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
     json_file_path = os.path.join(animal_directory, base_file_name + '.json')
 
     # Ensure the file name is unique for both csv and json files
     counter = 1
     while os.path.exists(csv_file_path) or os.path.exists(json_file_path):
-        file_name = f'{animal_id}_{formatted_date}_{current_time}'
+        file_name = f'{task_nickname}_{animal_id}_{formatted_date}_{current_time}_box{box}_{counter}'
         csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
         json_file_path = os.path.join(animal_directory, base_file_name + '.json')
         counter += 1
