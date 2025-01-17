@@ -26,7 +26,7 @@ class LivePlotWidget(QWidget):
         self.ax.set_ylim(0, 30)
         self.ax.set_xlabel("Time (s)", labelpad=10)
         self.ax.set_ylabel("", labelpad=10)
-        self.line, = self.ax.plot([], [], lw=2)
+        self.line, = self.ax.plot([], [], lw=2, color=color) # set line color for the plots
         #self.ax.legend()
 
         # Set up layout for the widget
