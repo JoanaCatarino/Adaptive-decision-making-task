@@ -242,14 +242,16 @@ class GuiControls:
 
     def check_update_state(self):
         # Enable or disable the update button based on the QLineEdit content
-        quiet_window = self.ui.txt_QuietWindow.text().strip()
-        response_window = self.ui.txt_ResponseWindow.text().strip()
-        trial_duration = self.ui.txt_TrialDuration.text().strip()
-        valve_opening = self.ui.txt_ValveOpening.text().strip()
-        threshold_left = self.ui.txt_ThresholdLeft.text().strip()
-        threshold_right = self.ui.txt_ThresholdRight.text().strip()
-
-        if quiet_window or response_window or trial_duration or valve_opening or threshold_left or threshold_right:
+        
+        if (
+            self.ui.txt_QuietWindow.text().strip()
+            or self.ui.txt_ResponseWindow.text().strip()
+            or self.ui.txt_TrialDuration.text().strip()
+            or self.ui.txt_ValveOpening.text().strip()
+            or self.ui.txt_ThresholdLeft.text().strip()
+            or self.ui.txt_ThresholdRight.text().strip()
+            ):
+            
             self.ui.btn_Update.setEnabled(True)
         else:
             self.ui.btn_Update.setEnabled(False)
