@@ -8,6 +8,9 @@ Created on Sat Jul 20 17:47:58 2024
 - The goal of this task is to make the animals familiarized with the spouts and the reward type they give (sucrose water)
 - In this task animals should receive a reward when they lick either of the spouts
 - Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
+
+Important
+- when pump is set to ON it is actually OFF and when it is set to OFF it is pumping water
 """
 
 import threading
@@ -41,6 +44,11 @@ class FreeLickingTask:
         """Starts the FreeLicking task."""
         print("Starting Free Licking Task...")
         self.running = True
+        
+        # Turn the LEDS ON initially
+        pump_l.on()
+        pump_r.on()
+        
         self.print_thread = threading.Thread(target=self._print_piezo_values, daemon=True)
         self.print_thread.start()
 
@@ -50,7 +58,7 @@ class FreeLickingTask:
         self.running = False
         if self.print_thread.is_alive():
             self.print_thread.join()
-        pump_l.off()
+        pump_l.on()
 
     def _print_piezo_values(self):
         """
@@ -67,9 +75,9 @@ class FreeLickingTask:
                     # Check if the value exceeds the threshold
                     if latest_value1 > self.threshold_left:
                         print('Threshold exceeded! Flashing pump_l')
-                        pump_l.on()
-                        time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.off()
+                        time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
+                        pump_l.on()
                         self.total_licks += 1 # Implement total licks
                         self.licks_left +=1 # Implement licks left
                         self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
@@ -84,9 +92,9 @@ class FreeLickingTask:
                     # Check if the value exceeds the threshold
                     if latest_value2 > self.threshold_right:
                         print('Threshold exceeded! Flashing pump_r')
-                        pump_r.on()
-                        time.sleep(self.led_on_duration)
                         pump_r.off()
+                        time.sleep(self.led_on_duration)
+                        pump_r.on()
                         self.total_licks += 1 # Implement total licks
                         self.licks_right +=1 # Implement licks right
                         self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
@@ -99,8 +107,8 @@ class FreeLickingTask:
                 time.sleep(0.1)  # Adjust for the desired frequency
         
         except Exception as e:
-            pump_l.off()  # Turn off pump_l in case of error
-            pump_r.off()  # Turn off pump_r in case of error
+            pump_l.on()  # Turn off pump_l in case of error
+            pump_r.on()  # Turn off pump_r in case of error
 
 
 
