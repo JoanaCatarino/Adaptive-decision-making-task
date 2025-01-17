@@ -55,14 +55,14 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
         os.makedirs(animal_directory)
 
     # Construct the base file name (for both csv and json file)
-    base_file_name = f"{animal_id}_{formatted_date}_{current_time}"
+    base_file_name = f"{animal_id}_{formatted_date}_{current_time}_box{box}"
     csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
     json_file_path = os.path.join(animal_directory, base_file_name + '.json')
 
     # Ensure the file name is unique for both csv and json files
     counter = 1
     while os.path.exists(csv_file_path) or os.path.exists(json_file_path):
-        file_name = f'{animal_id}_{formatted_date}_{current_time}_{counter}_box{box}'
+        file_name = f'{animal_id}_{formatted_date}_{current_time}'
         csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
         json_file_path = os.path.join(animal_directory, base_file_name + '.json')
         counter += 1
