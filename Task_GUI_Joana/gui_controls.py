@@ -249,7 +249,7 @@ class GuiControls:
         threshold_left = self.ui.txt_ThresholdLeft.text().strip()
         threshold_right = self.ui.txt_ThresholdRight.text().strip()
 
-        if quiet_window or response_window or trial_duration or valve_opening:
+        if quiet_window or response_window or trial_duration or valve_opening or threshold_left or threshold_right:
             self.ui.btn_Update.setEnabled(True)
         else:
             self.ui.btn_Update.setEnabled(False)
