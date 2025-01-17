@@ -11,7 +11,7 @@ from piezo_reader import PiezoReader
 
 
 class LivePlotWidget(QWidget):
-    def __init__(self, max_data_points, parent=None):
+    def __init__(self, max_data_points, color='blue', parent=None):
         super().__init__(parent)
 
         self.max_data_points = max_data_points
