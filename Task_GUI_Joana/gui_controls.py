@@ -204,7 +204,8 @@ class GuiControls:
         # Connect Start and Stop buttons + update button
         self.ui.btn_Start.clicked.connect(self.execute_task)
         self.ui.btn_Stop.clicked.connect(self.stop_task)
-        self.ui.btn_Update.clicked.connect(self.print_variables)
+        #self.ui.btn_Update.clicked.connect(self.print_variables)
+        self.ui.btn_Update.clicked.connect(self.update_valve_opening)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
@@ -375,6 +376,29 @@ class GuiControls:
         
     def update_licks_right(self, licks_right):
         self.ui.box_LicksRight.setText(f'{licks_right}')
+        
+    
+    def update_valve_opening(self):
+        """
+        Update the led_on_duration (mimicking valve opening for the pump) value in the FreeLickingTask class
+        based on the input in the GUI for the valve opening.
+        """
+        try:
+            # Get the value from the Valve Opening text box
+            valve_opening = self.ui.txt_ValveOpening.text()
+    
+            # Validate and convert to a float
+            if valve_opening:
+                new_duration = float(valve_opening)
+                
+                # Ensure there's a running task and it's of the correct type
+                if self.current_task and isinstance(self.current_task, FreeLickingTask):
+                    self.current_task.led_on_duration = new_duration
+                    print(f"Updated LED on duration to: {new_duration} seconds")
+                else:
+                    print("No active FreeLickingTask or invalid task type.")
+        except ValueError:
+            print("Invalid input for LED on duration. Please enter a valid number.")
         
 
     # Test to use the Update button to print the value of the variables in real-time
