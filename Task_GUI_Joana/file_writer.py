@@ -21,7 +21,7 @@ TASK_NICKNAME = {
     'Spout Sampling': 'SpoutSamp',
     'Two-Choice Auditory Task': '2ChoiceAuditory',
     'Adaptive Sensorimotor Task': 'AdaptSensorimotor',
-    'Adaptive Sensorimotor Task w/Distractor': 'AdaptSensorimotor_distractor'}
+    'Adaptive Sensorimotor Task w/ Distractor': 'AdaptSensorimotor_distractor'}
 
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
