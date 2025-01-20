@@ -103,7 +103,6 @@ class GuiControls:
         plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
         self.live_plot1 = LivePlotWidget(self.piezo_reader.max_data_points, color= '#955C66', parent=self.ui.plt_LickTrace_Left)
-        #self.live_plot1.setFixedSize(450, 220)
         self.live_plot1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         plt_layout1.addWidget(self.live_plot1)
         self.ui.plt_LickTrace_Left.setLayout(plt_layout1)
@@ -113,7 +112,6 @@ class GuiControls:
         plt_layout2.setContentsMargins(0, 0, 0, 0)
         plt_layout2.setSpacing(0)
         self.live_plot2 = LivePlotWidget(self.piezo_reader.max_data_points, color= '#4E8070', parent=self.ui.plt_LickTrace_Right)
-        #self.live_plot2.setFixedSize(450, 220)
         self.live_plot2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         plt_layout2.addWidget(self.live_plot2)
         self.ui.plt_LickTrace_Right.setLayout(plt_layout2)
@@ -124,8 +122,8 @@ class GuiControls:
         # read serial data
         self.piezo_reader.read_serial_data()
         # Update each piezo plot with new data
-        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Right Piezo Plot
-        self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Left Piezo Plot
+        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1, self.threshold_left)  # Update Left Piezo Plot
+        self.live_plot2.update_plot(self.piezo_reader.piezo_adder2, self.threshold_right)  # Update Right Piezo Plot
 
 
     def populate_ddm_animalID(self):
