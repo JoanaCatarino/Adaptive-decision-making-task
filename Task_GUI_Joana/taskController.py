@@ -15,6 +15,7 @@ from gui_controls import GuiControls
 from task_free_licking import FreeLickingTask
 from task_test_rig import TestRig
 from stylesheet import stylesheet
+from gpio_map import *
 
 #test
 import pyqtgraph as pg
@@ -29,6 +30,8 @@ class TaskGui(QMainWindow):
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
         
+        pump_l.on()
+        pump_r.on()
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
