@@ -61,20 +61,6 @@ class LivePlotWidget(QWidget):
         self.ax.autoscale_view()  # Update scale if necessary
         self.canvas.draw()
 
-    def set_thresholds(self, threshold_left, threshold_right):
-        # Remove existing threshold lines if they exist
-        if self.threshold_line_left:
-            self.threshold_line_left.remove()
-        if self.threshold_line_right:
-            self.threshold_line_right.remove()
-
-        # Plot new threshold lines
-        self.threshold_line_left = self.ax.axhline(y=threshold_left, color='black', linestyle='--')
-        self.threshold_line_right = self.ax.axhline(y=threshold_right, color='black', linestyle='--')
-
-        # Redraw the canvas to reflect changes
-        self.canvas.draw()
-
 
     def get_last_active_time(self, threshold=1):
         """

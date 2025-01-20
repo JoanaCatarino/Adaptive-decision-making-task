@@ -51,7 +51,6 @@ class GuiControls:
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value
-        self.free_licking_task = FreeLickingTask(self)
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -116,21 +115,12 @@ class GuiControls:
         self.ui.plt_LickTrace_Right.setLayout(plt_layout2)
 
     def update_piezo_plots(self):
-
         # read serial data
         self.piezo_reader.read_serial_data()
         # Update each piezo plot with new data
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
-    
-    def update_thresholds(self, left, right):
-        self.free_licking_task.set_thresholds(left, right)
-         
-        # Update the plots with the new threshold values
-        self.live_plot1.set_thresholds(self.free_licking_task.threshold_left)
-        self.live_plot2.set_thresholds(self.free_licking_task.threshold_right)
-
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
