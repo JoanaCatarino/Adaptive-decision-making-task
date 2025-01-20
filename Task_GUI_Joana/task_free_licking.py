@@ -56,7 +56,7 @@ class FreeLickingTask:
         self.licks_right = 0 
         
         # Update Gui display immediately
-        self.gui_controls.update_total_trials(0)
+        self.gui_controls.update_total_licks(0)
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
         
