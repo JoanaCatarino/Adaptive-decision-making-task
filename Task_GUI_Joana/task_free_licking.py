@@ -55,8 +55,13 @@ class FreeLickingTask:
         self.licks_left = 0 
         self.licks_right = 0 
         
+        # Update Gui display immediately
+        self.gui_controls.update_total_trials(0)
+        self.gui_controls.update_licks_left(0)
+        self.gui_controls.update_licks_right(0)
+        
         self.running = True
-        self.print_thread = threading.Thread(target=self._print_piezo_values, daemon=True)
+        self.print_thread = threading.Thread(target=self.monitor_piezo_values, daemon=True)
         self.print_thread.start()
 
     def stop(self):
@@ -67,7 +72,7 @@ class FreeLickingTask:
             self.print_thread.join()
         pump_l.on()
 
-    def _print_piezo_values(self):
+    def monitor_piezo_values(self):
         """
         Continuously prints the piezo_adder1 values while the task is running and checks the threshold.
         """
@@ -85,8 +90,10 @@ class FreeLickingTask:
                         pump_l.off()
                         time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
                         pump_l.on()
+                        
                         self.total_licks += 1 # Implement total licks
                         self.licks_left +=1 # Implement licks left
+                        
                         self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                         self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI
                 
@@ -102,8 +109,10 @@ class FreeLickingTask:
                         pump_r.off()
                         time.sleep(self.led_on_duration)
                         pump_r.on()
+                        
                         self.total_licks += 1 # Implement total licks
                         self.licks_right +=1 # Implement licks right
+                        
                         self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                         self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI
 
