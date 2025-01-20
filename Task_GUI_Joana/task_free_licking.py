@@ -127,7 +127,14 @@ class FreeLickingTask:
             pump_l.on()  # Turn off pump_l in case of error
             pump_r.on()  # Turn off pump_r in case of error
 
-
+    
+def set_thresholds(self, left, right):
+        """Sets the thresholds for the piezo adders and updates the GUI."""
+        self.threshold_left = left
+        self.threshold_right = right
+        
+        # Update the GUI thresholds
+        self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
 
 '''
 from gpio_map import *

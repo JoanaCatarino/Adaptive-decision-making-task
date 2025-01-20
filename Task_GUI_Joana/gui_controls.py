@@ -121,6 +121,11 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
+    
+    def update_thresholds(self, threshold_left, threshold_right):
+        self.live_plot1.update_threshold(threshold_left)
+        self.live_plot2.update_threshold(threshold_right)
+        
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -407,6 +412,12 @@ class GuiControls:
                     self.current_task.led_on_duration = new_led_on_duration
                     print(f"LED on duration: {new_led_on_duration} s")
                     self.ui.btn_Update.setEnabled(False)
+                
+                
+                if new_threshold_left is not None or new_threshold_right is not None:
+                    # Call the method to update thresholds in the FreeLickingTask
+                    self.current_task.set_thresholds(new_threshold_left, new_threshold_right)
+                
                 
                 # Update threshold_left
                 if new_threshold_left is not None:
