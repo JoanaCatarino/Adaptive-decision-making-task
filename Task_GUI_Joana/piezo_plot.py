@@ -29,10 +29,8 @@ class LivePlotWidget(QWidget):
         self.line, = self.ax.plot([], [], lw=2, color=color) # set line color for the plots
 
         # Draw the threshold lines if thresholds are provided
-        if threshold_left is not None:
-            self.threshold_left_line = self.ax.axhline(y=threshold_left, color='red', linestyle='--')
-        if threshold_right is not None:
-            self.threshold_right_line = self.ax.axhline(y=threshold_right, color='blue', linestyle='--')
+        self.ax.axhline(y=threshold_left, color='red', linestyle='--')
+        self.ax.axhline(y=threshold_right, color='blue', linestyle='--')
 
 
         # Set up layout for the widget
