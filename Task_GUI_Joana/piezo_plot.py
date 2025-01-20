@@ -20,16 +20,20 @@ class LivePlotWidget(QWidget):
         self.figure, self.ax = plt.subplots()
         self.canvas = FigureCanvas(self.figure)
         
-        # Initialize threshold lines to none
-        self.threshold_line_left = None
-        self.threshold_line_right = None        
-        
+
         # Configure plot appearance
         self.ax.set_xlim(0, self.max_data_points / 60)
         self.ax.set_ylim(0, 30)
         self.ax.set_xlabel("Time (s)", labelpad=10)
         self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2, color=color) # set line color for the plots
+
+        # Draw the threshold lines if thresholds are provided
+        if threshold_left is not None:
+            self.threshold_left_line = self.ax.axhline(y=threshold_left, color='red', linestyle='--')
+        if threshold_right is not None:
+            self.threshold_right_line = self.ax.axhline(y=threshold_right, color='blue', linestyle='--')
+
 
         # Set up layout for the widget
         layout = QVBoxLayout()
@@ -48,7 +52,7 @@ class LivePlotWidget(QWidget):
         self.x_data = []
         self.y_data = []
 
-    def update_plot(self, y_data):
+    def update_plot(self, y_data, threshold_left, threshold_right):
         # Update x and y data for plotting
         self.x_data = [i / 60 for i in range(len(y_data))]
         self.y_data = y_data
@@ -61,16 +65,7 @@ class LivePlotWidget(QWidget):
         self.ax.autoscale_view()  # Update scale if necessary
         self.canvas.draw()
         
-    def update_threshold(self, threshold):
-        # Remove existing threshold line if it exists
-        if hasattr(self, 'threshold_line'):
-            self.threshold_line.remove()
-            
-        # Create new threshold line
-        self.threshold_line = self.ax.axhline(y=threshold, color='black', linestyle='--')
-        
-        # Redraw the canvas to show the updated line
-        self.canvas.draw()
+
 
 
     def get_last_active_time(self, threshold=1):
