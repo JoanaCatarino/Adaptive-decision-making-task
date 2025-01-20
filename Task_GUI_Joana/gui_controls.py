@@ -123,8 +123,8 @@ class GuiControls:
         
     
     def update_thresholds(self, threshold_left, threshold_right):
-        self.live_plot1.update_threshold(threshold_left)
-        self.live_plot2.update_threshold(threshold_right)
+        self.live_plot1.update_threshold(self.current_task.threshold_left)
+        self.live_plot2.update_threshold(self.current_task.threshold_right)
         
 
     def populate_ddm_animalID(self):
