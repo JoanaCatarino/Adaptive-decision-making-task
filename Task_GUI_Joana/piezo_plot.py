@@ -48,7 +48,7 @@ class LivePlotWidget(QWidget):
         self.x_data = []
         self.y_data = []
 
-    def update_plot(self, y_data, threshold):
+    def update_plot(self, y_data):
         # Update x and y data for plotting
         self.x_data = [i / 60 for i in range(len(y_data))]
         self.y_data = y_data
