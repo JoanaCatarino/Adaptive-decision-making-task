@@ -23,8 +23,6 @@ from gpio_map import *
 
 class FreeLickingTask:
     
-    threshold_updated = pyqtS
-    
     def __init__(self, gui_controls):
         """
         Initializes the FreeLickingTask class.
