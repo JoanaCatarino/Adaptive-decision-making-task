@@ -27,7 +27,7 @@ class LivePlotWidget(QWidget):
         self.ax.set_xlabel("Time (s)", labelpad=10)
         self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2, color=color) # set line color for the plots 
-        self.threshold_line, = self.ax.plot([], [], 'black--', lw=1)
+        self.threshold_line, = self.ax.plot([], [], 'r--', lw=1, color='black')
 
         # Set up layout for the widget
         layout = QVBoxLayout()
