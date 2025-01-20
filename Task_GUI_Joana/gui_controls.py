@@ -51,7 +51,7 @@ class GuiControls:
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value
-        self.free_licking_task = FreeLickingTask()
+        self.free_licking_task = FreeLickingTask(self)
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
