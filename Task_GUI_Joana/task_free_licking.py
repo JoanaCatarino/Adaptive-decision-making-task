@@ -23,6 +23,8 @@ from gpio_map import *
 
 class FreeLickingTask:
     
+    threshold_updated = pyqtS
+    
     def __init__(self, gui_controls):
         """
         Initializes the FreeLickingTask class.
@@ -41,6 +43,11 @@ class FreeLickingTask:
         self.total_licks = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
         self.licks_left = 0 # Counts licks on the Left spout (above threshold - valid licks)
         self.licks_right = 0 # Counts licks on the Right spout (above threshold - valid licks)
+        
+    def set_thresholds(self, left, right):
+        self.threshold_left = left
+        self.threshold_right = right
+        
 
     def start(self):
         """Starts the FreeLicking task."""
