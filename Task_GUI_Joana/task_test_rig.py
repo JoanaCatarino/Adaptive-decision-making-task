@@ -39,6 +39,10 @@ class TestRig:
 
 
     def start(self):
+        
+        pump_l.on()
+        pump_r.on()
+        
         print('Test rig starting')
         self.ui.chk_10Tone.clicked.connect(tone_10KHz)
         self.ui.chk_5Tone.clicked.connect(tone_5KHz)
@@ -55,7 +59,9 @@ class TestRig:
 
 
         def stop():
+            
             print('Test rig stopping')
+            
             self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
             self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
             self.ui.chk_Punishment.clicked.disconnect(white_noise)
