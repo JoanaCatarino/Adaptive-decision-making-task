@@ -56,7 +56,7 @@ class SpoutSamplingTask:
         
     def tests(self):
         while self.running:
-            print(f't:{self.t:.2f} sec')
+            print(f't:{self.t} sec')
             time.sleep(0.02) # print every 20ms
 
 
