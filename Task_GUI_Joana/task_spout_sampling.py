@@ -9,12 +9,16 @@ Working on this file like it is the free licking script but to be moved to the c
 """
 import threading
 import time
+from PyQt5.QtCore import QTimer
+from piezo_reader import PiezoReader
 from gpio_map import *
 
 class SpoutSamplingTask:
     
     def __init__(self, gui_controls): 
     
+        self.gui_controls = gui_controls
+        self.piezo_reader = gui_controls.piezo_reader        
         self.quiet_window = 3 # seconds
         self.inter_trial_interval = 0.5 # seconds
         self.response_window = 1 # second
@@ -39,10 +43,6 @@ class SpoutSamplingTask:
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
-        while self.running:
-            self.t = time.time() - self.tstart # update current time based on the elapsed time
-            time.sleep (0.02) # update time every 20ms
-        
     def stop(self):
         """Stops the Free Licking task."""
         print("Stopping Free Licking Task...")
@@ -56,8 +56,10 @@ class SpoutSamplingTask:
         
     def tests(self):
         while self.running:
-            print(f't:{self.t} sec')
-            time.sleep(10) # print every 20ms
+            self.t = time.time() - self.tstart # update current time based on the elapsed time
+            time.sleep (0.02) # update time every 20ms
+            print(f't:{self.t:.2f} sec')
+            time.sleep(0.02) # print every 20ms
 
 
 '''
