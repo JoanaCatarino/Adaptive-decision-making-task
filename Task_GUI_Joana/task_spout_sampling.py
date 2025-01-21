@@ -65,9 +65,7 @@ class SpoutSamplingTask:
                 led_white_l.on()  # Turn on the LED
                 print(f"LED ON at t: {self.t:.2f} sec")
                 time.sleep(0.2)  # Keep LED ON for 0.5 seconds
-                led_white_l.off()  # Turn off the LED
-                print(f"LED OFF at t: {self.t:.2f} sec")
-                
+                led_white_l.off()  # Turn off the LED                
                 # Update last LED time
                 self.last_led_time = time.time()
 
