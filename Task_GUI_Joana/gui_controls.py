@@ -380,6 +380,8 @@ class GuiControls:
     def update_licks_right(self, licks_right):
         self.ui.box_LicksRight.setText(f'{licks_right}')
         
+    def update_total_trials(self, total_trials):
+        self.ui.box_TotalTrials.setText(f'{total_trials}')        
     
 
     def update_task_params(self):
