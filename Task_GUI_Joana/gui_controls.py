@@ -318,7 +318,7 @@ class GuiControls:
 
 
         elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask()
+            self.current_task = SpoutSamplingTask(self)
 
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()
