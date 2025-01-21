@@ -23,6 +23,7 @@ class SpoutSamplingTask:
         self.inter_trial_interval = 0.5 # seconds
         self.response_window = 1 # second
         self.total_trials = 0
+        self.trials = [] # list to store trial data
         
         self.running = False
         
@@ -48,12 +49,13 @@ class SpoutSamplingTask:
         
         self.running = True
         self.tstart = time.time() # record the start time
+        self.last_led_time = self.tstart # initialize last LED time
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
     def stop(self):
-        """Stops the Free Licking task."""
-        print("Stopping Free Licking Task...")
+        """Stops the Spout Sampling task."""
+        print("Stopping Spout Sampling Task...")
         
         self.running = False
         
@@ -71,18 +73,23 @@ class SpoutSamplingTask:
             if self.last_led_time is None or (time.time() - self.last_led_time >= self.response_window):
                 
                 led_white_l.on()  
-                print(f"LED ON at t: {self.t:.2f} sec")
+                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trial + 1})")
                 time.sleep(0.2)  # Keep LED ON for 0.2 seconds
                 led_white_l.off()                 
                 
-                # Update last LED time
-                self.last_led_time = time.time()
-                
                 self.total_trials +=1
                 self.gui_controls.update_total_trials(self.total_trials)
+                self.trials.append((self.trial_count, self.t)) #save trials and time in a list
+
+                # Update last LED time
+                self.last_led_time = time.time()
 
             time.sleep(0.02)  # Update every 20ms
 
+
+    def get_trials(self):
+        'returns the list of trials that were recorded'
+        return self.trials
 
 '''
     def condition_trial_initiation(self, t, tstart, response_window, tlick):
