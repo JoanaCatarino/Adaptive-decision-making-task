@@ -28,11 +28,6 @@ class LivePlotWidget(QWidget):
         self.ax.set_ylabel("", labelpad=10)
         self.line, = self.ax.plot([], [], lw=2, color=color) # set line color for the plots
 
-        # Draw the threshold lines if thresholds are provided
-        self.ax.axhline(y=threshold_left, color='red', linestyle='--')
-        self.ax.axhline(y=threshold_right, color='blue', linestyle='--')
-
-
         # Set up layout for the widget
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
@@ -50,7 +45,7 @@ class LivePlotWidget(QWidget):
         self.x_data = []
         self.y_data = []
 
-    def update_plot(self, y_data, threshold_left, threshold_right):
+    def update_plot(self, y_data):
         # Update x and y data for plotting
         self.x_data = [i / 60 for i in range(len(y_data))]
         self.y_data = y_data
@@ -63,8 +58,6 @@ class LivePlotWidget(QWidget):
         self.ax.autoscale_view()  # Update scale if necessary
         self.canvas.draw()
         
-
-
 
     def get_last_active_time(self, threshold=1):
         """

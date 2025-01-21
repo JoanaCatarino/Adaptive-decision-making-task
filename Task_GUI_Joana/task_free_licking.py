@@ -128,7 +128,7 @@ class FreeLickingTask:
             pump_r.on()  # Turn off pump_r in case of error
 
     
-def set_thresholds(self, left, right):
+    def set_thresholds(self, left, right):
         """Sets the thresholds for the piezo adders and updates the GUI."""
         self.threshold_left = left
         self.threshold_right = right

@@ -104,7 +104,6 @@ class GuiControls:
         self.live_plot1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         plt_layout1.addWidget(self.live_plot1)
         self.ui.plt_LickTrace_Left.setLayout(plt_layout1)
-        
 
         plt_layout2 = QVBoxLayout(self.ui.plt_LickTrace_Right)
         plt_layout2.setContentsMargins(0, 0, 0, 0)
@@ -118,8 +117,8 @@ class GuiControls:
         # read serial data
         self.piezo_reader.read_serial_data()
         # Update each piezo plot with new data
-        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1, self.current_task.threshold_left)  # Update Left Piezo Plot
-        self.live_plot2.update_plot(self.piezo_reader.piezo_adder2, self.current_task.threshold_right)  # Update Right Piezo Plot
+        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
+        self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
 
     def populate_ddm_animalID(self):
@@ -407,12 +406,6 @@ class GuiControls:
                     self.current_task.led_on_duration = new_led_on_duration
                     print(f"LED on duration: {new_led_on_duration} s")
                     self.ui.btn_Update.setEnabled(False)
-                
-                
-                if new_threshold_left is not None or new_threshold_right is not None:
-                    # Call the method to update thresholds in the FreeLickingTask
-                    self.current_task.set_thresholds(new_threshold_left, new_threshold_right)
-                
                 
                 # Update threshold_left
                 if new_threshold_left is not None:
