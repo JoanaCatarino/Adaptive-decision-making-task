@@ -73,7 +73,7 @@ class SpoutSamplingTask:
             if self.last_led_time is None or (time.time() - self.last_led_time >= self.response_window):
                 
                 led_white_l.on()  
-                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trial + 1})")
+                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
                 time.sleep(0.2)  # Keep LED ON for 0.2 seconds
                 led_white_l.off()                 
                 
