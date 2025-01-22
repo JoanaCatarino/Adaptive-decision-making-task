@@ -80,7 +80,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
-            if self.last_led_time is None or (time.time() - self.ttrial >= self.response_window):
+            if self.ttrial is None or (time.time() - self.ttrial >= self.response_window):
                 
                 led_white_l.on()  
                 print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
