@@ -3099,7 +3099,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>93</x>
-         <y>44</y>
+         <y>69</y>
          <width>160</width>
          <height>21</height>
         </rect>
@@ -3120,7 +3120,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>49</x>
-         <y>45</y>
+         <y>70</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -3356,7 +3356,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>15</x>
-         <y>99</y>
+         <y>112</y>
          <width>271</width>
          <height>221</height>
         </rect>
@@ -3372,7 +3372,7 @@ color: rgb(112, 112, 112);</string>
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>340</y>
+         <y>347</y>
          <width>271</width>
          <height>221</height>
         </rect>
@@ -3426,6 +3426,50 @@ color: rgb(112, 112, 112);</string>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
+      </widget>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>281</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 210, 188);</string>
+       </property>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>2</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Task:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>3</y>
+          <width>231</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="OV_bkg_AnimalID" native="true">
