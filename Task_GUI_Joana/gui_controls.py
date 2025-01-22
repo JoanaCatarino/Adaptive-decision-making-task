@@ -57,6 +57,7 @@ class GuiControls:
         self.populate_ddm_box() # dropdown menu with box numbers
         self.OV_animalID() # txt with animal ID in overview tab
         self.OV_box() # txt with box number in the overview tab
+        self.OV_task() # txt with task protocol name in the overview tab
         self.populate_ddm_task() # dropdown menu with different task names
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
