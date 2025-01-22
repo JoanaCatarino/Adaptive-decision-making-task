@@ -73,6 +73,8 @@ class GuiControls:
         self.ui.ddm_Animal_ID.currentIndexChanged.connect(self.OV_animalID)
         # Connect dropdown menu with box number to the box txt in the overview tab
         self.ui.ddm_Box.currentIndexChanged.connect(self.OV_box)
+        # Connect dropdown menu with task protocol to the task txt in the overview tab
+        self.ui.ddm_Task.currentIndexChanged.connect(self.OV_task)
         # Initialize button states (to enable/disable start and stop buttons)
         self.update_button_states()
         # Initialize validators for QLineEdit widgets - to only accept numbers as input
