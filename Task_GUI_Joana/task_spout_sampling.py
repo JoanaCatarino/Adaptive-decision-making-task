@@ -10,6 +10,7 @@ Working on this file like it is the free licking script but to be moved to the c
 import threading
 import time
 import csv
+import os
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from gpio_map import *
