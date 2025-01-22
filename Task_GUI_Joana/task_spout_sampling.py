@@ -9,6 +9,7 @@ Working on this file like it is the free licking script but to be moved to the c
 """
 import threading
 import time
+import csv
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from gpio_map import *
@@ -17,6 +18,10 @@ class SpoutSamplingTask:
     
     def __init__(self, gui_controls): 
     
+        # Direcory to save file with trials data
+        self.save_dir = "/home/rasppi-ephys/test_dir"
+        self.file_name = 'trials.csv' # set the desired file name
+        
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
         self.quiet_window = 3 # seconds
@@ -62,8 +67,8 @@ class SpoutSamplingTask:
         if self.print_thread.is_alive():
             self.print_thread.join()
         pump_l.on() 
-        
-        
+     
+             
     def tests(self):
         
         while self.running:
@@ -87,9 +92,23 @@ class SpoutSamplingTask:
             time.sleep(0.02)  # Update every 20ms
 
 
-    def get_trials(self):
-        'returns the list of trials that were recorded'
-        return self.trials
+    def save_trials_to_csv(self):
+        """Saves the trial data to a fixed CSV file."""
+        # Ensure the directory exists
+        os.makedirs(self.save_directory, exist_ok=True)
+        
+        # Create the full file path
+        file_path = os.path.join(self.save_directory, self.file_name)
+        
+        # Write the data to the CSV file
+        with open(file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            # Write the header
+            writer.writerow(["Trial Number", "Time (s)"])
+            # Write the trial data
+            writer.writerows(self.trials)
+        
+        print(f"Trials saved to {file_path}")
 
 '''
     def condition_trial_initiation(self, t, tstart, response_window, tlick):
