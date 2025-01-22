@@ -98,10 +98,10 @@ class SpoutSamplingTask:
     def save_trials_to_csv(self):
         """Saves the trial data to a fixed CSV file."""
         # Ensure the directory exists
-        os.makedirs(self.save_directory, exist_ok=True)
+        os.makedirs(self.save_dir, exist_ok=True)
         
         # Create the full file path
-        file_path = os.path.join(self.save_directory, self.file_name)
+        file_path = os.path.join(self.save_dir, self.file_name)
         
         # Write the data to the CSV file
         with open(file_path, mode='w', newline='') as file:
