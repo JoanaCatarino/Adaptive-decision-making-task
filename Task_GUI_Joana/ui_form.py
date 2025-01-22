@@ -1195,6 +1195,7 @@ class Ui_TaskGui(object):
         self.OV_txt_Task = QLabel(self.OV_bkg_Task)
         self.OV_txt_Task.setObjectName(u"OV_txt_Task")
         self.OV_txt_Task.setGeometry(QRect(40, 3, 231, 16))
+        self.OV_txt_Task.setFont(font2)
         self.OV_bkg_AnimalID = QWidget(self.Overview)
         self.OV_bkg_AnimalID.setObjectName(u"OV_bkg_AnimalID")
         self.OV_bkg_AnimalID.setGeometry(QRect(20, 10, 170, 21))
@@ -1234,7 +1235,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(0)
+        self.Boxes.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(TaskGui)
