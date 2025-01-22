@@ -159,6 +159,10 @@ class GuiControls:
     def populate_ddm_task(self):
         font_size = 8
         task(self.ui.ddm_Task, font_size=8)
+        
+    def OV_task(self):
+        selected_task = self.ui.ddm_Task.currentText()
+        self.ui.OV_txt_Task.setText(f'{selected_task}')
 
 
     def setup_date(self):
