@@ -35,7 +35,9 @@ class SpoutSamplingTask:
         
         # Initialize time variables
         self.tstart = None # start of the task
-        self.tlick = None # last lick
+        self.ttrial = None # start of the trial
+        self.tlick_l = None # last lick left spout
+        self.tlick_r = None # last lick right spout
         self.t = None # current time
         self.last_led_time = None # Last time the LED was turned ON
         
@@ -55,7 +57,7 @@ class SpoutSamplingTask:
         
         self.running = True
         self.tstart = time.time() # record the start time
-        self.last_led_time = self.tstart # initialize last LED time
+        #self.last_led_time = self.tstart # initialize last LED time
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
@@ -78,7 +80,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
-            if self.last_led_time is None or (time.time() - self.last_led_time >= self.response_window):
+            if self.last_led_time is None or (time.time() - self.ttrial >= self.response_window):
                 
                 led_white_l.on()  
                 print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
@@ -87,10 +89,10 @@ class SpoutSamplingTask:
                 
                 self.total_trials +=1
                 self.gui_controls.update_total_trials(self.total_trials)
-                self.trials.append((self.total_trials, self.t)) #save trials and time in a list
+                self.trials.append((self.total_trials, self.ttrial)) #save trials and time in a list
 
                 # Update last LED time
-                self.last_led_time = time.time()
+                self.ttrial = time.time()
 
             time.sleep(0.02)  # Update every 20ms
 
