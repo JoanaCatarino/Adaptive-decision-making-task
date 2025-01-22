@@ -1185,7 +1185,7 @@ class Ui_TaskGui(object):
         self.OV_bkg_Task = QWidget(self.OV_Box)
         self.OV_bkg_Task.setObjectName(u"OV_bkg_Task")
         self.OV_bkg_Task.setGeometry(QRect(10, 30, 281, 21))
-        self.OV_bkg_Task.setStyleSheet(u"background-color: rgb(255, 210, 188);")
+        self.OV_bkg_Task.setStyleSheet(u"background-color: rgb(255, 222, 206);")
         self.OV_lbl_Task = QLabel(self.OV_bkg_Task)
         self.OV_lbl_Task.setObjectName(u"OV_lbl_Task")
         self.OV_lbl_Task.setGeometry(QRect(5, 2, 31, 16))
@@ -1235,7 +1235,7 @@ class Ui_TaskGui(object):
 
         self.retranslateUi(TaskGui)
 
-        self.Boxes.setCurrentIndex(1)
+        self.Boxes.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(TaskGui)

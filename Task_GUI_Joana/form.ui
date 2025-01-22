@@ -32,7 +32,7 @@
      </font>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Box">
      <property name="enabled">
@@ -3437,7 +3437,7 @@ color: rgb(112, 112, 112);</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 210, 188);</string>
+        <string notr="true">background-color: rgb(255, 222, 206);</string>
        </property>
        <widget class="QLabel" name="OV_lbl_Task">
         <property name="geometry">
