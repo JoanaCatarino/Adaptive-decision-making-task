@@ -3432,7 +3432,7 @@ color: rgb(112, 112, 112);</string>
         <rect>
          <x>10</x>
          <y>30</y>
-         <width>281</width>
+         <width>271</width>
          <height>21</height>
         </rect>
        </property>
@@ -3442,14 +3442,15 @@ color: rgb(112, 112, 112);</string>
        <widget class="QLabel" name="OV_lbl_Task">
         <property name="geometry">
          <rect>
-          <x>5</x>
+          <x>6</x>
           <y>2</y>
-          <width>31</width>
+          <width>41</width>
           <height>16</height>
          </rect>
         </property>
         <property name="font">
          <font>
+          <pointsize>8</pointsize>
           <bold>true</bold>
          </font>
         </property>
@@ -3460,10 +3461,10 @@ color: rgb(112, 112, 112);</string>
        <widget class="QLabel" name="OV_txt_Task">
         <property name="geometry">
          <rect>
-          <x>40</x>
-          <y>3</y>
-          <width>231</width>
-          <height>16</height>
+          <x>50</x>
+          <y>0</y>
+          <width>211</width>
+          <height>20</height>
          </rect>
         </property>
         <property name="font">
@@ -3473,6 +3474,9 @@ color: rgb(112, 112, 112);</string>
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
