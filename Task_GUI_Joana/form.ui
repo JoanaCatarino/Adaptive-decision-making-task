@@ -3444,13 +3444,13 @@ color: rgb(112, 112, 112);</string>
          <rect>
           <x>6</x>
           <y>2</y>
-          <width>41</width>
+          <width>31</width>
           <height>16</height>
          </rect>
         </property>
         <property name="font">
          <font>
-          <pointsize>8</pointsize>
+          <pointsize>9</pointsize>
           <bold>true</bold>
          </font>
         </property>
@@ -3476,7 +3476,7 @@ color: rgb(112, 112, 112);</string>
          <string/>
         </property>
         <property name="alignment">
-         <set>Qt::AlignCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </widget>
