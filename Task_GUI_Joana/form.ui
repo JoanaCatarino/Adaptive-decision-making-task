@@ -3427,7 +3427,7 @@ color: rgb(112, 112, 112);</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="OV_bkg_Task" native="true">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -3439,7 +3439,7 @@ color: rgb(112, 112, 112);</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 210, 188);</string>
        </property>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="OV_lbl_Task">
         <property name="geometry">
          <rect>
           <x>5</x>
@@ -3457,7 +3457,7 @@ color: rgb(112, 112, 112);</string>
          <string>Task:</string>
         </property>
        </widget>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="OV_txt_Task">
         <property name="geometry">
          <rect>
           <x>40</x>
