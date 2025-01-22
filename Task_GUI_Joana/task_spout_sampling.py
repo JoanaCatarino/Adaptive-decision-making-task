@@ -67,6 +67,8 @@ class SpoutSamplingTask:
         if self.print_thread.is_alive():
             self.print_thread.join()
         pump_l.on() 
+        
+        self.save_trials_to_csv()
      
              
     def tests(self):
