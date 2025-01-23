@@ -57,7 +57,7 @@ class SpoutSamplingTask:
         
         self.running = True
         self.tstart = time.time() # record the start time
-        #self.ttrial = self.tstart
+        self.ttrial = self.tstart
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
@@ -83,7 +83,7 @@ class SpoutSamplingTask:
             if self.ttrial is None or (time.time() - self.ttrial >= self.response_window):
                 
                 led_white_l.on()  
-                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
+                print(f"LED ON at t: {self.ttrial:.2f} sec (Trial:{self.total_trials + 1})")
                 time.sleep(0.2)  # Keep LED ON for 0.2 seconds
                 led_white_l.off()                 
                 
