@@ -89,7 +89,7 @@ class SpoutSamplingTask:
                 
                 self.total_trials +=1
                 self.gui_controls.update_total_trials(self.total_trials)
-                self.trials.append((self.total_trials, self.ttrial)) #save trials and time in a list
+                self.trials.append((self.total_trials, self.t)) #save trials and time in a list
 
                 # Update last LED time
                 self.ttrial = self.t
