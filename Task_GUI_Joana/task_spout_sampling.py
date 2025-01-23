@@ -57,7 +57,7 @@ class SpoutSamplingTask:
         
         self.running = True
         self.tstart = time.time() # record the start time
-        self.ttrial = self.tstart
+        #self.ttrial = self.tstart
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
