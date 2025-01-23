@@ -92,7 +92,7 @@ class SpoutSamplingTask:
                 self.trials.append((self.total_trials, self.ttrial)) #save trials and time in a list
 
                 # Update last LED time
-                self.ttrial = time.time()
+                self.ttrial = self.t
 
             time.sleep(0.02)  # Update every 20ms
 
