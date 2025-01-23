@@ -57,7 +57,6 @@ class SpoutSamplingTask:
         
         self.running = True
         self.tstart = time.time() # record the start time
-        #self.last_led_time = self.tstart # initialize last LED time
         self.print_thread = threading.Thread(target=self.tests, daemon=True)
         self.print_thread.start()        
         
@@ -92,7 +91,7 @@ class SpoutSamplingTask:
                 self.trials.append((self.total_trials, self.ttrial)) #save trials and time in a list
 
                 # Update last LED time
-                self.ttrial = time.time()
+                self.ttrial = self.t
 
             time.sleep(0.02)  # Update every 20ms
 
