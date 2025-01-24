@@ -99,24 +99,23 @@ class SpoutSamplingTask:
                 self.total_trials +=1
                 self.gui_controls.update_total_trials(self.total_trials)
                 self.trials.append((self.total_trials, self.t)) #save trials and time in a list
-
+                
                 # Update last LED time
                 self.ttrial = self.t
                 
-                if self.piezo_reader.piezo_adder1:
-                    latest_value1 = self.piezo_reader.piezo_adder1[-1]
+            if self.piezo_reader.piezo_adder1:
+                latest_value1 = self.piezo_reader.piezo_adder1[-1]
                 
-                    if latest_value1 > self.threshold_left:
-                        print('threshold exceeded')
-                        self.tlick_l = self.t
+                if latest_value1 > self.threshold_left:
+                    print('threshold exceeded')
+                    self.tlick_l = self.t
                         
-                        if 0 < self.tlick_l - self.ttrial < self.response_window:
-                            pump_l.off()
-                            time.sleep(self.open_valve)
-                            pump_l.on()
+                    if 0 < self.tlick_l - self.ttrial < self.response_window:
+                        pump_l.off()
+                        time.sleep(self.open_valve)
+                        pump_l.on()
 
-            # Update last LED time
-            self.ttrial = self.t
+            
 
 
 
