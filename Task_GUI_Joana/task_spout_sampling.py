@@ -115,6 +115,7 @@ class SpoutSamplingTask:
                         pump_l.off()
                         time.sleep(self.open_valve)
                         pump_l.on()
+                        print('reward delivered')
 
         
 
