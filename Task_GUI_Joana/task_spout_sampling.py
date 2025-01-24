@@ -31,7 +31,7 @@ class SpoutSamplingTask:
         self.total_trials = 0
         self.trials = [] # list to store trial data
         
-        self.threshold_left = 5
+        self.threshold_left = 2
         self.open_valve = 0.5
         
         # Boolean
@@ -111,12 +111,12 @@ class SpoutSamplingTask:
                     self.tlick_l = self.t
                         
                     if 0 < self.tlick_l - self.ttrial < self.response_window:
+                        print('Lick within respnse window')
                         pump_l.off()
                         time.sleep(self.open_valve)
                         pump_l.on()
 
-            
-
+        
 
 
     def trial_has_started(self):
