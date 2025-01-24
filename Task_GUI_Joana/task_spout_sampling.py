@@ -31,6 +31,9 @@ class SpoutSamplingTask:
         self.total_trials = 0
         self.trials = [] # list to store trial data
         
+        # Boolean
+        self.trialstarted = False
+        
         self.running = False
         
         # Initialize time variables
@@ -39,7 +42,7 @@ class SpoutSamplingTask:
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
         self.t = None # current time
-        self.last_led_time = None # Last time the LED was turned ON
+        
         
 
     def start (self):
@@ -74,13 +77,16 @@ class SpoutSamplingTask:
         self.save_trials_to_csv()
      
              
-    def tests(self):
+    def main(self):
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
             if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
+                
+                self.trialstarted = True
+                
                 
                 led_white_l.on()  
                 print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
@@ -95,6 +101,17 @@ class SpoutSamplingTask:
                 self.ttrial = self.t
 
             #time.sleep(0.02)  # Update every 20ms
+
+
+    def trial_has_started(self):
+        if self.trialstarted:
+            print('trial has started')
+            self.trialstarted=False
+
+
+
+
+
 
 
     def save_trials_to_csv(self):
