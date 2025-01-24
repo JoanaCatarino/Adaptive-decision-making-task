@@ -31,6 +31,9 @@ class SpoutSamplingTask:
         self.total_trials = 0
         self.trials = [] # list to store trial data
         
+        self.threshold_left = 5
+        self.open_valve = 0.5
+        
         # Boolean
         self.trialstarted = False
         
@@ -99,19 +102,28 @@ class SpoutSamplingTask:
 
                 # Update last LED time
                 self.ttrial = self.t
+                
+                if self.piezo_reader.piezo_adder1:
+                    latest_value1 = self.piezo_reader.piezo1[-1]
+                
+                    if lastest_value1 > self.threshold_left:
+                        print('threshold exceeded')
+                        self.tlick_l = self.t
+                        
+                        if 0 < self.tlick_l - self.ttrial < self.response_window:
+                            pump_l.off()
+                            time.sleep(self.open_valve)
+                            pump_l.on()
 
-            #time.sleep(0.02)  # Update every 20ms
+            # Update last LED time
+            self.ttrial = self.t
+
 
 
     def trial_has_started(self):
         if self.trialstarted:
             print('trial has started')
             self.trialstarted=False
-
-
-
-
-
 
 
     def save_trials_to_csv(self):
