@@ -102,7 +102,7 @@ class FreeLickingTask:
                 # Monitor piezo_adder2 (right spout) and control pump_r
                 if self.piezo_reader.piezo_adder2:
                     latest_value2 = self.piezo_reader.piezo_adder2[-1]
-                    print(f'Piezo Adder 2:{latest_value2}')
+                    #print(f'Piezo Adder 2:{latest_value2}')
                     
                     # Check if the value exceeds the threshold
                     if latest_value2 > self.threshold_right:
@@ -119,7 +119,7 @@ class FreeLickingTask:
 
                         
                 # Print the total trials count
-                print(f'Total licks = {self.total_licks}')
+                #print(f'Total licks = {self.total_licks}')
 
                 time.sleep(0.1)  # Adjust for the desired frequency
         
