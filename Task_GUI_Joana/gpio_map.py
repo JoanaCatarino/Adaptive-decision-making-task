@@ -17,8 +17,8 @@ from gpiozero import LED, Button, OutputDevice, Device
 
 
 # Real GPIO map for all the rig/task components
-led_white_l = LED(26) #GND 39
-led_white_r = LED(5) #GND 25
+led_white_r = LED(26) #GND 39
+led_white_l = LED(5) #GND 25
 led_blue = LED(17) #GND 9
 pump_l = OutputDevice(22) #no GND
 pump_r = OutputDevice(27) #no GND
