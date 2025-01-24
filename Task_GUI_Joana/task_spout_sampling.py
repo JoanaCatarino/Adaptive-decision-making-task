@@ -86,7 +86,7 @@ class SpoutSamplingTask:
             if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
                 
                 self.trialstarted = True
-                
+                self.trial_has_started()
                 
                 led_white_l.on()  
                 print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
