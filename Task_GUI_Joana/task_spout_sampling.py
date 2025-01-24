@@ -26,7 +26,7 @@ class SpoutSamplingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
         self.quiet_window = 3 # seconds
-        self.inter_trial_interval = 0.5 # seconds
+        self.ITI = 2 # seconds
         self.response_window = 1 # second
         self.total_trials = 0
         self.trials = [] # list to store trial data
@@ -80,7 +80,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
-            if self.ttrial is None or (self.t - self.ttrial >= self.response_window):
+            if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
                 
                 led_white_l.on()  
                 print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
@@ -94,7 +94,7 @@ class SpoutSamplingTask:
                 # Update last LED time
                 self.ttrial = self.t
 
-            time.sleep(0.02)  # Update every 20ms
+            #time.sleep(0.02)  # Update every 20ms
 
 
     def save_trials_to_csv(self):
