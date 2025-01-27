@@ -46,6 +46,7 @@ class SpoutSamplingTask:
         self.tlick_r = None # last lick right spout
         self.t = None # current time
         
+        self.lock = threading.Lock()
         
 
     def start (self):
@@ -86,45 +87,44 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
-            if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
-                
-                self.trialstarted = True
-                self.trial_has_started()
-                
-                led_white_l.on()  
-                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
-                time.sleep(1)  # Keep LED ON for 0.2 seconds
-                led_white_l.off()                 
-                
-                self.total_trials +=1
-                self.gui_controls.update_total_trials(self.total_trials)
-                self.trials.append((self.total_trials, self.t)) #save trials and time in a list
-                
-                # Update last LED time
-                self.ttrial = self.t
-                
-            if self.piezo_reader.piezo_adder1:
-                latest_value1 = self.piezo_reader.piezo_adder1[-1]
-                
-                if latest_value1 > self.threshold_left:
-                    with self.lock:
-                        self.tlick_l = self.t
-                        print('threshold exceeded')
-                        
-                        elapsed = self.tlick_l - self.ttrial
-                        print(f'Elapsed time since trial start: {elapsed:.2f} sec')
-                        
-                        if 0 < elapsed < self.response_window:
-                            print('Lick within respnse window')
-                            pump_l.off()
-                            time.sleep(self.open_valve)
-                            pump_l.on()
-                            print('reward delivered')
+            with self.lock:
+                if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
+                    
+                    self.trialstarted = True
+                    self.trial_has_started()
+                    
+                    led_white_l.on()  
+                    print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
+                    time.sleep(1)  # Keep LED ON for 0.2 seconds
+                    led_white_l.off()                 
+                    
+                    self.total_trials +=1
+                    self.gui_controls.update_total_trials(self.total_trials)
+                    self.trials.append((self.total_trials, self.t)) #save trials and time in a list
+                    
+                    # Update last LED time
+                    self.ttrial = self.t
+                    
+                if self.piezo_reader.piezo_adder1:
+                    latest_value1 = self.piezo_reader.piezo_adder1[-1]
+                    
+                    if latest_value1 > self.threshold_left:
+                        with self.lock:
+                            self.tlick_l = self.t
+                            print('threshold exceeded')
                             
-                        else:
-                            print('Lick outside response window')
-
-        
+                            elapsed = self.tlick_l - self.ttrial
+                            print(f'Elapsed time since trial start: {elapsed:.2f} sec')
+                            
+                            if 0 < elapsed < self.response_window:
+                                print('Lick within respnse window')
+                                pump_l.off()
+                                time.sleep(self.open_valve)
+                                pump_l.on()
+                                print('reward delivered')
+                                
+                            else:
+                                print('Lick outside response window')
 
 
     def trial_has_started(self):
