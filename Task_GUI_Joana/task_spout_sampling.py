@@ -144,7 +144,7 @@ class SpoutSamplingTask:
             if self. piezo_reader.piezo_adder2:
                 latest_value2 = self.piezo_reader.piezo_adder2[-1]
 
-                if lastest_value2 > self.threshold_right: 
+                if latest_value2 > self.threshold_right: 
                     with self.lock:
                         self.tlick_r = self.t
                         print('threshold exceeded right')
