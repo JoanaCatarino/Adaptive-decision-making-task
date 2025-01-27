@@ -106,7 +106,7 @@ class FreeLickingTask:
                     
                     # Check if the value exceeds the threshold
                     if latest_value2 > self.threshold_right:
-                        #print('Threshold exceeded! Flashing pump_r')
+                        print('Threshold exceeded! Flashing pump_r')
                         pump_r.off()
                         time.sleep(self.led_on_duration)
                         pump_r.on()

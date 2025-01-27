@@ -25,13 +25,17 @@ class SpoutSamplingTask:
         
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
-        self.quiet_window = 3 # seconds
-        self.ITI = 2 # seconds
-        self.response_window = 2 # second
-        self.total_trials = 0
+        self.QW = 3 # Quiet window in seconds
+        self.ITI = 2 # Inter-trial interval in seconds
+        self.RW = 2 # Response window in seconds
+        self.total_licks = 0
+        self.licks_left = 0
+        self.licks_right = 0
         self.trials = [] # list to store trial data
         
+        # Counters for licks
         self.threshold_left = 0
+        self.threshold_right = 0
         self.open_valve = 1
         
         # Boolean
@@ -57,11 +61,15 @@ class SpoutSamplingTask:
         pump_l.on()
         pump_r.on()
         
-        # Reset counter
-        self.total_trials = 0
+        # Reset counters
+        self.total_licks = 0 
+        self.licks_left = 0 
+        self.licks_right = 0 
         
         # Update GUI display
-        self.gui_controls.update_total_trials(0)
+        self.gui_controls.update_total_licks(0)
+        self.gui_controls.update_licks_left(0)
+        self.gui_controls.update_licks_right(0)
         
         self.running = True
         self.tstart = time.time() # record the start time
@@ -88,7 +96,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Check if enough time has passed since the last LED shine
-            if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
+            if self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI):
                 
                 with self.lock:
                     self.trialstarted = True
@@ -112,18 +120,51 @@ class SpoutSamplingTask:
                 if latest_value1 > self.threshold_left:
                     with self.lock:
                         self.tlick_l = self.t
-                        print('threshold exceeded')
+                        print('threshold exceeded left')
                         
                         elapsed_left = self.tlick_l - self.ttrial
                             
-                        if 0 < elapsed_left < self.response_window:
-                            print('Lick within respnse window')
+                        if 0 < elapsed_left < self.RW:
+                            print('Lick left within respnse window')
                             pump_l.off()
                             time.sleep(self.open_valve)
                             pump_l.on()
-                            print('reward delivered')
+                            print('reward delivered - left')
+                            
+                            self.total_licks += 1 # Implement total licks
+                            self.licks_left +=1 # Implement licks left
+                        
+                            self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
+                            self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
+                            
                         else:
-                            print('Lick outside response window')
+                            print('Lick left outside response window')
+                            
+            if self. piezo_reader.piezo_adder2:
+                latest_value2 = self.piezo_reader.piezo_adder2[-1]
+
+                if lastest_value2 > self.threshold_right: 
+                    with self.lock:
+                        self.tlick_r = self.t
+                        print('threshold exceeded right')
+                        
+                        elapsed_right = self.tlick_r - self.ttrial
+                        
+                        if 0 < elapsed_right < self.RW:
+                            print('lick right within response window')
+                            pump_r.off()
+                            time.sleep(self.open_valve)
+                            pump_r.on()
+                            print('reward delivered - right')
+                        
+                            self.total_licks += 1 # Implement total licks
+                            self.licks_right +=1 # Implement licks right
+                        
+                            self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
+                            self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
+                        
+                        else:
+                            print('Lick right outside response window')
 
     
     def trial_has_started(self):
