@@ -31,6 +31,7 @@ class SpoutSamplingTask:
         self.total_licks = 0
         self.licks_left = 0
         self.licks_right = 0
+        self.first_lick = None # first lick of each trial
         self.trials = [] # list to store trial data
         
         # Counters for licks
@@ -96,12 +97,15 @@ class SpoutSamplingTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
-            # Check if enough time has passed since the last LED shine
+            # Start a new trial if enough time has passed since the last trial and all conditions are met
             if self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI):
                 
                 with self.lock:
                     self.trialstarted = True
                     self.trial_has_started()
+                    
+                    # Reset first lick tracking
+                    self.first_lick = None
                     
                     led_white_l.on()  
                     print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
@@ -125,11 +129,16 @@ class SpoutSamplingTask:
                         
                         elapsed_left = self.tlick_l - self.ttrial
                             
-                        if 0 < elapsed_left < self.RW:
+                        if 0 < elapsed_left < self.RW and self.first_lick is None:
+                            
+                            self.first_lick = 'left' # Mark left as the first lick
+                            
                             print('Lick left within respnse window')
+                            
                             pump_l.off()
                             time.sleep(self.open_valve)
                             pump_l.on()
+                            
                             print('reward delivered - left')
                             
                             self.total_licks += 1 # Implement total licks
@@ -151,11 +160,16 @@ class SpoutSamplingTask:
                         
                         elapsed_right = self.tlick_r - self.ttrial
                         
-                        if 0 < elapsed_right < self.RW:
+                        if 0 < elapsed_right < self.RW and self.first_lick is None:
+                            
+                            self.first_lick = 'right' # Mark right as the first lick
+                            
                             print('lick right within response window')
+                            
                             pump_r.off()
                             time.sleep(self.open_valve)
                             pump_r.on()
+                            
                             print('reward delivered - right')
                         
                             self.total_licks += 1 # Implement total licks
