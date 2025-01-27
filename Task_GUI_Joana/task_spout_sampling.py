@@ -107,15 +107,22 @@ class SpoutSamplingTask:
                 latest_value1 = self.piezo_reader.piezo_adder1[-1]
                 
                 if latest_value1 > self.threshold_left:
-                    print('threshold exceeded')
-                    self.tlick_l = self.t
+                    with self.lock:
+                        self.tlick_l = self.t
+                        print('threshold exceeded')
                         
-                    if 0 < self.tlick_l - self.ttrial < self.response_window:
-                        print('Lick within respnse window')
-                        pump_l.off()
-                        time.sleep(self.open_valve)
-                        pump_l.on()
-                        print('reward delivered')
+                        elapsed = self.tlick_l - self.ttrial
+                        print(f'Elapsed time since trial start: {elapsed:.2f} sec')
+                        
+                        if 0 < elapsed < self.response_window:
+                            print('Lick within respnse window')
+                            pump_l.off()
+                            time.sleep(self.open_valve)
+                            pump_l.on()
+                            print('reward delivered')
+                            
+                        else:
+                            print('Lick outside response window')
 
         
 
