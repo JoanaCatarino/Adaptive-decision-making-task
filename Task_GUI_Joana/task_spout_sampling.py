@@ -46,6 +46,8 @@ class SpoutSamplingTask:
         self.tlick_r = None # last lick right spout
         self.t = None # current time
         
+        # Lock for thread-safe access to shared variables
+        self.lock = threading.Lock()
         
 
     def start (self):
@@ -88,39 +90,42 @@ class SpoutSamplingTask:
             # Check if enough time has passed since the last LED shine
             if self.ttrial is None or (self.t - (self.ttrial + self.response_window) > self.ITI):
                 
-                self.trialstarted = True
-                self.trial_has_started()
-                
-                led_white_l.on()  
-                print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
-                time.sleep(1)  # Keep LED ON for 0.2 seconds
-                led_white_l.off()                 
-                
-                self.total_trials +=1
-                self.gui_controls.update_total_trials(self.total_trials)
-                self.trials.append((self.total_trials, self.t)) #save trials and time in a list
-                
-                # Update last LED time
-                self.ttrial = self.t
+                with self.lock:
+                    self.trialstarted = True
+                    self.trial_has_started()
+                    
+                    led_white_l.on()  
+                    print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
+                    time.sleep(1)  # Keep LED ON for 0.2 seconds
+                    led_white_l.off()                 
+                    
+                    self.total_trials +=1
+                    self.gui_controls.update_total_trials(self.total_trials)
+                    self.trials.append((self.total_trials, self.t)) #save trials and time in a list
+                    
+                    # Update last LED time
+                    self.ttrial = self.t
                 
             if self.piezo_reader.piezo_adder1:
                 latest_value1 = self.piezo_reader.piezo_adder1[-1]
                 
                 if latest_value1 > self.threshold_left:
-                    self.tlick_l = self.t
-                    print('threshold exceeded')
-                    
+                    with self.lock:
+                        self.tlick_l = self.t
+                        print('threshold exceeded')
                         
-                    if 0 < (self.tlick_l - self.ttrial) < self.response_window:
-                        print('Lick within respnse window')
-                        pump_l.off()
-                        time.sleep(self.open_valve)
-                        pump_l.on()
-                        print('reward delivered')
+                        elapsed_left = self.tlick_l - self.ttrial
+                            
+                        if 0 < elapsed_left < self.response_window:
+                            print('Lick within respnse window')
+                            pump_l.off()
+                            time.sleep(self.open_valve)
+                            pump_l.on()
+                            print('reward delivered')
+                        else:
+                            print('Lick outside response window')
 
-        
-
-
+    
     def trial_has_started(self):
         if self.trialstarted:
             print('trial has started')
