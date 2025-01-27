@@ -62,6 +62,7 @@ class SpoutSamplingTask:
         pump_r.on()
         
         # Reset counters
+        self.total_trials = 0
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
