@@ -32,7 +32,7 @@ class SpoutSamplingTask:
         self.trials = [] # list to store trial data
         
         self.threshold_left = 0
-        self.open_valve = 0.5
+        self.open_valve = 1
         
         # Boolean
         self.trialstarted = False
