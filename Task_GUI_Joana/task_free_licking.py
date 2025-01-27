@@ -33,7 +33,7 @@ class FreeLickingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader
         self.running = False
-        self.threshold_left = 5 # Threshold for the lick to count as a lick in the left spout
+        self.threshold_left = 0 # Threshold for the lick to count as a lick in the left spout
         self.threshold_right = 5 # Threshold for the lick to count as a lick in the right spout
         self.led_on_duration = 0.5 # time in seconds the LED stays on
         
@@ -83,7 +83,7 @@ class FreeLickingTask:
                 # Monitor piezo_adder1 (left spout) and control pump_l
                 if self.piezo_reader.piezo_adder1:
                     latest_value1 = self.piezo_reader.piezo_adder1[-1]
-                    #print(f'Piezo Adder 1: {latest_value1}')
+                    print(f'Piezo Adder 1: {latest_value1}')
                     
                     # Check if the value exceeds the threshold
                     if latest_value1 > self.threshold_left:
@@ -102,7 +102,7 @@ class FreeLickingTask:
                 # Monitor piezo_adder2 (right spout) and control pump_r
                 if self.piezo_reader.piezo_adder2:
                     latest_value2 = self.piezo_reader.piezo_adder2[-1]
-                    #print(f'Piezo Adder 2:{latest_value2}')
+                    print(f'Piezo Adder 2:{latest_value2}')
                     
                     # Check if the value exceeds the threshold
                     if latest_value2 > self.threshold_right:
@@ -119,7 +119,7 @@ class FreeLickingTask:
 
                         
                 # Print the total trials count
-                #print(f'Total licks = {self.total_licks}')
+                print(f'Total licks = {self.total_licks}')
 
                 time.sleep(0.1)  # Adjust for the desired frequency
         
