@@ -27,7 +27,7 @@ class SpoutSamplingTask:
         self.piezo_reader = gui_controls.piezo_reader        
         self.quiet_window = 3 # seconds
         self.ITI = 2 # seconds
-        self.response_window = 1 # second
+        self.response_window = 2 # second
         self.total_trials = 0
         self.trials = [] # list to store trial data
         
