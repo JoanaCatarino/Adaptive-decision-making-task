@@ -134,6 +134,7 @@ class SpoutSamplingTask:
                             
                             self.first_lick = 'left' # Mark left as the first lick
                             self.tlick = self.tlick_l # Save the time of the rewarded lick
+                            print(f'{self.tlick}')
                             
                             print('Lick left within respnse window')
                             
@@ -166,6 +167,7 @@ class SpoutSamplingTask:
                             
                             self.first_lick = 'right' # Mark right as the first lick
                             self.tlick = self.tlick_r # save the time of the rewarded lick
+                            print(f'{self.tlick}')
                             
                             print('lick right within response window')
                             
