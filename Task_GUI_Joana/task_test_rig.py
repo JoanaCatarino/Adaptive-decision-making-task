@@ -20,7 +20,7 @@ from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
 from qasync import asyncSlot  # Import asyncSlot decorator
 
-from test_leds import start_blinking
+#from test_leds import start_blinking
 
 
         
@@ -47,11 +47,7 @@ class TestRig:
         self.ui.chk_10Tone.clicked.connect(tone_10KHz)
         self.ui.chk_5Tone.clicked.connect(tone_5KHz)
         self.ui.chk_Punishment.clicked.connect(white_noise)
-        #self.ui.chk_BlueLED.clicked.connect(blueLED)
-        
-        self.blue_led_connection = lambda checked: self.start_led_sequence()
-        self.ui.chk_BlueLED.clicked.connect(self.blue_led_connection)       
-
+        self.ui.chk_BlueLED.clicked.connect(blueLED)
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
         self.ui.chk_Reward_left.clicked.connect(pumpL)
@@ -65,31 +61,13 @@ class TestRig:
             self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
             self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
             self.ui.chk_Punishment.clicked.disconnect(white_noise)
-            #self.ui.chk_BlueLED.clicked.disconnect(blueLED)
-            
-            self.ui.chk_BlueLED.clicked.disconnect(self.blue_led_connection)   
-            
+            self.ui.chk_BlueLED.clicked.disconnect(blueLED)            
             self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)
             self.ui.chk_WhiteLED_Right.clicked.disconnect(whiteRLED)
             self.ui.chk_Reward_left.clicked.disconnect(pumpL)
             self.ui.chk_Reward_right.clicked.disconnect(pumpR)
             
         self.stop = stop
-
-
-    @asyncSlot()
-    async def start_led_sequence(self):
-        """Start the LED blinking sequence when the button is pressed."""
-        
-        # Set the default parameter here
-        cycles = 2
-        on_time = 0.5
-        off_time = 0.5
-        
-        print("Starting LED sequence...")
-        
-        await start_blinking(cycles, on_time, off_time) # pass the default parameters
-
 
 
 # Test blue LED
@@ -122,41 +100,3 @@ def pumpR():
     sleep(1)
     pump_r.off()
 
-
-'''
-# Blink a specific LED in sequence
-async def blink_led_sequence(leds, cycles=3, on_time=1, off_time=1):
-    """
-    Blink a list of LEDs in sequence.
-
-    Args:
-        leds (list): List of LED objects to control.
-        cycles (int): Number of times the sequence should repeat.
-        on_time (float): Duration for which each LED stays ON.
-        off_time (float): Duration for which each LED stays OFF.
-    """
-    for _ in range(cycles):  # Number of cycles to repeat
-        for led in leds:
-            led.on()  # Turn on the LED
-            await asyncio.sleep(on_time)  # Wait for specified ON time
-            led.off()  # Turn off the LED
-            await asyncio.sleep(off_time)  # Wait for specified OFF time
-
-
-
-# Need to define functions to flush water on right spout and left spout
-
-# Need to define functions to flush water on right spout and left spout
-
-'''
-
-'''
-   # @asyncSlot(bool) #use asyncSlot to handle async method
-    async def blink_leds(self, checked):
-        leds = [led_blue, led_white_l, led_white_r]
-        print('Starting LED blinking sequence')
-        await blink_led_sequence(leds, cycles=5, on_time=1, off_time=1)
-        print('LED blinking sequence completed')
-
-        self.stop = stop
-'''
