@@ -139,7 +139,7 @@ class SpoutSamplingTask:
                             print('Lick left within respnse window')
                             
                             pump_l.off()
-                            time.sleep(self.open_valve)
+                            time.sleep(self.valve_opening)
                             pump_l.on()
                             
                             print('reward delivered - left')
@@ -172,7 +172,7 @@ class SpoutSamplingTask:
                             print('lick right within response window')
                             
                             pump_r.off()
-                            time.sleep(self.open_valve)
+                            time.sleep(self.valve_opening)
                             pump_r.on()
                             
                             print('reward delivered - right')
