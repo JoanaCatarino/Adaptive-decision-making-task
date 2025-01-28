@@ -35,7 +35,7 @@ class FreeLickingTask:
         self.running = False
         self.threshold_left = 0 # Threshold for the lick to count as a lick in the left spout
         self.threshold_right = 5 # Threshold for the lick to count as a lick in the right spout
-        self.valve_opening = 0.5 # time in seconds the LED stays on
+        self.valve_opening = 0.5 # time in seconds the valve stays open
         
         # Counters for tracking licks
         self.total_licks = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)

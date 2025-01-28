@@ -28,12 +28,8 @@ class TestRig:
     def __init__(self, ui):
         self.ui = ui
         
-        # Define LED sequence
-        self.leds = [led_white_r, led_white_l, pump_l, pump_r]
-        
-        # Turn off all LEDs initially
-        for led in self.leds:
-            led.off()
+        #  Variable to control valve opening time in the pumps
+        self.valve_opening = 0.5 # time in seconds the valve stays open
             
         self.start()
 
@@ -90,13 +86,13 @@ def whiteRLED():
 
 # Test white LED on left spout
 def pumpL():
-    pump_l.on()
-    sleep(1)
     pump_l.off()
+    sleep(self.valve_opening)
+    pump_l.on()
 
 # Test white LED on right spout
 def pumpR():
-    pump_r.on()
-    sleep(1)
     pump_r.off()
+    sleep(self.valve_opening)
+    pump_r.on()
 
