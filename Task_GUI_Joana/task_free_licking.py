@@ -35,7 +35,7 @@ class FreeLickingTask:
         self.running = False
         self.threshold_left = 0 # Threshold for the lick to count as a lick in the left spout
         self.threshold_right = 5 # Threshold for the lick to count as a lick in the right spout
-        self.led_on_duration = 0.5 # time in seconds the LED stays on
+        self.valve_opening = 0.5 # time in seconds the LED stays on
         
         # Counters for tracking licks
         self.total_licks = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
@@ -89,7 +89,7 @@ class FreeLickingTask:
                     if latest_value1 > self.threshold_left:
                         print('Threshold exceeded! Flashing pump_l')
                         pump_l.off()
-                        time.sleep(self.led_on_duration)  # Adjust this for the desired ON duration
+                        time.sleep(self.valve_opening)  # Adjust this for the desired ON duration
                         pump_l.on()
                         
                         self.total_licks += 1 # Implement total licks
@@ -108,7 +108,7 @@ class FreeLickingTask:
                     if latest_value2 > self.threshold_right:
                         print('Threshold exceeded! Flashing pump_r')
                         pump_r.off()
-                        time.sleep(self.led_on_duration)
+                        time.sleep(self.valve_opening)
                         pump_r.on()
                         
                         self.total_licks += 1 # Implement total licks

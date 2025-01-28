@@ -395,66 +395,64 @@ class GuiControls:
 
     def update_task_params(self):
     
-        """
-        Update the led_on_duration, threshold_left, and threshold_right values 
-        in the FreeLickingTask class based on the input in the GUI.
-        """
+    ''' Input new variables in the Gui and update them real time in the current task'''
+    
         try:
             # Get the values from the GUI
-            valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration
+            quiet_window = self.ui.txt_QuietWindow.text()
+            response_window = self.ui.txt_ResponseWindow.text()
+            trial_duration = self.ui.txt_TrialDuration.text()
+            valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration/pump
             threshold_left = self.ui.txt_ThresholdLeft.text()  # For left piezo threshold
             threshold_right = self.ui.txt_ThresholdRight.text()  # For right piezo threshold
     
             # Validate and convert inputs to floats
-            new_led_on_duration = float(valve_opening) if valve_opening else None
+            new_quiet_window = float(quiet_window) if quiet_window else None
+            new_response_window = float(response_window) if response_window else None
+            new_trial_duration = float(trial_duration) if trial_duration else None
+            new_valve_opening = float(valve_opening) if valve_opening else None
             new_threshold_left = float(threshold_left) if threshold_left else None
             new_threshold_right = float(threshold_right) if threshold_right else None
     
             # Ensure there's a running task and it's of the correct type
-            if self.current_task and isinstance(self.current_task, FreeLickingTask):
-                # Update led_on_duration
-                if new_led_on_duration is not None:
-                    self.current_task.led_on_duration = new_led_on_duration
-                    print(f"LED on duration: {new_led_on_duration} s")
+            if self.current_task and isinstance(self.current_task, FreeLickingTask, SpoutSamplingTask):
+                # Update quiet window
+                if new_quiet_window is not None:
+                    self.current_task.QW = new_quiet_window
+                    print(f"Quiet window: {new_quiet_window} s")
+                    self.ui.btn_Update.setEnabled(False)
+                
+                # Update response window
+                if new_response_window is not None:
+                    self.current_task.RW = new_response_window
+                    print(f"Response window: {new_response_window} s")
+                    self.ui.btn_Update.setEnabled(False)
+                    
+                # Update trial duration
+                if new_trial_duration is not None:
+                    self.current_task.trial_duration = new_trial_duration
+                    print(f"Trial duration: {new_trial_duration} s")
+                    self.ui.btn_Update.setEnabled(False)
+                               
+                # Update valve opening
+                if new_valve_opening is not None:
+                    self.current_task.valve_opening = new_valve_opening
+                    print(f"Valve opening: {new_valve_opening} s")
                     self.ui.btn_Update.setEnabled(False)
                 
                 # Update threshold_left
                 if new_threshold_left is not None:
                     self.current_task.threshold_left = new_threshold_left
-                    print(f"threshold left piezo: {new_threshold_left}")
+                    print(f"Threshold left piezo: {new_threshold_left}")
                     self.ui.btn_Update.setEnabled(False)
                 
                 # Update threshold_right
                 if new_threshold_right is not None:
                     self.current_task.threshold_right = new_threshold_right
-                    print(f"threshold right piezo: {new_threshold_right}")
+                    print(f"Threshold right piezo: {new_threshold_right}")
                     self.ui.btn_Update.setEnabled(False)
             else:
-                print("No active FreeLickingTask or invalid task type.")
+                print("No active Task or invalid task type.")
         except ValueError:
             print("Invalid input for one or more parameters. Please enter valid numbers.")
 
-
-'''
-    # Test to use the Update button to print the value of the variables in real-time
-    def print_variables(self):
-        # Get the text from each QLineEdit widget in the gui
-        quiet_window = self.ui.txt_QuietWindow.text()
-        response_window = self.ui.txt_ResponseWindow.text()
-        trial_duration = self.ui.txt_TrialDuration.text()
-        valve_opening = self.ui.txt_ValveOpening.text()
-
-        # Check if it os not empty and print it (only if it is not)
-        if quiet_window:
-            print(f'Quiet Window = {quiet_window}')
-        if response_window:
-            print(f'Response Window = {response_window}')
-        if trial_duration:
-            print(f'Trial Duration = {trial_duration}')
-        if valve_opening:
-            print(f'Valve Opening = {valve_opening}')
-
-        # Disable the Update button after the operation
-        self.ui.btn_Update.setEnabled(False)
-        
-'''

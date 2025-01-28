@@ -38,7 +38,7 @@ class SpoutSamplingTask:
         # Counters for licks
         self.threshold_left = 0
         self.threshold_right = 0
-        self.open_valve = 1
+        self.valve_opening = 1
         
         # Boolean
         self.trialstarted = False
