@@ -32,6 +32,7 @@ class SpoutSamplingTask:
         self.licks_left = 0
         self.licks_right = 0
         self.first_lick = None # first lick of each trial
+        self.tlick = None # Last lick registered - will be used to check conditions to initiate next trial
         self.trials = [] # list to store trial data
         
         # Counters for licks
@@ -98,7 +99,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI):
+            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlick is None or self.t - self.tlick > self.QW)):
                 
                 with self.lock:
                     self.trialstarted = True
@@ -132,6 +133,7 @@ class SpoutSamplingTask:
                         if 0 < elapsed_left < self.RW and self.first_lick is None:
                             
                             self.first_lick = 'left' # Mark left as the first lick
+                            self.tlick = self.tlick_l # Save the time of the rewarded lick
                             
                             print('Lick left within respnse window')
                             
@@ -163,6 +165,7 @@ class SpoutSamplingTask:
                         if 0 < elapsed_right < self.RW and self.first_lick is None:
                             
                             self.first_lick = 'right' # Mark right as the first lick
+                            self.tlick = self.tlick_r # save the time of the rewarded lick
                             
                             print('lick right within response window')
                             
