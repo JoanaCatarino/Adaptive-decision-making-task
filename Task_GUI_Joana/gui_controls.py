@@ -394,9 +394,9 @@ class GuiControls:
     
 
     def update_task_params(self):
-    '''
-    Input new variables in the Gui and update them real time in the current task
-    '''
+    
+    # Input new variables in the Gui and update them real time in the current task
+    
         try:
             # Get the values from the GUI
             quiet_window = self.ui.txt_QuietWindow.text()
