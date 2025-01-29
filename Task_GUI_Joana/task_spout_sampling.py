@@ -222,7 +222,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
 
 
-''''
+'''
     def save_data(self):
         """Saves the trial data to a fixed CSV file."""
         # Ensure the directory exists
@@ -241,5 +241,5 @@ class SpoutSamplingTask:
             writer.writerows(self.trials)
         
         print(f"Trials saved to {file_path}")
-
+'''
 
