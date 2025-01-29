@@ -34,6 +34,7 @@ class SpoutSamplingTask:
         self.first_lick = None # first lick of each trial
         self.tlick = None # Last lick registered - will be used to check conditions to initiate next trial
         self.trials = [] # list to store trial data
+        self.animal_quiet = False
         
         # Counters for licks
         self.threshold_left = 1
@@ -94,14 +95,48 @@ class SpoutSamplingTask:
         
         self.save_trials_to_csv()
      
-             
+       
+    def trial_has_started(self):
+        if self.trialstarted:
+            print('trial has started')
+            self.trialstarted=False
+  
+
+    def check_animal_quiet_test(self): # add test to have the other one with the same work
+        p1 = self.piezo_reader.piezo_adder1
+        first_idx = len(p1)-self.QW*60 # serial runs in 60Hz
+        if max(p1[first_idx:])< self.threshold_left:
+            self.animal_quiet=True
+        else:
+            self.animal_quiet = False
+        return self.animal_quiet
+        
+        
+    def check_animal_quiet(self):
+        p1 = self.piezo_reader.piezo_adder1
+        p2 = self.piezo_reader.piezo_adder2
+        
+        first_idx_l = len(p1)-self.QW*60 # serial runs in 60Hz
+        first_idx_r = len(p2)-self.QW*60
+        
+        quiet_left = max(p1[first_idx:]) < self.threshold_left
+        quiet_right = max(p2[first_idx:]) < self.threshold_right
+        
+        self.animal_quiet = quiet_left and quiet_right #True only if both spouts register no licks
+        return self.animal_quiet
+
+        
     def main(self):
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
+            # Inititation - trial 1
+            #self.animal_quiet = self.check_animal_quiet()
+            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlast_lick is None or self.t - self.tlast_lick > self.QW)):
+            #if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and (self.animal_quiet):
+            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and self.check_animal_quiet():
                 
                 with self.lock:
                     self.trialstarted = True
@@ -188,11 +223,6 @@ class SpoutSamplingTask:
                         elif elapsed_right > self.RW:
                             self.tlast_lick = self.t
 
-    
-    def trial_has_started(self):
-        if self.trialstarted:
-            print('trial has started')
-            self.trialstarted=False
 
 
     def save_trials_to_csv(self):
