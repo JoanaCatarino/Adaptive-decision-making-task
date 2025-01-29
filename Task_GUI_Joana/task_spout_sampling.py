@@ -182,8 +182,8 @@ class SpoutSamplingTask:
                             self.total_licks += 1 # Implement total licks
                             self.licks_left +=1 # Implement licks left
                         
-                            self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                            self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
+                            #self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
+                            #self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
                             
                         if elapsed_left > self.RW:
                             self.tlast_lick = self.t
@@ -215,8 +215,8 @@ class SpoutSamplingTask:
                             self.total_licks += 1 # Implement total licks
                             self.licks_right +=1 # Implement licks right
                         
-                            self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                            self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
+                            #self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
+                            #self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
                         
                         elif elapsed_right > self.RW:
                             self.tlast_lick = self.t
