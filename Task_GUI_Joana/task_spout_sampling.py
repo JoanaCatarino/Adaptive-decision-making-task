@@ -150,7 +150,7 @@ class SpoutSamplingTask:
                 if self.animal_quiet:
                     with self.lock:
                         self.trialstarted = True
-                        self.trial_has_started()
+                        #self.trial_has_started()
                     
                     # Reset first lick tracking
                     self.first_lick = None    
@@ -159,6 +159,7 @@ class SpoutSamplingTask:
                     print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
                     time.sleep(self.RW)  # Keep LED ON for 0.2 seconds
                     led_white_l.off() 
+                                        
                     
                     self.total_trials +=1
                     #self.gui_controls.update_total_trials(self.total_trials)
@@ -167,9 +168,15 @@ class SpoutSamplingTask:
                     # Update last LED time
                     self.ttrial = self.t
                     
+                    self.trialstarted = False
+                    
                 elif not self.animal_quiet:
                     print('Licks detected during Quiet Window')
                     
+                
+                if self.trialstarted:
+                    print("I am inside a trial")
+                
                 
                 '''
                 with self.lock:
