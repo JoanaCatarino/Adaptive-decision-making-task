@@ -43,6 +43,7 @@ class SpoutSamplingTask:
         # Boolean
         self.trialstarted = False
         
+        # Loop
         self.running = False
         
         # Initialize time variables
@@ -50,6 +51,7 @@ class SpoutSamplingTask:
         self.ttrial = None # start of the trial
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
+        self.tlast_lick = None # Last lick in either spouts
         self.t = None # current time
         
         # Lock for thread-safe access to shared variables
@@ -99,7 +101,7 @@ class SpoutSamplingTask:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlick is None or self.t - self.tlick > self.QW)):
+            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlast_lick is None or self.t - self.tlast_lick > self.QW)):
                 
                 with self.lock:
                     self.trialstarted = True
@@ -151,7 +153,8 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
                             
                         else:
-                            print('Lick left outside response window')
+                            if elapsed_left > self.RW:
+                                self.tlast_lick = self.t
                             
             if self.piezo_reader.piezo_adder2:
                 latest_value2 = self.piezo_reader.piezo_adder2[-1]
@@ -184,7 +187,8 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
                         
                         else:
-                            print('Lick right outside response window')
+                            if elapsed_right > self.RW:
+                                self.tlast_lick = self.t
 
     
     def trial_has_started(self):
