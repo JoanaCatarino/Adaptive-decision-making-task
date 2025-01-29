@@ -55,7 +55,8 @@ class SpoutSamplingTask:
         self.tlick_r = None # last lick right spout
         self.tlast_lick = None # Last lick in either spouts
         self.t = None # current time
-        
+        self.timelickleft = None
+        self.timelickright= None
         # Lock for thread-safe access to shared variables
         self.lock = threading.Lock()
         
@@ -112,7 +113,7 @@ class SpoutSamplingTask:
         
         
         # Wait until there is enough data to check the criteria
-        while p1.shape < required_samples or p2.shape < required_samples:
+        while len(p1) < required_samples or len(p2) < required_samples:
             print('Waiting for enough data to check quiet period..')
             # refresh data
             p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
