@@ -15,7 +15,7 @@ class PiezoReader:
         self.baudrate = 115200
         self.timeout = 1
         self.packet_size = 6
-        self.max_data_points = 300
+        self.max_data_points = 180
 
         self.ser = None  # Serial connection
         self.piezo_adder1 = []

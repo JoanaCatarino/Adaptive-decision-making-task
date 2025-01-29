@@ -60,7 +60,7 @@ class SpoutSamplingTask:
         self.lock = threading.Lock()
         
         # Call .csv function
-        self.save_data()
+        #self.save_data()
         
 
     def start (self):
@@ -222,7 +222,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
 
 
-
+''''
     def save_data(self):
         """Saves the trial data to a fixed CSV file."""
         # Ensure the directory exists

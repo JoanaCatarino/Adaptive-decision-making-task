@@ -59,8 +59,6 @@ class LivePlotWidget(QWidget):
         self.ax.autoscale_view()  # Update scale if necessary
         self.canvas.draw()
         
-        sleep(0.2)
-        
 
     def get_last_active_time(self, threshold=1):
         """
