@@ -8,6 +8,7 @@ Working on this file like it is the free licking script but to be moved to the c
 
 """
 import threading
+import numpy as np
 import time
 import csv
 import os
@@ -101,32 +102,40 @@ class SpoutSamplingTask:
         
         
     def check_animal_quiet(self):
-        p1 = self.piezo_reader.piezo_adder1
-        p2 = self.piezo_reader.piezo_adder2
+        #p1 = self.piezo_reader.piezo_adder1
+        #p2 = self.piezo_reader.piezo_adder2
         
-        required_samples = self.QW*60 # Serial runs in 60 Hz 
+        required_samples = self.QW*60 # Serial runs in 60 Hz        
+        p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
+        p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
+        
         
         # Wait until there is enough data to check the criteria
-        while len(p1) < required_samples or len(p2) < required_samples:
+        while p1.shape < required_samples or p2.shape < required_samples:
             print('Waiting for enough data to check quiet period..')
             # refresh data
-            p1 = self.piezo_reader.piezo_adder1
-            p2 = self.piezo_reader.piezo_adder2
+            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
+            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
             
         # Now that there is enough data, check for licks in the last QW seconds        
-        first_idx_l = len(p1)-required_samples
-        first_idx_r = len(p2)-required_samples
+        first_idx = len(p1)-required_samples
+        #first_idx_r = len(p2)-required_samples
         
-        quiet_left = max(p1[first_idx_l:]) < self.threshold_left
-        quiet_right = max(p2[first_idx_r:]) < self.threshold_right
+        quiet_left = max(p1[first_idx:]) < self.threshold_left
+        quiet_right = max(p2[first_idx:]) < self.threshold_right
+               
+        loc_max1 = np.argwhere(p1 == max(p1))[-1]
+        loc_max2 = np.argwhere(p2 == max(p2))[-1]
         
         if quiet_left and quiet_right:
             self.animal_quiet = True
-            return True
+            return True, None, None
         else:
             print('Licks detected during Quiet Window')
+            return False, loc_max1, loc_max2
+            
         
-             
+        
     def main(self):
         
         while self.running:
@@ -134,8 +143,34 @@ class SpoutSamplingTask:
             
            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and self.check_animal_quiet():
+            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
+                self.haslicked, self.timelickleft, self.timelickright = self.check_animal_quiet()    
                 
+                if not self.haslicked:
+                    with self.lock:
+                        self.trialstarted = True
+                        self.trial_has_started()
+                    
+                    # Reset first lick tracking
+                    self.first_lick = None    
+                    
+                    led_white_l.on()  
+                    print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
+                    time.sleep(self.RW)  # Keep LED ON for 0.2 seconds
+                    led_white_l.off() 
+                    
+                    self.total_trials +=1
+                    #self.gui_controls.update_total_trials(self.total_trials)
+                    self.trials.append((self.total_trials, self.t)) #save trials and time in a list
+                    
+                    # Update last LED time
+                    self.ttrial = self.t
+                    
+                elif self.haslicked:
+                    print('Licks detected during Quiet Window')
+                    
+                
+                '''
                 with self.lock:
                     self.trialstarted = True
                     self.trial_has_started()
@@ -217,7 +252,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
                         
-
+        time.sleep(0)
 
     
     def trial_has_started(self):
