@@ -43,6 +43,7 @@ class SpoutSamplingTask:
         
         # Boolean
         self.trialstarted = False
+        self.haslicked = False
         
         # Loop
         self.running = False
