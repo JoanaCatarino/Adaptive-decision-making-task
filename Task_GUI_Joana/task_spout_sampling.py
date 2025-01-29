@@ -201,8 +201,6 @@ class SpoutSamplingTask:
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
                             
-                        elif elapsed_left > self.RW:
-                            self.tlast_lick = self.t
                             
             if self.piezo_reader.piezo_adder2:
                 latest_value2 = self.piezo_reader.piezo_adder2[-1]
@@ -233,9 +231,6 @@ class SpoutSamplingTask:
                         
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
-                        
-                        elif elapsed_right > self.RW:
-                            self.tlast_lick = self.t
 
 
 
