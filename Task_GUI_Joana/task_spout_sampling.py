@@ -153,7 +153,7 @@ class SpoutSamplingTask:
                         else:
                             print('Lick left outside response window')
                             
-            if self. piezo_reader.piezo_adder2:
+            if self.piezo_reader.piezo_adder2:
                 latest_value2 = self.piezo_reader.piezo_adder2[-1]
 
                 if latest_value2 > self.threshold_right: 
