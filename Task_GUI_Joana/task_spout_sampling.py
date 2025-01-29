@@ -22,6 +22,7 @@ class SpoutSamplingTask:
         # Direcory to save file with trials data
         self.save_dir = "/home/rasppi-ephys/test_dir"
         self.file_name = 'trials.csv' # set the desired file name
+        self.task_data = []
         
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
@@ -57,6 +58,9 @@ class SpoutSamplingTask:
         
         # Lock for thread-safe access to shared variables
         self.lock = threading.Lock()
+        
+        # Call .csv function
+        self.save_data()
         
 
     def start (self):
@@ -100,16 +104,6 @@ class SpoutSamplingTask:
         if self.trialstarted:
             print('trial has started')
             self.trialstarted=False
-  
-
-    def check_animal_quiet_test(self): # add test to have the other one with the same work
-        p1 = self.piezo_reader.piezo_adder1
-        first_idx = len(p1)-self.QW*60 # serial runs in 60Hz
-        if max(p1[first_idx:])< self.threshold_left:
-            self.animal_quiet=True
-        else:
-            self.animal_quiet = False
-        return self.animal_quiet
         
         
     def check_animal_quiet(self):
@@ -144,12 +138,7 @@ class SpoutSamplingTask:
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-            
-            # Inititation - trial 1
-            #self.animal_quiet = self.check_animal_quiet()
-            
-            # Start a new trial if enough time has passed since the last trial and all conditions are met
-            #if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and (self.animal_quiet):
+
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and self.check_animal_quiet():
                 
                 with self.lock:
@@ -234,7 +223,7 @@ class SpoutSamplingTask:
 
 
 
-    def save_trials_to_csv(self):
+    def save_data(self):
         """Saves the trial data to a fixed CSV file."""
         # Ensure the directory exists
         os.makedirs(self.save_dir, exist_ok=True)
@@ -246,24 +235,11 @@ class SpoutSamplingTask:
         with open(file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
             # Write the header
-            writer.writerow(["Trial Number", "Time (s)"])
+            writer.writerow(['Trial Number', 'Time (s)', 'Lick', 'Lick Left', 'Lick Right', 'Lick timestamp',
+                             'RW', 'QW', 'ITI', 'Threshold Left', 'Threshold Right'])
             # Write the trial data
             writer.writerows(self.trials)
         
         print(f"Trials saved to {file_path}")
-
-'''
-    def condition_trial_initiation(self, t, tstart, response_window, tlick):
-        return t-(tstart + self.response_window) > self.inter_trial_interval and t-tlick > self.quiet_window
-    
-    def condition_lick(self, tlick, tstart, response_window):
-        return 0 < tlick - tstart < self.response_window
-    
-    
-    # to use the condition - just an example
-    if condition_trial_duration(self, t, tstart, response_window, tlick):
-        print('main condition is met, we can start a new trial')
-'''   
-
 
 

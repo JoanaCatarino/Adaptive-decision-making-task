@@ -93,7 +93,7 @@ class GuiControls:
         self.setup_piezo_plots() # Set up the piezo plot
         self.piezo_timer = QTimer()
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
-        self.piezo_timer.setInterval(20)  # Refresh every 20 ms
+        self.piezo_timer.setInterval(200)  # Refresh every 200 ms
 
 
     #Piezo functions
