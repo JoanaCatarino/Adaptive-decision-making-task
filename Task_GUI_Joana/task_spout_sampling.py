@@ -174,7 +174,7 @@ class SpoutSamplingTask:
                     print('Licks detected during Quiet Window')
                     
                 
-                if self.trialstarted:
+                if self.trialstarted==True:
                     print("I am inside a trial")
                 
                 
