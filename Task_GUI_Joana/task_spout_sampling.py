@@ -43,7 +43,6 @@ class SpoutSamplingTask:
         
         # Boolean
         self.trialstarted = False
-        self.haslicked = False
         
         # Loop
         self.running = False
@@ -146,9 +145,9 @@ class SpoutSamplingTask:
            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
-                self.haslicked, self.timelickleft, self.timelickright = self.check_animal_quiet()    
+                self.animal_quiet, self.timelickleft, self.timelickright = self.check_animal_quiet()    
                 
-                if not self.haslicked:
+                if self.animal_quiet:
                     with self.lock:
                         self.trialstarted = True
                         self.trial_has_started()
@@ -168,7 +167,7 @@ class SpoutSamplingTask:
                     # Update last LED time
                     self.ttrial = self.t
                     
-                elif self.haslicked:
+                elif not self.animal_quiet:
                     print('Licks detected during Quiet Window')
                     
                 
