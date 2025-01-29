@@ -93,7 +93,39 @@ class SpoutSamplingTask:
         pump_l.on() 
         
         self.save_trials_to_csv()
-     
+    
+    def trial_has_started(self):
+        if self.trialstarted:
+            print('trial has started')
+            self.trialstarted=False
+        
+        
+    def check_animal_quiet(self):
+        p1 = self.piezo_reader.piezo_adder1
+        p2 = self.piezo_reader.piezo_adder2
+        
+        required_samples = self.QW*60 # Serial runs in 60 Hz 
+        
+        # Wait until there is enough data to check the criteria
+        while len(p1) < required_samples or len(p2) < required_samples:
+            print('Waiting for enough data to check quiet period..')
+            # refresh data
+            p1 = self.piezo_reader.piezo_adder1
+            p2 = self.piezo_reader.piezo_adder2
+            
+        # Now that there is enough data, check for licks in the last QW seconds        
+        first_idx_l = len(p1)-required_samples
+        first_idx_r = len(p2)-required_samples
+        
+        quiet_left = max(p1[first_idx_l:]) < self.threshold_left
+        quiet_right = max(p2[first_idx_r:]) < self.threshold_right
+        
+        if quiet_left and quiet_right:
+            self.animal_quiet = True
+            return True
+        else:
+            print('Licks detected during Quiet Window')
+        
              
     def main(self):
         
@@ -102,7 +134,7 @@ class SpoutSamplingTask:
             
            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlast_lick is None or self.t - self.tlast_lick > self.QW)):
+            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and self.check_animal_quiet():
                 
                 with self.lock:
                     self.trialstarted = True
