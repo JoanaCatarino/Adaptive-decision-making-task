@@ -36,8 +36,8 @@ class SpoutSamplingTask:
         self.trials = [] # list to store trial data
         
         # Counters for licks
-        self.threshold_left = 0
-        self.threshold_right = 0
+        self.threshold_left = 1
+        self.threshold_right = 1
         self.valve_opening = 1
         
         # Boolean
