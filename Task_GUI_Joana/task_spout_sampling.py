@@ -37,8 +37,8 @@ class SpoutSamplingTask:
         self.animal_quiet = False
         
         # Counters for licks
-        self.threshold_left = 1
-        self.threshold_right = 1
+        self.threshold_left = 20
+        self.threshold_right = 20
         self.valve_opening = 1
         
         # Boolean
@@ -118,6 +118,10 @@ class SpoutSamplingTask:
         
         first_idx_l = len(p1)-self.QW*60 # serial runs in 60Hz
         first_idx_r = len(p2)-self.QW*60
+        
+        # If no licks recordeda at all, allow trial to start
+        if len(p1) == 0 and len(p2) == 0:
+            self.animal_quiet = True
         
         quiet_left = max(p1[first_idx_l:]) < self.threshold_left
         quiet_right = max(p2[first_idx_r:]) < self.threshold_right
