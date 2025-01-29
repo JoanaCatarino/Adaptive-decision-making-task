@@ -120,7 +120,7 @@ class GuiControls:
         # read serial data
         self.piezo_reader.read_serial_data()
         # Update each piezo plot with new data
-        #self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
+        self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         #self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
 
