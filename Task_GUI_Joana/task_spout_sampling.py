@@ -119,8 +119,8 @@ class SpoutSamplingTask:
         first_idx_l = len(p1)-self.QW*60 # serial runs in 60Hz
         first_idx_r = len(p2)-self.QW*60
         
-        quiet_left = max(p1[first_idx:]) < self.threshold_left
-        quiet_right = max(p2[first_idx:]) < self.threshold_right
+        quiet_left = max(p1[first_idx_l:]) < self.threshold_left
+        quiet_right = max(p2[first_idx_r:]) < self.threshold_right
         
         self.animal_quiet = quiet_left and quiet_right #True only if both spouts register no licks
         return self.animal_quiet
