@@ -22,7 +22,6 @@ class SpoutSamplingTask:
         # Direcory to save file with trials data
         self.save_dir = "/home/rasppi-ephys/test_dir"
         self.file_name = 'trials.csv' # set the desired file name
-        self.task_data = []
         
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
@@ -35,11 +34,10 @@ class SpoutSamplingTask:
         self.first_lick = None # first lick of each trial
         self.tlick = None # Last lick registered - will be used to check conditions to initiate next trial
         self.trials = [] # list to store trial data
-        self.animal_quiet = False
         
         # Counters for licks
-        self.threshold_left = 20
-        self.threshold_right = 20
+        self.threshold_left = 1
+        self.threshold_right = 1
         self.valve_opening = 1
         
         # Boolean
@@ -58,9 +56,6 @@ class SpoutSamplingTask:
         
         # Lock for thread-safe access to shared variables
         self.lock = threading.Lock()
-        
-        # Call .csv function
-        #self.save_data()
         
 
     def start (self):
@@ -99,47 +94,15 @@ class SpoutSamplingTask:
         
         self.save_trials_to_csv()
      
-       
-    def trial_has_started(self):
-        if self.trialstarted:
-            print('trial has started')
-            self.trialstarted=False
-        
-        
-    def check_animal_quiet(self):
-        p1 = self.piezo_reader.piezo_adder1
-        p2 = self.piezo_reader.piezo_adder2
-        
-        required_samples = self.QW*60 # Serial runs in 60 Hz 
-        
-        # Wait until there is enough data to check the criteria
-        while len(p1) < required_samples or len(p2) < required_samples:
-            print('Waiting for enough data to check quiet period..')
-            # refresh data
-            p1 = self.piezo_reader.piezo_adder1
-            p2 = self.piezo_reader.piezo_adder2
-            
-        # Now that there is enough data, check for licks in the last QW seconds        
-        first_idx_l = len(p1)-required_samples
-        first_idx_r = len(p2)-required_samples
-        
-        quiet_left = max(p1[first_idx_l:]) < self.threshold_left
-        quiet_right = max(p2[first_idx_r:]) < self.threshold_right
-        
-        if quiet_left and quiet_right:
-            self.animal_quiet = True
-            return True
-        else:
-            print('Licks detected during Quiet Window')
-        
-    
-    
+             
     def main(self):
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-
-            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)) and self.check_animal_quiet():
+            
+           
+            # Start a new trial if enough time has passed since the last trial and all conditions are met
+            if self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI) and (self.tlast_lick is None or self.t - self.tlast_lick > self.QW)):
                 
                 with self.lock:
                     self.trialstarted = True
@@ -154,7 +117,7 @@ class SpoutSamplingTask:
                     led_white_l.off()                 
                     
                     self.total_trials +=1
-                    self.gui_controls.update_total_trials(self.total_trials)
+                    #self.gui_controls.update_total_trials(self.total_trials)
                     self.trials.append((self.total_trials, self.t)) #save trials and time in a list
                     
                     # Update last LED time
@@ -190,6 +153,8 @@ class SpoutSamplingTask:
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI                            
                             
+                        if elapsed_left > self.RW:
+                            self.tlast_lick = self.t
                             
             if self.piezo_reader.piezo_adder2:
                 latest_value2 = self.piezo_reader.piezo_adder2[-1]
@@ -220,10 +185,18 @@ class SpoutSamplingTask:
                         
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
+                        
+                        elif elapsed_right > self.RW:
+                            self.tlast_lick = self.t
+
+    
+    def trial_has_started(self):
+        if self.trialstarted:
+            print('trial has started')
+            self.trialstarted=False
 
 
-'''
-    def save_data(self):
+    def save_trials_to_csv(self):
         """Saves the trial data to a fixed CSV file."""
         # Ensure the directory exists
         os.makedirs(self.save_dir, exist_ok=True)
@@ -235,11 +208,24 @@ class SpoutSamplingTask:
         with open(file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
             # Write the header
-            writer.writerow(['Trial Number', 'Time (s)', 'Lick', 'Lick Left', 'Lick Right', 'Lick timestamp',
-                             'RW', 'QW', 'ITI', 'Threshold Left', 'Threshold Right'])
+            writer.writerow(["Trial Number", "Time (s)"])
             # Write the trial data
             writer.writerows(self.trials)
         
         print(f"Trials saved to {file_path}")
+
 '''
+    def condition_trial_initiation(self, t, tstart, response_window, tlick):
+        return t-(tstart + self.response_window) > self.inter_trial_interval and t-tlick > self.quiet_window
+    
+    def condition_lick(self, tlick, tstart, response_window):
+        return 0 < tlick - tstart < self.response_window
+    
+    
+    # to use the condition - just an example
+    if condition_trial_duration(self, t, tstart, response_window, tlick):
+        print('main condition is met, we can start a new trial')
+'''   
+
+
 
