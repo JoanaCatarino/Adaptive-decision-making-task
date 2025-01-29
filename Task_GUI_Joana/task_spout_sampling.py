@@ -279,7 +279,7 @@ class SpoutSamplingTask:
             writer.writerows(self.trials)
         
         print(f"Trials saved to {file_path}")
-
+'''
 '''
     def condition_trial_initiation(self, t, tstart, response_window, tlick):
         return t-(tstart + self.response_window) > self.inter_trial_interval and t-tlick > self.quiet_window
