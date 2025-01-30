@@ -136,6 +136,7 @@ class SpoutSamplingTask:
             self.trialstarted = True
             trial_number= self.total_trials +1
             self.ttrial = self.t # Update trial start time
+            self.first_lick = None # Reset first lick at the start of each trial
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start()
@@ -156,69 +157,82 @@ class SpoutSamplingTask:
         
         
     def detect_licks(self):
-        
-        """ Checks for licks and delivers rewards in parallel"""
-        
-        # Force update piezo data before checking
+    
+        """Checks for licks and delivers rewards in parallel."""
+
+        # Ensure piezo data is updated before checking
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
-        
-        # Small delay to prevent CPU overload and stabilize time
+    
+        # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
-        
+    
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
-            
+    
             if latest_value1 > self.threshold_left:
                 with self.lock:
                     self.tlick_l = self.t
                     elapsed_left = self.tlick_l - self.ttrial
-                    print('threshold exceeded left')
-                    
+                    print('Threshold exceeded left')
+    
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
-                        
                         self.first_lick = 'left'
-                        
-                        pump_l.off()
-                        time.sleep(self.valve_opening)
-                        pump_l.on()
-                        
-                        print('Reward delivered - left')
-                        
-                        self.total_licks += 1 # Implement total licks
-                        self.licks_left += 1 # Implement licks left
-                        
-                        self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                        self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI  
-                        
-
+    
+                        # Deliver reward in a separate thread
+                        threading.Thread(target=self.reward, args=('left',)).start()
+    
+                        self.total_licks += 1
+                        self.licks_left += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
+    
+        # Right piezo        
+        if p2:
+            latest_value2 = p2[-1]
+    
+            if latest_value2 > self.threshold_right:
+                with self.lock:
+                    self.tlick_r = self.t
+                    elapsed_right = self.tlick_r - self.ttrial
+                    print('Threshold exceeded right')
+    
+                    if self.first_lick is None and (0 < elapsed_right < self.RW):
+                        self.first_lick = 'right'
+    
+                        # Deliver reward in a separate thread
+                        threading.Thread(target=self.reward, args=('right',)).start()
+    
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
+    
+    
+    def reward(self, side):
+        
+        """Delivers a reward without blocking the main loop."""
+        
+        print(f"Delivering reward - {side}")
+    
+        # Ensure pump action executes properly with a short delay
+        time.sleep(0.01)
+    
+        if side == 'left':
+            pump_l.off()
+            time.sleep(self.valve_opening)
+            pump_l.on()
+            print('Reward delivered - left')
             
-            # Right piezo        
-            if p2:
-                latest_value2 = p2[-1]
-                
-                if latest_value2 > self.threshold_right:
-                    with self.lock:
-                        self.tlick_r = self.t
-                        print('threshold exceeded right')
-                        
-                        if self.first_lick is None and (0 < self.tlick_r-self.ttrial < self.RW):
-                            
-                            self.first_lick = 'right'
-                            
-                            pump_r.off()
-                            time.sleep(self.valve_opening)
-                            pump_r.on()
-                            
-                            print('Reward delivered - left')
-                            
-                            self.total_licks += 1 # Implement total licks
-                            self.licks_right += 1 # Implement licks right
-                            
-                            self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                            self.gui_controls.update_licks_left(self.licks_right) # Update licks right in the GUI  
-                    
+        elif side == 'right':
+            pump_r.off()
+            time.sleep(self.valve_opening)
+            pump_r.on()
+            print('Reward delivered - right')
+    
+        # Small delay to ensure execution before another lick
+        #time.sleep(0.01)
     
         
     def main(self):
