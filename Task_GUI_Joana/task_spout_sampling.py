@@ -136,7 +136,7 @@ class SpoutSamplingTask:
             self.ttrial = self.t # Update trial start time
             
             # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW)).start()
+            threading.Thread(target=self.led_indicator, args=(self.RW,)).start()
             
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
