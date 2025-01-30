@@ -31,11 +31,11 @@ class SpoutSamplingTask:
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = 2 # Inter-trial interval in seconds
-        self.RW = 2 # Response window in seconds
-        self.threshold_left = 1
-        self.threshold_right = 1
-        self.valve_opening = 1  # Reward duration   
+        self.ITI = 0.1 # Inter-trial interval in seconds
+        self.RW = 1 # Response window in seconds
+        self.threshold_left = 20
+        self.threshold_right = 20
+        self.valve_opening = 0.2  # Reward duration   
         
         # Counters
         self.total_trials = 0
