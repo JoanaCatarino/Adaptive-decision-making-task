@@ -297,7 +297,7 @@ class SpoutSamplingTask:
             if not file_exists:
                 writer.writeheader()
                 
-            write.writewrows(self.trials)
+            writer.writewrows(self.trials)
             
     
     
