@@ -104,7 +104,10 @@ class SpoutSamplingTask:
     
     def check_animal_quiet(self):
         
-        """ Continuously checks for a quiet period before starting a trial """
+        """ Continuously checks for a quiet period before starting a trial, unless QW = 0 """
+        
+        if self.QW == 0:
+            return True
         
         required_samples = self.QW*60 # Serial runs in 60 Hz   
         
