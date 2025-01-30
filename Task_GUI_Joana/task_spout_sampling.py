@@ -178,26 +178,6 @@ class SpoutSamplingTask:
                     print("I am inside a trial")
                 
                 
-                '''
-                with self.lock:
-                    self.trialstarted = True
-                    self.trial_has_started()
-                    
-                    # Reset first lick tracking
-                    self.first_lick = None
-                    
-                    led_white_l.on()  
-                    print(f"LED ON at t: {self.t:.2f} sec (Trial:{self.total_trials + 1})")
-                    time.sleep(1)  # Keep LED ON for 0.2 seconds
-                    led_white_l.off()                 
-                    
-                    self.total_trials +=1
-                    #self.gui_controls.update_total_trials(self.total_trials)
-                    self.trials.append((self.total_trials, self.t)) #save trials and time in a list
-                    
-                    # Update last LED time
-                    self.ttrial = self.t
-                
             if self.piezo_reader.piezo_adder1:
                 latest_value1 = self.piezo_reader.piezo_adder1[-1]
                 
@@ -260,8 +240,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
                             self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI     
                         
-        time.sleep(0)
-
+  
     
     def trial_has_started(self):
         if self.trialstarted:
@@ -286,7 +265,7 @@ class SpoutSamplingTask:
             writer.writerows(self.trials)
         
         print(f"Trials saved to {file_path}")
-'''
+
 '''
     def condition_trial_initiation(self, t, tstart, response_window, tlick):
         return t-(tstart + self.response_window) > self.inter_trial_interval and t-tlick > self.quiet_window
