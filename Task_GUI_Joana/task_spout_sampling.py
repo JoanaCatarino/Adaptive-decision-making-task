@@ -157,6 +157,13 @@ class SpoutSamplingTask:
         
         """ Checks for licks and delivers rewards in parallel"""
         
+        # Debugging: Check if piezo sensor is receiving values
+        if self.piezo_reader.piezo_adder1:
+            print(f"Piezo Left Latest Value: {self.piezo_reader.piezo_adder1[-1]}")
+        if self.piezo_reader.piezo_adder2:
+            print(f"Piezo Right Latest Value: {self.piezo_reader.piezo_adder2[-1]}")
+        
+        
         # Left piezo
         if self.piezo_reader.piezo_adder1:
             latest_value1 = self.piezo_reader.piezo_adder1[-1]
