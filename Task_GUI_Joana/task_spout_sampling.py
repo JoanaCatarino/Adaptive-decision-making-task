@@ -132,7 +132,7 @@ class SpoutSamplingTask:
         
         with self.lock:
             self.trialstarted = True
-            trial_number= self.total_trials +=1
+            trial_number= self.total_trials +1
             self.ttrial = self.t # Update trial start time
             
             # Start LED in a separate thread
