@@ -113,7 +113,7 @@ class SpoutSamplingTask:
         
             if len(p1) >= required_samples and len(p2) >= required_samples:
                 quiet_left = max(p1[-required_samples:]) < self.threshold_left
-                quiet_right = max(p2[-required-samples:]) < self.threshold_right
+                quiet_right = max(p2[-required_samples:]) < self.threshold_right
                
                 if quiet_left and quiet_right:
                     return True # Animal was quiet
