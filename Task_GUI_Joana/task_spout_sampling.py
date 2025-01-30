@@ -35,7 +35,7 @@ class SpoutSamplingTask:
         self.RW = 2 # Response window in seconds
         self.threshold_left = 1
         self.threshold_right = 1
-        self.valve_opening = 1  # Reward duration     
+        self.valve_opening = 1  # Reward duration   
         
         # Counters
         self.total_trials = 0
@@ -60,6 +60,8 @@ class SpoutSamplingTask:
         # Ensure save directory exists
         os.makedirs(self.save_dir, exist_ok=True)
         self.create_trial_csv()
+        
+        self.first_lick = None
         
 
     def start (self):
