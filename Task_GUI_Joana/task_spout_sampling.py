@@ -159,9 +159,16 @@ class SpoutSamplingTask:
         
         """ Checks for licks and delivers rewards in parallel"""
         
+        # Force update piezo data before checking
+        p1 = list(self.piezo_reader.piezo_adder1)
+        p2 = list(self.piezo_reader.piezo_adder2)
+        
+        # Small delay to prevent CPU overload and stabilize time
+        time.sleep(0.001)
+        
         # Left piezo
-        if self.piezo_reader.piezo_adder1:
-            latest_value1 = self.piezo_reader.piezo_adder1[-1]
+        if p1:
+            latest_value1 = p1[-1]
             
             if latest_value1 > self.threshold_left:
                 with self.lock:
@@ -179,8 +186,8 @@ class SpoutSamplingTask:
                         threading.Thread(target=self.reward, args=('left',)).start()
             
             # Right piezo        
-            if self.piezo_reader.piezo_adder2:
-                latest_value2 = self.piezo_reader.piezo_adder2[-1]
+            if p2:
+                latest_value2 = p2[-1]
                 
                 if latest_value2 > self.threshold_right:
                     with self.lock:
