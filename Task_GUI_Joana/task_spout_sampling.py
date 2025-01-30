@@ -28,6 +28,7 @@ class SpoutSamplingTask:
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
+        self.trials = [] # List to store trial data
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -53,6 +54,7 @@ class SpoutSamplingTask:
         self.t = None # current time
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
+        self.tlick = None # time of 1st lick within response window
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -146,6 +148,22 @@ class SpoutSamplingTask:
             
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
+            # Initialize trial data
+            trial_data = {
+                'trial_number': trial_number,
+                'trial_time': self.ttrial,
+                'lick': 0,
+                'left_spout': 0,
+                'right_spout': 0,
+                'lick_time': None,
+                'RW': self.RW,
+                'QW': self.QW,
+                'ITI': self.ITI,
+                'Threshold_left': self.threshold_left,
+                'Threshold_right': self.threshold_right}
+            
+            self.trials.append(trial_data) # Store trial data
+            
             self.total_trials = trial_number
             self.gui_controls.update_total_trials(self.total_trials)
             
@@ -182,9 +200,15 @@ class SpoutSamplingTask:
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
+                        self.tlick = self.tlick_l
     
                         # Deliver reward in a separate thread
                         threading.Thread(target=self.reward, args=('left',)).start()
+                        
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['left_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
     
                         self.total_licks += 1
                         self.licks_left += 1
@@ -203,9 +227,15 @@ class SpoutSamplingTask:
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
+                        self.tlick = self.tlick_r
     
                         # Deliver reward in a separate thread
                         threading.Thread(target=self.reward, args=('right',)).start()
+                        
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['right_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
     
                         self.total_licks += 1
                         self.licks_right += 1
@@ -253,84 +283,41 @@ class SpoutSamplingTask:
             self.detect_licks()
                 
                 
-  
 
     def save_trials_to_csv(self):
         """Saves the trial data to a fixed CSV file."""
+        
         file_path = os.path.join(self.save_dir, self.file_name)
+        file_exixts = os.path.isfile(file_path)
+        
         with open(file_path, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(["Trial Number", "Time (s)"])
-            writer.writerows(self.trials)
-        print(f"Trials saved to {file_path}")
-
-    def create_trial_csv(self):
-        """Creates a CSV file for logging trial data if it doesn't exist."""
-        file_path = os.path.join(self.save_dir, self.file_name)
-        if not os.path.exists(file_path):
-            with open(file_path, mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(["Trial Number", "Time (s)"])
-                
-                
-                
-'''
-    def condition_trial_initiation(self, t, tstart, response_window, tlick):
-        return t-(tstart + self.response_window) > self.inter_trial_interval and t-tlick > self.quiet_window
-    
-    def condition_lick(self, tlick, tstart, response_window):
-        return 0 < tlick - tstart < self.response_window
-    
-    
-    # to use the condition - just an example
-    if condition_trial_duration(self, t, tstart, response_window, tlick):
-        print('main condition is met, we can start a new trial')
-        
-    
-    
-    def trial_has_started(self):
-        if self.trialstarted:
-            print('trial has started')
-            self.trialstarted=False
-        
-        
-    def check_animal_quiet(self):
-        #p1 = self.piezo_reader.piezo_adder1
-        #p2 = self.piezo_reader.piezo_adder2
-        
-        required_samples = self.QW*60 # Serial runs in 60 Hz        
-        p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
-        p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
-        
-        
-        # Wait until there is enough data to check the criteria
-        while len(p1) < required_samples or len(p2) < required_samples:
-            print('Waiting for enough data to check quiet period..')
-            # refresh data
-            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
-            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
+            writer = csv .DictWriter(file, fieldnames=self.trials[0].keys())
             
-        # Now that there is enough data, check for licks in the last QW seconds        
-        first_idx = len(p1)-required_samples
-        #first_idx_r = len(p2)-required_samples
-        
-        quiet_left = max(p1[first_idx:]) < self.threshold_left
-        quiet_right = max(p2[first_idx:]) < self.threshold_right
-               
-        loc_max1 = np.argwhere(p1 == max(p1))[-1]
-        loc_max2 = np.argwhere(p2 == max(p2))[-1]
-        
-        if quiet_left and quiet_right:
-            self.animal_quiet = True
-            return True, None, None
-        else:
-            print('Licks detected during Quiet Window')
-            return False, loc_max1, loc_max2
+            # Write header only if the file is newly created
+            if not file_exists:
+                write.writeheader()
                 
+            write.writewrows(self.trials)
+            
+    
+    
+    def create_trial_csv(self):
+        """ Creates a new CSV file with headers if it does not exist. """
         
-        
-        
-'''   
+        file_path = os.path.join(self.save_dir, self.file_name)
+
+        if not os.path.isfile(file_path):
+            with open(file_path, mode='w', newline='') as file:
+                writer = csv.DictWriter(file, fieldnames=[
+                    "trial_number", "trial_time", "lick", "left_spout", 
+                    "right_spout", "lick_time", "RW", "QW", "ITI", 
+                    "Threshold_left", "Threshold_right"
+                ])
+                writer.writeheader()        
+            
+
+                
+                
 
 
 
