@@ -288,7 +288,7 @@ class SpoutSamplingTask:
         """Saves the trial data to a fixed CSV file."""
         
         file_path = os.path.join(self.save_dir, self.file_name)
-        file_exixts = os.path.isfile(file_path)
+        file_exists = os.path.isfile(file_path)
         
         with open(file_path, mode='w', newline='') as file:
             writer = csv .DictWriter(file, fieldnames=self.trials[0].keys())
