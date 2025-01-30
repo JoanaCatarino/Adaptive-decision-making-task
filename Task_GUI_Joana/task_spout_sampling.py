@@ -295,7 +295,7 @@ class SpoutSamplingTask:
             
             # Write header only if the file is newly created
             if not file_exists:
-                write.writeheader()
+                writer.writeheader()
                 
             write.writewrows(self.trials)
             
