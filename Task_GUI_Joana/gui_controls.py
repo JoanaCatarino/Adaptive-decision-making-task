@@ -133,11 +133,11 @@ class GuiControls:
         plt_layout.setContentsMargins(0, 0, 0, 0)
         plt_layout.setSpacing(0)
         
-        self.lick_plot = LiveStairPlot(parent=self.ui.plt_TotalLicks)  # Create stair plot
+        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         plt_layout.addWidget(self.lick_plot)
-        self.ui.plt_TotalLicks.setLayout(plt_layout)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
         
     
     def update_lick_plot(self, total_licks, elapsed_time):
