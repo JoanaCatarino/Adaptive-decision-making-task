@@ -291,7 +291,7 @@ class SpoutSamplingTask:
         file_exists = os.path.isfile(file_path)
         
         with open(file_path, mode='w', newline='') as file:
-            writer = csv .DictWriter(file, fieldnames=self.trials[0].keys())
+            writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
             
             # Write header only if the file is newly created
             if not file_exists:
