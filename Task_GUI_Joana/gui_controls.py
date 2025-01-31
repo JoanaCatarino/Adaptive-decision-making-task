@@ -129,7 +129,7 @@ class GuiControls:
         
     def setup_lick_plot(self):
         # Place stair plot into GUI layout
-        plt_layout = QVBoxLayout(self.ui.plt_TotalLicks)
+        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
         plt_layout.setContentsMargins(0, 0, 0, 0)
         plt_layout.setSpacing(0)
         
