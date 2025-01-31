@@ -21,6 +21,7 @@ from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
+from live_stair_plot import LiveStairPlot # Import stair plot class
 
 # Import different functions/classes
 from animal_id_generator import animal_id
@@ -32,7 +33,7 @@ from file_writer import write_task_start_file
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
 from piezo_plot import LivePlotWidget
-from performance_plot import LiveLickPlotWidget
+from performance_plot import PlotLicks
 from piezo_reader import PiezoReader
 from gpio_map import *
 
@@ -95,6 +96,9 @@ class GuiControls:
         self.piezo_timer = QTimer()
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
+        
+        # Initialize functions for the performance plot
+        self.setup_lick_plot()
 
 
     #Piezo functions
@@ -125,16 +129,22 @@ class GuiControls:
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
     def setup_lick_plot(self):
-        plt_layout = QVBoxLayout(self.ui.plt_TotalLicks)  # Assuming 'plt_TotalLicks' is the QWidget in Qt Designer
+        # Place stair plot into GUI layout
+        plt_layout = QVBoxLayout(self.ui.plt_TotalLicks)
         plt_layout.setContentsMargins(0, 0, 0, 0)
         plt_layout.setSpacing(0)
-
-    self.lick_plot = LiveLickPlotWidget(parent=self.ui.plt_TotalLicks)
-    self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-    plt_layout.addWidget(self.lick_plot)
-    self.ui.plt_TotalLicks.setLayout(plt_layout)
         
+        self.lick_plot = LiveStairPlot(parent=self.ui.plt_TotalLicks)  # Create stair plot
+        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        plt_layout.addWidget(self.lick_plot)
+        self.ui.plt_TotalLicks.setLayout(plt_layout)
+        
+    
+    def update_lick_plot(self, total_licks, elapsed_time):
+        if hasattr(self, 'lick_plot'):
+            self.lick_plot.update_plot(total_licks, elapsed_time)
+              
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID

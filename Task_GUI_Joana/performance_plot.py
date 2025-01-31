@@ -4,37 +4,57 @@ Created on Fri Jan 31 13:06:27 2025
 
 @author: JoanaCatarino
 """
-
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtWidgets import QWidget, QVBoxLayout
+import datetime
 
-class LiveLickPlotWidget(QWidget):
+class PlotLicks(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.figure, self.ax = plt.subplots()
+        # Create Figure and Canvas
+        self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
+        self.ax = self.figure.add_subplot(111)
 
+        # Initialize Data Lists
+        self.times = []
+        self.lick_counts = []
+
+        # Set Up Plot
+        self.ax.set_xlabel("Time")
+        self.ax.set_ylabel("Total Licks")
+        self.ax.set_title("Licks Over Time (Stair Plot)")
+        self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+        self.ax.grid(True)
+
+        # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-        self.times = []   # Store time points
-        self.licks = []   # Store total licks
-        self.ax.set_xlabel("Time (s)")
-        self.ax.set_ylabel("Total Licks")
-        self.ax.set_title("Total Licks Over Time")
-        self.ax.grid(True)
-        self.plot, = self.ax.step([], [], where='post', color='b', linewidth=2)
-
     def update_plot(self, time, total_licks):
-        """Update the stair plot with new lick data."""
-        self.times.append(time)
-        self.licks.append(total_licks)
+        """Update stair plot with new lick data."""
+        # Convert time to datetime object
+        timestamp = datetime.datetime.now()
 
-        self.plot.set_data(self.times, self.licks)
-        self.ax.relim()
-        self.ax.autoscale_view()
+        # Append Data
+        self.times.append(timestamp)
+        self.lick_counts.append(total_licks)
 
+        # Clear and Redraw Stair Plot
+        self.ax.clear()
+        self.ax.step(self.times, self.lick_counts, where='post', color='b', linewidth=2)
+
+        # Update Labels & Formatting
+        self.ax.set_xlabel("Time")
+        self.ax.set_ylabel("Total Licks")
+        self.ax.set_title("Licks Over Time (Stair Plot)")
+        self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+        self.ax.grid(True)
+
+        # Redraw Canvas
         self.canvas.draw()
