@@ -217,7 +217,8 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_left(self.licks_left)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick_l, self.total_licks)
+                        self.gui_controls.update_lick_plot1(self.tlick_l, self.total_licks)
+                        self.gui_controls.update_lick_plot2(self.tlick_l, self.total_licks)
     
         # Right piezo        
         if p2:
@@ -247,8 +248,8 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_right(self.licks_right)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick_r, self.total_licks)
-    
+                        self.gui_controls.update_lick_plot1(self.tlick_r, self.total_licks)
+                        self.gui_controls.update_lick_plot2(self.tlick_r, self.total_licks)
     
     def reward(self, side):
         
@@ -338,11 +339,7 @@ class SpoutSamplingTask:
         self.gui_controls.ui.plt_TotalLicks.setLayout(plt_layout)
 
     
-    def update_lick_plot(self, time, total_licks):
-        """Updates the live stair plot with new data."""
-        if self.lick_plot:
-            self.lick_plot.update_plot(time, total_licks)
-                
+
     
                     
                 

@@ -128,23 +128,27 @@ class GuiControls:
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
     def setup_lick_plot(self):
-        # Place stair plot into GUI layout
-        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout.setContentsMargins(0, 0, 0, 0)
-        plt_layout.setSpacing(0)
-        
-        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
-        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        plt_layout.addWidget(self.lick_plot)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
-        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout)
-        
+        # Performance plot free licking for main tab
+        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout1.setContentsMargins(0, 0, 0, 0)
+        plt_layout1.setSpacing(0)
+        self.live_lick_plot1=PlotLicks(parent=self.ui.plt_AnimalPerformance)
+        plt_layout1.addWidget(self.lick_plot1)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
+
+        # Performance plot free licking for overview tab
+        plt_layout2 = QVBoxLayout(self.ui.OV_plt_AnimalPerformance)
+        plt_layout2.setContentsMargins(0, 0, 0, 0)
+        plt_layout2.setSpacing(0)
+        self.live_lick_plot2=PlotLicks(parent=self.ui.plt_AnimalPerformance)
+        plt_layout2.addWidget(self.lick_plot2)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout2)
+
     
     def update_lick_plot(self, total_licks, elapsed_time):
         if hasattr(self, 'lick_plot'):
-            self.lick_plot.update_plot(total_licks, elapsed_time)
-              
+            self.lick_plot1.update_plot(total_licks, elapsed_time)
+            self.lick_plot2.update_plot(total_licks, elapsed_time)  
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
