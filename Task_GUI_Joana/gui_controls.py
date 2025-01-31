@@ -21,7 +21,6 @@ from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
-from live_stair_plot import LiveStairPlot # Import stair plot class
 
 # Import different functions/classes
 from animal_id_generator import animal_id
