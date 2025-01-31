@@ -291,10 +291,12 @@ class SpoutSamplingTask:
         file_exists = os.path.isfile(file_path)
         
         with open(file_path, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
+            writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
+            "right_spout", "lick_time", "RW", "QW", "ITI", 
+            "Threshold_left", "Threshold_right"])
             
             # Write header only if the file is newly created
-            if not file_exists:
+            if not file_exists or os.stat(file_path).st_size == 0:
                 writer.writeheader()
                 
             writer.writerows(self.trials)
@@ -308,12 +310,13 @@ class SpoutSamplingTask:
 
         if not os.path.isfile(file_path):
             with open(file_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
                 writer = csv.DictWriter(file, fieldnames=[
                     "trial_number", "trial_time", "lick", "left_spout", 
                     "right_spout", "lick_time", "RW", "QW", "ITI", 
                     "Threshold_left", "Threshold_right"
                 ])
-                writer.writeheader()        
+                     
             
 
                 
