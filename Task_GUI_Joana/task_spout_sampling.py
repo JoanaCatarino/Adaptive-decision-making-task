@@ -217,8 +217,8 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_left(self.licks_left)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot1(self.tlick_l, self.total_licks)
-                        self.gui_controls.update_lick_plot2(self.tlick_l, self.total_licks)
+                        self.gui_controls.update_live_lick_plot1(self.tlick_l, self.total_licks)
+                        self.gui_controls.update_live_lick_plot2(self.tlick_l, self.total_licks)
     
         # Right piezo        
         if p2:
