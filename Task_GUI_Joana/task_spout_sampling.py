@@ -317,9 +317,37 @@ class SpoutSamplingTask:
                     "Threshold_left", "Threshold_right"
                 ])
                      
-            
-
-                
+    def detect_licks(self):
+        """Checks for licks and updates live plot."""
+        p1 = list(self.piezo_reader.piezo_adder1)
+        p2 = list(self.piezo_reader.piezo_adder2)
+        time.sleep(0.001)
+    
+        if p1 and p1[-1] > self.threshold_left:
+            with self.lock:
+                self.tlick_l = self.t
+                self.total_licks += 1
+                self.licks_left += 1
+                self.lick_times.append((self.tlick_l, self.total_licks))
+    
+                self.gui_controls.update_total_licks(self.total_licks)
+                self.gui_controls.update_licks_left(self.licks_left)
+    
+                self.lick_plot.update_plot(self.tlick_l, self.total_licks)  # Update GUI plot
+    
+        if p2 and p2[-1] > self.threshold_right:
+            with self.lock:
+                self.tlick_r = self.t
+                self.total_licks += 1
+                self.licks_right += 1
+                self.lick_times.append((self.tlick_r, self.total_licks))
+    
+                self.gui_controls.update_total_licks(self.total_licks)
+                self.gui_controls.update_licks_right(self.licks_right)
+    
+                self.lick_plot.update_plot(self.tlick_r, self.total_licks)  # Update GUI plot
+    
+                    
                 
 
 

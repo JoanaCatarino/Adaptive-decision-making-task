@@ -123,6 +123,17 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
+    def setup_lick_plot(self):
+        plt_layout = QVBoxLayout(self.ui.plt_TotalLicks)  # Assuming 'plt_TotalLicks' is the QWidget in Qt Designer
+        plt_layout.setContentsMargins(0, 0, 0, 0)
+        plt_layout.setSpacing(0)
+
+    self.lick_plot = LiveLickPlotWidget(parent=self.ui.plt_TotalLicks)
+    self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+    plt_layout.addWidget(self.lick_plot)
+    self.ui.plt_TotalLicks.setLayout(plt_layout)
+        
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
