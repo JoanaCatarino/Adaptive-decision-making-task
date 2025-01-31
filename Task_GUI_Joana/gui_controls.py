@@ -144,7 +144,6 @@ class GuiControls:
         plt_layout2.addWidget(self.lick_plot2)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout2)
 
-    
     def update_lick_plot(self, total_licks, elapsed_time):
         if hasattr(self, 'lick_plot'):
             self.lick_plot1.update_plot(total_licks, elapsed_time)
