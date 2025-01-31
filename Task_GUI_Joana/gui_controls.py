@@ -138,6 +138,7 @@ class GuiControls:
         
         plt_layout.addWidget(self.lick_plot)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout)
         
     
     def update_lick_plot(self, total_licks, elapsed_time):
