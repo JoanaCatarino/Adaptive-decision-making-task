@@ -32,6 +32,7 @@ from file_writer import write_task_start_file
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
 from piezo_plot import LivePlotWidget
+from performance_plot import LiveLickPlotWidget
 from piezo_reader import PiezoReader
 from gpio_map import *
 
