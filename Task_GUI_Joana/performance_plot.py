@@ -23,7 +23,7 @@ class PlotLicks(QWidget):
         # Initialize Data Lists
         self.times = []
         self.total_licks = []
-        self.lciks_left = []
+        self.licks_left = []
         self.licks_right = []
 
         # Set Up Plot
