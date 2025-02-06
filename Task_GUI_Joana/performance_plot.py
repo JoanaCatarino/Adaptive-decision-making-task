@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.ticker import MultipleLocator
+from matplotlib.ticker import FuncFormatter
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 import datetime
 
@@ -55,7 +55,9 @@ class PlotLicks(QWidget):
         # Update Labels & Formatting
         self.ax.set_ylabel("Licks")
         self.ax.grid(True)
-        self.ax.yaxis.set_major_locator(MultipleLocator(1))
+        
+        # Set y-axis tick labels to whole numbers
+        self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x)}'))
         
         # Add legend and set colors
         legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
