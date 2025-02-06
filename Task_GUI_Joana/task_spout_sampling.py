@@ -100,7 +100,6 @@ class SpoutSamplingTask:
             self.print_thread.join()
         pump_l.on() 
         
-        self.quit()
         self.save_trials_to_csv()
         
     
@@ -114,6 +113,9 @@ class SpoutSamplingTask:
         required_samples = self.QW*60 # Serial runs in 60 Hz   
         
         while True:
+            if not self.running:
+                return False
+            
             p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
             p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
         
