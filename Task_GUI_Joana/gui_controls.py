@@ -98,7 +98,7 @@ class GuiControls:
         
         # Initialize functions for the performance plot
         self.setup_lick_plot()
-        self.lick_plot = PlotLicks()
+
         
         
 
@@ -350,7 +350,7 @@ class GuiControls:
 
 
         elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask(self, self.lick_plot) 
+            self.current_task = SpoutSamplingTask(self) 
 
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()

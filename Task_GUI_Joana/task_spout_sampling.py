@@ -19,7 +19,7 @@ from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls, lick_plot): 
+    def __init__(self, gui_controls): 
     
         # Directory to save file with trials data
         self.save_dir = "/home/rasppi-ephys/test_dir"
@@ -29,9 +29,7 @@ class SpoutSamplingTask:
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
-        
-        # Connection to performance plot
-        self.lick_plot = lick_plot #added
+
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -81,9 +79,7 @@ class SpoutSamplingTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
-        
-        # Reset Plot 
-        self.lick_plot.reset_plot() #added
+
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)

@@ -13,7 +13,6 @@ from form_updt import Ui_TaskGui
 # Import different functions/classes
 from gui_controls import GuiControls
 from task_free_licking import FreeLickingTask
-from performance_plot import PlotLicks
 from task_test_rig import TestRig
 from stylesheet import stylesheet
 from gpio_map import *
@@ -33,7 +32,6 @@ class TaskGui(QMainWindow):
         
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
-        self.lick_plot = PlotLicks(self)
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
