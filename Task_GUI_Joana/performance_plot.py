@@ -54,6 +54,7 @@ class PlotLicks(QWidget):
         # Update Labels & Formatting
         self.ax.set_ylabel("Licks")
         self.ax.grid(True)
+        self.ax.yaxis.set_major_locator(MultipleLocator(1))
         
         # Add legend and set colors
         legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
