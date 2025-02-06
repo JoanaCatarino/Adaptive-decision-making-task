@@ -13,6 +13,7 @@ from form_updt import Ui_TaskGui
 # Import different functions/classes
 from gui_controls import GuiControls
 from task_free_licking import FreeLickingTask
+from performance_plot import PlotLicks
 from task_test_rig import TestRig
 from stylesheet import stylesheet
 from gpio_map import *
