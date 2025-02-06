@@ -25,9 +25,8 @@ class PlotLicks(QWidget):
         self.lick_counts = []
 
         # Set Up Plot
-        self.ax.set_xlabel("Time")
+        #self.ax.set_xlabel("Time")
         self.ax.set_ylabel("Total Licks")
-        self.ax.set_title("Licks Over Time (Stair Plot)")
         self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%M:%S'))
         self.ax.grid(True)
 
@@ -50,7 +49,7 @@ class PlotLicks(QWidget):
         self.ax.step(self.times, self.lick_counts, where='post', color='#FF864E', linewidth=2)
 
         # Update Labels & Formatting
-        self.ax.set_xlabel("Time")
+        #self.ax.set_xlabel("Time")
         self.ax.set_ylabel("Total Licks")
         #self.ax.set_title("Licks Over Time (Stair Plot)")
         self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%M:%S'))
