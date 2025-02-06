@@ -77,6 +77,6 @@ class PlotLicks(QWidget):
         self.figure.subplots_adjust(top=0.85)  # Adjust this value to increase/decrease padding
 
         # Redraw Canvas
-        #self.ax.relim() #added
-        self.ax.autoscale_view() #added
+        self.ax.relim() #added
+        #self.ax.autoscale_view() #added
         self.canvas.draw()
