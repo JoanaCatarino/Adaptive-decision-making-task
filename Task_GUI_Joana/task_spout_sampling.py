@@ -306,14 +306,25 @@ class SpoutSamplingTask:
             print("No trial data to save.")
             return  # Prevent writing an empty file
     
-            try:
-                with open(self.csv_file_path, mode='a', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
-                    writer.writeheader()  # Ensure headers are written only once
-                    writer.writerows(self.trials)
-                print("Trial data saved successfully.")
-            except Exception as e:
-                print(f"Error saving trials: {e}")
+        try:
+            # Check if the file already exists
+            file_exists = os.path.isfile(self.csv_file_path)
+    
+            # Open the file in append mode
+            with open(self.csv_file_path, mode='a', newline='') as file:
+                writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
+    
+                # Write the header only if the file is new
+                if not file_exists:
+                    writer.writeheader()  # Write the headers only once
+    
+                # Write the trial data
+                writer.writerows(self.trials)
+            
+            print("Trial data saved successfully.")
+            
+        except Exception as e:
+            print(f"Error saving trials: {e}")
                 
               
     def setup_lick_plot(self):
