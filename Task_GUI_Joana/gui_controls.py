@@ -129,32 +129,34 @@ class GuiControls:
         
     def setup_lick_plot(self):
         # Licks plot in the main tab
-        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout.setContentsMargins(0, 0, 0, 0)
-        plt_layout.setSpacing(0)
+        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout1.setContentsMargins(0, 0, 0, 0)
+        plt_layout1.setSpacing(0)
         
         self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
-        plt_layout.addWidget(self.lick_plot)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+        plt_layout1.addWidget(self.lick_plot)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
         
-    def reset_plot(self): #added
-        """Reset the plot by clearing data."""
-        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
-        self.lick_plot.times.clear()
-        self.lick_plot.total_licks.clear()
-        self.lick_plot.licks_left.clear()
-        self.lick_plot.licks_right.clear()
-        self.lick_plot.ax.clear()  # Clear the axis
-        self.lick_plot.ax.set_ylabel("Total Licks")  # Reset the y-axis label if needed
-        self.lick_plot.ax.grid(True)  # Reapply the grid
-        self.lick_plot.canvas.draw()  # Redraw the canvas 
+        # Licks plot in the overview tab
+        plt_layout2 = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout2.setContentsMargins(0, 0, 0, 0)
+        plt_layout2.setSpacing(0)
+        
+        self.lick_plot_ov = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
+        self.lick_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        plt_layout2.addWidget(self.lick_plot_ov)
+        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
 
     
     def update_lick_plot(self, total_licks, licks_left, licks_right, time):
         if hasattr(self, 'lick_plot'):
             self.lick_plot.update_plot(total_licks, licks_left, licks_right, time)
+            
+        if hasattr(self, 'lick_plot_ov'):
+            self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, time)
             
 
     def populate_ddm_animalID(self):
@@ -474,7 +476,7 @@ class GuiControls:
                     self.ui.btn_Update.setEnabled(False)
                 
                 # Update threshold_left
-                if new_threshold_left is not None:
+                if new_threshold_left is not None: 
                     self.current_task.threshold_left = new_threshold_left
                     print(f"Threshold left piezo: {new_threshold_left}")
                     self.ui.btn_Update.setEnabled(False)
