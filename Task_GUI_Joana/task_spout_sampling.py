@@ -19,11 +19,11 @@ from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls, csv_file_path): 
+    def __init__(self, gui_controls, csv_file_path, base_file_name): 
     
         # Directory to save file with trials data
         self.save_dir = os.path.dirname(csv_file_path) # same as csv file from file_writer.py
-        self.file_name = os.path.dirname(csv_file_path) # use the csv file name
+        self.file_name = os.path.dirname(base_file_name) # use the csv file name
         self.trials = [] # list to store trial data
         
         # Connection to GUI

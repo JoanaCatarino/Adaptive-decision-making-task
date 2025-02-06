@@ -366,7 +366,7 @@ class GuiControls:
             self.current_task = FreeLickingTask(self)
 
         elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask(self, csv_file_path) 
+            self.current_task = SpoutSamplingTask(self, csv_file_path, base_file_name) 
 
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()
