@@ -48,7 +48,7 @@ class PlotLicks(QWidget):
         # Update Labels & Formatting
         self.ax.set_ylabel("Total Licks")
         self.ax.grid(True)
-        self.ax.autoscale_view() # Ensure proper scaling
+        #self.ax.autoscale_view() # Ensure proper scaling
 
         # Redraw Canvas
         self.canvas.draw()
