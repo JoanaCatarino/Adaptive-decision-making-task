@@ -82,15 +82,16 @@ class PlotLicks(QWidget):
         #self.ax.autoscale_view() 
         self.canvas.draw()
         
-'''    
     def reset_plot(self):
-        """Reset the plot by clearing data."""
+        """Clears the plot data and refreshes the figure."""
         self.times.clear()
         self.total_licks.clear()
         self.licks_left.clear()
         self.licks_right.clear()
-        self.ax.clear()  # Clear the axis
-        self.ax.set_ylabel("Total Licks")  # Reset the y-axis label if needed
-        self.ax.grid(True)  # Reapply the grid
-        self.canvas.draw()  # Redraw the canvas    
-'''
+    
+        self.ax.clear()  # Clear the existing plot
+        self.ax.set_ylabel("Licks")
+        self.ax.grid(True)
+    
+        # Redraw the canvas
+        self.canvas.draw()
