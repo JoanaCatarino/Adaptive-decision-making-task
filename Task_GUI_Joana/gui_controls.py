@@ -142,8 +142,8 @@ class GuiControls:
     
     def update_lick_plot(self, total_licks, elapsed_time):
         if hasattr(self, 'lick_plot'):
-            self.lick_plot1.update_plot(total_licks, elapsed_time)
-            self.lick_plot2.update_plot(total_licks, elapsed_time)  
+            self.lick_plot.update_plot(total_licks, elapsed_time)
+            
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
