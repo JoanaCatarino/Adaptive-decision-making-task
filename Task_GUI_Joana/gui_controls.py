@@ -99,8 +99,6 @@ class GuiControls:
         # Initialize functions for the performance plot
         self.setup_lick_plot()
         
-        
-        
 
 
     #Piezo functions
@@ -350,7 +348,7 @@ class GuiControls:
 
 
         elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask(self, lick_plot) #added
+            self.current_task = SpoutSamplingTask(self) 
 
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()
