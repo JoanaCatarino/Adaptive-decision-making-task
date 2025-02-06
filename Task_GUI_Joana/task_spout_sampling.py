@@ -247,7 +247,7 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_right(self.licks_right)
                         
                         # Update live stair plot
-                        self.gui_controls_update_lick_plot(self.tlick_l, self.total_licks)
+                        self.gui_controls.update_lick_plot(self.tlick_r, self.total_licks)
     
     
     def reward(self, side):
@@ -323,9 +323,7 @@ class SpoutSamplingTask:
                     "right_spout", "lick_time", "RW", "QW", "ITI", 
                     "Threshold_left", "Threshold_right"
                 ])
-                     
-
-    
+                    
                     
     def setup_lick_plot(self):
         """Sets up the live updating stair plot for total licks."""
