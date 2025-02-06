@@ -19,11 +19,15 @@ from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls): 
+    def __init__(self, gui_controls, csv_file_path, json_file_path): 
             
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
+        
+        # Store the file paths received from GuiControls
+        self.csv_file_path = csv_file_path
+        self.json_file_path = json_file_path
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds

@@ -347,7 +347,8 @@ class GuiControls:
 
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
-            create_data_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
+            self.csv_file_path, self.json_file_path = create_data_file(
+                self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
 
 
         if selected_task == 'Test rig':
@@ -361,7 +362,7 @@ class GuiControls:
 
 
         elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask(self) 
+            self.current_task = SpoutSamplingTask(self, self.csv_file_path, self.json_file_path) 
 
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask()
