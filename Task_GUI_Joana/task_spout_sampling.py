@@ -297,7 +297,7 @@ class SpoutSamplingTask:
                 
 
     def save_trials_to_csv(self):
-    """Saves trial data to CSV file."""
+        """Saves trial data to CSV file."""
         if not self.trials:
             print("No trial data to save.")
             return  # Prevent writing an empty file
