@@ -58,7 +58,7 @@ class PlotLicks(QWidget):
         
         # Add legend and set colors
         legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1))
-        for text, color on zip(legend.get_texts(), ['#FF864E', '#955C66', '#4E8070']):
+        for text, color in zip(legend.get_texts(), ['#FF864E', '#955C66', '#4E8070']):
             text.set_color(color)
 
         # Redraw Canvas
