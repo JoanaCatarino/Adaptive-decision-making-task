@@ -29,7 +29,7 @@ class PlotLicks(QWidget):
 
         # Set Up Plot
         #self.ax.set_xlabel("Time (s)")
-        self.ax.set_ylabel("Total Licks")
+        self.ax.set_ylabel("Licks")
         self.ax.grid(True)
 
         # Layout

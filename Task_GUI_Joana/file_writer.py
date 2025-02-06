@@ -26,7 +26,7 @@ TASK_NICKNAME = {
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
-def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_combobox):
+def create_data_file(date_label, animal_id_combobox, task_combobox, box_combobox):
     # Check if the save directory is set
     if not SAVE_DIRECTORY:
         raise ValueError("Save directory not set")
@@ -35,7 +35,7 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
     date_text = date_label.text()
 
     # Parse the date text into a QDate object
-    # Assuming the date text is in the format "dd-MM-yyyy"
+    # Assuming the date text is in the format "yyyy-mm-dd"
     try:
         date_obj = QDate.fromString(date_text, "yyyy-MM-dd")
         formatted_date = date_obj.toString("yyyyMMdd")
@@ -76,10 +76,15 @@ def write_task_start_file(date_label, animal_id_combobox, task_combobox, box_com
         csv_file_path = os.path.join(animal_directory, base_file_name + '.csv')
         json_file_path = os.path.join(animal_directory, base_file_name + '.json')
         counter += 1
+        
+    # Define common csv headers for all tasks
+    headers = ["trial_number", "trial_time", "lick", "left_spout", "right_spout", "lick_time", "RW", "QW", "ITI",
+               "Threshold_left", "Threshold_right"]
 
     # Create the CSV file and leave it open so tha the different heads can be defined per task
     with open(csv_file_path, 'w', newline='') as csv_file:
        writer = csv.writer(csv_file)
+       writer.writerow(headers)
 
     # Create the json file and write important info to keep track of different sessions
     session_info = {'animal_id': animal_id,

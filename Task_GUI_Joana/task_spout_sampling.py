@@ -14,17 +14,13 @@ import csv
 import os
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
+from file_writer import create_data_file
 from gpio_map import *
 
 class SpoutSamplingTask:
     
     def __init__(self, gui_controls): 
-    
-        # Directory to save file with trials data
-        self.save_dir = "/home/rasppi-ephys/test_dir"
-        self.file_name = 'trials.csv' # set the desired file name
-        self.trials = [] # list to store trial data
-        
+            
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
@@ -58,11 +54,17 @@ class SpoutSamplingTask:
         # Lock for thread-safe operations
         self.lock = threading.Lock()
         
-        # Ensure save directory exists
-        os.makedirs(self.save_dir, exist_ok=True)
-        self.create_trial_csv()
-        
         self.first_lick = None
+        
+        # File paths (automatically generated)
+        self.csv_file_path, self.json_file_path = create_data_file(
+            self.gui_controls.ui.txt_Date, 
+            self.gui_controls.ui.ddm_Animal_ID, 
+            self.gui_controls.ui.ddm_Task, 
+            self.gui_controls.ui.ddm_Box)
+        
+        # Initialize trial storage
+        self.trials = []
         
 
     def start (self):
@@ -151,7 +153,6 @@ class SpoutSamplingTask:
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start()
-            
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
             # Initialize trial data
@@ -169,7 +170,6 @@ class SpoutSamplingTask:
                 'Threshold_right': self.threshold_right}
             
             self.trials.append(trial_data) # Store trial data
-            
             self.total_trials = trial_number
             self.gui_controls.update_total_trials(self.total_trials)
             
@@ -299,37 +299,11 @@ class SpoutSamplingTask:
     def save_trials_to_csv(self):
         """Saves the trial data to a fixed CSV file."""
         
-        file_path = os.path.join(self.save_dir, self.file_name)
-        file_exists = os.path.isfile(file_path)
-        
-        with open(file_path, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
-            "right_spout", "lick_time", "RW", "QW", "ITI", 
-            "Threshold_left", "Threshold_right"])
-            
-            # Write header only if the file is newly created
-            if not file_exists or os.stat(file_path).st_size == 0:
-                writer.writeheader()
-                
+        with open(self.csv_file_path, mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
             writer.writerows(self.trials)
             
-    
-    
-    def create_trial_csv(self):
-        """ Creates a new CSV file with headers if it does not exist. """
-        
-        file_path = os.path.join(self.save_dir, self.file_name)
-
-        if not os.path.isfile(file_path):
-            with open(file_path, mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer = csv.DictWriter(file, fieldnames=[
-                    "trial_number", "trial_time", "lick", "left_spout", 
-                    "right_spout", "lick_time", "RW", "QW", "ITI", 
-                    "Threshold_left", "Threshold_right"
-                ])
-                    
-                    
+'''                 
     def setup_lick_plot(self):
         """Sets up the live updating stair plot for total licks."""
         plt_layout = QVBoxLayout(self.gui_controls.ui.plt_TotalLicks)  
@@ -349,5 +323,5 @@ class SpoutSamplingTask:
         if self.lick_plot:
             self.lick_plot.update_plot(time, total_licks, licks_left, licks_right)            
 
-
+'''
 
