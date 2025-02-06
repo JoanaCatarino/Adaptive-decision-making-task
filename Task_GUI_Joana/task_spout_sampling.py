@@ -13,6 +13,7 @@ import time
 import csv
 import os
 from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
 from piezo_reader import PiezoReader
 from performance_plot import PlotLicks
 from gpio_map import *
