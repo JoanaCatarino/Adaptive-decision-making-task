@@ -43,7 +43,7 @@ class PlotLicks(QWidget):
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) #added
         
         # Apply tight layout to ensure everything fits 
-        self.figure.tight_layout(pad=2.5)  # Adjust the padding as needed  #added
+        self.figure.tight_layout(pad=2.9)  # Adjust the padding as needed  #added
 
     def update_plot(self, time, total_licks, licks_left, licks_right):
         """Update stair plot with new lick data."""
