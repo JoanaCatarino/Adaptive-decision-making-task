@@ -19,11 +19,11 @@ from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls): 
+    def __init__(self, gui_controls, csv_file_path): 
     
         # Directory to save file with trials data
-        self.save_dir = "/home/rasppi-ephys/test_dir"
-        self.file_name = 'trials.csv' # set the desired file name
+        self.save_dir = os.path.dirname(csv_file_path) # same as csv file from file_writer.py
+        self.file_name = os.path.dirname(csv_file_path) # use the csv file name
         self.trials = [] # list to store trial data
         
         # Connection to GUI
@@ -297,13 +297,25 @@ class SpoutSamplingTask:
                 
                 
 
+    def create_trial_csv(self):
+        """ Creates a CSV file to log trial data """
+        
+        file_path = os.path.join(self.save_dir, self.file_name)
+        with open(file_path, mode='w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
+            "right_spout", "lick_time", "RW", "QW", "ITI", 
+            "Threshold_left", "Threshold_right"])
+            writer.writeheader() 
+            
+    
+    
     def save_trials_to_csv(self):
-        """Saves the trial data to a fixed CSV file."""
+        """ Saves the trial data to the specified CSV file """
         
         file_path = os.path.join(self.save_dir, self.file_name)
         file_exists = os.path.isfile(file_path)
         
-        with open(file_path, mode='w', newline='') as file:
+        with open(file_path, mode='a', newline='') as file:  # Use 'a' to append to the CSV file
             writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
             "right_spout", "lick_time", "RW", "QW", "ITI", 
             "Threshold_left", "Threshold_right"])
@@ -312,43 +324,4 @@ class SpoutSamplingTask:
             if not file_exists or os.stat(file_path).st_size == 0:
                 writer.writeheader()
                 
-            writer.writerows(self.trials)
-            
-    
-    
-    def create_trial_csv(self):
-        """ Creates a new CSV file with headers if it does not exist. """
-        
-        file_path = os.path.join(self.save_dir, self.file_name)
-
-        if not os.path.isfile(file_path):
-            with open(file_path, mode='w', newline='') as file:
-                writer = csv.writer(file)
-                writer = csv.DictWriter(file, fieldnames=[
-                    "trial_number", "trial_time", "lick", "left_spout", 
-                    "right_spout", "lick_time", "RW", "QW", "ITI", 
-                    "Threshold_left", "Threshold_right"
-                ])
-                    
-'''                    
-    def setup_lick_plot(self):
-        """Sets up the live updating stair plot for total licks."""
-        plt_layout = QVBoxLayout(self.gui_controls.ui.plt_TotalLicks)  
-        plt_layout.setContentsMargins(0, 0, 0, 0)
-        plt_layout.setSpacing(0)
-
-        # Initialize Live Stair Plot
-        self.lick_plot = LiveLickPlotWidget(parent=self.gui_controls.ui.plt_TotalLicks)
-        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-        plt_layout.addWidget(self.lick_plot)
-        self.gui_controls.ui.plt_TotalLicks.setLayout(plt_layout)
-
-    
-    def update_lick_plot(self, time, total_licks, licks_left, licks_right):
-        """Updates the live stair plot with new data."""
-        if self.lick_plot:
-            self.lick_plot.update_plot(time, total_licks, licks_left, licks_right)            
-
-'''
-
+            writer.writerows(self.trials)  # Write all trials data
