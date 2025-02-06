@@ -25,9 +25,8 @@ class PlotLicks(QWidget):
         self.lick_counts = []
 
         # Set Up Plot
-        #self.ax.set_xlabel("Time")
+        #self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Total Licks")
-        self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%M:%S'))
         self.ax.grid(True)
 
         # Layout
@@ -37,11 +36,9 @@ class PlotLicks(QWidget):
 
     def update_plot(self, time, total_licks):
         """Update stair plot with new lick data."""
-        # Convert time to datetime object
-        timestamp = datetime.datetime.now()
 
         # Append Data
-        self.times.append(timestamp)
+        self.times.append(time)
         self.lick_counts.append(total_licks)
 
         # Clear and Redraw Stair Plot
@@ -49,11 +46,9 @@ class PlotLicks(QWidget):
         self.ax.step(self.times, self.lick_counts, where='post', color='#FF864E', linewidth=2)
 
         # Update Labels & Formatting
-        #self.ax.set_xlabel("Time")
         self.ax.set_ylabel("Total Licks")
-        #self.ax.set_title("Licks Over Time (Stair Plot)")
-        self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%M:%S'))
         self.ax.grid(True)
+        self.ax.autoscale_view() # Ensure proper scaling
 
         # Redraw Canvas
         self.canvas.draw()
