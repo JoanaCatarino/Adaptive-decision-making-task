@@ -14,7 +14,6 @@ import csv
 import os
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
-from performance_plot import PlotLicks
 from gpio_map import *
 
 class SpoutSamplingTask:
@@ -30,7 +29,6 @@ class SpoutSamplingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
 
-        
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 0.1 # Inter-trial interval in seconds
@@ -79,7 +77,6 @@ class SpoutSamplingTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
-
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -103,6 +100,7 @@ class SpoutSamplingTask:
             self.print_thread.join()
         pump_l.on() 
         
+        self.quit()
         self.save_trials_to_csv()
         
     
