@@ -330,7 +330,7 @@ class SpoutSamplingTask:
                     "Threshold_left", "Threshold_right"
                 ])
                     
-                    
+'''                    
     def setup_lick_plot(self):
         """Sets up the live updating stair plot for total licks."""
         plt_layout = QVBoxLayout(self.gui_controls.ui.plt_TotalLicks)  
@@ -350,5 +350,5 @@ class SpoutSamplingTask:
         if self.lick_plot:
             self.lick_plot.update_plot(time, total_licks, licks_left, licks_right)            
 
-
+'''
 
