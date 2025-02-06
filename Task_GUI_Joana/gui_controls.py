@@ -100,8 +100,6 @@ class GuiControls:
         self.setup_lick_plot()
 
         
-        
-
 
     #Piezo functions
     def setup_piezo_plots(self):
