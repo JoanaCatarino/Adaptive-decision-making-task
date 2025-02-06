@@ -98,6 +98,8 @@ class GuiControls:
         
         # Initialize functions for the performance plot
         self.setup_lick_plot()
+        self.lick_plot = PlotLicks()
+        self.spout_sampling_task = SpoutSamplingTask(gui_controls = self.gui_controls, lick_plot = self.lick_plot)
         
 
 

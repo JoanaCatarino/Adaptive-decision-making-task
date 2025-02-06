@@ -30,7 +30,7 @@ class SpoutSamplingTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
         
-        # Connection to lick plots
+        # Connection to performance plot
         self.lick_plot = lick_plot #added
         
         # Experiment parameters
