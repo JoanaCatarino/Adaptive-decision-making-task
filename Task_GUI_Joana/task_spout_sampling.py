@@ -297,12 +297,20 @@ class SpoutSamplingTask:
                 
 
     def save_trials_to_csv(self):
-        """Saves the trial data to a fixed CSV file."""
-        
-        with open(self.csv_file_path, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
-            writer.writerows(self.trials)
-            
+    """Saves trial data to CSV file."""
+        if not self.trials:
+            print("No trial data to save.")
+            return  # Prevent writing an empty file
+    
+            try:
+                with open(self.csv_file_path, mode='a', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=self.trials[0].keys())
+                    writer.writeheader()  # Ensure headers are written only once
+                    writer.writerows(self.trials)
+                print("Trial data saved successfully.")
+            except Exception as e:
+                print(f"Error saving trials: {e}")
+                
 '''                 
     def setup_lick_plot(self):
         """Sets up the live updating stair plot for total licks."""
