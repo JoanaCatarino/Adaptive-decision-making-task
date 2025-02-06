@@ -61,7 +61,7 @@ class PlotLicks(QWidget):
         self.ax.step(self.times, self.licks_right, where='post', color='#4E8070', linewidth=2, linestyle= 'dashed', label='Licks right')
         
         # Update Labels & Formatting
-        self.ax.set_ylabel("Licks", labelpad=10)
+        self.ax.set_ylabel("Licks", labelpad=9)
         self.ax.grid(True)
         
         
