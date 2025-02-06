@@ -99,7 +99,6 @@ class GuiControls:
         # Initialize functions for the performance plot
         self.setup_lick_plot()
 
-        
 
     #Piezo functions
     def setup_piezo_plots(self):
@@ -139,6 +138,18 @@ class GuiControls:
         
         plt_layout.addWidget(self.lick_plot)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+        
+    def reset_plot(self): #added
+        """Reset the plot by clearing data."""
+        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
+        self.lick_plot.times.clear()
+        self.lick_plot.total_licks.clear()
+        self.lick_plot.licks_left.clear()
+        self.lick_plot.licks_right.clear()
+        self.lick_plot.ax.clear()  # Clear the axis
+        self.lick_plot.ax.set_ylabel("Total Licks")  # Reset the y-axis label if needed
+        self.lick_plot.ax.grid(True)  # Reapply the grid
+        self.lick_plot.canvas.draw()  # Redraw the canvas 
 
     
     def update_lick_plot(self, total_licks, licks_left, licks_right, time):
