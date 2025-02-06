@@ -79,7 +79,7 @@ class PlotLicks(QWidget):
 
         # Redraw Canvas
         self.ax.relim() 
-        #self.ax.autoscale_view() 
+        self.ax.autoscale_view() 
         self.canvas.draw()
         
     def reset_plot(self):
