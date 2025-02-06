@@ -52,7 +52,7 @@ class PlotLicks(QWidget):
         # Update Labels & Formatting
         self.ax.set_xlabel("Time")
         self.ax.set_ylabel("Total Licks")
-        self.ax.set_title("Licks Over Time (Stair Plot)")
+        #self.ax.set_title("Licks Over Time (Stair Plot)")
         self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
         self.ax.grid(True)
 

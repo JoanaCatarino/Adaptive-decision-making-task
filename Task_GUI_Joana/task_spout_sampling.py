@@ -327,7 +327,24 @@ class SpoutSamplingTask:
 
     
                     
-                
+    def setup_lick_plot(self):
+        """Sets up the live updating stair plot for total licks."""
+        plt_layout = QVBoxLayout(self.gui_controls.ui.plt_TotalLicks)  
+        plt_layout.setContentsMargins(0, 0, 0, 0)
+        plt_layout.setSpacing(0)
+
+        # Initialize Live Stair Plot
+        self.lick_plot = LiveLickPlotWidget(parent=self.gui_controls.ui.plt_TotalLicks)
+        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
+        plt_layout.addWidget(self.lick_plot)
+        self.gui_controls.ui.plt_TotalLicks.setLayout(plt_layout)
+
+    
+    def update_lick_plot(self, time, total_licks):
+        """Updates the live stair plot with new data."""
+        if self.lick_plot:
+            self.lick_plot.update_plot(time, total_licks)            
 
 
 

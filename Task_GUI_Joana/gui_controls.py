@@ -129,26 +129,15 @@ class GuiControls:
         
     def setup_lick_plot(self):
         # Licks plot in the main tab
-        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout1.setContentsMargins(0, 0, 0, 0)
-        plt_layout1.setSpacing(0)
+        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout.setContentsMargins(0, 0, 0, 0)
+        plt_layout.setSpacing(0)
         
-        self.lick_plot1 = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
-        self.lick_plot1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
+        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
-        plt_layout1.addWidget(self.lick_plot1)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
-
-        # PLicks plot in the overview tab
-        plt_layout2 = QVBoxLayout(self.ui.OV_plt_AnimalPerformance)
-        plt_layout2.setContentsMargins(0, 0, 0, 0)
-        plt_layout2.setSpacing(0)
-        
-        self.lick_plot2 = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
-        self.lick_plot2.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        plt_layout2.addWidget(self.lick_plot2)
-        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
+        plt_layout.addWidget(self.lick_plot)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
 
     
     def update_lick_plot(self, total_licks, elapsed_time):
