@@ -32,6 +32,7 @@ class TaskGui(QMainWindow):
         
         # Initialize Gui controls
         self.gui_controls = GuiControls(self.ui, self.updateTime)
+        self.lick_plot = PlotLicks(self)
 
     # Define function to have the chonometer with the hour, minute and second as the text
     @pyqtSlot(str)
