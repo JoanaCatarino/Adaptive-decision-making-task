@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.ticker import MultipleLocator
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 import datetime
 
