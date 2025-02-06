@@ -22,7 +22,9 @@ class PlotLicks(QWidget):
 
         # Initialize Data Lists
         self.times = []
-        self.lick_counts = []
+        self.total_licks = []
+        self.lciks_left = []
+        self.licks_right = []
 
         # Set Up Plot
         #self.ax.set_xlabel("Time (s)")
@@ -34,19 +36,23 @@ class PlotLicks(QWidget):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-    def update_plot(self, time, total_licks):
+    def update_plot(self, time, total_licks, licks_left, licks_right):
         """Update stair plot with new lick data."""
 
         # Append Data
         self.times.append(time)
-        self.lick_counts.append(total_licks)
+        self.total_licks.append(total_licks)
+        self.licks_left.append(licks_left)
+        self.licks_right.append(licks_right)
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
-        self.ax.step(self.times, self.lick_counts, where='post', color='#FF864E', linewidth=2)
-
+        self.ax.step(self.times, self.total_licks, where='post', color='#FF864E', linewidth=2, label='Total licks')
+        self.ax.step(self.times, self.licks_left, where='post', color='#955C66', linewidth=2, linestyle= 'dashed', label='Licks left')
+        self.ax.step(self.times, self.licks_right, where='post', color='#4E8070', linewidth=2, linestyle= 'dashed', label='Licks right')
+        
         # Update Labels & Formatting
-        self.ax.set_ylabel("Total Licks")
+        self.ax.set_ylabel("Licks")
         self.ax.grid(True)
         #self.ax.autoscale_view() # Ensure proper scaling
 

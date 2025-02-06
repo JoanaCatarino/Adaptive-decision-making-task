@@ -29,7 +29,6 @@ class SpoutSamplingTask:
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader        
-        self.trials = [] # List to store trial data
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -217,7 +216,7 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_left(self.licks_left)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks)
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left)
     
         # Right piezo        
         if p2:
@@ -247,7 +246,7 @@ class SpoutSamplingTask:
                         self.gui_controls.update_licks_right(self.licks_right)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks)
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_right)
     
     
     def reward(self, side):
@@ -339,10 +338,10 @@ class SpoutSamplingTask:
         self.gui_controls.ui.plt_TotalLicks.setLayout(plt_layout)
 
     
-    def update_lick_plot(self, time, total_licks):
+    def update_lick_plot(self, time, total_licks, licks_left, licks_right):
         """Updates the live stair plot with new data."""
         if self.lick_plot:
-            self.lick_plot.update_plot(time, total_licks)            
+            self.lick_plot.update_plot(time, total_licks, licks_left, licks_right)            
 
 
 

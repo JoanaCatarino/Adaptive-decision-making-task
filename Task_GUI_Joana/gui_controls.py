@@ -140,9 +140,9 @@ class GuiControls:
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
 
     
-    def update_lick_plot(self, total_licks, elapsed_time):
+    def update_lick_plot(self, total_licks, licks_left, licks_right, elapsed_time):
         if hasattr(self, 'lick_plot'):
-            self.lick_plot.update_plot(total_licks, elapsed_time)
+            self.lick_plot.update_plot(total_licks, licks_left, licks_right, elapsed_time)
             
 
     def populate_ddm_animalID(self):
