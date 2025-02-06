@@ -20,7 +20,12 @@ from gpio_map import *
 class SpoutSamplingTask:
     
     def __init__(self, gui_controls): 
-            
+    
+        # Directory to save file with trials data
+        self.save_dir = "/home/rasppi-ephys/test_dir"
+        self.file_name = 'trials.csv' # set the desired file name
+        self.trials = [] # list to store trial data
+        
         # Connection to GUI
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
