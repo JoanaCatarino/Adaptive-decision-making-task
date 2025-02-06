@@ -72,6 +72,9 @@ class PlotLicks(QWidget):
         legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
         for text, color in zip(legend.get_texts(), ['#FF864E', '#955C66', '#4E8070']):
             text.set_color(color)
+            
+        # Adjust layout to increase padding at the top
+        self.figure.subplots_adjust(top=0.85)  # Adjust this value to increase/decrease padding
 
         # Redraw Canvas
         self.ax.relim() #added
