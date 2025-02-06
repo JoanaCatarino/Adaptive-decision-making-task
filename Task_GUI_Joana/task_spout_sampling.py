@@ -315,7 +315,7 @@ class SpoutSamplingTask:
             except Exception as e:
                 print(f"Error saving trials: {e}")
                 
-'''                 
+              
     def setup_lick_plot(self):
         """Sets up the live updating stair plot for total licks."""
         plt_layout = QVBoxLayout(self.gui_controls.ui.plt_TotalLicks)  
@@ -334,6 +334,4 @@ class SpoutSamplingTask:
         """Updates the live stair plot with new data."""
         if self.lick_plot:
             self.lick_plot.update_plot(time, total_licks, licks_left, licks_right)            
-
-'''
 
