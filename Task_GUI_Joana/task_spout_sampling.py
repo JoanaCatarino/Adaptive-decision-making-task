@@ -13,14 +13,13 @@ import time
 import csv
 import os
 from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
 from piezo_reader import PiezoReader
 from performance_plot import PlotLicks
 from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls): 
+    def __init__(self, gui_controls, lick_plot): 
     
         # Directory to save file with trials data
         self.save_dir = "/home/rasppi-ephys/test_dir"
@@ -29,7 +28,10 @@ class SpoutSamplingTask:
         
         # Connection to GUI
         self.gui_controls = gui_controls
-        self.piezo_reader = gui_controls.piezo_reader        
+        self.piezo_reader = gui_controls.piezo_reader  
+        
+        # Connection to lick plots
+        self.lick_plot = lick_plot #added
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -79,6 +81,9 @@ class SpoutSamplingTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
+        
+        # Reset Plot 
+        self.lick_plot.reset_plot() #added
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)

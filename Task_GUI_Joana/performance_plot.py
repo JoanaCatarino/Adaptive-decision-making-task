@@ -35,15 +35,15 @@ class PlotLicks(QWidget):
         # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
-        layout.setContentsMargins(0,0,0,0) #added
-        layout.setSpacing(0) #added
+        layout.setContentsMargins(0,0,0,0) 
+        layout.setSpacing(0) 
         self.setLayout(layout)
         
         #  new!! test to see if it improves layout of the plots
-        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) #added
+        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
         
         # Apply tight layout to ensure everything fits 
-        self.figure.tight_layout(pad=2.9)  # Adjust the padding as needed  #added
+        self.figure.tight_layout(pad=2.9)  
 
     def update_plot(self, time, total_licks, licks_left, licks_right):
         """Update stair plot with new lick data."""
@@ -74,11 +74,10 @@ class PlotLicks(QWidget):
             text.set_color(color)
             
         # Adjust layout to increase padding at the top
-        self.figure.subplots_adjust(top=0.85)  # Adjust this value to increase/decrease padding
-        #self.figure.subplots_adjust(left=0.85)
+        self.figure.subplots_adjust(top=0.85)  
         self.figure.subplots_adjust(right=0.95)
 
         # Redraw Canvas
-        self.ax.relim() #added
-        #self.ax.autoscale_view() #added
+        self.ax.relim() 
+        #self.ax.autoscale_view() 
         self.canvas.draw()
