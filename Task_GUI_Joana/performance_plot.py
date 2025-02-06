@@ -54,7 +54,12 @@ class PlotLicks(QWidget):
         # Update Labels & Formatting
         self.ax.set_ylabel("Licks")
         self.ax.grid(True)
-        #self.ax.autoscale_view() # Ensure proper scaling
+        self.ax.autoscale_view() # Ensure proper scaling
+        
+        # Add legend and set colors
+        legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1))
+        for text, color on zip(legend.get_texts(), ['#FF864E', '#955C66', '#4E8070']):
+            text.set_color(color)
 
         # Redraw Canvas
         self.canvas.draw()
