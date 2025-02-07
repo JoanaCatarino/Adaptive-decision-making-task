@@ -346,14 +346,8 @@ class GuiControls:
         selected_task = self.ui.ddm_Task.currentText()
 
         # Create file with data unless the selected task is 'Test rig'
-        csv_file_path = None
         if selected_task != 'Test rig':
-            csv_file_path, json_file_path = create_data_file(
-            self.ui.txt_Date, 
-            self.ui.ddm_Animal_ID, 
-            self.ui.ddm_Task, 
-            self.ui.ddm_Box
-        )
+             create_data_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
 
 
         if selected_task == 'Test rig':

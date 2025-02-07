@@ -96,7 +96,7 @@ def create_data_file(date_label, animal_id_combobox, task_combobox, box_combobox
     with open(json_file_path, 'w') as json_file:
        json.dump(session_info, json_file, indent=4)
 
-    return csv_file_path, json_file_path, base_file_name
+    return csv_file_path, json_file_path
 
 
 

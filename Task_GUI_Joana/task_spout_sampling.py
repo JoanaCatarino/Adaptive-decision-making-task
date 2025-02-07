@@ -19,11 +19,10 @@ from gpio_map import *
 
 class SpoutSamplingTask:
     
-    def __init__(self, gui_controls, csv_file_path, base_file_name): 
+    def __init__(self, gui_controls, csv_file_path): 
     
         # Directory to save file with trials data
-        self.save_dir = os.path.dirname(csv_file_path) # same as csv file from file_writer.py
-        self.file_name = os.path.dirname(base_file_name) # use the csv file name
+        self.file_path = os.path.dirname(csv_file_path) # use the csv file name
         self.trials = [] # list to store trial data
         
         # Connection to GUI
@@ -105,7 +104,6 @@ class SpoutSamplingTask:
             self.print_thread.join()
         pump_l.on() 
         
-        self.save_trials_to_csv()
         
     
     def check_animal_quiet(self):
@@ -173,6 +171,9 @@ class SpoutSamplingTask:
             
             self.total_trials = trial_number
             self.gui_controls.update_total_trials(self.total_trials)
+            
+            # Append trial data to csv file
+            self.append_trial_to_csv(trial_data)
             
     
     def led_indicator(self, RW):
@@ -294,34 +295,17 @@ class SpoutSamplingTask:
                     
             # Run lick detection continuously
             self.detect_licks()
+            
+            
+    def append_trial_to_csv(self, trial_data):
+        """ Append trial data to the CSV file. """
+        file_exists = os.path.isfile(self.file_path)
+        with open(self.file_path, mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
+            if not file_exists:
+                writer.writeheader()  # Write header only if file does not exist
+            writer.writerow(trial_data)  # Append trial data
                 
                 
 
-    def create_trial_csv(self):
-        """ Creates a CSV file to log trial data """
-        
-        file_path = os.path.join(self.save_dir, self.file_name)
-        with open(file_path, mode='w', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
-            "right_spout", "lick_time", "RW", "QW", "ITI", 
-            "Threshold_left", "Threshold_right"])
-            writer.writeheader() 
-            
     
-    
-    def save_trials_to_csv(self):
-        """ Saves the trial data to the specified CSV file """
-        
-        file_path = os.path.join(self.save_dir, self.file_name)
-        file_exists = os.path.isfile(file_path)
-        
-        with open(file_path, mode='a', newline='') as file:  # Use 'a' to append to the CSV file
-            writer = csv.DictWriter(file, fieldnames=["trial_number", "trial_time", "lick", "left_spout", 
-            "right_spout", "lick_time", "RW", "QW", "ITI", 
-            "Threshold_left", "Threshold_right"])
-            
-            # Write header only if the file is newly created
-            if not file_exists or os.stat(file_path).st_size == 0:
-                writer.writeheader()
-                
-            writer.writerows(self.trials)  # Write all trials data
