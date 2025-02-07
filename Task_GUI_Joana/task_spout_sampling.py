@@ -62,7 +62,6 @@ class SpoutSamplingTask:
         
         # Ensure save directory exists
         os.makedirs(self.save_dir, exist_ok=True)
-        self.create_trial_csv()
         
         self.first_lick = None
         
