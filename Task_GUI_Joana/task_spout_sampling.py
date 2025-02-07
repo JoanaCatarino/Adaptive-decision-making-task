@@ -303,6 +303,10 @@ class SpoutSamplingTask:
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
         file_exists = os.path.isfile(self.file_path)
+        
+        # Replace None or empty values with NaN
+        trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
+        
         with open(self.file_path, mode='a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=trial_data.keys())
             if not file_exists:
