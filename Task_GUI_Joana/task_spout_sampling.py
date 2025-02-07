@@ -213,9 +213,9 @@ class SpoutSamplingTask:
                         threading.Thread(target=self.reward, args=('left',)).start()
                         
                         # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['left_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
+                        self.trial_data[-1]['lick'] = 1
+                        self.trial_data[-1]['left_spout'] = 1
+                        self.trial_data[-1]['lick_time'] = self.tlick
     
                         self.total_licks += 1
                         self.licks_left += 1
@@ -243,9 +243,9 @@ class SpoutSamplingTask:
                         threading.Thread(target=self.reward, args=('right',)).start()
                         
                         # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['right_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
+                        self.trial_data[-1]['lick'] = 1
+                        self.trial_data[-1]['right_spout'] = 1
+                        self.trial_data[-1]['lick_time'] = self.tlick
     
                         self.total_licks += 1
                         self.licks_right += 1
