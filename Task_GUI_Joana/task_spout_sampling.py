@@ -22,6 +22,7 @@ class SpoutSamplingTask:
     def __init__(self, gui_controls, csv_file_path): 
     
         # Directory to save file with trials data
+        self.csv_file_path = csv_file_path
         self.file_path = os.path.dirname(csv_file_path) # use the csv file name
         self.trials = [] # list to store trial data
         
