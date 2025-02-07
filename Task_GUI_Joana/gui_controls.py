@@ -347,7 +347,7 @@ class GuiControls:
 
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
-             csv_file_path = create_data_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
+             csv_file_path, _ = create_data_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
 
 
         if selected_task == 'Test rig':
