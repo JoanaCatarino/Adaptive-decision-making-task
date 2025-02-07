@@ -23,8 +23,9 @@ class SpoutSamplingTask:
     
         # Directory to save file with trials data
         self.csv_file_path = csv_file_path
+        self.save_dir = os.path.dirname(csv_file_path)
+        os.makedirs(self.save_dir, exist_ok=True)
         self.file_path = csv_file_path # use the csv file name
-        self.save_dir = self.file_path
         self.trials = [] # list to store trial data
         
         # Connection to GUI
@@ -59,9 +60,6 @@ class SpoutSamplingTask:
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
-        
-        # Ensure save directory exists
-        os.makedirs(self.save_dir, exist_ok=True)
         
         self.first_lick = None
         
