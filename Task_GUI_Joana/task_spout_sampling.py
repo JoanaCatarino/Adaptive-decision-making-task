@@ -24,6 +24,7 @@ class SpoutSamplingTask:
         # Directory to save file with trials data
         self.csv_file_path = csv_file_path
         self.file_path = os.path.dirname(csv_file_path) # use the csv file name
+        self.save_dir = self.file_path
         self.trials = [] # list to store trial data
         
         # Connection to GUI
