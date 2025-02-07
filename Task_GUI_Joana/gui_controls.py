@@ -29,7 +29,6 @@ from task_generator import task
 from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import create_data_file
-from 
 from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
 from piezo_plot import LivePlotWidget
