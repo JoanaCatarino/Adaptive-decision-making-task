@@ -25,38 +25,16 @@ def generate_white_noise(duration, sample_rate=44100, amplitude=0.1):
 
 def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
-    
-    # Check available devices 
-    devices = p.get_device_count()
-    output_device_index = None #added
-    
-    for i in range(devices): #added
-        device_info = p.get_device_info_by_index(i)
-        print(f'Device {i}: {device_info["name"]}')
-        if 'hifiberry' in device_info['name']:
-            output_device_index = i
-            print('Hifiberry card found at index', output_device_index)
-            break
-        
-    if output_device_index is None: #added
-        print('no matching output device found')
-        p.terminate()
-        return
-    
-    try:
-        stream = p.open(format=pyaudio.paFloat32,
-                        channels=2,
-                        rate=sample_rate,
-                        output=True,
-                        output_device_index=0)
-        stream.write(sound.astype(np.float32).tobytes())
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-    except Exception as e:
-        print(f'Error opening stream:{e}')
-    finally:
-        p.terminate()
+
+    stream = p.open(format=pyaudio.paFloat32,
+                    channels=2,
+                    rate=sample_rate,
+                    output=True)
+    stream.write(sound.astype(np.float32).tobytes())
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+   
 
 def play_sound(sound, sample_rate=44100):
     loop = asyncio.get_event_loop()
