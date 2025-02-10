@@ -55,8 +55,8 @@ def play_sound_blocking(sound, sample_rate=44100):
         p.terminate()
    
 
-def play_sound(sound, sample_rate=44100):
-    asyncio.to_thread(play_sound_blocking, sound, sample_rate)
+#def play_sound(sound, sample_rate=44100):
+    #asyncio.to_thread(play_sound_blocking, sound, sample_rate)
     
 
 def tone_10KHz():
@@ -64,20 +64,20 @@ def tone_10KHz():
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    play_sound(sound, sample_rate)
+    play_sound_blocking(sound)
 
 def tone_5KHz():
     frequency = 5000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    play_sound(sound, sample_rate)
+    play_sound_blocking(sound)
 
 def white_noise():
     sample_rate = 44100  # Sample rate in Hz
     duration = 2  # Duration in seconds
     sound = generate_white_noise(duration, sample_rate)
-    play_sound(sound, sample_rate)
+    play_sound_blocking(sound)
 
 if __name__ == '__main__':
     print("Playing 10KHz tone...")
