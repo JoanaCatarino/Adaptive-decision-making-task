@@ -27,11 +27,11 @@ def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
 
     try:
-        stream = p.open(format=pyaudio.paInt16,
+        stream = p.open(format=pyaudio.paFloat32,
                         channels=2,
                         rate=sample_rate,
                         output=True)
-        stream.write(np.clip(sound, -1.0, 1.0).astype(np.paInt16).tobytes())
+        stream.write(np.clip(sound, -1.0, 1.0).astype(np.float32).tobytes())
     finally:
         stream.stop_stream()
         stream.close()
