@@ -728,7 +728,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Association trials :</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="chk_AssociationTrials">
+      <widget class="QCheckBox" name="chk_AutomaticRewards">
        <property name="geometry">
         <rect>
          <x>22</x>
@@ -743,7 +743,7 @@ border-color: rgb(227, 153, 100);</string>
         </font>
        </property>
        <property name="text">
-        <string>Play tone - spout pairs </string>
+        <string>Automatic Rewards</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_Box">
@@ -783,6 +783,24 @@ border-color: rgb(227, 153, 100);</string>
        </property>
        <property name="editable">
         <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="chk_NoPunishment">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>520</y>
+         <width>161</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>No Punishment</string>
        </property>
       </widget>
      </widget>
