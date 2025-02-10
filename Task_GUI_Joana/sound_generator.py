@@ -55,34 +55,43 @@ def play_sound_blocking(sound, sample_rate=44100):
         p.terminate()
    
 
-async def play_sound(sound, sample_rate=44100):
-    await asyncio.to_thread(play_sound_blocking, sound, sample_rate)
+def play_sound(sound, sample_rate=44100):
+    asyncio.to_thread(play_sound_blocking, sound, sample_rate)
     
 
-async def tone_10KHz():
+def tone_10KHz():
     frequency = 10000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    await play_sound(sound, sample_rate)
+    play_sound(sound, sample_rate)
 
-async def tone_5KHz():
+def tone_5KHz():
     frequency = 5000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    await play_sound(sound, sample_rate)
+    play_sound(sound, sample_rate)
 
-async def white_noise():
+def white_noise():
     sample_rate = 44100  # Sample rate in Hz
     duration = 2  # Duration in seconds
     sound = generate_white_noise(duration, sample_rate)
-    await play_sound(sound, sample_rate)
+    play_sound(sound, sample_rate)
 
 if __name__ == '__main__':
-    # To test the sounds asynchronously
-    asyncio.run(white_noise())
+    print("Playing 10KHz tone...")
+    tone_10KHz()
     
+    time.sleep(0.5)  # Small delay
+
+    print("Playing 5KHz tone...")
+    tone_5KHz()
+
+    time.sleep(0.5)  # Small delay
+
+    print("Playing white noise...")
+    white_noise()
     
 '''
 # Use this to test the sounds with this script
