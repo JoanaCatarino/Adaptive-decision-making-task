@@ -63,6 +63,10 @@ class SpoutSamplingTask:
         
         self.first_lick = None
         
+        # Alternating reward spout rule
+        self.trial_counter = 0
+        self.current_reward_spout = 'left' # this need to be random at start of new session (for future)
+        
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -194,6 +198,9 @@ class SpoutSamplingTask:
     
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
+        
+        # Determine the correct side for reward in this trial
+        correct_spout = self.current_reward_spout
     
         # Left piezo
         if p1:
@@ -201,7 +208,7 @@ class SpoutSamplingTask:
     
             if latest_value1 > self.threshold_left:
                 with self.lock:
-                    self.tlick_l = self.t
+                    self.tlick_l = self.t # Update last left lick time
                     elapsed_left = self.tlick_l - self.ttrial
                     print('Threshold exceeded left')
     
@@ -209,23 +216,27 @@ class SpoutSamplingTask:
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('left',)).start()
+                        if correct_spout == 'left': # Only reward if correct
+                            # Deliver reward in a separate thread
+                            threading.Thread(target=self.reward, args=('left',)).start()
+                            
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['left_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
+                            
+                            self.append_trial_to_csv(self.trials[-1])
+        
+                            self.total_licks += 1
+                            self.licks_left += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_left(self.licks_left)
+                            
+                            # Update live stair plot
+                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['left_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
-                        
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                        self.total_licks += 1
-                        self.licks_left += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_left(self.licks_left)
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        else:
+                            print ('Lick left but reward is right')
     
         # Right piezo        
         if p2:
@@ -241,24 +252,28 @@ class SpoutSamplingTask:
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('right',)).start()
-                        
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['right_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
-                        
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-    
+                        if correct_spout == 'right':
+                            # Deliver reward in a separate thread
+                            threading.Thread(target=self.reward, args=('right',)).start()
+                            
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['right_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
+                            
+                            self.append_trial_to_csv(self.trials[-1])
+        
+                            self.total_licks += 1
+                            self.licks_right += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_right(self.licks_right)
+                            
+                            # Update live stair plot
+                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+        
+                    else:
+                        print('Lick right but reward is left')
+        
     
     def reward(self, side):
         
@@ -281,9 +296,15 @@ class SpoutSamplingTask:
             pump_r.on()
             print('Reward delivered - right')
     
-        # Small delay to ensure execution before another lick
-        #time.sleep(0.01)
-    
+        # Implement trial counter
+        self.trial_counter +=1
+
+        # Switch rewarded spout after every 3 trials
+        if self.trial_counter >=3:
+            self.trial_counter = 0 # reset counter
+            self.current_reward_spout = 'left' if self.current_reward_spout == 'right' else 'right'
+            print (f'Switching reward spout to {self.current_reward_spout} for next 3 trials')
+            
         
     def main(self):
         
