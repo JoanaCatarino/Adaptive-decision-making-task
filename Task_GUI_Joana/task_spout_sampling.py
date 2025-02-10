@@ -12,6 +12,7 @@ import numpy as np
 import time
 import csv
 import os
+import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
@@ -65,11 +66,15 @@ class SpoutSamplingTask:
         
         # Alternating reward spout rule
         self.trial_counter = 0
-        self.current_reward_spout = 'left' # this need to be random at start of new session (for future)
+        self.current_reward_spout = random.choice(['left', 'right']) # Chooses randomly which side starts as rewarded
         
 
     def start (self):
         print ('Spout Sampling task starting')
+        
+        # Print which side is starting
+        print(f"Starting session with reward on **{self.current_reward_spout.upper()}** spout.")
+
         
         # Turn the LEDS ON initially
         pump_l.on()
