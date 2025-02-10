@@ -66,33 +66,33 @@ class TestRig:
         self.stop = stop
 
 
-# Test blue LED
-def blueLED():
-    led_blue.on()
-    sleep(1)
-    led_blue.off()
-
-# Test white LED on left spout
-def whiteLLED():
-    led_white_l.on()
-    sleep(1)
-    led_white_l.off()
-
-# Test white LED on right spout
-def whiteRLED():
-    led_white_r.on()
-    sleep(1)
-    led_white_r.off()
-
-# Test white LED on left spout
-def pumpL(self):
-    pump_l.off()
-    sleep(self.valve_opening)
-    pump_l.on()
-
-# Test white LED on right spout
-def pumpR(self):
-    pump_r.off()
-    sleep(self.valve_opening)
-    pump_r.on()
+    # Test blue LED
+    def blueLED():
+        led_blue.on()
+        sleep(1)
+        led_blue.off()
+    
+    # Test white LED on left spout
+    def whiteLLED():
+        led_white_l.on()
+        sleep(1)
+        led_white_l.off()
+    
+    # Test white LED on right spout
+    def whiteRLED():
+        led_white_r.on()
+        sleep(1)
+        led_white_r.off()
+    
+    # Test white LED on left spout
+    def pumpL(self):
+        pump_l.off()
+        sleep(self.valve_opening)
+        pump_l.on()
+    
+    # Test white LED on right spout
+    def pumpR(self):
+        pump_r.off()
+        sleep(self.valve_opening)
+        pump_r.on()
 
