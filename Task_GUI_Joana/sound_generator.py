@@ -48,7 +48,7 @@ def play_sound_blocking(sound, sample_rate=44100):
                         output=True,
                         output_device_index = device_index,
                         frames_per_buffer = 1024)
-        stream.write(np.clip(sound, -1.0, 1.0).astype(np.float32).tobytes())
+        stream.write(sound.astype(np.float32).tobytes())
     finally:
         stream.stop_stream()
         stream.close()
