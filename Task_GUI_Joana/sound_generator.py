@@ -32,7 +32,7 @@ def play_sound_blocking(sound, sample_rate=44100):
     
     for i in range(devices): #added
         device_info = p.get_device_info_by_index(i)
-        print(f'Device {i}: {device_info['name']}')
+        print(f'Device {i}: {device_info["name"]}')
         if 'hifiberry' in device_info['name']:
             output_device_index = i
             print('Hifiberry card found at index', output_device_index)
