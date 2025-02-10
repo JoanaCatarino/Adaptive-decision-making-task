@@ -7,11 +7,7 @@ Created on Sat Jul 13 18:38:00 2024
 
 import numpy as np
 import pyaudio
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 
-# A thread pool for running blocking operations
-executor = ThreadPoolExecutor()
 
 def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5):
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
@@ -19,8 +15,7 @@ def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5):
     return wave
 
 def generate_white_noise(duration, sample_rate=44100, amplitude=0.1):
-    samples = np.random.normal(0, amplitude, int(sample_rate*duration))
-    return samples
+    return np.random.normal(0, amplitude, int(sample_rate*duration))
 
 def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
@@ -34,8 +29,7 @@ def play_sound_blocking(sound, sample_rate=44100):
     p.terminate()
 
 def play_sound(sound, sample_rate=44100):
-    loop = asyncio.get_event_loop()
-    loop.run_in_executor(executor, play_sound_blocking, sound, sample_rate)
+    play_sound_blocking(sound, sample_rate)
 
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
@@ -57,14 +51,6 @@ def white_noise():
     sound = generate_white_noise(duration, sample_rate)
     play_sound(sound, sample_rate)
 
-if __name__ == '__main__':
-    # To test the sounds asynchronously
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(white_noise())
-    finally:
-        loop.run_until_complete(loop.shutdown_asyncgens())
-        loop.close()
 
 
 '''
