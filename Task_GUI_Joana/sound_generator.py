@@ -20,7 +20,7 @@ def generate_white_noise(duration, sample_rate=44100, amplitude=0.1):
 def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paFloat32,
-                    channels=1,
+                    channels=2,
                     rate=sample_rate,
                     output=True)
     stream.write(sound.astype(np.float32).tobytes())
