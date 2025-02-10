@@ -303,8 +303,8 @@ class GuiControls:
         self.ui.txt_ResponseWindow.setEnabled(enable)
         self.ui.txt_TrialDuration.setEnabled(enable)
         self.ui.txt_ValveOpening.setEnabled(enable)
-        self.ui.chk_AssociationTrials.setEnabled(enable)
-
+        self.ui.chk_AutomaticRewards.setEnabled(enable)
+        self.ui.chk_NoPunishment.setEnabled(enable)
 
     # set enable and disable functions for the test rig controls
     def enable_controls(self):
