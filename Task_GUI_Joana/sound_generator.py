@@ -10,6 +10,8 @@ import pyaudio
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
+# A thread pool for running blocking operations
+executor = ThreadPoolExecutor()
 
 def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5):
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
@@ -20,72 +22,49 @@ def generate_white_noise(duration, sample_rate=44100, amplitude=0.1):
     samples = np.random.normal(0, amplitude, int(sample_rate*duration))
     return samples
 
-def get_hifiberry_index():
-    """Finds the HiFiBerry device index for PyAudio."""
-    p = pyaudio.PyAudio()
-    device_index = None
-    
-    for i in range(p.get_device_count()):
-        dev = p.get_device_info_by_index(i)
-        if "HiFiBerry" in dev["name"]:  # Adjust this if needed
-            device_index = i
-            break
-    p.terminate()
-    
-    if device_index is None:
-        print("Warning: HiFiBerry not found, using default audio device.")
-    return device_index
-
-
 def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
-    device_index = get_hifiberry_index()
+    stream = p.open(format=pyaudio.paFloat32,
+                    channels=1,
+                    rate=sample_rate,
+                    output=True)
+    stream.write(sound.astype(np.float32).tobytes())
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
-    try:
-        stream = p.open(format=pyaudio.paFloat32,
-                        channels=2,
-                        rate=sample_rate,
-                        output=True,
-                        output_device_index = device_index,
-                        frames_per_buffer = 1024)
-        stream.write(sound.astype(np.float32).tobytes())
-    finally:
-        stream.stop_stream()
-        stream.close()
-        p.terminate()
-   
-
-#def play_sound(sound, sample_rate=44100):
-    #asyncio.to_thread(play_sound_blocking, sound, sample_rate)
-    
+def play_sound(sound, sample_rate=44100):
+    loop = asyncio.get_event_loop()
+    loop.run_in_executor(executor, play_sound_blocking, sound, sample_rate)
 
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    play_sound_blocking(sound)
+    play_sound(sound, sample_rate)
 
 def tone_5KHz():
     frequency = 5000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
-    play_sound_blocking(sound)
+    play_sound(sound, sample_rate)
 
 def white_noise():
     sample_rate = 44100  # Sample rate in Hz
     duration = 2  # Duration in seconds
     sound = generate_white_noise(duration, sample_rate)
-    play_sound_blocking(sound)
+    play_sound(sound, sample_rate)
 
 if __name__ == '__main__':
-    
-    tone_10KHz()
-    
-    tone_5KHz()
-
-    white_noise()
+    # To test the sounds asynchronously
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(white_noise())
+    finally:
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
     
 '''
 # Use this to test the sounds with this script
