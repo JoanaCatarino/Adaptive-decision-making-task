@@ -33,6 +33,7 @@ def play_sound_blocking(sound, sample_rate=44100):
         device_info = p.get_device_info_by_index(i)
         if 'hw:0,0' in device_info['name']:
             output_device_index = i
+            print('card is here')
             break
         
     if output_device_index is None: #added
