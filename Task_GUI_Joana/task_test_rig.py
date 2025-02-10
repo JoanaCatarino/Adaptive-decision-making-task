@@ -85,13 +85,13 @@ def whiteRLED():
     led_white_r.off()
 
 # Test white LED on left spout
-def pumpL():
+def pumpL(self):
     pump_l.off()
     sleep(self.valve_opening)
     pump_l.on()
 
 # Test white LED on right spout
-def pumpR():
+def pumpR(self):
     pump_r.off()
     sleep(self.valve_opening)
     pump_r.on()

@@ -314,5 +314,11 @@ class SpoutSamplingTask:
             writer.writerow(trial_data)  # Append trial data
                 
                 
-
+    def set_thresholds(self, left, right):
+        """Sets the thresholds for the piezo adders and updates the GUI."""
+        self.threshold_left = left
+        self.threshold_right = right
+        
+        # Update the GUI thresholds
+        self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
     
