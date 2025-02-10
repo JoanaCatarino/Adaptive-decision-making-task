@@ -14,120 +14,313 @@ Important
 """
 
 import threading
+import numpy as np
 import time
-
+import csv
+import os
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
+from file_writer import create_data_file
 from gpio_map import *
 
 
 class FreeLickingTask:
     
-    def __init__(self, gui_controls):
-        """
-        Initializes the FreeLickingTask class.
-
-        Args:
-            gui_controls: An instance of GuiControls to access piezo_reader and UI components.
-        """
-        self.gui_controls = gui_controls
-        self.piezo_reader = gui_controls.piezo_reader
-        self.running = False
-        self.threshold_left = 0 # Threshold for the lick to count as a lick in the left spout
-        self.threshold_right = 5 # Threshold for the lick to count as a lick in the right spout
-        self.valve_opening = 0.5 # time in seconds the valve stays open
+    def __init__(self, gui_controls, csv_file_path): 
+    
+        # Directory to save file with trials data
+        self.csv_file_path = csv_file_path
+        self.save_dir = os.path.dirname(csv_file_path)
+        os.makedirs(self.save_dir, exist_ok=True)
+        self.file_path = csv_file_path # use the csv file name
+        self.trials = [] # list to store trial data
         
-        # Counters for tracking licks
-        self.total_licks = 0 # Counts the number of times the threshold was surpassed (puts together both piezos)
-        self.licks_left = 0 # Counts licks on the Left spout (above threshold - valid licks)
-        self.licks_right = 0 # Counts licks on the Right spout (above threshold - valid licks)
+        # Connection to GUI
+        self.gui_controls = gui_controls
+        self.piezo_reader = gui_controls.piezo_reader  
 
+        # Experiment parameters
+        self.QW = 3 # Quiet window in seconds
+        self.ITI = 0.1 # Inter-trial interval in seconds
+        self.RW = 1 # Response window in seconds
+        self.threshold_left = 20
+        self.threshold_right = 20
+        self.valve_opening = 0.2  # Reward duration   
+        
+        # Counters
+        self.total_trials = 0
+        self.total_licks = 0
+        self.licks_left = 0
+        self.licks_right = 0
+        
+        # Booleans
+        self.trialstarted = False
+        self.running = False
+        
+        # Time variables
+        self.tstart = None # start of the task
+        self.ttrial = None # start of the trial
+        self.t = None # current time
+        self.tlick_l = None # last lick left spout
+        self.tlick_r = None # last lick right spout
+        self.tlick = None # time of 1st lick within response window
+        
+        # Lock for thread-safe operations
+        self.lock = threading.Lock()
+        
+        self.first_lick = None
+        
 
-    def start(self):
-        """Starts the FreeLicking task."""
-        print("Starting Free Licking Task...")
-                
+    def start (self):
+        print ('Spout Sampling task starting')
+        
         # Turn the LEDS ON initially
         pump_l.on()
         pump_r.on()
         
         # Reset counters
+        self.total_trials = 0
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
         
-        # Update Gui display immediately
+        # Update GUI display
         self.gui_controls.update_total_licks(0)
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
         
+        # Reset the performance plot
+        self.gui_controls.lick_plot.reset_plot() # plot main tab
+        self.gui_controls.lick_plot_ov.reset_plot() # plot overview tab
+        
         self.running = True
-        self.print_thread = threading.Thread(target=self.monitor_piezo_values, daemon=True)
-        self.print_thread.start()
-
+        self.tstart = time.time() # record the start time
+        
+        # Start main loop in a separate thread
+        self.print_thread = threading.Thread(target=self.main, daemon=True)
+        self.print_thread.start()   
+        
+        
     def stop(self):
-        """Stops the Free Licking task."""
-        print("Stopping Free Licking Task...")
+        print("Stopping Spout Sampling Task...")
+        
         self.running = False
+        
         if self.print_thread.is_alive():
             self.print_thread.join()
-        pump_l.on()
-
-    def monitor_piezo_values(self):
-        """
-        Continuously prints the piezo_adder1 values while the task is running and checks the threshold.
-        """
-        try:
-            while self.running:
-                
-                # Monitor piezo_adder1 (left spout) and control pump_l
-                if self.piezo_reader.piezo_adder1:
-                    latest_value1 = self.piezo_reader.piezo_adder1[-1]
-                    print(f'Piezo Adder 1: {latest_value1}')
-                    
-                    # Check if the value exceeds the threshold
-                    if latest_value1 > self.threshold_left:
-                        print('Threshold exceeded! Flashing pump_l')
-                        pump_l.off()
-                        time.sleep(self.valve_opening)  # Adjust this for the desired ON duration
-                        pump_l.on()
-                        
-                        self.total_licks += 1 # Implement total licks
-                        self.licks_left +=1 # Implement licks left
-                        
-                        self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                        self.gui_controls.update_licks_left(self.licks_left) # Update licks left in the GUI
-                
-                
-                # Monitor piezo_adder2 (right spout) and control pump_r
-                if self.piezo_reader.piezo_adder2:
-                    latest_value2 = self.piezo_reader.piezo_adder2[-1]
-                    print(f'Piezo Adder 2:{latest_value2}')
-                    
-                    # Check if the value exceeds the threshold
-                    if latest_value2 > self.threshold_right:
-                        print('Threshold exceeded! Flashing pump_r')
-                        pump_r.off()
-                        time.sleep(self.valve_opening)
-                        pump_r.on()
-                        
-                        self.total_licks += 1 # Implement total licks
-                        self.licks_right +=1 # Implement licks right
-                        
-                        self.gui_controls.update_total_licks(self.total_licks) # Update the total trials in the GUI
-                        self.gui_controls.update_licks_right(self.licks_right) # Update licks right in the GUI
-
-                        
-                # Print the total trials count
-                print(f'Total licks = {self.total_licks}')
-
-                time.sleep(0.1)  # Adjust for the desired frequency
+        pump_l.on() 
         
-        except Exception as e:
-            pump_l.on()  # Turn off pump_l in case of error
-            pump_r.on()  # Turn off pump_r in case of error
-
+        
     
+    def check_animal_quiet(self):
+        
+        """ Continuously checks for a quiet period before starting a trial, unless QW = 0 """
+        
+        if self.QW == 0:
+            return True
+        
+        required_samples = self.QW*60 # Serial runs in 60 Hz   
+        
+        while True:
+            if not self.running:
+                return False
+            
+            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
+            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
+        
+        
+            if len(p1) >= required_samples and len(p2) >= required_samples:
+                quiet_left = max(p1[-required_samples:]) < self.threshold_left
+                quiet_right = max(p2[-required_samples:]) < self.threshold_right
+               
+                if quiet_left and quiet_right:
+                    return True # Animal was quiet
+                else:
+                    print('Licks detected during Quiet Window')
+                    
+            else:
+                print('Waiting for enough data to check quiet window')
+            
+            time.sleep(0.1) # prevents excessive CPU usage
+    
+     
+    def start_trial(self):
+        
+        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        
+        with self.lock:
+            self.trialstarted = True
+            trial_number= self.total_trials +1
+            self.ttrial = self.t # Update trial start time
+            self.first_lick = None # Reset first lick at the start of each trial
+            
+            # Start LED in a separate thread
+            threading.Thread(target=self.led_indicator, args=(self.RW,)).start()
+            
+            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
+            
+            # Initialize trial data
+            trial_data = {
+                'trial_number': trial_number,
+                'trial_time': self.ttrial,
+                'lick': 0,
+                'left_spout': 0,
+                'right_spout': 0,
+                'lick_time': None,
+                'RW': self.RW,
+                'QW': self.QW,
+                'ITI': self.ITI,
+                'Threshold_left': self.threshold_left,
+                'Threshold_right': self.threshold_right}
+            
+            self.trials.append(trial_data) # Store trial data
+            
+            self.total_trials = trial_number
+            self.gui_controls.update_total_trials(self.total_trials)
+            
+            # Append trial data to csv file
+            self.append_trial_to_csv(trial_data)
+            
+    
+    def led_indicator(self, RW):
+        
+        """ Turn on LED during trial duration without blocking main loop"""
+        
+        led_white_l.on()
+        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
+        led_white_l.off()
+        
+        
+    def detect_licks(self):
+    
+        """Checks for licks and delivers rewards in parallel."""
+
+        # Ensure piezo data is updated before checking
+        p1 = list(self.piezo_reader.piezo_adder1)
+        p2 = list(self.piezo_reader.piezo_adder2)
+    
+        # Small delay to prevent CPU overload and stabilize readings
+        time.sleep(0.001)
+    
+        # Left piezo
+        if p1:
+            latest_value1 = p1[-1]
+    
+            if latest_value1 > self.threshold_left:
+                with self.lock:
+                    self.tlick_l = self.t
+                    elapsed_left = self.tlick_l - self.ttrial
+                    print('Threshold exceeded left')
+    
+                    if self.first_lick is None and (0 < elapsed_left < self.RW):
+                        self.first_lick = 'left'
+                        self.tlick = self.tlick_l
+    
+                        # Deliver reward in a separate thread
+                        threading.Thread(target=self.reward, args=('left',)).start()
+                        
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['left_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
+                        
+                        self.append_trial_to_csv(self.trials[-1])
+    
+                        self.total_licks += 1
+                        self.licks_left += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
+                        
+                        # Update live stair plot
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+    
+        # Right piezo        
+        if p2:
+            latest_value2 = p2[-1]
+    
+            if latest_value2 > self.threshold_right:
+                with self.lock:
+                    self.tlick_r = self.t
+                    elapsed_right = self.tlick_r - self.ttrial
+                    print('Threshold exceeded right')
+    
+                    if self.first_lick is None and (0 < elapsed_right < self.RW):
+                        self.first_lick = 'right'
+                        self.tlick = self.tlick_r
+    
+                        # Deliver reward in a separate thread
+                        threading.Thread(target=self.reward, args=('right',)).start()
+                        
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['right_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
+                        
+                        self.append_trial_to_csv(self.trials[-1])
+    
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
+                        
+                        # Update live stair plot
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+    
+    
+    def reward(self, side):
+        
+        """Delivers a reward without blocking the main loop."""
+        
+        print(f"Delivering reward - {side}")
+    
+        # Ensure pump action executes properly with a short delay
+        time.sleep(0.01)
+    
+        if side == 'left':
+            pump_l.off()
+            time.sleep(self.valve_opening)
+            pump_l.on()
+            print('Reward delivered - left')
+            
+        elif side == 'right':
+            pump_r.off()
+            time.sleep(self.valve_opening)
+            pump_r.on()
+            print('Reward delivered - right')
+    
+        # Small delay to ensure execution before another lick
+        #time.sleep(0.01)
+    
+        
+    def main(self):
+        
+        while self.running:
+            self.t = time.time() - self.tstart # update current time based on the elapsed time
+            
+           
+            # Start a new trial if enough time has passed since the last trial and all conditions are met
+            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    
+            # Run lick detection continuously
+            self.detect_licks()
+            
+            
+    def append_trial_to_csv(self, trial_data):
+        """ Append trial data to the CSV file. """
+        file_exists = os.path.isfile(self.file_path)
+        
+        # Replace None or empty values with NaN
+        trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
+        
+        with open(self.file_path, mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
+            if not file_exists:
+                writer.writeheader()  # Write header only if file does not exist
+            writer.writerow(trial_data)  # Append trial data
+                
+                
     def set_thresholds(self, left, right):
         """Sets the thresholds for the piezo adders and updates the GUI."""
         self.threshold_left = left
@@ -135,5 +328,8 @@ class FreeLickingTask:
         
         # Update the GUI thresholds
         self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
+    
+
+
 
        
