@@ -80,17 +80,11 @@ def white_noise():
     play_sound_blocking(sound)
 
 if __name__ == '__main__':
-    print("Playing 10KHz tone...")
+    
     tone_10KHz()
     
-    time.sleep(0.5)  # Small delay
-
-    print("Playing 5KHz tone...")
     tone_5KHz()
 
-    time.sleep(0.5)  # Small delay
-
-    print("Playing white noise...")
     white_noise()
     
 '''
