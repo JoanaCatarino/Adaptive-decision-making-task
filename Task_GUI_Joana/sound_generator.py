@@ -11,7 +11,7 @@ import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
 # A thread pool for running blocking operations
-#executor = ThreadPoolExecutor()
+executor = ThreadPoolExecutor()
 
 def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5):
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
