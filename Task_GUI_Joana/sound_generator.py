@@ -22,7 +22,7 @@ def generate_white_noise(duration, sample_rate=44100, amplitude=0.1):
     samples = np.random.normal(0, amplitude, int(sample_rate*duration))
     return samples
 
-'''
+
 def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
     
@@ -49,11 +49,10 @@ def play_sound_blocking(sound, sample_rate=44100):
     stream.stop_stream()
     stream.close()
     p.terminate()
-'''
 
 def play_sound(sound, sample_rate=44100):
     loop = asyncio.get_event_loop()
-    loop.run_in_executor(executor,sound, sample_rate)
+    loop.run_in_executor(executor,play_sound_blocking, sound, sample_rate)
 
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
