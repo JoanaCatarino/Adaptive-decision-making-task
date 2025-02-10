@@ -27,21 +27,23 @@ def play_sound_blocking(sound, sample_rate=44100):
     p = pyaudio.PyAudio()
     
     # Check available devices 
-    devices = p.get_host_api_info_by_index(0).get('deviceCount') #added
+    devices = p.get_device_count()
     output_device_index = None #added
     
     for i in range(devices): #added
         device_info = p.get_device_info_by_index(i)
-        if 'hw:0,0' in device_info['name']:
+        if 'HiFiBerry' in device_info['name']:
             output_device_index = i
             print('card is here')
             break
         
     if output_device_index is None: #added
         print('no matching output device found')
+        p.terminate()
+        return
     
     stream = p.open(format=pyaudio.paFloat32,
-                    channels=1,
+                    channels=2,
                     rate=sample_rate,
                     output=True,
                     output_device_index=output_device_index)
