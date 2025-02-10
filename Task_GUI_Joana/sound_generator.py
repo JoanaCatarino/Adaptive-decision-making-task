@@ -53,7 +53,7 @@ def play_sound_blocking(sound, sample_rate=44100):
 
 def play_sound(sound, sample_rate=44100):
     loop = asyncio.get_event_loop()
-    loop.run_in_executor(sound, sample_rate)
+    loop.run_in_executor(executor,sound, sample_rate)
 
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
