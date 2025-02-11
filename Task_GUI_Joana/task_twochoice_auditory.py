@@ -18,7 +18,7 @@ from gpio_map import *
 
 class TwoChoiceAuditoryTask:
     
-    def __init__(self, gui_controls, csv_file_path, animal_id): 
+    def __init__(self, gui_controls, csv_file_path): 
     
         # Directory to save file with trials data
         self.csv_file_path = csv_file_path
@@ -31,8 +31,8 @@ class TwoChoiceAuditoryTask:
         self.gui_controls = gui_controls
         self.piezo_reader = gui_controls.piezo_reader  
         
-        # Store the animal ID
-        self.animal_id = animal_id # Ensure is a string to match CSV format
+        # Get the selected Animal ID from the GUI dropdown
+        self.animal_id = str(self.gui_controls.ui.ddm_Animal_ID.currentText()).strip()
         
         # Path to the csv file containing sound-spout assignments
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
