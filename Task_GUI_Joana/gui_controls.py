@@ -363,7 +363,7 @@ class GuiControls:
             self.current_task = SpoutSamplingTask(self, csv_file_path) 
 
         elif selected_task == 'Two-Choice Auditory Task':
-            self.current_task = TwoChoiceAuditoryTask()
+            self.current_task = TwoChoiceAuditoryTask(self, csv_file_path)
 
         elif selected_task == 'Adaptive Sensorimotor Task':
             self.current_task = AdaptiveSensorimotorTask()

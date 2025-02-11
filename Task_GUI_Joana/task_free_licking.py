@@ -155,7 +155,7 @@ class FreeLickingTask:
             self.first_lick = None # Reset first lick at the start of each trial
             
             # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start()
+            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
