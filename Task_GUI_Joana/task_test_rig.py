@@ -52,11 +52,8 @@ class TestRig:
         pump_r.on()
         
         print('Test rig starting')
-        self.ui.chk_10Tone.clicked.disconnect()
         self.ui.chk_10Tone.clicked.connect(self.play_10KHz)
-        self.ui.chk_5Tone.clicked.disconnect()
         self.ui.chk_5Tone.clicked.connect(self.play_5KHz)
-        self.ui.chk_Punishment.clicked.disconnect()
         self.ui.chk_Punishment.clicked.connect(self.play_white_noise)
         self.ui.chk_BlueLED.clicked.connect(blueLED)
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
