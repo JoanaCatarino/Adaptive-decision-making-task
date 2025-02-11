@@ -32,7 +32,7 @@ class TwoChoiceAuditoryTask:
         self.piezo_reader = gui_controls.piezo_reader  
         
         # Store the animal ID
-        self.animal_id = str(animal_id) # Ensure is a string to match CSV format
+        self.animal_id = animal_id # Ensure is a string to match CSV format
         
         # Path to the csv file containing sound-spout assignments
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
