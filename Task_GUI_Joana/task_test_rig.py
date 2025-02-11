@@ -26,6 +26,24 @@ class TestRig:
         self.ui = ui
             
         self.start()
+        
+    # Test white LED on right spout
+    def pumpR():
+        pump_r.off()
+        sleep(0.5)
+        pump_r.on()
+        
+    def play_10KHz(self):
+        print("Playing 10KHz Tone")
+        tone_10KHz()
+
+    def play_5KHz(self):
+        print("Playing 5KHz Tone")
+        tone_5KHz()
+
+    def play_white_noise(self):
+        print("Playing White Noise")
+        white_noise()
 
 
     def start(self):
@@ -34,9 +52,12 @@ class TestRig:
         pump_r.on()
         
         print('Test rig starting')
-        self.ui.chk_10Tone.clicked.connect(tone_10KHz)
-        self.ui.chk_5Tone.clicked.connect(tone_5KHz)
-        self.ui.chk_Punishment.clicked.connect(white_noise)
+        self.ui.chk_10Tone.clicked.disconnect()
+        self.ui.chk_10Tone.clicked.connect(self.play_10KHz)
+        self.ui.chk_5Tone.clicked.disconnect()
+        self.ui.chk_5Tone.clicked.connect(self.play_5KHz)
+        self.ui.chk_Punishment.clicked.disconnect()
+        self.ui.chk_Punishment.clicked.connect(self.play_white_noise)
         self.ui.chk_BlueLED.clicked.connect(blueLED)
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
         self.ui.chk_WhiteLED_Right.clicked.connect(whiteRLED)
@@ -84,9 +105,5 @@ def pumpL():
     sleep(0.5)
     pump_l.on()
 
-# Test white LED on right spout
-def pumpR():
-    pump_r.off()
-    sleep(0.5)
-    pump_r.on()
+
 
