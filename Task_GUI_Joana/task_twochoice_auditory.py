@@ -32,16 +32,17 @@ class TwoChoiceAuditoryTask:
         self.piezo_reader = gui_controls.piezo_reader  
         
         # Store the animal ID
-        self.animal_id = animal_id
+        self.animal_id = str(animal_id) # Ensure is a string to match CSV format
         
         # Path to the csv file containing sound-spout assignments
-        self.assignment_file = '/home/rasppi.ephys/spout_tone/spout_tone_generator.csv'
+        self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
         
-        # Load the spout-tone assignments for this animal
-        self.sound_spout_mapping = self.load_spout_tone_mapping()
+        # Default values in case mapping fails
+        self.spout_5KHz = None
+        self.spout_10KHz = None
         
-        if self.sound_spout_mapping:
-            print(f' For animal {self.animal_id}: {self.sound_spout_mapping}')
+        if self.load_spout_tone_mapping:
+            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10Khz:{self.spout_10KHz}')
         else:
             print('No spout-tone assignment found')
 
@@ -120,27 +121,31 @@ class TwoChoiceAuditoryTask:
         
     
     def load_spout_tone_mapping(self):
-        """ Reads the assignment file and gets the spout-tone mapping for the current animal. """
-        mapping = {}
-    
-        # Check if file exists
+        """ Reads the CSV file and assigns the correct spout for each frequency based on the animal ID. """
+        
+        # Ensure the file exists
         if not os.path.isfile(self.assignment_file):
             print(f"Error: Assignment file not found at {self.assignment_file}")
-            return None
+            return False  # Indicate failure
     
-        # Read the CSV file
-        with open(self.assignment_file, mode='r') as file:
-            reader = csv.reader(file)
-            header = next(reader)  # Skip header row
-    
+        # Open the CSV file
+        with open(self.assignment_file, mode='r', newline='') as file:
+            reader = csv.DictReader(file)  # Use DictReader to access columns by name
+            
             for row in reader:
-                if row[0] == self.animal_id:  # Find the row with this animal ID
-                    mapping["5KHz"] = row[1]  # Assign 5KHz tone to the corresponding spout
-                    mapping["10KHz"] = row[2]  # Assign 10KHz tone to the other spout
-                    return mapping  # Stop reading once found
+                if row['Animal'] == self.animal_id:  # Find the correct animal ID
+                    # Assign the spout mappings
+                    self.spout_5KHz = row['5KHz']
+                    self.spout_10KHz = row['10KHz']
+                    
+                    print(f"Loaded mapping for Animal {self.animal_id}: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
+                    return True  # Success
     
-        return None  # Return None if the animal ID is not found
+        # If we reach here, the animal ID was not found
+        print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
+        return False  # Indicate failure
         
+    
     
     def check_animal_quiet(self):
         

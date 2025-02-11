@@ -15,7 +15,7 @@ spouts = ['Left', 'Right']
 tones = ['5KHz', '10KHz']
 
 # List of animals that need assigment of pairs
-animals = ['12364', '12846', '34456', '52345', '53455']
+animals = ['524345', '536455', '126846', '122364', '344656']
 
 # Directory and filename for csv with assignments
 directory = 'C:/Users/JoanaCatarino/Joana/test_directory'
