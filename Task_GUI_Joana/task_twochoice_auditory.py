@@ -187,10 +187,17 @@ class TwoChoiceAuditoryTask:
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
+            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
+            self.current_tone = random.choice(['5KHz', '10KHz'])
+            
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
+            
+            # Determine the correct response spout for this tone
+            self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+            print(f"Trial {trial_number}: Playing {self.current_tone} tone. Correct response: {self.correct_spout} spout.")
+
             
             # Initialize trial data
             trial_data = {
