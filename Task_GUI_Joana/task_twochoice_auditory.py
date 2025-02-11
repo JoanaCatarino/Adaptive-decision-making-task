@@ -42,7 +42,7 @@ class TwoChoiceAuditoryTask:
         self.spout_10KHz = None
         
         if self.load_spout_tone_mapping:
-            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10Khz:{self.spout_10KHz}')
+            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
         else:
             print('No spout-tone assignment found')
 
@@ -123,27 +123,25 @@ class TwoChoiceAuditoryTask:
     def load_spout_tone_mapping(self):
         """ Reads the CSV file and assigns the correct spout for each frequency based on the animal ID. """
         
-        # Ensure the file exists
         if not os.path.isfile(self.assignment_file):
             print(f"Error: Assignment file not found at {self.assignment_file}")
-            return False  # Indicate failure
+            return False  
     
-        # Open the CSV file
         with open(self.assignment_file, mode='r', newline='') as file:
-            reader = csv.DictReader(file)  # Use DictReader to access columns by name
+            reader = csv.DictReader(file)
             
             for row in reader:
-                if row['Animal'] == self.animal_id:  # Find the correct animal ID
-                    # Assign the spout mappings
+                row = {key.strip(): value.strip() for key, value in row.items()}  # Clean all spaces
+                
+                if row['Animal'] == self.animal_id:  
                     self.spout_5KHz = row['5KHz']
                     self.spout_10KHz = row['10KHz']
-                    
-                    print(f"Loaded mapping for Animal {self.animal_id}: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
-                    return True  # Success
     
-        # If we reach here, the animal ID was not found
+                    print(f"Loaded mapping: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
+                    return True  
+    
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
-        return False  # Indicate failure
+        return False 
         
     
     
