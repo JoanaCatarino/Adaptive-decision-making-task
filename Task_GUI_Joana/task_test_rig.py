@@ -12,15 +12,144 @@ from the sound_generator file.
 - Functions to flush water are generated here with some components imported from file x
 """
 
-import asyncio
+import threading
 from gpio_map import *
 from gpiozero import LED
 from time import sleep
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
-from qasync import asyncSlot  # Import asyncSlot decorator
 
+class TestRig:
+    def __init__(self, ui):
+        self.ui = ui
+        self.start()
+
+    def start(self):
+        pump_l.on()
+        pump_r.on()
         
+        print('Test rig starting')
+
+        # Disconnect previous connections to prevent multiple triggers
+        self.disconnect_signals()
+
+        # Connect buttons with threaded function calls
+        self.ui.chk_10Tone.clicked.connect(self.play_10KHz)
+        self.ui.chk_5Tone.clicked.connect(self.play_5KHz)
+        self.ui.chk_Punishment.clicked.connect(self.play_white_noise)
+        self.ui.chk_BlueLED.clicked.connect(self.toggle_blue_led)
+        self.ui.chk_WhiteLED_Left.clicked.connect(self.toggle_white_led_left)
+        self.ui.chk_WhiteLED_Right.clicked.connect(self.toggle_white_led_right)
+        self.ui.chk_Reward_left.clicked.connect(self.activate_pump_left)
+        self.ui.chk_Reward_right.clicked.connect(self.activate_pump_right)
+
+    def disconnect_signals(self):
+        """ Ensures no duplicate signal connections """
+        try:
+            self.ui.chk_10Tone.clicked.disconnect()
+            self.ui.chk_5Tone.clicked.disconnect()
+            self.ui.chk_Punishment.clicked.disconnect()
+            self.ui.chk_BlueLED.clicked.disconnect()
+            self.ui.chk_WhiteLED_Left.clicked.disconnect()
+            self.ui.chk_WhiteLED_Right.clicked.disconnect()
+            self.ui.chk_Reward_left.clicked.disconnect()
+            self.ui.chk_Reward_right.clicked.disconnect()
+        except TypeError:
+            pass  # If already disconnected, ignore
+
+    ## --- Sound Functions (Threaded) ---
+    def play_10KHz(self):
+        print("Playing 10KHz Tone")
+        threading.Thread(target=tone_10KHz, daemon=True).start()
+
+    def play_5KHz(self):
+        print("Playing 5KHz Tone")
+        threading.Thread(target=tone_5KHz, daemon=True).start()
+
+    def play_white_noise(self):
+        print("Playing White Noise")
+        threading.Thread(target=white_noise, daemon=True).start()
+
+    ## --- LED Control ---
+    def toggle_blue_led(self):
+        print("Toggling Blue LED")
+        threading.Thread(target=self.blueLED, daemon=True).start()
+
+    def toggle_white_led_left(self):
+        print("Toggling Left White LED")
+        threading.Thread(target=self.whiteLLED, daemon=True).start()
+
+    def toggle_white_led_right(self):
+        print("Toggling Right White LED")
+        threading.Thread(target=self.whiteRLED, daemon=True).start()
+
+    def blueLED(self):
+        led_blue.on()
+        sleep(1)
+        led_blue.off()
+
+    def whiteLLED(self):
+        led_white_l.on()
+        sleep(1)
+        led_white_l.off()
+
+    def whiteRLED(self):
+        led_white_r.on()
+        sleep(1)
+        led_white_r.off()
+
+    ## --- Pump Control ---
+    def activate_pump_left(self):
+        print("Activating Left Pump")
+        threading.Thread(target=self.pumpL, daemon=True).start()
+
+    def activate_pump_right(self):
+        print("Activating Right Pump")
+        threading.Thread(target=self.pumpR, daemon=True).start()
+
+    def pumpL(self):
+        pump_l.off()
+        sleep(0.5)
+        pump_l.on()
+
+    def pumpR(self):
+        pump_r.off()
+        sleep(0.5)
+        pump_r.on()
+
+    ## --- Stop Function ---
+    def stop(self):
+        print('Test rig stopping')
+        self.disconnect_signals()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''        
 class TestRig:
     def __init__(self, ui):
         self.ui = ui
@@ -89,4 +218,4 @@ def pumpR():
     pump_r.off()
     sleep(0.5)
     pump_r.on()
-
+'''
