@@ -20,9 +20,6 @@ from sound_generator import tone_10KHz, tone_5KHz, white_noise
 from form_updt import Ui_TaskGui
 from qasync import asyncSlot  # Import asyncSlot decorator
 
-#from test_leds import start_blinking
-
-
         
 class TestRig:
     def __init__(self, ui):
