@@ -35,7 +35,7 @@ class TwoChoiceAuditoryTask:
         self.animal_id = animal_id
         
         # Path to the csv file containing sound-spout assignments
-        self.assigment_file = '/home/rasppi.ephys/spout_tone/spout_tone_generator.csv'
+        self.assignment_file = '/home/rasppi.ephys/spout_tone/spout_tone_generator.csv'
         
         # Load the spout-tone assignments for this animal
         self.sound_spout_mapping = self.load_spout_tone_mapping()
