@@ -15,6 +15,7 @@ from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
+from sound_generator import tone_10KHz, tone_5KHz, white_noise
 
 
 class TwoChoiceAuditoryTask:
@@ -191,6 +192,9 @@ class TwoChoiceAuditoryTask:
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
             self.current_tone = random.choice(['5KHz', '10KHz'])
             
+            # Play the cue sound
+            self.play_sound(self.current_tone)
+            
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
@@ -257,24 +261,23 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('left',)).start()
+                        if self.correct_spout == 'Left':
+                            threading.Thread(target=self.reward, args=('left',)).start()
                         
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['left_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['left_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
                         
-                        self.append_trial_to_csv(self.trials[-1])
+                            self.append_trial_to_csv(self.trials[-1])
     
-                        self.total_licks += 1
-                        self.licks_left += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_left(self.licks_left)
+                            self.total_licks += 1
+                            self.licks_left += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_left(self.licks_left)
+                        else:
+                            print(f'Incorrect choice: licked left, but correct was {self.correct_spout}')
                         
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-    
         # Right piezo        
         if p2:
             latest_value2 = p2[-1]
@@ -289,24 +292,24 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('right',)).start()
+                        if self.correct_spout == 'Right':
+                            threading.Thread(target=self.reward, args=('right',)).start()
+                            
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['right_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
+                            
+                            self.append_trial_to_csv(self.trials[-1])
+        
+                            self.total_licks += 1
+                            self.licks_right += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_right(self.licks_right)
+                        else:
+                            print(f'Incorrect choice: licked right, but correct was {self.correct_spout}')
                         
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['right_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
                         
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-    
     
     def reward(self, side):
         
@@ -346,6 +349,18 @@ class TwoChoiceAuditoryTask:
                     
             # Run lick detection continuously
             self.detect_licks()
+            
+    def play_sound(self, frequency):
+        """Plays a sound cue (5KHz or 10KHz) using the predefined tone functions."""
+        
+        if frequency == "5KHz":
+            print("Playing 5KHz tone...")
+            tone_5KHz()  # Calls your function
+        elif frequency == "10KHz":
+            print("Playing 10KHz tone...")
+            tone_10KHz()  # Calls your function
+        else:
+            print(f"Unknown frequency: {frequency}")
             
             
     def append_trial_to_csv(self, trial_data):
