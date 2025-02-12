@@ -263,6 +263,8 @@ class TwoChoiceAuditoryTask:
         
     
     def detect_licks_during_waiting_window(self):
+        
+        start_time = time.time()
     
         while time.time() - start_time < self.WW:  # Waiting Window duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
