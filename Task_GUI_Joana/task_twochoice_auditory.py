@@ -252,7 +252,7 @@ class TwoChoiceAuditoryTask:
     def manage_light(self):
         led_blue.on()
         while self.trialstarted:
-        time.sleep(0.001)
+            time.sleep(0.001)
         led_blue.off()
         
     
@@ -386,8 +386,7 @@ class TwoChoiceAuditoryTask:
             # Run lick detection continuously
             self.detect_licks()
             
-            
-            
+                      
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
         file_exists = os.path.isfile(self.file_path)
