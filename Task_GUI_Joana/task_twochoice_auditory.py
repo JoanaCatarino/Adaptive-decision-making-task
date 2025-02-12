@@ -51,12 +51,11 @@ class TwoChoiceAuditoryTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 0.1 # Inter-trial interval in seconds
-        self.RW = 1 # Response window in seconds
+        self.RW = 1.5 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
         self.WW = 1 # Waiting Window - animals can't lick in order to receive the cue
-        self.cue_time = 0.2 # Cue presented during 200 ms
         
         # Counters
         self.total_trials = 0
@@ -181,7 +180,7 @@ class TwoChoiceAuditoryTask:
      
     def start_trial(self):
         
-        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        """ Initiates a trial following the correct structure """
         
         with self.lock:
             self.trialstarted = True
@@ -192,17 +191,40 @@ class TwoChoiceAuditoryTask:
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
             self.current_tone = random.choice(['5KHz', '10KHz'])
             
-            # Play the cue sound
-            self.play_sound(self.current_tone)
-            
-            # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
-            
             # Determine the correct response spout for this tone
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print(f"Trial {trial_number}: Playing {self.current_tone} tone. Correct response: {self.correct_spout} spout.")
+            
+            print(f'Trial {trial_number} started')
 
+            # 1. Start light thread
+            self.light_thread = threading.Thread(target=self.manage_light)
+            self.light_thread.start()
+            
+            # 2. Waiting Window - No licking allowed
+            time.sleep(0.001) # small delay to ensure light turns on before checking
+            if self.detect_licks_during_waiting_window():
+                print(f'Trial{trial_number} aborted: licks in waiting window')
+                self.light_off()
+                return # abort trial and reset
+            
+            # 3. Play the sound cue and open response window
+            print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
+            self.play_sound(self.current_tone)
+            self.detect_licks()
+            
+            # 4. Determine Trial outcome
+            if self.first_lick:
+                if self.first_lick == self.correct_spout:
+                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
+                    self.reward(self.first_lick)
+                else:
+                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
+                    self.play_sound('white_noise') # Punishment
+                    
+            self.light_off() # Turn off the light
+            print(f'Trial {trial_number} ended')
+            self.trialstarted = False
+                       
             
             # Initialize trial data
             trial_data = {
@@ -227,13 +249,17 @@ class TwoChoiceAuditoryTask:
             self.append_trial_to_csv(trial_data)
             
     
-    def led_indicator(self, RW):
+    def manage_light(self):
+        led_blue.on()
+        while self.trialstarted:
+        time.sleep(0.001)
+        led_blue.off()
         
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_white_l.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_white_l.off()
+    
+    def light_off(self):
+        self.trialstarted = False
+        time.sleep(0.001)
+        led_blue.off()
         
         
     def detect_licks(self):
@@ -318,7 +344,7 @@ class TwoChoiceAuditoryTask:
         print(f"Delivering reward - {side}")
     
         # Ensure pump action executes properly with a short delay
-        time.sleep(0.01)
+        #time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
@@ -332,9 +358,19 @@ class TwoChoiceAuditoryTask:
             pump_r.on()
             print('Reward delivered - right')
     
-        # Small delay to ensure execution before another lick
-        #time.sleep(0.01)
-    
+
+    def play_sound(self, frequency):
+        """Plays a sound cue (5KHz or 10KHz) using the predefined tone functions."""
+        
+        if frequency == "5KHz":
+            print("Playing 5KHz tone...")
+            tone_5KHz()  # Calls your function
+        elif frequency == "10KHz":
+            print("Playing 10KHz tone...")
+            tone_10KHz()  # Calls your function
+        elif frequency == 'white_noise':
+            white_noise()
+            
         
     def main(self):
         
@@ -350,17 +386,6 @@ class TwoChoiceAuditoryTask:
             # Run lick detection continuously
             self.detect_licks()
             
-    def play_sound(self, frequency):
-        """Plays a sound cue (5KHz or 10KHz) using the predefined tone functions."""
-        
-        if frequency == "5KHz":
-            print("Playing 5KHz tone...")
-            tone_5KHz()  # Calls your function
-        elif frequency == "10KHz":
-            print("Playing 10KHz tone...")
-            tone_10KHz()  # Calls your function
-        else:
-            print(f"Unknown frequency: {frequency}")
             
             
     def append_trial_to_csv(self, trial_data):
