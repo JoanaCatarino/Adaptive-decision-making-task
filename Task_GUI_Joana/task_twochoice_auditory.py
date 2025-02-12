@@ -210,15 +210,7 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound cue and open response window
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
             self.play_sound(self.current_tone)
-            
-            # 4. Open the response window and monitor licks
-            RW_start = time.time()
-            
-            while time.time() - RW_start < self.RW:
-                self.detect_licks()
-                
-                if self.first_lick:
-                    break
+        
             
             # 5. Determine Trial outcome
             if self.first_lick is None:
