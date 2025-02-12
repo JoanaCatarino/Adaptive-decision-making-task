@@ -220,6 +220,7 @@ class TwoChoiceAuditoryTask:
                 else:
                     print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
                     self.play_sound('white_noise') # Punishment
+                    time.sleep(2)
                     
             self.light_off() # Turn off the light
             print(f'Trial {trial_number} ended')
