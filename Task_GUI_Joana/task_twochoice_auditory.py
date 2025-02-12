@@ -209,40 +209,18 @@ class TwoChoiceAuditoryTask:
             
             # 3. Play the sound cue and open response window
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
-            sound_thread = threading.Thread(target=self.play_sound, args=(self.current_tone,))
-            sound_thread.start()
-            sound_thread.join() 
+            self.play_sound(self.current_tone)
+            self.detect_licks()
             
-            # 4. Start detecting licks
-            self.lick_thread = threading.Thread(target=self.detect_licks)
-            self.lick_thread.start()
-            
-            # 5. Open response window
-            response_window_start = time.time()
-
-            while time.time() - response_window_start < self.RW:
-                if self.first_lick:  
-                    break
-                time.sleep(0.01)  
-
-            self.lick_thread.join()
-            
-            # 6. Determine Trial outcome
-            if self.first_lick is None:
-                print(f"Trial {trial_number}: No response detected. Ending trial.")
-            elif self.first_lick == self.correct_spout:
-                print(f"Trial {trial_number}: Correct choice! Delivering reward")
-                reward_thread = threading.Thread(target=self.reward, args=(self.first_lick,))
-                reward_thread.start()
-                reward_thread.join()
-            else:
-                print(f"Trial {trial_number}: Incorrect choice! Delivering punishment")
-                punishment_thread = threading.Thread(target=self.play_sound, args=("white_noise",))
-                punishment_thread.start()
-                punishment_thread.join()
-                time.sleep(2) 
+            # 4. Determine Trial outcome
+            if self.first_lick:
+                if self.first_lick == self.correct_spout:
+                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
+                    self.reward(self.first_lick)
+                else:
+                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
+                    self.play_sound('white_noise') # Punishment
                     
-                
             self.light_off() # Turn off the light
             print(f'Trial {trial_number} ended')
             self.trialstarted = False
