@@ -56,6 +56,9 @@ class TwoChoiceAuditoryTask:
         self.total_licks = 0
         self.licks_left = 0
         self.licks_right = 0
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
         
         # Booleans
         self.trialstarted = False
@@ -87,11 +90,18 @@ class TwoChoiceAuditoryTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
         
         # Update GUI display
+        self.gui_controls.update_total_trials(0)
         self.gui_controls.update_total_licks(0)
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
+        self.gui_controls.update_correct_trials(0)
+        self.gui_controls.update_incorrect_trials(0)
+        self.gui_controls.update_early_licks(0)
         
         # Reset the performance plot
         self.gui_controls.lick_plot.reset_plot() # plot main tab
@@ -200,6 +210,8 @@ class TwoChoiceAuditoryTask:
                     print("Lick detected during Waiting Window - Aborting trial")
                     led_blue.off()
                     self.trialstarted = False
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_trials)
                     return 
             
             # 3. Play the sound 
@@ -220,9 +232,13 @@ class TwoChoiceAuditoryTask:
                 if self.first_lick.lower() == self.correct_spout.lower():
                     print(f'Trial {trial_number}: Correct choice! Delivering reward')
                     self.reward(self.first_lick)
+                    self.correct_trials += 1
+                    self.gui_controls.update_correct_trials(self.correct_trials)
                 else:
                     print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
                     self.play_sound('white_noise') # Punishment
+                    self.incorrect_trials += 1
+                    self.gui_controls.update_incorrect_trials(self.incorrect_trials)
             else:
                 print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
                     

@@ -424,7 +424,19 @@ class GuiControls:
         
     def update_total_trials(self, total_trials):
         self.ui.box_TotalTrials.setText(f'{total_trials}')
-        self.ui.OV_box_TotalTrials.setText(f'{total_trials}')        
+        self.ui.OV_box_TotalTrials.setText(f'{total_trials}') 
+        
+    def update_correct_trials(self, correct_trials):
+        self.ui.box_CorrectTrials.setText(f'{correct_trials}')
+        self.ui.OV_box_CorrectTrials.setText(f'{correct_trials}')     
+        
+    def update_incorrect_trials(self, incorrect_trials):
+        self.ui.box_IncorrectTrials.setText(f'{incorrect_trials}')
+        self.ui.OV_box_IncorrectTrials.setText(f'{incorrect_trials}')     
+        
+    def update_early_licks(self, early_licks):
+        self.ui.box_EarlyLicks.setText(f'{early_trials}')
+            
     
 
     def update_task_params(self):
