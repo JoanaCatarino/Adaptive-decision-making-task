@@ -286,9 +286,7 @@ class TwoChoiceAuditoryTask:
         # Ensure piezo data is updated before checking
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
-    
-        if p1
-    
+ 
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
