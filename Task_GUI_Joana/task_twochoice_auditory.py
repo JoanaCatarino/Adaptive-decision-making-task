@@ -266,9 +266,8 @@ class TwoChoiceAuditoryTask:
         
     
     def light_off(self):
-        self.trialstarted = False
-        time.sleep(0.001)
         led_blue.off()
+        self.trialstarted = False
         
     
     def detect_licks_during_waiting_window(self):
