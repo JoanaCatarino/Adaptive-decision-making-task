@@ -228,15 +228,23 @@ class TwoChoiceAuditoryTask:
                     
             
             # 5. Determine Trial outcome
-            if self.first_lick:
-                if self.first_lick == self.correct_spout:
-                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
+            if first_lick:
+                print(f"DEBUG: First lick detected on {self.first_lick} spout.")
+    
+                # Normalize values for comparison
+                correct_spout_normalized = str(self.correct_spout).strip().lower()
+                first_lick_normalized = str(self.first_lick).strip().lower()
+    
+                print(f"DEBUG: Correct Spout -> {correct_spout_normalized}, First Lick -> {first_lick_normalized}")
+    
+                if first_lick_normalized == correct_spout_normalized:
+                    print(f'Trial {trial_number}: ✅ Correct choice! Rewarding {correct_spout_normalized} spout')
                     self.reward(self.first_lick)
                     self.correct_trials += 1
                     self.gui_controls.update_correct_trials(self.correct_trials)
                 else:
-                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
-                    self.play_sound('white_noise') # Punishment
+                    print(f'Trial {trial_number}: ❌ Incorrect choice! Playing white noise punishment.')
+                    self.play_sound('white_noise')  
                     self.incorrect_trials += 1
                     self.gui_controls.update_incorrect_trials(self.incorrect_trials)
             else:
