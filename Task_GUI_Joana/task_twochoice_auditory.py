@@ -210,23 +210,16 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound cue and open response window
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
             self.play_sound(self.current_tone)
+            self.detect_licks()
             
-            # RESPONSE WINDOW: Wait for a lick or timeout
-            trial_start_time = time.time()
-            while time.time() - trial_start_time < self.RW:
-                self.detect_licks()
-                if self.first_lick:
-                    break  # Stop waiting early if a lick is detected
-    
-            # AFTER RESPONSE WINDOW: Handle trial outcome
+            # 4. Determine Trial outcome
             if self.first_lick:
                 if self.first_lick == self.correct_spout:
-                    print(f'Trial {trial_number}: Correct choice! Rewarding.')
+                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
                     self.reward(self.first_lick)
                 else:
-                    print(f'Trial {trial_number}: Incorrect choice! Playing punishment sound.')
-                    self.play_sound('white_noise')
-                    time.sleep(2)  # Allow punishment duration
+                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
+                    self.play_sound('white_noise') # Punishment
             else:
                 print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
                     
