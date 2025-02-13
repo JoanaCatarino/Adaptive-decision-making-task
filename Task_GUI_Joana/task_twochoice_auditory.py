@@ -229,28 +229,19 @@ class TwoChoiceAuditoryTask:
             
             # 5. Determine Trial outcome
             if self.first_lick:
-                print(f"First lick detected on {self.first_lick} spout.")
-
-                # ✅ Normalize values for comparison
-                correct_spout_normalized = self.correct_spout.strip().lower()
-                first_lick_normalized = self.first_lick.strip().lower()
-    
-                if first_lick_normalized == correct_spout_normalized:
-                    print(f'Trial {trial_number}: Correct choice! Rewarding ONLY {correct_spout_normalized} spout')
-                    self.reward(correct_spout_normalized)
+                if self.first_lick == self.correct_spout:
+                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
                     self.reward(self.first_lick)
                     self.correct_trials += 1
                     self.gui_controls.update_correct_trials(self.correct_trials)
                 else:
-                    print(f'Trial {trial_number}: Incorrect choice! Playing white noise punishment.')
-                    self.play_sound('white_noise')  # Punishment
+                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
                     self.play_sound('white_noise') # Punishment
                     self.incorrect_trials += 1
                     self.gui_controls.update_incorrect_trials(self.incorrect_trials)
             else:
                 print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
-            
-            
+                    
             
             # 6. Turn off the light
             led_blue.off()
@@ -323,11 +314,11 @@ class TwoChoiceAuditoryTask:
                     print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
-                        self.first_lick = 'left'
+                        self.first_lick = 'Left'
                         self.tlick = self.tlick_l
     
                         if self.correct_spout == 'Left':
-                            threading.Thread(target=self.reward, args=('left',)).start()
+                            threading.Thread(target=self.reward, args=('Left',)).start()
                         
                             # Update trial data
                             self.trials[-1]['lick'] = 1
@@ -354,11 +345,11 @@ class TwoChoiceAuditoryTask:
                     print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
-                        self.first_lick = 'right'
+                        self.first_lick = 'Right'
                         self.tlick = self.tlick_r
     
                         if self.correct_spout == 'Right':
-                            threading.Thread(target=self.reward, args=('right',)).start()
+                            threading.Thread(target=self.reward, args=('Right',)).start()
                             
                             # Update trial data
                             self.trials[-1]['lick'] = 1
@@ -380,13 +371,13 @@ class TwoChoiceAuditoryTask:
         
         print(f"Delivering reward - {side}")
     
-        if side == 'left':
+        if side == 'Left':
             pump_l.off()
             time.sleep(self.valve_opening)
             pump_l.on()
             print('Reward delivered - left')
             
-        elif side == 'right':
+        elif side == 'Right':
             pump_r.off()
             time.sleep(self.valve_opening)
             pump_r.on()
