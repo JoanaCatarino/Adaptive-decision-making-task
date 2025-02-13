@@ -435,7 +435,7 @@ class GuiControls:
         self.ui.OV_box_IncorrectTrials.setText(f'{incorrect_trials}')     
         
     def update_early_licks(self, early_licks):
-        self.ui.box_EarlyLicks.setText(f'{early_trials}')
+        self.ui.box_EarlyLicks.setText(f'{early_licks}')
             
     
 
