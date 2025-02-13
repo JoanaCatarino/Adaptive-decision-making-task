@@ -36,17 +36,11 @@ class TwoChoiceAuditoryTask:
         # Get the selected Animal ID from the GUI dropdown
         self.animal_id = str(self.gui_controls.ui.ddm_Animal_ID.currentText()).strip()
         
-        # Path to the csv file containing sound-spout assignments
+        # Load the animal-specific spout-tone mapping
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
-        
-        # Default values in case mapping fails
         self.spout_5KHz = None
         self.spout_10KHz = None
-        
-        if self.load_spout_tone_mapping():
-            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
-        else:
-            print('No spout-tone assignment found')
+        self.load_spout_tone_mapping()
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -197,22 +191,31 @@ class TwoChoiceAuditoryTask:
             print(f'Trial {trial_number} started')
 
             # 1. Start light thread
-            self.light_thread = threading.Thread(target=self.manage_light)
-            self.light_thread.start()
+            led_blue.on()
             
             # 2. Waiting Window - No licking allowed
-            time.sleep(0.001) # small delay to ensure light turns on before checking
-            if self.detect_licks_during_waiting_window():
-                print(f'Trial{trial_number} aborted: licks in waiting window')
-                self.light_off()
-                return # abort trial and reset
+            start_WW = self.t
+            while self.t - start_WW < self.WW:
+                if self.detect_licks_during_waiting_window():
+                    print("Lick detected during Waiting Window - Aborting trial")
+                    led_blue.off()
+                    self.trialstarted = False
+                    return 
             
-            # 3. Play the sound cue and open response window
+            # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
             self.play_sound(self.current_tone)
-            self.detect_licks()
+            start_RW = self.t
+
             
-            # 4. Determine Trial outcome
+            # 4. Response Window
+            while self.t - start_RW < self.RW:
+                self.detect_licks()
+                if self.first_lick:
+                    break
+                    
+            
+            # 5. Determine Trial outcome
             if self.first_lick:
                 if self.first_lick == self.correct_spout:
                     print(f'Trial {trial_number}: Correct choice! Delivering reward')
@@ -223,9 +226,11 @@ class TwoChoiceAuditoryTask:
             else:
                 print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
                     
-            self.light_off() # Turn off the light
-            print(f'Trial {trial_number} ended')
+            
+            # 6. Turn off the light
+            led_blue.off()
             self.trialstarted = False
+            print(f'Trial {trial_number} ended')
                        
             
             # Initialize trial data
@@ -249,25 +254,13 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
-            
-    
-    def manage_light(self):
-        led_blue.on()
-        while self.trialstarted:
-            time.sleep(0.001)
-        led_blue.off()
-        
-    
-    def light_off(self):
-        led_blue.off()
-        self.trialstarted = False
         
     
     def detect_licks_during_waiting_window(self):
         
-        start_time = time.time()
+        start_time = self.t
     
-        while time.time() - start_time < self.WW:  # Waiting Window duration
+        while self.t - start_time < self.WW:  # Waiting Window duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
@@ -294,8 +287,7 @@ class TwoChoiceAuditoryTask:
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
     
-        # Small delay to prevent CPU overload and stabilize readings
-        time.sleep(0.001)
+        if p1
     
         # Left piezo
         if p1:
@@ -363,12 +355,7 @@ class TwoChoiceAuditoryTask:
     
     def reward(self, side):
         
-        """Delivers a reward without blocking the main loop."""
-        
         print(f"Delivering reward - {side}")
-    
-        # Ensure pump action executes properly with a short delay
-        #time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
@@ -384,7 +371,6 @@ class TwoChoiceAuditoryTask:
     
 
     def play_sound(self, frequency):
-        """Plays a sound cue (5KHz or 10KHz) using the predefined tone functions."""
         
         if frequency == "5KHz":
             print("Playing 5KHz tone...")
@@ -401,14 +387,15 @@ class TwoChoiceAuditoryTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
-           
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
                     
-            # Run lick detection continuously
+            # Continuously check for licks
             self.detect_licks()
+                    
+    
             
                       
     def append_trial_to_csv(self, trial_data):
