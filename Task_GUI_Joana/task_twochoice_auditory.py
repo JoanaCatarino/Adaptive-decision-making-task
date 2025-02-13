@@ -194,8 +194,8 @@ class TwoChoiceAuditoryTask:
             led_blue.on()
             
             # 2. Waiting Window - No licking allowed
-            start_WW = self.t
-            while self.t - start_WW < self.WW:
+            start_WW = time.time()
+            while time.time() - start_WW < self.WW:
                 if self.detect_licks_during_waiting_window():
                     print("Lick detected during Waiting Window - Aborting trial")
                     led_blue.off()
@@ -205,11 +205,11 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
             self.play_sound(self.current_tone)
-            start_RW = self.t
+            start_RW = time.time()
 
             
             # 4. Response Window
-            while self.t - start_RW < self.RW:
+            while time.time() - start_RW < self.RW:
                 self.detect_licks()
                 if self.first_lick:
                     break
@@ -258,9 +258,9 @@ class TwoChoiceAuditoryTask:
     
     def detect_licks_during_waiting_window(self):
         
-        start_time = self.t
+        start_time = time.time()
     
-        while self.t - start_time < self.WW:  # Waiting Window duration
+        while time.time() - start_time < self.WW:  # Waiting Window duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
