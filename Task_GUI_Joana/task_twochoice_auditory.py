@@ -194,8 +194,6 @@ class TwoChoiceAuditoryTask:
             sound_thread = threading.Thread(target=self.play_sound, args=(self.current_tone,))
             sound_thread.start()
             
-            # Turn blue led OFF at the end of the trial
-            led_blue.off()
             
             # Initialize trial data
             trial_data = {
@@ -354,6 +352,11 @@ class TwoChoiceAuditoryTask:
                     
             # Run lick detection continuously
             self.detect_licks()
+            
+            # Turn led off at the end of the trial
+            if self.ttrial is not None and (self.t - self.ttrial > self.RW):
+            led_blue.off()
+            print(f"LED-Blue OFF at t: {self.t:.2f} sec (End of Trial {self.total_trials})")
             
             
     def append_trial_to_csv(self, trial_data):
