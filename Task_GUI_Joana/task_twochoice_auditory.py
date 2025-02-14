@@ -197,10 +197,7 @@ class TwoChoiceAuditoryTask:
                     print("Lick detected during Waiting Window - Aborting trial")
                     led_blue.off()
                     self.trialstarted = False
-                    self.early_licks += 1
-                    self.gui_controls.update_early_licks(self.early_licks)
                     return 
-            
             
             # 3. Play the selected sound in a separate thread
             sound_thread = threading.Thread(target=self.play_sound, args=(self.current_tone,))
