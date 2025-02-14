@@ -40,12 +40,8 @@ class TwoChoiceAuditoryTask:
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
         self.spout_5KHz = None
         self.spout_10KHz = None
+        self.load_spout_tone_mapping():
         
-        if self.load_spout_tone_mapping():
-            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
-        else:
-            print('No spout-tone assignment found')
-
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 0.1 # Inter-trial interval in seconds
@@ -135,6 +131,7 @@ class TwoChoiceAuditoryTask:
                 if row['Animal'] == self.animal_id:  
                     self.spout_5KHz = row['5KHz']
                     self.spout_10KHz = row['10KHz']
+                    print(f'For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
                     return True  
     
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
