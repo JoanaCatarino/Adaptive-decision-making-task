@@ -36,26 +36,29 @@ class TwoChoiceAuditoryTask:
         # Get the selected Animal ID from the GUI dropdown
         self.animal_id = str(self.gui_controls.ui.ddm_Animal_ID.currentText()).strip()
         
-        # Get animal-specific sound-spout assignments
+        # Load the animal-specific spout-tone mapping
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
         self.spout_5KHz = None
         self.spout_10KHz = None
         self.load_spout_tone_mapping()
-        
+
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 0.1 # Inter-trial interval in seconds
-        self.RW = 1 # Response window in seconds
+        self.RW = 1.5 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
-        self.valve_opening = 0.2  # Reward duration  
-        self.WW = 1 # Waiting time period before the sound cue - animals cannot lick
+        self.valve_opening = 0.2  # Reward duration   
+        self.WW = 1 # Waiting Window - animals can't lick in order to receive the cue
         
         # Counters
         self.total_trials = 0
         self.total_licks = 0
         self.licks_left = 0
         self.licks_right = 0
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
         
         # Booleans
         self.trialstarted = False
@@ -87,11 +90,18 @@ class TwoChoiceAuditoryTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
         
         # Update GUI display
+        self.gui_controls.update_total_trials(0)
         self.gui_controls.update_total_licks(0)
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
+        self.gui_controls.update_correct_trials(0)
+        self.gui_controls.update_incorrect_trials(0)
+        self.gui_controls.update_early_licks(0)
         
         # Reset the performance plot
         self.gui_controls.lick_plot.reset_plot() # plot main tab
@@ -114,7 +124,7 @@ class TwoChoiceAuditoryTask:
             self.print_thread.join()
         pump_l.on() 
         
-        
+    
     def load_spout_tone_mapping(self):
         """ Reads the CSV file and assigns the correct spout for each frequency based on the animal ID. """
         
@@ -131,12 +141,14 @@ class TwoChoiceAuditoryTask:
                 if row['Animal'] == self.animal_id:  
                     self.spout_5KHz = row['5KHz']
                     self.spout_10KHz = row['10KHz']
-                    print(f'For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
+    
+                    print(f"Loaded mapping: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
                     return True  
     
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
-        return False
+        return False 
         
+    
     
     def check_animal_quiet(self):
         
@@ -172,7 +184,7 @@ class TwoChoiceAuditoryTask:
      
     def start_trial(self):
         
-        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        """ Initiates a trial following the correct structure """
         
         with self.lock:
             self.trialstarted = True
@@ -180,15 +192,16 @@ class TwoChoiceAuditoryTask:
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
-            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and the correct spout
+            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
             self.current_tone = random.choice(['5KHz', '10KHz'])
+            
+            # Determine the correct response spout for this tone
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print(f"Trial {trial_number}: Playing {self.current_tone} tone. Correct response: {self.correct_spout} spout.")
             
-            # 1. Turn blue led ON in the beginning of the trial
+            print(f'Trial {trial_number} started')
+
+            # 1. Start light thread
             led_blue.on()
-            
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
             # 2. Waiting Window - No licking allowed
             start_WW = time.time()
@@ -197,12 +210,44 @@ class TwoChoiceAuditoryTask:
                     print("Lick detected during Waiting Window - Aborting trial")
                     led_blue.off()
                     self.trialstarted = False
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_trials)
                     return 
             
-            # 3. Play the selected sound in a separate thread
-            sound_thread = threading.Thread(target=self.play_sound, args=(self.current_tone,))
-            sound_thread.start()
+            # 3. Play the sound 
+            print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
+            self.play_sound(self.current_tone)
+            start_RW = time.time()
+
             
+            # 4. Response Window
+            while time.time() - start_RW < self.RW:
+                self.detect_licks()
+                if self.first_lick:
+                    break
+                    
+            
+            # 5. Determine Trial outcome
+            if self.first_lick:
+                if self.first_lick == self.correct_spout:
+                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
+                    self.reward(self.first_lick)
+                    self.correct_trials += 1
+                    self.gui_controls.update_correct_trials(self.correct_trials)
+                else:
+                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
+                    self.play_sound('white_noise') # Punishment
+                    self.incorrect_trials += 1
+                    self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+            else:
+                print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
+                    
+            
+            # 6. Turn off the light
+            led_blue.off()
+            self.trialstarted = False
+            print(f'Trial {trial_number} ended')
+                       
             
             # Initialize trial data
             trial_data = {
@@ -247,9 +292,8 @@ class TwoChoiceAuditoryTask:
             time.sleep(0.001)  # Small delay to prevent CPU overload
         
         return False  # No licks detected, trial can proceed
-    
-    
-    
+
+        
         
     def detect_licks(self):
     
@@ -258,10 +302,7 @@ class TwoChoiceAuditoryTask:
         # Ensure piezo data is updated before checking
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
-    
-        # Small delay to prevent CPU overload and stabilize readings
-        time.sleep(0.001)
-    
+ 
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
@@ -276,28 +317,23 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
     
-                        # Check if this was the correct spout
                         if self.correct_spout == 'left':
                             threading.Thread(target=self.reward, args=('left',)).start()
-                            print("Correct lick! Rewarding left spout.")
+                        
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['left_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
+                        
+                            self.append_trial_to_csv(self.trials[-1])
+    
+                            self.total_licks += 1
+                            self.licks_left += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_left(self.licks_left)
                         else:
-                            print("Incorrect lick. No reward.")
-
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['left_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
+                            print(f'Incorrect choice: licked left, but correct was {self.correct_spout}')
                         
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                        self.total_licks += 1
-                        self.licks_left += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_left(self.licks_left)
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-    
         # Right piezo        
         if p2:
             latest_value2 = p2[-1]
@@ -312,38 +348,28 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
     
-                        # Check if this was the correct spout
                         if self.correct_spout == 'right':
                             threading.Thread(target=self.reward, args=('right',)).start()
-                            print("Correct lick! Rewarding right spout.")
+                            
+                            # Update trial data
+                            self.trials[-1]['lick'] = 1
+                            self.trials[-1]['right_spout'] = 1
+                            self.trials[-1]['lick_time'] = self.tlick
+                            
+                            self.append_trial_to_csv(self.trials[-1])
+        
+                            self.total_licks += 1
+                            self.licks_right += 1
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_right(self.licks_right)
                         else:
-                            print("Incorrect lick. No reward.")
-                            
-                            
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['right_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
+                            print(f'Incorrect choice: licked right, but correct was {self.correct_spout}')
                         
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
                         
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-    
     
     def reward(self, side):
         
-        """Delivers a reward without blocking the main loop."""
-        
         print(f"Delivering reward - {side}")
-    
-        # Ensure pump action executes properly with a short delay
-        time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
@@ -357,40 +383,35 @@ class TwoChoiceAuditoryTask:
             pump_r.on()
             print('Reward delivered - right')
     
-    
-    def play_sound(self, tone):
-        """Plays the selected auditory cue (5KHz, 10KHz, or white noise)."""
+
+    def play_sound(self, frequency):
         
-        print(f"Playing {tone} tone...")
-    
-        if tone == "5KHz":
-            tone_5KHz()
-        elif tone == "10KHz":
-            tone_10KHz()
-        else:
-            print("Error: Unknown tone type")
-        
+        if frequency == "5KHz":
+            print("Playing 5KHz tone...")
+            tone_5KHz()  # Calls your function
+        elif frequency == "10KHz":
+            print("Playing 10KHz tone...")
+            tone_10KHz()  # Calls your function
+        elif frequency == 'white_noise':
+            white_noise()
+            
         
     def main(self):
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
-           
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
                     
-            # Run lick detection continuously
+            # Continuously check for licks
             self.detect_licks()
+                    
+    
             
-            # Turn led off at the end of the trial
-            if self.ttrial is not None and (self.t - self.ttrial > self.RW):
-                led_blue.off()
-                print(f"LED-Blue OFF at t: {self.t:.2f} sec (End of Trial {self.total_trials})")
-            
-            
+                      
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
         file_exists = os.path.isfile(self.file_path)
