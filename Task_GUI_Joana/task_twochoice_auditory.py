@@ -40,7 +40,7 @@ class TwoChoiceAuditoryTask:
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
         self.spout_5KHz = None
         self.spout_10KHz = None
-        self.load_spout_tone_mapping():
+        self.load_spout_tone_mapping()
         
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
