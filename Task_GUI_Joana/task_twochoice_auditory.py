@@ -10,6 +10,7 @@ import numpy as np
 import time
 import csv
 import os
+import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
@@ -118,6 +119,29 @@ class TwoChoiceAuditoryTask:
         pump_l.on() 
         
         
+    def load_spout_tone_mapping(self):
+        """ Reads the CSV file and assigns the correct spout for each frequency based on the animal ID. """
+        
+        if not os.path.isfile(self.assignment_file):
+            print(f"Error: Assignment file not found at {self.assignment_file}")
+            return False  
+    
+        with open(self.assignment_file, mode='r', newline='') as file:
+            reader = csv.DictReader(file)
+            
+            for row in reader:
+                row = {key.strip(): value.strip() for key, value in row.items()}  # Clean all spaces
+                
+                if row['Animal'] == self.animal_id:  
+                    self.spout_5KHz = row['5KHz']
+                    self.spout_10KHz = row['10KHz']
+    
+                    print(f"Loaded mapping: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
+                    return True  
+    
+        print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
+        return False
+        
     
     def check_animal_quiet(self):
         
@@ -160,6 +184,11 @@ class TwoChoiceAuditoryTask:
             trial_number= self.total_trials +1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            
+            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and the correct spout
+            self.current_tone = random.choice(['5KHz', '10KHz'])
+            self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+            print(f"Trial {trial_number}: Playing {self.current_tone} tone. Correct response: {self.correct_spout} spout.")
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
