@@ -190,7 +190,9 @@ class TwoChoiceAuditoryTask:
             
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
             
-            
+            # **Play the selected sound in a separate thread**
+            sound_thread = threading.Thread(target=self.play_sound, args=(self.current_tone,))
+            sound_thread.start()
             
             # Turn blue led OFF at the end of the trial
             led_blue.off()
@@ -216,15 +218,7 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
-            
-    
-    def led_indicator(self, RW):
         
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_blue.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_blue.off()
         
         
     def detect_licks(self):
@@ -252,9 +246,13 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('left',)).start()
-                        
+                        # Check if this was the correct spout
+                        if self.correct_spout == 'left':
+                            threading.Thread(target=self.reward, args=('left',)).start()
+                            print("Correct lick! Rewarding left spout.")
+                        else:
+                            print("Incorrect lick. No reward.")
+
                         # Update trial data
                         self.trials[-1]['lick'] = 1
                         self.trials[-1]['left_spout'] = 1
@@ -284,9 +282,14 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('right',)).start()
-                        
+                        # Check if this was the correct spout
+                        if self.correct_spout == 'right':
+                            threading.Thread(target=self.reward, args=('right',)).start()
+                            print("Correct lick! Rewarding right spout.")
+                        else:
+                            print("Incorrect lick. No reward.")
+                            
+                            
                         # Update trial data
                         self.trials[-1]['lick'] = 1
                         self.trials[-1]['right_spout'] = 1
@@ -324,9 +327,19 @@ class TwoChoiceAuditoryTask:
             pump_r.on()
             print('Reward delivered - right')
     
-        # Small delay to ensure execution before another lick
-        #time.sleep(0.01)
     
+    def play_sound(self, tone):
+        """Plays the selected auditory cue (5KHz, 10KHz, or white noise)."""
+        
+        print(f"Playing {tone} tone...")
+    
+        if tone == "5KHz":
+            tone_5KHz.play()
+        elif tone == "10KHz":
+            tone_10KHz.play()
+        else:
+            print("Error: Unknown tone type")
+        
         
     def main(self):
         
