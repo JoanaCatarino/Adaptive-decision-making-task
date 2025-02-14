@@ -41,10 +41,10 @@ class TwoChoiceAuditoryTask:
         self.spout_5KHz = None
         self.spout_10KHz = None
         
-        #if self.load_spout_tone_mapping():
-            #print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
-        #else:
-            #print('No spout-tone assignment found')
+        if self.load_spout_tone_mapping():
+            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
+        else:
+            print('No spout-tone assignment found')
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -135,8 +135,6 @@ class TwoChoiceAuditoryTask:
                 if row['Animal'] == self.animal_id:  
                     self.spout_5KHz = row['5KHz']
                     self.spout_10KHz = row['10KHz']
-    
-                    print(f"Loaded mapping: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
                     return True  
     
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
