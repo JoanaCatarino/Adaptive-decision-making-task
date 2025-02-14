@@ -355,8 +355,8 @@ class TwoChoiceAuditoryTask:
             
             # Turn led off at the end of the trial
             if self.ttrial is not None and (self.t - self.ttrial > self.RW):
-            led_blue.off()
-            print(f"LED-Blue OFF at t: {self.t:.2f} sec (End of Trial {self.total_trials})")
+                led_blue.off()
+                print(f"LED-Blue OFF at t: {self.t:.2f} sec (End of Trial {self.total_trials})")
             
             
     def append_trial_to_csv(self, trial_data):
