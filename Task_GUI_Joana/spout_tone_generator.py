@@ -11,7 +11,7 @@ import random
 from collections import Counter
 
 # Define the spouts and tones
-spouts = ['Left', 'Right']
+spouts = ['left', 'right']
 tones = ['5KHz', '10KHz']
 
 # List of animals that need assigment of pairs
@@ -30,7 +30,7 @@ pairs = [(spout, tone) for spout in spouts for tone in tones]
 def complementary_pair(pair):
     spout, tone = pair
     # Find the complementary spout and tone
-    complementary_spout = 'Right' if spout == 'Left' else 'Left'
+    complementary_spout = 'right' if spout == 'left' else 'left'
     complementary_tone = '10KHz' if tone == '5KHz' else '5KHz'
     return (complementary_spout, complementary_tone)
 
