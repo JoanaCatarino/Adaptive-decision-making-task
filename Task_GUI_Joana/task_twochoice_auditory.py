@@ -334,9 +334,9 @@ class TwoChoiceAuditoryTask:
         print(f"Playing {tone} tone...")
     
         if tone == "5KHz":
-            tone_5KHz.play()
+            tone_5KHz()
         elif tone == "10KHz":
-            tone_10KHz.play()
+            tone_10KHz()
         else:
             print("Error: Unknown tone type")
         
