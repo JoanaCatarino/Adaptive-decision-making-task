@@ -228,6 +228,8 @@ class TwoChoiceAuditoryTask:
                     
             
             # 5. Determine Trial outcome
+            print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}") 
+            
             if self.first_lick:
                 if self.first_lick == self.correct_spout:
                     print(f'Trial {trial_number}: Correct choice! Delivering reward')
