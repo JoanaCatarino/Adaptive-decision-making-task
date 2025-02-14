@@ -226,9 +226,9 @@ class TwoChoiceAuditoryTask:
                 if self.first_lick:
                     break
                     
-            
+                
             # 5. Determine Trial outcome
-            if first_lick:
+            if self.first_lick:
                 print(f"DEBUG: First lick detected on {self.first_lick} spout.")
     
                 # Normalize values for comparison
