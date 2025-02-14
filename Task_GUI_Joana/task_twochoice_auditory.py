@@ -10,9 +10,6 @@ import numpy as np
 import time
 import csv
 import os
-# Suppress ALSA and JACK warnings
-os.environ['LIBASOUND_THREAD_SAFE'] = '0'
-os.environ['JACK_NO_START_SERVER'] = '1'
 import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
@@ -213,9 +210,9 @@ class TwoChoiceAuditoryTask:
                     print("Lick detected during Waiting Window - Aborting trial")
                     led_blue.off()
                     self.trialstarted = False
+                    return
                     self.early_licks += 1
                     self.gui_controls.update_early_licks(self.early_trials)
-                    return 
             
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
