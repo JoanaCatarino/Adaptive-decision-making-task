@@ -10,6 +10,9 @@ import numpy as np
 import time
 import csv
 import os
+# Suppress ALSA and JACK warnings
+os.environ['LIBASOUND_THREAD_SAFE'] = '0'
+os.environ['JACK_NO_START_SERVER'] = '1'
 import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
