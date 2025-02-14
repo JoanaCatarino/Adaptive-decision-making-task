@@ -200,57 +200,7 @@ class TwoChoiceAuditoryTask:
             
             print(f'Trial {trial_number} started')
 
-            # 1. Start light thread
-            led_blue.on()
-            
-            # 2. Waiting Window - No licking allowed
-            start_WW = time.time()
-            while time.time() - start_WW < self.WW:
-                if self.detect_licks_during_waiting_window():
-                    print("Lick detected during Waiting Window - Aborting trial")
-                    led_blue.off()
-                    self.trialstarted = False
-                    self.early_licks += 1
-                    self.gui_controls.update_early_licks(self.early_licks)
-                    return 
-            
-            # 3. Play the sound 
-            print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
-            self.play_sound(self.current_tone)
-            start_RW = time.time()
 
-            
-            # 4. Response Window
-            while time.time() - start_RW < self.RW:
-                self.detect_licks()
-                if self.first_lick:
-                    break
-                    
-                
-            # 5. Determine Trial outcome
-            if self.first_lick:
-                correct_spout_normalized = str(self.correct_spout).strip().lower()
-                first_lick_normalized = str(self.first_lick).strip().lower()
-                
-                print(f"DEBUG: Correct Spout -> '{correct_spout_normalized}', First Lick -> '{first_lick_normalized}'")
-                
-                if first_lick_normalized == correct_spout_normalized:
-                    print(f"✅ Correct choice! Rewarding ONLY {correct_spout_normalized} spout")
-                    self.reward(self.first_lick)
-                    self.correct_trials += 1
-                    self.gui_controls.update_correct_trials(self.correct_trials)
-                else:
-                    print(f"❌ Incorrect choice! Playing white noise punishment.")
-                    self.play_sound('white_noise')  
-                    self.incorrect_trials += 1
-                    self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-            
-            # 6. Turn off the light
-            led_blue.off()
-            self.trialstarted = False
-            print(f'Trial {trial_number} ended')
-                       
-            
             # Initialize trial data
             trial_data = {
                 'trial_number': trial_number,
