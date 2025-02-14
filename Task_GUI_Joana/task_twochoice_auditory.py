@@ -41,10 +41,10 @@ class TwoChoiceAuditoryTask:
         self.spout_5KHz = None
         self.spout_10KHz = None
         
-        if self.load_spout_tone_mapping():
-            print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
-        else:
-            print('No spout-tone assignment found')
+        #if self.load_spout_tone_mapping():
+            #print(f' For animal {self.animal_id}, mapping loaded is 5KHz:{self.spout_5KHz}, 10KHz:{self.spout_10KHz}')
+        #else:
+            #print('No spout-tone assignment found')
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
