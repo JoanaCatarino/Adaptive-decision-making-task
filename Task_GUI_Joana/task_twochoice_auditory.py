@@ -195,6 +195,9 @@ class TwoChoiceAuditoryTask:
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
+            self.total_trials = trial_number
+            self.gui_controls.update_total_trials(self.total_trials)
+            
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
             self.current_tone = random.choice(['5KHz', '10KHz'])
             
@@ -206,40 +209,41 @@ class TwoChoiceAuditoryTask:
             # 1. Start light thread
             led_blue.on()
             
-            # 2. Waiting Window - No licking allowed
-            if self.detect_licks_during_waiting_window():
-                print("Lick detected during Waiting Window - Aborting trial")
+            try:
+                # 2. Waiting Window - No licking allowed
+                if self.detect_licks_during_waiting_window():
+                    print("Lick detected during Waiting Window - Aborting trial")
+                    led_blue.off()
+                    self.trialstarted = False
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_licks)
+                    return
+                
+                
+                # 3. Play the sound 
+                print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+                self.play_sound(self.current_tone)
+                start_RW = time.time()
+    
+                
+                # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
+                while time.time() - start_RW < self.RW:
+                    if self.first_lick:
+                        print(f'Lick detected on {self.first_lick}')
+                        break
+                    
+                # Take care of cases with no licks during response window - Omissions
+                if self.first_lick is None:
+                    print(f"Trial {trial_number}: No response detected. Counting as omission.")
+                    self.omissions += 1
+                    self.gui_controls.update_omissions(self.omissions)    
+            
+            finally:
+                # Turn Led off at the end of the trial
                 led_blue.off()
                 self.trialstarted = False
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                return
-            
-            
-            # 3. Play the sound 
-            print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout: {self.correct_spout}.')
-            self.play_sound(self.current_tone)
-            start_RW = time.time()
-
-            
-            # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
-            while time.time() - start_RW < self.RW:
-                if self.first_lick:
-                    print(f'Lick detected on {self.first_lick}')
-                    break
-                
-            # Take care of cases with no licks during response window - Omissions
-            if self.first_lick is None:
-                print(f"Trial {trial_number}: No response detected. Counting as omission.")
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)    
-            
-            
-            # Turn Led off at the end of the trial
-            led_blue.off()
-            self.trialstarted = False
-            print(f'Trial {trial_number} ended')
-                       
+                print(f'Trial {trial_number} ended')
+                           
             
             # Initialize trial data
             trial_data = {
@@ -256,9 +260,6 @@ class TwoChoiceAuditoryTask:
                 'Threshold_right': self.threshold_right}
             
             self.trials.append(trial_data) # Store trial data
-            
-            self.total_trials = trial_number
-            self.gui_controls.update_total_trials(self.total_trials)
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
@@ -429,8 +430,3 @@ class TwoChoiceAuditoryTask:
         
         # Update the GUI thresholds
         self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
-    
-
-
-
-       
