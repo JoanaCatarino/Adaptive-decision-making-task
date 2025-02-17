@@ -436,7 +436,10 @@ class GuiControls:
         
     def update_early_licks(self, early_licks):
         self.ui.box_EarlyLicks.setText(f'{early_licks}')
-            
+      
+    def update_omissions(self, omissions):
+        self.ui.box_IncorrectTrials.setText(f'{omissions}')
+        self.ui.OV_box_IncorrectTrials.setText(f'{omissions}') 
     
 
     def update_task_params(self):

@@ -59,6 +59,7 @@ class TwoChoiceAuditoryTask:
         self.correct_trials = 0
         self.incorrect_trials = 0
         self.early_licks = 0
+        self.omissions = 0
         
         # Booleans
         self.trialstarted = False
@@ -241,6 +242,8 @@ class TwoChoiceAuditoryTask:
                     self.play_sound('white_noise')
                     self.incorrect_trials += 1
             else:
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
                 print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
 
             led_blue.off()
