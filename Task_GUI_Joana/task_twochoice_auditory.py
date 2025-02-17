@@ -226,6 +226,7 @@ class TwoChoiceAuditoryTask:
             # 5. Response window
             start_RW = time.time()
             while time.time() - start_RW < self.RW:
+                self.detect_licks()  # Call the original lick detection function
                 if self.first_lick:
                     break
             
@@ -299,20 +300,67 @@ class TwoChoiceAuditoryTask:
         
     def detect_licks(self):
     
-        while self.running and self.trialstarted:
-            p1 = list(self.piezo_reader.piezo_adder1)
-            p2 = list(self.piezo_reader.piezo_adder2)
-            
-            if p1 and p1[-1] > self.threshold_left:
-                self.first_lick = 'left'
-                return
-            
-            if p2 and p2[-1] > self.threshold_right:
-                self.first_lick = 'right'
-                return
-            
-            time.sleep(0.01) 
+    """Checks for licks and updates trial data."""
+    
+        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+    
+        # Left piezo
+        if p1 and p1[-1] > self.threshold_left:
+            with self.lock:
+                self.tlick_l = self.t
+                elapsed_left = self.tlick_l - self.ttrial
+                print('DEBUG: Threshold exceeded LEFT')
+    
+                if self.first_lick is None and (0 < elapsed_left < self.RW):
+                    self.first_lick = 'left'
+                    self.tlick = self.tlick_l
+    
+                    if self.correct_spout == 'left':
+                        threading.Thread(target=self.reward, args=('left',)).start()
+                    
+                    # Update trial data
+                    self.trials[-1]['lick'] = 1
+                    self.trials[-1]['left_spout'] = 1
+                    self.trials[-1]['lick_time'] = self.tlick
+                    
+                    self.append_trial_to_csv(self.trials[-1])
+    
+                    self.total_licks += 1
+                    self.licks_left += 1
+                    self.gui_controls.update_total_licks(self.total_licks)
+                    self.gui_controls.update_licks_left(self.licks_left)
+                else:
+                    print(f'DEBUG: Incorrect choice - Licked left, correct was {self.correct_spout}')
+                
+        # Right piezo        
+        if p2 and p2[-1] > self.threshold_right:
+            with self.lock:
+                self.tlick_r = self.t
+                elapsed_right = self.tlick_r - self.ttrial
+                print('DEBUG: Threshold exceeded RIGHT')
+    
+                if self.first_lick is None and (0 < elapsed_right < self.RW):
+                    self.first_lick = 'right'
+                    self.tlick = self.tlick_r
+    
+                    if self.correct_spout == 'right':
+                        threading.Thread(target=self.reward, args=('right',)).start()
                         
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['right_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
+                        
+                        self.append_trial_to_csv(self.trials[-1])
+    
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
+                    else:
+                        print(f'DEBUG: Incorrect choice - Licked right, correct was {self.correct_spout}') 
+                            
     
     def reward(self, side):
         
