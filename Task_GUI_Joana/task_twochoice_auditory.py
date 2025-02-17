@@ -220,12 +220,10 @@ class TwoChoiceAuditoryTask:
 
             
             # 4. Start detecting licks in a separate thread
-            lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
-            lick_thread.start()
+            #lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
+            #lick_thread.start()
             
             # 5. Response window
-            start_RW = time.time()
-            while time.time() - start_RW < self.RW:
                 self.detect_licks()  # Call the original lick detection function
                 if self.first_lick:
                     break
@@ -401,6 +399,8 @@ class TwoChoiceAuditoryTask:
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
+                    
+            self.detect_licks()        
                     
     
                       
