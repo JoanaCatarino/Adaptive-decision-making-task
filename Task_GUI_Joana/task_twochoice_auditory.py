@@ -217,6 +217,7 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
             self.play_sound(self.current_tone)
+            start_RW = time.time()
 
             
             # 4. Start detecting licks in a separate thread
@@ -224,9 +225,10 @@ class TwoChoiceAuditoryTask:
             #lick_thread.start()
             
             # 5. Response window
-            self.detect_licks()  # Call the original lick detection function
-            if self.first_lick:
-                break
+            while time.time() - start_RW < self.RW:
+                self.detect_licks()
+                if self.first_lick:
+                    break
             
             # 6. Determine Trial Outcome
             #print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}")
