@@ -300,7 +300,7 @@ class TwoChoiceAuditoryTask:
         
     def detect_licks(self):
     
-    """Checks for licks and updates trial data."""
+        """Checks for licks and updates trial data."""
     
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
