@@ -299,7 +299,7 @@ class TwoChoiceAuditoryTask:
             with self.lock:
                 self.tlick_l = self.t
                 elapsed_left = self.tlick_l - self.ttrial
-                print(f'DEBUG: Threshold exceeded LEFT')
+                #print(f'DEBUG: Threshold exceeded LEFT')
     
                 if self.first_lick is None and (0 < elapsed_left < self.RW):
                     self.first_lick = 'left'
@@ -334,7 +334,7 @@ class TwoChoiceAuditoryTask:
             with self.lock:
                 self.tlick_r = self.t
                 elapsed_right = self.tlick_r - self.ttrial
-                print('DEBUG: Threshold exceeded RIGHT')
+                #print('DEBUG: Threshold exceeded RIGHT')
     
                 if self.first_lick is None and (0 < elapsed_right < self.RW):
                     self.first_lick = 'right'
