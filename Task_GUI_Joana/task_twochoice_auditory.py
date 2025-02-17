@@ -231,21 +231,21 @@ class TwoChoiceAuditoryTask:
                     break
             
             # 6. Determine Trial Outcome
-            print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}")
+            #print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}")
             
-            if self.first_lick:
-                if self.first_lick.strip().lower() == self.correct_spout.strip().lower():
-                    print(f'Trial {trial_number}: Correct choice! Delivering reward')
-                    self.reward(self.first_lick)
-                    self.correct_trials += 1
-                else:
-                    print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
-                    self.play_sound('white_noise')
-                    self.incorrect_trials += 1
-            else:
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
-                print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
+            #if self.first_lick:
+                #if self.first_lick.strip().lower() == self.correct_spout.strip().lower():
+                    #print(f'Trial {trial_number}: Correct choice! Delivering reward')
+                    #self.reward(self.first_lick)
+                    #self.correct_trials += 1
+                #else:
+                    #print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
+                    #self.play_sound('white_noise')
+                    #self.incorrect_trials += 1
+            #else:
+                #self.omissions += 1
+                #self.gui_controls.update_omissions(self.omissions)
+                #print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
 
             led_blue.off()
             self.trialstarted = False
