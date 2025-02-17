@@ -233,9 +233,9 @@ class TwoChoiceAuditoryTask:
                 
             # Take care of cases with no licks during response window - Omissions
             if self.first_lick is None:
-            print(f"Trial {trial_number}: No response detected. Counting as omission.")
-            self.omissions += 1
-            self.gui_controls.update_omissions(self.omissions)    
+                print(f"Trial {trial_number}: No response detected. Counting as omission.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)    
             
             
             # Turn Led off at the end of the trial
@@ -325,12 +325,10 @@ class TwoChoiceAuditoryTask:
                         self.append_trial_to_csv(self.trials[-1])
                         
                     else:
-                        print ('Incorrect choice!')
+                        print ('Incorrect choice! - Licked Left, correct was {self.correct_spout}')
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
-                    
-                else:
-                    print(f'DEBUG: Incorrect choice - Licked left, correct was {self.correct_spout}')
+                
                 
         # Right piezo        
         if p2 and p2[-1] > self.threshold_right:
@@ -344,7 +342,13 @@ class TwoChoiceAuditoryTask:
                     self.tlick = self.tlick_r
     
                     if self.correct_spout == 'right':
+                        print('Correct choice! Delivering reward.')
                         threading.Thread(target=self.reward, args=('right',)).start()
+                        self.correct_trials +=1
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
                         
                         # Update trial data
                         self.trials[-1]['lick'] = 1
@@ -353,12 +357,10 @@ class TwoChoiceAuditoryTask:
                         
                         self.append_trial_to_csv(self.trials[-1])
     
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
                     else:
-                        print(f'DEBUG: Incorrect choice - Licked right, correct was {self.correct_spout}') 
+                        print(f'Incorrect choice! - Licked right, correct was {self.correct_spout}') 
+                        self.play_sound('white_noise')
+                        self.incorrect_trials +=1
                             
     
     def reward(self, side):
