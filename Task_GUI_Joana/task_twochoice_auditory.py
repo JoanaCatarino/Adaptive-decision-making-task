@@ -220,7 +220,7 @@ class TwoChoiceAuditoryTask:
             
             
             # 3. Play the sound 
-            print(f'Trial {trial_number}: Playing {self.current_tone} tone.')
+            print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout: {self.correct_spout}.')
             self.play_sound(self.current_tone)
             start_RW = time.time()
 
@@ -302,7 +302,7 @@ class TwoChoiceAuditoryTask:
             with self.lock:
                 self.tlick_l = self.t
                 elapsed_left = self.tlick_l - self.ttrial
-                print('DEBUG: Threshold exceeded LEFT')
+                print(f'DEBUG: Threshold exceeded LEFT')
     
                 if self.first_lick is None and (0 < elapsed_left < self.RW):
                     self.first_lick = 'left'
@@ -325,7 +325,7 @@ class TwoChoiceAuditoryTask:
                         self.append_trial_to_csv(self.trials[-1])
                         
                     else:
-                        print ('Incorrect choice! - Licked Left, correct was {self.correct_spout}')
+                        print (f'Incorrect choice! - Licked Left, correct was {self.correct_spout}')
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
                 
