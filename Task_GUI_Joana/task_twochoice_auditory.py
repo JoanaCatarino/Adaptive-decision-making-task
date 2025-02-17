@@ -86,9 +86,6 @@ class TwoChoiceAuditoryTask:
         pump_l.on()
         pump_r.on()
         
-        # Turn the blue LED off initially
-        led_blue.off()
-        
         # Reset counters
         self.total_trials = 0
         self.total_licks = 0 
@@ -314,6 +311,7 @@ class TwoChoiceAuditoryTask:
                         self.correct_trials +=1
                         self.total_licks += 1
                         self.licks_left += 1
+                        self.gui_controls.update_correct_trials(self.correct_trials)
                         self.gui_controls.update_total_licks(self.total_licks)
                         self.gui_controls.update_licks_left(self.licks_left)
                         
@@ -328,6 +326,7 @@ class TwoChoiceAuditoryTask:
                         print (f'Incorrect choice! - Licked Left, correct was {self.correct_spout}')
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
+                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                 
                 
         # Right piezo        
@@ -347,6 +346,7 @@ class TwoChoiceAuditoryTask:
                         self.correct_trials +=1
                         self.total_licks += 1
                         self.licks_right += 1
+                        self.gui_controls.update_correct_trials(self.correct_trials)
                         self.gui_controls.update_total_licks(self.total_licks)
                         self.gui_controls.update_licks_right(self.licks_right)
                         
@@ -361,6 +361,7 @@ class TwoChoiceAuditoryTask:
                         print(f'Incorrect choice! - Licked right, correct was {self.correct_spout}') 
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
+                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
     
     def reward(self, side):
