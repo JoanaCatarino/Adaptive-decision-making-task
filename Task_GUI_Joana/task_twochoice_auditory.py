@@ -236,8 +236,8 @@ class TwoChoiceAuditoryTask:
             
             
             # Turn Led off at the end of the trial
-            self.trialstarted = False
             led_blue.off()
+            self.trialstarted = False
             print(f'Trial {trial_number} ended')
                        
             
