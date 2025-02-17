@@ -86,6 +86,9 @@ class TwoChoiceAuditoryTask:
         pump_l.on()
         pump_r.on()
         
+        # Turn the blue LED off initially
+        led_blue.off()
+        
         # Reset counters
         self.total_trials = 0
         self.total_licks = 0 
@@ -94,6 +97,7 @@ class TwoChoiceAuditoryTask:
         self.correct_trials = 0
         self.incorrect_trials = 0
         self.early_licks = 0
+        self.omissions = 0
         
         # Update GUI display
         self.gui_controls.update_total_trials(0)
@@ -103,6 +107,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_correct_trials(0)
         self.gui_controls.update_incorrect_trials(0)
         self.gui_controls.update_early_licks(0)
+        self.gui_controls.update_omissions(0)
         
         # Reset the performance plot
         self.gui_controls.lick_plot.reset_plot() # plot main tab
@@ -220,33 +225,20 @@ class TwoChoiceAuditoryTask:
             start_RW = time.time()
 
             
-            # 4. Start detecting licks in a separate thread
-            #lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
-            #lick_thread.start()
-            
-            # 5. Response window
+            # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
             while time.time() - start_RW < self.RW:
-                self.detect_licks()
                 if self.first_lick:
+                    print(f'Lick detected on {self.first_lick}')
                     break
+                
+            # Take care of cases with no licks during response window - Omissions
+            if self.first_lick is None:
+            print(f"Trial {trial_number}: No response detected. Counting as omission.")
+            self.omissions += 1
+            self.gui_controls.update_omissions(self.omissions)    
             
-            # 6. Determine Trial Outcome
-            #print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}")
             
-            #if self.first_lick:
-                #if self.first_lick.strip().lower() == self.correct_spout.strip().lower():
-                    #print(f'Trial {trial_number}: Correct choice! Delivering reward')
-                    #self.reward(self.first_lick)
-                    #self.correct_trials += 1
-                #else:
-                    #print(f'Trial {trial_number}: Incorrect choice! Delivering punishment')
-                    #self.play_sound('white_noise')
-                    #self.incorrect_trials += 1
-            #else:
-                #self.omissions += 1
-                #self.gui_controls.update_omissions(self.omissions)
-                #print(f'Trial {trial_number}: No licks detected. Trial ending normally.')
-
+            # Turn Led off at the end of the trial
             led_blue.off()
             self.trialstarted = False
             print(f'Trial {trial_number} ended')
@@ -317,19 +309,26 @@ class TwoChoiceAuditoryTask:
                     self.tlick = self.tlick_l
     
                     if self.correct_spout == 'left':
+                        print('Correct choice! Delivering reward.')
                         threading.Thread(target=self.reward, args=('left',)).start()
+                        self.correct_trials +=1
+                        self.total_licks += 1
+                        self.licks_left += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
+                        
+                        # Update trial data
+                        self.trials[-1]['lick'] = 1
+                        self.trials[-1]['left_spout'] = 1
+                        self.trials[-1]['lick_time'] = self.tlick
+                        
+                        self.append_trial_to_csv(self.trials[-1])
+                        
+                    else:
+                        print ('Incorrect choice!')
+                        self.play_sound('white_noise')
+                        self.incorrect_trials +=1
                     
-                    # Update trial data
-                    self.trials[-1]['lick'] = 1
-                    self.trials[-1]['left_spout'] = 1
-                    self.trials[-1]['lick_time'] = self.tlick
-                    
-                    self.append_trial_to_csv(self.trials[-1])
-    
-                    self.total_licks += 1
-                    self.licks_left += 1
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_left(self.licks_left)
                 else:
                     print(f'DEBUG: Incorrect choice - Licked left, correct was {self.correct_spout}')
                 
