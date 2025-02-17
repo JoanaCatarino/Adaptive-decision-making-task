@@ -224,9 +224,9 @@ class TwoChoiceAuditoryTask:
             #lick_thread.start()
             
             # 5. Response window
-                self.detect_licks()  # Call the original lick detection function
-                if self.first_lick:
-                    break
+            self.detect_licks()  # Call the original lick detection function
+            if self.first_lick:
+                break
             
             # 6. Determine Trial Outcome
             #print(f"DEBUG: first_lick = {self.first_lick}, correct_spout = {self.correct_spout}")
