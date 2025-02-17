@@ -208,9 +208,9 @@ class TwoChoiceAuditoryTask:
                 print("Lick detected during Waiting Window - Aborting trial")
                 led_blue.off()
                 self.trialstarted = False
-                return
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_trials)
+                return
             
             
             # 3. Play the sound 
