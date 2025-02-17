@@ -209,7 +209,7 @@ class TwoChoiceAuditoryTask:
                 led_blue.off()
                 self.trialstarted = False
                 self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_trials)
+                self.gui_controls.update_early_licks(self.early_licks)
                 return
             
             
