@@ -191,12 +191,10 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
-            trial_number= self.total_trials +1
+            self.gui_controls.update_total_trials(self.total_trials)
+            self.total_trials +1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
-            
-            self.total_trials = trial_number
-            self.gui_controls.update_total_trials(self.total_trials)
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and check is paired spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
@@ -233,12 +231,12 @@ class TwoChoiceAuditoryTask:
             
             # Initialize trial data
             trial_data = {
-                'trial_number': trial_number,
+                'trial_number': self.total_trials,
                 'trial_time': self.ttrial,
-                'lick': 0,
-                'left_spout': 0,
-                'right_spout': 0,
-                'lick_time': None,
+                'lick': 1 if self.first_lick else 0,
+                'left_spout': 1 if self.first_lick == 'left' else 0,
+                'right_spout': 1 if self.first_lick == 'right' else 0,
+                'lick_time': self.tlick if self.first_lick else None,
                 'RW': self.RW,
                 'QW': self.QW,
                 'ITI': self.ITI,
