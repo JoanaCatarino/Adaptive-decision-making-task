@@ -227,6 +227,9 @@ class TwoChoiceAuditoryTask:
             
             # 4. Detect licks during response window
             self.detect_licks()
+            if self.first_lick:
+                break
+            
             
             # 5. Deliver correct outcome
             if self.first_lick == self.correct_spout:
