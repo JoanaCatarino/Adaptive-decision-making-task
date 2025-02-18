@@ -304,17 +304,13 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'left'
-                        self.process_lick('left')
-                        return  # Exit function after first lick
     
             # Check if a lick is detected on the right spout
             if p2 and p2[-1] > self.threshold_right:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'right'
-                        self.process_lick('right')
-                        return  # Exit function after first lick
-    
+                        
             time.sleep(0.001)  # Small delay to prevent CPU overload
 
         # If the loop ends with no licks detected, count as omission
