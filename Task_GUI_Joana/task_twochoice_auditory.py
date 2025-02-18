@@ -322,7 +322,7 @@ class TwoChoiceAuditoryTask:
             print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
             self.omissions += 1
             self.gui_controls.update_omissions(self.omissions)
-            self.end_trial()
+            
 
     
                    
