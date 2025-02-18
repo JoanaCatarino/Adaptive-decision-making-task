@@ -229,21 +229,16 @@ class TwoChoiceAuditoryTask:
             self.detect_licks()
             
             # 5. Deliver correct outcome
-            if self.first_lick:
-                if self.first_lick == self.correct_spout:
-                    print(f"Correct choice! Delivering reward to {self.first_lick}.")
-                    self.correct_trials += 1
-                    self.gui_controls.update_correct_trials(self.correct_trials)
-                    threading.Thread(target=self.reward, args=(self.first_lick,)).start()
-                else:
-                    print(f"Incorrect choice! Expected {self.correct_spout}, but licked {self.first_lick}.")
-                    self.incorrect_trials += 1
-                    self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                    self.play_sound('white_noise')  # Play punishment sound
+            if self.first_lick == self.correct_spout:
+                print(f"Correct choice! Delivering reward to {self.first_lick}.")
+                self.correct_trials += 1
+                self.gui_controls.update_correct_trials(self.correct_trials)
+                threading.Thread(target=self.reward, args=(self.first_lick,)).start()
             else:
-                print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions) 
+                print(f"Incorrect choice! Expected {self.correct_spout}, but licked {self.first_lick}.")
+                self.incorrect_trials += 1
+                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                self.play_sound('white_noise')  # Play punishment sound        
             
             
             # Turn Led off at the end of the trial
@@ -296,34 +291,39 @@ class TwoChoiceAuditoryTask:
         
         
     def detect_licks(self):
+        """Continuously checks for licks during the response window and updates trial data."""
+        
+        start_time = time.time()
+        
+        while time.time() - start_time < self.RW:  # Response Window duration
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
     
-        """Checks for licks and updates trial data."""
+            # Check if a lick is detected on the left spout
+            if p1 and p1[-1] > self.threshold_left:
+                with self.lock:
+                    if self.first_lick is None:
+                        self.first_lick = 'left'
+                        self.process_lick('left')
+                        return  # Exit function after first lick
     
-        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+            # Check if a lick is detected on the right spout
+            if p2 and p2[-1] > self.threshold_right:
+                with self.lock:
+                    if self.first_lick is None:
+                        self.first_lick = 'right'
+                        self.process_lick('right')
+                        return  # Exit function after first lick
     
-        # Left piezo
-        if p1 and p1[-1] > self.threshold_left:
-            with self.lock:
-                self.tlick_l = self.t
-                elapsed_left = self.tlick_l - self.ttrial
-                #print(f'DEBUG: Threshold exceeded LEFT')
-    
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l
-                
-        # Right piezo        
-        if p2 and p2[-1] > self.threshold_right:
-            with self.lock:
-                self.tlick_r = self.t
-                elapsed_right = self.tlick_r - self.ttrial
-                #print('DEBUG: Threshold exceeded RIGHT')
-    
-                if self.first_lick is None and (0 < elapsed_right < self.RW):
-                    self.first_lick = 'right'
-                    self.tlick = self.tlick_r
-                    print(f'{self.tlick_r}')
+            time.sleep(0.001)  # Small delay to prevent CPU overload
+
+    # If the loop ends with no licks detected, count as omission
+    if self.first_lick is None:
+        print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
+        self.omissions += 1
+        self.gui_controls.update_omissions(self.omissions)
+        self.end_trial()
+
     
                    
     def reward(self, side):
