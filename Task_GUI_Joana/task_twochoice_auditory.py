@@ -198,17 +198,14 @@ class TwoChoiceAuditoryTask:
             self.total_trials = trial_number
             self.gui_controls.update_total_trials(self.total_trials)
             
-            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
+            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and check is paired spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
-            
-            # Determine the correct response spout for this tone
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             
             print(f'Trial {trial_number} started')
 
             # 1. Start light thread
             led_blue.on()
-            
             
             # 2. Waiting Window - No licking allowed
             if self.detect_licks_during_waiting_window():
@@ -219,7 +216,6 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_early_licks(self.early_licks)
                 return
             
-            
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             self.play_sound(self.current_tone)
@@ -228,22 +224,10 @@ class TwoChoiceAuditoryTask:
             # 4. Detect licks during response window
             self.detect_licks()
             
-            # 5. Deliver correct outcome
-            if self.first_lick == self.correct_spout:
-                print(f"Correct choice! Delivering reward to {self.first_lick}.")
-                self.correct_trials += 1
-                self.gui_controls.update_correct_trials(self.correct_trials)
-                threading.Thread(target=self.reward, args=(self.first_lick,)).start()
-            else:
-                print(f"Incorrect choice! Expected {self.correct_spout}, but licked {self.first_lick}.")
-                self.incorrect_trials += 1
-                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                self.play_sound('white_noise')  # Play punishment sound        
+    def end_trial(self):
             
-            
-            # Turn Led off at the end of the trial
-            led_blue.off()
             self.trialstarted = False
+            led_blue.off()
             print(f'Trial {trial_number} ended')
                        
             
@@ -304,12 +288,16 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'left'
+                        self.process_lick('left')
+                        return # stop checking after first lick
     
             # Check if a lick is detected on the right spout
             if p2 and p2[-1] > self.threshold_right:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'right'
+                        self.process_lick('right')
+                        return # stop checking after first lick
                         
             time.sleep(0.001)  # Small delay to prevent CPU overload
 
@@ -318,8 +306,28 @@ class TwoChoiceAuditoryTask:
             print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
             self.omissions += 1
             self.gui_controls.update_omissions(self.omissions)
-            
-
+            self.end_trial()
+    
+    
+    def process_lick(self, side):
+        """Handles the first detected lick, determines correctness, and rewards or punishes accordingly."""
+        
+        self.tlick = self.t
+        print(f"Lick detected on {side} at {self.tlick}")
+    
+        if self.correct_spout == side:
+            print(f"Correct choice! Delivering reward to {side}.")
+            self.correct_trials += 1
+            self.gui_controls.update_correct_trials(self.correct_trials)
+            threading.Thread(target=self.reward, args=(side,)).start()
+        else:
+            print(f"Incorrect choice! Expected {self.correct_spout}, but licked {side}.")
+            self.incorrect_trials += 1
+            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+            self.play_sound('white_noise')  # Play punishment sound
+    
+        self.end_trial()
+    
     
                    
     def reward(self, side):
