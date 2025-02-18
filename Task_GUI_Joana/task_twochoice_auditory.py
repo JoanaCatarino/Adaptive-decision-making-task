@@ -317,12 +317,12 @@ class TwoChoiceAuditoryTask:
     
             time.sleep(0.001)  # Small delay to prevent CPU overload
 
-    # If the loop ends with no licks detected, count as omission
-    if self.first_lick is None:
-        print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
-        self.omissions += 1
-        self.gui_controls.update_omissions(self.omissions)
-        self.end_trial()
+        # If the loop ends with no licks detected, count as omission
+        if self.first_lick is None:
+            print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
+            self.omissions += 1
+            self.gui_controls.update_omissions(self.omissions)
+            self.end_trial()
 
     
                    
