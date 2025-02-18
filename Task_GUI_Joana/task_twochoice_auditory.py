@@ -223,7 +223,27 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             self.play_sound(self.current_tone)
+            
+            
+            # 4. Detect licks during response window
             self.detect_licks()
+            
+            # 5. Deliver correct outcome
+            if self.first_lick:
+                if self.first_lick == self.correct_spout:
+                    print(f"Correct choice! Delivering reward to {self.first_lick}.")
+                    self.correct_trials += 1
+                    self.gui_controls.update_correct_trials(self.correct_trials)
+                    threading.Thread(target=self.reward, args=(self.first_lick,)).start()
+                else:
+                    print(f"Incorrect choice! Expected {self.correct_spout}, but licked {self.first_lick}.")
+                    self.incorrect_trials += 1
+                    self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                    self.play_sound('white_noise')  # Play punishment sound
+            else:
+                print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions) 
             
             
             # Turn Led off at the end of the trial
@@ -281,45 +301,31 @@ class TwoChoiceAuditoryTask:
     
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-
-        # Check left spout
+    
+        # Left piezo
         if p1 and p1[-1] > self.threshold_left:
             with self.lock:
-                if self.first_lick is None and (self.t - self.ttrial < self.RW):
-                    self.first_lick = 'left'
-                    self.process_lick('left')
+                self.tlick_l = self.t
+                elapsed_left = self.tlick_l - self.ttrial
+                #print(f'DEBUG: Threshold exceeded LEFT')
     
-        # Check right spout
+                if self.first_lick is None and (0 < elapsed_left < self.RW):
+                    self.first_lick = 'left'
+                    self.tlick = self.tlick_l
+                
+        # Right piezo        
         if p2 and p2[-1] > self.threshold_right:
             with self.lock:
-                if self.first_lick is None and (self.t - self.ttrial < self.RW):
+                self.tlick_r = self.t
+                elapsed_right = self.tlick_r - self.ttrial
+                #print('DEBUG: Threshold exceeded RIGHT')
+    
+                if self.first_lick is None and (0 < elapsed_right < self.RW):
                     self.first_lick = 'right'
-                    self.process_lick('right')
+                    self.tlick = self.tlick_r
+                    print(f'{self.tlick_r}')
     
-        # If response window ends with no lick, count as omission
-        if self.t - self.ttrial >= self.RW and self.first_lick is None:
-            print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
-            self.omissions += 1
-            self.gui_controls.update_omissions(self.omissions)
-    
-            
-    def process_lick(self, side):
-        """Handles lick responses (correct, incorrect, reward, or punishment)."""
-        self.tlick = self.t
-        print(f"Lick detected on {side} at {self.tlick}")
-    
-        if self.correct_spout == side:
-            print(f"Correct choice! Delivering reward to {side}.")
-            self.correct_trials += 1
-            self.gui_controls.update_correct_trials(self.correct_trials)
-            threading.Thread(target=self.reward, args=(side,)).start()
-        else:
-            print(f"Incorrect choice! Expected {self.correct_spout}, but licked {side}.")
-            self.incorrect_trials += 1
-            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-            self.play_sound('white_noise')  # Play punishment sound
-                        
-    
+                   
     def reward(self, side):
         
         print(f"Delivering reward - {side}")
