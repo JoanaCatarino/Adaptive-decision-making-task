@@ -209,41 +209,44 @@ class TwoChoiceAuditoryTask:
             # 1. Start light thread
             led_blue.on()
             
-            try:
-                # 2. Waiting Window - No licking allowed
-                if self.detect_licks_during_waiting_window():
-                    print("Lick detected during Waiting Window - Aborting trial")
-                    led_blue.off()
-                    self.trialstarted = False
-                    self.early_licks += 1
-                    self.gui_controls.update_early_licks(self.early_licks)
-                    return
-                
-                
-                # 3. Play the sound 
-                print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
-                self.play_sound(self.current_tone)
-                start_RW = time.time()
-    
-                
-                # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
-                while time.time() - start_RW < self.RW:
-                    if self.first_lick:
-                        print(f'Lick detected on {self.first_lick}')
-                        break
-                    
-                # Take care of cases with no licks during response window - Omissions
-                if self.first_lick is None:
-                    print(f"Trial {trial_number}: No response detected. Counting as omission.")
-                    self.omissions += 1
-                    self.gui_controls.update_omissions(self.omissions)    
             
-            finally:
-                # Turn Led off at the end of the trial
+            # 2. Waiting Window - No licking allowed
+            if self.detect_licks_during_waiting_window():
+                print("Lick detected during Waiting Window - Aborting trial")
                 led_blue.off()
                 self.trialstarted = False
-                print(f'Trial {trial_number} ended')
-                           
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                return
+            
+            
+            # 3. Play the sound 
+            print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            self.play_sound(self.current_tone)
+            self.detect_licks()
+            
+            
+            #start_RW = time.time()
+
+            
+            # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
+            #while time.time() - start_RW < self.RW:
+            if self.first_lick:
+                print(f'Lick detected on {self.first_lick}')
+                break
+                
+            # Take care of cases with no licks during response window - Omissions
+            if self.first_lick is None:
+                print(f"Trial {trial_number}: No response detected. Counting as omission.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)    
+            
+            
+            # Turn Led off at the end of the trial
+            led_blue.off()
+            self.trialstarted = False
+            print(f'Trial {trial_number} ended')
+                       
             
             # Initialize trial data
             trial_data = {
@@ -340,10 +343,13 @@ class TwoChoiceAuditoryTask:
                 if self.first_lick is None and (0 < elapsed_right < self.RW):
                     self.first_lick = 'right'
                     self.tlick = self.tlick_r
+                    print(f'{self.tlick_r}')
     
-                    if self.correct_spout == 'right':
+                    if self.correct_spout == self.first_lick:
                         print('Correct choice! Delivering reward.')
+                        print(f'{self.t}')
                         threading.Thread(target=self.reward, args=('right',)).start()
+                        print(f'{self.t}')
                         self.correct_trials +=1
                         self.total_licks += 1
                         self.licks_right += 1
