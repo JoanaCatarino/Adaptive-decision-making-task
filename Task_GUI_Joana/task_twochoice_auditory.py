@@ -226,7 +226,7 @@ class TwoChoiceAuditoryTask:
             
             self.trialstarted = False
             led_blue.off()
-            print(f'Trial {trial_number} ended')
+            print(f'Trial {self.total_trials} ended')
                        
             
             # Initialize trial data
