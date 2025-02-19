@@ -200,7 +200,7 @@ class TwoChoiceAuditoryTask:
             self.current_tone = random.choice(['5KHz', '10KHz'])
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             
-            print(f'Trial {trial_number} started')
+            print(f'Trial {total_trials} started')
 
             # 1. Start light thread
             led_blue.on()

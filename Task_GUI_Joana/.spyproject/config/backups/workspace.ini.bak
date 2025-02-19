@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['taskController.py', 'task_test_rig.py', 'form.ui', 'gpio_map.py', 'animal_id_generator.py', 'chronometer_generator.py', 'date_updater.py', 'ui_form.py', 'file_writer.py', 'sound_generator.py', 'taskgui.py', 'task_twochoice_auditory.py', 'task_spout_sampling.py', 'task_free_licking.py', 'Task_GUI_Joana.pyproject.user.77978c6', 'requirements.txt', 'task_adaptive_sensorimotor.py', 'gui_controls.py', 'task_generator.py', 'camera.py', 'piezo_reader.py', 'stylesheet.py', 'piezo_plot.py']
+recent_files = ['taskController.py', 'task_test_rig.py', 'form.ui', 'gpio_map.py', 'animal_id_generator.py', 'chronometer_generator.py', 'date_updater.py', 'ui_form.py', 'file_writer.py', 'sound_generator.py', 'taskgui.py', 'task_twochoice_auditory.py', 'task_spout_sampling.py', 'task_free_licking.py', 'Task_GUI_Joana.pyproject.user.77978c6', 'requirements.txt', 'task_adaptive_sensorimotor.py', 'gui_controls.py', 'task_generator.py', 'camera.py', 'piezo_reader.py', 'stylesheet.py', 'piezo_plot.py', 'spout_tone_generator.py', 'save_file.py', '..\\..\\voxel_injections\\example.ipynb', '..\\..\\voxel_injections\\test.py']
 
 [main]
 version = 0.2.0
