@@ -293,31 +293,45 @@ class TwoChoiceAuditoryTask:
     
         # Left piezo
         if p1 and p1[-1] > self.threshold_left:
-            with self.lock:
-                if self.first_lick is None:
-                    self.first_lick = 'left'
+                with self.lock:
+                    if self.first_lick is None:
+                        self.first_lick = 'left'
+                        self.tlick = self.t
                     
-                    if self.correct_spout == self.first_lick:
-                        threading.Thread(target=self.reward, args=('left',)).start()
-                        print('Correct choice! Delivering reward.')
-                    else:
-                        self.play_sound('white_noise')
-                        print (f'Incorrect choice! - Licked Left, correct was {self.correct_spout}')
+                        print(f"DEBUG: First lick detected on left, expected {self.correct_spout}")
                         
-                   
-        # Right piezo        
-        if p2 and p2[-1] > self.threshold_right:
-            with self.lock:
-                if self.first_lick is None:
-                    self.first_lick = 'right'
-                    
-                    if self.correct_spout == self.first_lick:
-                        threading.Thread(target=self.reward, args=('right',)).start()
-                        print('Correct choice! Delivering reward.')
-                    else:
-                        self.play_sound('white_noise')
-                        print(f'Incorrect choice! - Licked right, correct was {self.correct_spout}')
-
+                        if self.correct_spout == 'left':
+                            print("Correct choice! Delivering reward.")
+                            self.correct_trials += 1
+                            self.gui_controls.update_correct_trials(self.correct_trials)
+                            threading.Thread(target=self.reward, args=('left',)).start()
+                        else:
+                            print("Incorrect choice! Playing white noise.")
+                            self.incorrect_trials += 1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.play_sound('white_noise')  # Play punishment sound
+                        
+                        
+    
+            # Check if a lick is detected on the right spout
+            if p2 and p2[-1] > self.threshold_right:
+                with self.lock:
+                    if self.first_lick is None:
+                        self.first_lick = 'right'
+                        self.tlick = self.t
+                        
+                        print(f"DEBUG: First lick detected on right, expected {self.correct_spout}")
+                        
+                        if self.correct_spout == 'right':
+                            print("Correct choice! Delivering reward.")
+                            self.correct_trials += 1
+                            self.gui_controls.update_correct_trials(self.correct_trials)
+                            threading.Thread(target=self.reward, args=('right',)).start()
+                        else:
+                            print("Incorrect choice! Playing white noise.")
+                            self.incorrect_trials += 1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.play_sound('white_noise')  # Play punishment sound
                                 
     
     def reward(self, side):
