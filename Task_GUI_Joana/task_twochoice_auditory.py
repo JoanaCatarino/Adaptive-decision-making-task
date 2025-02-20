@@ -374,12 +374,12 @@ class TwoChoiceAuditoryTask:
         print(f"Delivering reward - {side}")
     
         if side == 'left':
-            threading.time(self.valve_opening, lamda: pump_l.off()).start()
+            threading.time(self.valve_opening, lambda: pump_l.off()).start()
             pump_l.on()
             print('Reward delivered - left')
             
         elif side == 'right':
-            threading.time(self.valve_opening, lamda: pump_r.off()).start()
+            threading.time(self.valve_opening, lambda: pump_r.off()).start()
             pump_r.on()
             print('Reward delivered - right')
     
