@@ -296,9 +296,9 @@ class TwoChoiceAuditoryTask:
             with self.lock:
                 if self.first_lick is None:
                     self.first_lick = 'left'
-                    self.tlick = self.t
+                    
 
-                    if self.correct_spout == 'left':
+                    if self.correct_spout == self.first_lick:
                         threading.Thread(target=self.reward, args=('left',)).start()
                         print('Correct choice! Delivering reward.')
                         self.correct_trials +=1
@@ -319,7 +319,7 @@ class TwoChoiceAuditoryTask:
             with self.lock:
                 if self.first_lick is None:
                     self.first_lick = 'right'
-                    self.tlick = self.t
+                    
         
                     if self.correct_spout == self.first_lick:
                         threading.Thread(target=self.reward, args=('right',)).start()
@@ -377,8 +377,7 @@ class TwoChoiceAuditoryTask:
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
-                       
-            self.detect_licks()        
+                             
     
                       
     def append_trial_to_csv(self, trial_data):
