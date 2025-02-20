@@ -292,7 +292,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None:
                         self.first_lick = 'left'
                         self.process_lick('left')
-                        return # stop checking after first lick
+                        
     
             # Check if a lick is detected on the right spout
             if p2 and p2[-1] > self.threshold_right:
@@ -300,8 +300,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None:
                         self.first_lick = 'right'
                         self.process_lick('right')
-                        return # stop checking after first lick
-                                   
+                        
      
     def process_lick(self, side):
         """Handles the first detected lick, determines correctness, and rewards or punishes accordingly."""
