@@ -228,7 +228,6 @@ class TwoChoiceAuditoryTask:
             while time.time() - start_RW < self.RW:
                 self.detect_licks()
             
-            
             # Take care of cases with no licks during response window - Omissions
             if self.first_lick is None:
                 print(f"Trial {trial_number}: No response detected. Counting as omission.")
@@ -379,7 +378,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                        
-                    
+            self.detect_licks()        
     
                       
     def append_trial_to_csv(self, trial_data):
