@@ -225,15 +225,6 @@ class TwoChoiceAuditoryTask:
             self.play_sound(self.current_tone)
             self.detect_licks()
             
-            
-            #start_RW = time.time()
-
-            
-            # 4. Wait for self.first_lick from detect_licks - rewards and punishments are handled by the detect_licks function
-            #while time.time() - start_RW < self.RW:
-            #if self.first_lick:
-                #print(f'Lick detected on {self.first_lick}')
-                #break
                 
             # Take care of cases with no licks during response window - Omissions
             if self.first_lick is None:
@@ -295,6 +286,10 @@ class TwoChoiceAuditoryTask:
     
         """Checks for licks and updates trial data."""
     
+        # Ignore any further licks after the first one
+        if self.first_lick is not None:
+        return 
+    
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
     
@@ -331,6 +326,8 @@ class TwoChoiceAuditoryTask:
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
                         self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                        
+                    return
                 
                 
         # Right piezo        
@@ -346,9 +343,8 @@ class TwoChoiceAuditoryTask:
                     print(f'{self.tlick_r}')
     
                     if self.correct_spout == self.first_lick:
-                        print('Correct choice! Delivering reward.')
-                        print(f'{self.t}')
                         threading.Thread(target=self.reward, args=('right',)).start()
+                        print('Correct choice! Delivering reward.')
                         print(f'{self.t}')
                         self.correct_trials +=1
                         self.total_licks += 1
@@ -369,6 +365,8 @@ class TwoChoiceAuditoryTask:
                         self.play_sound('white_noise')
                         self.incorrect_trials +=1
                         self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                        
+                    return
                             
     
     def reward(self, side):
@@ -376,14 +374,12 @@ class TwoChoiceAuditoryTask:
         print(f"Delivering reward - {side}")
     
         if side == 'left':
-            pump_l.off()
-            time.sleep(self.valve_opening)
+            threading.time(self.valve_opening, lamda: pump_l.off()).start()
             pump_l.on()
             print('Reward delivered - left')
             
         elif side == 'right':
-            pump_r.off()
-            time.sleep(self.valve_opening)
+            threading.time(self.valve_opening, lamda: pump_r.off()).start()
             pump_r.on()
             print('Reward delivered - right')
     
@@ -410,8 +406,7 @@ class TwoChoiceAuditoryTask:
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
-                    
-            self.detect_licks()        
+                       
                     
     
                       
