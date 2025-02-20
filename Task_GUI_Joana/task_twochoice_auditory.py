@@ -222,7 +222,11 @@ class TwoChoiceAuditoryTask:
             # 4. Detect licks during response window
             self.detect_licks()
             
-    def end_trial(self):
+            # If the loop ends with no licks detected, count as omission
+            if self.first_lick is None:
+                print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
             
             self.trialstarted = False
             led_blue.off()
@@ -247,6 +251,7 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
+            
         
     
     def detect_licks_during_waiting_window(self):
@@ -296,17 +301,8 @@ class TwoChoiceAuditoryTask:
                         self.first_lick = 'right'
                         self.process_lick('right')
                         return # stop checking after first lick
-                        
-            time.sleep(0.001)  # Small delay to prevent CPU overload
-
-        # If the loop ends with no licks detected, count as omission
-        if self.first_lick is None:
-            print(f"Trial {self.total_trials}: No response detected. Counting as omission.")
-            self.omissions += 1
-            self.gui_controls.update_omissions(self.omissions)
-            self.end_trial()
-    
-    
+                                   
+     
     def process_lick(self, side):
         """Handles the first detected lick, determines correctness, and rewards or punishes accordingly."""
         
