@@ -309,7 +309,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None:
                         self.first_lick = 'left'
                         self.tlick = self.t
-                        return
+                        
                         
             # Check if a lick is detected on the right spout
             if p2 and p2[-1] > self.threshold_right:
@@ -317,7 +317,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None:
                         self.first_lick = 'right'
                         self.tlick = self.t
-                        return
+                        
                       
     def reward(self, side):
         
