@@ -4,16 +4,12 @@ Created on Sat Jul 20 17:51:07 2024
 
 @author: JoanaCatarino
 """
-import os
-os.environ['PYTHONWARNINGS'] = 'ignore'
-os.environ['SDL_AUDIODRIVER'] = 'alsa'
-os.environ['ALSA_LOG_LEVEL'] = '0'
-os.environ['LIBASOUND_DEBUG'] = '0'
 
 import threading
 import numpy as np
 import time
 import csv
+import os
 import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
