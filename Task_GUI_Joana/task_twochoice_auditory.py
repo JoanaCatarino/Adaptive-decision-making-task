@@ -198,7 +198,13 @@ class TwoChoiceAuditoryTask:
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and check is paired spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
-            self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+            
+            if self.current_tone == '5KHz':
+                self.correct_spout = self.spout_5KHz
+            else:
+                self.correct_spout = self.spout_10KHz
+                
+            print(f'{self.current_tone} / {self.correct-spout}')    
             
             print(f'Trial {self.total_trials} started')
 
@@ -292,6 +298,7 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'left'
+                        print(f"DEBUG: First lick detected on left, expected {self.correct_spout}")
                         self.process_lick('left')
                         
     
@@ -300,6 +307,7 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     if self.first_lick is None:
                         self.first_lick = 'right'
+                        print(f"DEBUG: First lick detected on right, expected {self.correct_spout}")
                         self.process_lick('right')
                         
      
