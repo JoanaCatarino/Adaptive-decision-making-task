@@ -204,7 +204,7 @@ class TwoChoiceAuditoryTask:
             else:
                 self.correct_spout = self.spout_10KHz
                 
-            print(f'{self.current_tone} / {self.correct-spout}')    
+            print(f'{self.current_tone} / {self.correct_spout}')    
             
             print(f'Trial {self.total_trials} started')
 
