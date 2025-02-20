@@ -226,7 +226,7 @@ class TwoChoiceAuditoryTask:
             
             start_RW = time.time()
             while time.time() - start_RW < self.RW:
-                threading.Thread(target=self.detect_licks, daemon=True).start()
+                self.detect_licks()
             
             
             # Take care of cases with no licks during response window - Omissions
