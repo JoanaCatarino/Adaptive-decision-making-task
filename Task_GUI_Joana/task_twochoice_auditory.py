@@ -226,9 +226,8 @@ class TwoChoiceAuditoryTask:
             
             start_RW = time.time()
             while time.time() - start_RW < self.RW:
-                print('checking for licks')
-                self.detect_licks()  # Now detect the first lick within the response window
-  
+                threading.Thread(target=self.detect_licks, daemon=True).start()
+            
             
             # Take care of cases with no licks during response window - Omissions
             if self.first_lick is None:
@@ -289,10 +288,6 @@ class TwoChoiceAuditoryTask:
     def detect_licks(self):
     
         """Checks for licks and updates trial data."""
-    
-        # Ignore any further licks after the first one
-        if self.first_lick is not None:
-            return 
     
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
