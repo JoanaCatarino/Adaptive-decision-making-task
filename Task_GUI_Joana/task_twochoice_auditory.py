@@ -223,9 +223,13 @@ class TwoChoiceAuditoryTask:
             # 3. Play the sound 
             print(f'Trial {trial_number}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             self.play_sound(self.current_tone)
-            self.detect_licks()
             
-                
+            start_RW = time.time()
+            while time.time() - start_RW < self.RW:
+                print('checking for licks')
+                self.detect_licks()  # Now detect the first lick within the response window
+  
+            
             # Take care of cases with no licks during response window - Omissions
             if self.first_lick is None:
                 print(f"Trial {trial_number}: No response detected. Counting as omission.")
@@ -288,86 +292,46 @@ class TwoChoiceAuditoryTask:
     
         # Ignore any further licks after the first one
         if self.first_lick is not None:
-            return 
+            return  
+
+        p1 = list(self.piezo_reader.piezo_adder1)
+        p2 = list(self.piezo_reader.piezo_adder2)
     
-        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+        print(f"Piezo Left: {p1[-1] if p1 else 'No data'}, Piezo Right: {p2[-1] if p2 else 'No data'}")
     
-        # Left piezo
         if p1 and p1[-1] > self.threshold_left:
-            with self.lock:
-                self.tlick_l = self.t
-                elapsed_left = self.tlick_l - self.ttrial
-                #print(f'DEBUG: Threshold exceeded LEFT')
+            self.handle_lick("left")
     
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l
-    
-                    if self.correct_spout == 'left':
-                        print('Correct choice! Delivering reward.')
-                        threading.Thread(target=self.reward, args=('left',)).start()
-                        self.correct_trials +=1
-                        self.total_licks += 1
-                        self.licks_left += 1
-                        self.gui_controls.update_correct_trials(self.correct_trials)
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_left(self.licks_left)
-                        
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['left_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
-                        
-                        self.append_trial_to_csv(self.trials[-1])
-                        
-                    else:
-                        print (f'Incorrect choice! - Licked Left, correct was {self.correct_spout}')
-                        self.play_sound('white_noise')
-                        self.incorrect_trials +=1
-                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                        
-                    return
-                
-                
-        # Right piezo        
         if p2 and p2[-1] > self.threshold_right:
-            with self.lock:
-                self.tlick_r = self.t
-                elapsed_right = self.tlick_r - self.ttrial
-                #print('DEBUG: Threshold exceeded RIGHT')
+            self.handle_lick("right")
+                                
     
-                if self.first_lick is None and (0 < elapsed_right < self.RW):
-                    self.first_lick = 'right'
-                    self.tlick = self.tlick_r
-                    print(f'{self.tlick_r}')
+    def handle_lick(self, side):
+    """Handles lick response (reward or punishment)."""
+    with self.lock:
+        if self.first_lick is not None:
+            return  # Ignore extra licks
+
+        self.first_lick = side
+
+        if self.correct_spout == side:
+            print(f"Correct choice! Rewarding {side} spout.")
+            threading.Thread(target=self.reward, args=(side,)).start()
+            self.correct_trials += 1
+            if side == "left":
+                self.licks_left += 1
+            else:
+                self.licks_right += 1
+        else:
+            print(f"Incorrect choice! Licked {side}, correct was {self.correct_spout}.")
+            self.play_sound("white_noise")
+            self.incorrect_trials += 1
+
+        self.total_licks += 1
+        self.gui_controls.update_total_licks(self.total_licks)
+        self.gui_controls.update_correct_trials(self.correct_trials)
+        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-                    if self.correct_spout == self.first_lick:
-                        threading.Thread(target=self.reward, args=('right',)).start()
-                        print('Correct choice! Delivering reward.')
-                        print(f'{self.t}')
-                        self.correct_trials +=1
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_correct_trials(self.correct_trials)
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
-                        
-                        # Update trial data
-                        self.trials[-1]['lick'] = 1
-                        self.trials[-1]['right_spout'] = 1
-                        self.trials[-1]['lick_time'] = self.tlick
-                        
-                        self.append_trial_to_csv(self.trials[-1])
-    
-                    else:
-                        print(f'Incorrect choice! - Licked right, correct was {self.correct_spout}') 
-                        self.play_sound('white_noise')
-                        self.incorrect_trials +=1
-                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                        
-                    return
-                            
     
     def reward(self, side):
         
