@@ -307,30 +307,30 @@ class TwoChoiceAuditoryTask:
                                 
     
     def handle_lick(self, side):
-    """Handles lick response (reward or punishment)."""
-    with self.lock:
-        if self.first_lick is not None:
-            return  # Ignore extra licks
-
-        self.first_lick = side
-
-        if self.correct_spout == side:
-            print(f"Correct choice! Rewarding {side} spout.")
-            threading.Thread(target=self.reward, args=(side,)).start()
-            self.correct_trials += 1
-            if side == "left":
-                self.licks_left += 1
+        """Handles lick response (reward or punishment)."""
+        with self.lock:
+            if self.first_lick is not None:
+                return  # Ignore extra licks
+    
+            self.first_lick = side
+    
+            if self.correct_spout == side:
+                print(f"Correct choice! Rewarding {side} spout.")
+                threading.Thread(target=self.reward, args=(side,)).start()
+                self.correct_trials += 1
+                if side == "left":
+                    self.licks_left += 1
+                else:
+                    self.licks_right += 1
             else:
-                self.licks_right += 1
-        else:
-            print(f"Incorrect choice! Licked {side}, correct was {self.correct_spout}.")
-            self.play_sound("white_noise")
-            self.incorrect_trials += 1
-
-        self.total_licks += 1
-        self.gui_controls.update_total_licks(self.total_licks)
-        self.gui_controls.update_correct_trials(self.correct_trials)
-        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                print(f"Incorrect choice! Licked {side}, correct was {self.correct_spout}.")
+                self.play_sound("white_noise")
+                self.incorrect_trials += 1
+    
+            self.total_licks += 1
+            self.gui_controls.update_total_licks(self.total_licks)
+            self.gui_controls.update_correct_trials(self.correct_trials)
+            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
     
     def reward(self, side):
