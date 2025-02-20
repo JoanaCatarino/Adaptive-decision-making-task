@@ -319,8 +319,6 @@ class TwoChoiceAuditoryTask:
             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
             self.play_sound('white_noise')  # Play punishment sound
     
-        self.end_trial()
-    
     
                    
     def reward(self, side):
