@@ -4,6 +4,12 @@ Created on Sat Jul 20 17:32:26 2024
 @author: JoanaCatarino
 '''
 
+import os
+os.environ['PYTHONWARNINGS'] = 'ignore'
+os.environ['SDL_AUDIODRIVER'] = 'alsa'
+os.environ['ALSA_LOG_LEVEL'] = '0'
+os.environ['LIBASOUND_DEBUG'] = '0'
+
 import sys
 import asyncio
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton
