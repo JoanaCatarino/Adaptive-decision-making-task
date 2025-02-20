@@ -226,8 +226,8 @@ class TwoChoiceAuditoryTask:
             
             
             # 4. Detect licks during response window
-            self.lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
-            self.lick_thread.start()
+            threading.Thread(target=self.detect_licks, daemon=True).start()
+            
             
             # If the loop ends with no licks detected, count as omission
             if self.first_lick is None:
@@ -235,8 +235,9 @@ class TwoChoiceAuditoryTask:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
             
-            self.trialstarted = False
+            
             led_blue.off()
+            self.trialstarted = False
             print(f'Trial {self.total_trials} ended')
                        
             
