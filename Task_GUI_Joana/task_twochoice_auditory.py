@@ -4,12 +4,16 @@ Created on Sat Jul 20 17:51:07 2024
 
 @author: JoanaCatarino
 """
+import os
+os.environ['PYTHONWARNINGS'] = 'ignore'
+os.environ['SDL_AUDIODRIVER'] = 'alsa'
+os.environ['ALSA_LOG_LEVEL'] = '0'
+os.environ['LIBASOUND_DEBUG'] = '0'
 
 import threading
 import numpy as np
 import time
 import csv
-import os
 import random
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
@@ -41,11 +45,6 @@ class TwoChoiceAuditoryTask:
         self.spout_5KHz = None
         self.spout_10KHz = None
         self.load_spout_tone_mapping()
-        
-        # Assign piezos to correct spout side
-        self.piezo_left = self.piezo_reader.piezo_adder1  # Left spout
-        self.piezo_right = self.piezo_reader.piezo_adder2  # Right spout
-        print(f"Piezo Mapping: Left -> {self.piezo_left}, Right -> {self.piezo_right}")
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
@@ -271,8 +270,8 @@ class TwoChoiceAuditoryTask:
         start_time = time.time()
     
         while time.time() - start_time < self.WW:  # Waiting Window duration
-            p1 = list(self.piezo_left)  # Left spout
-            p2 = list(self.piezo_right)  # Right spout
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
@@ -295,8 +294,8 @@ class TwoChoiceAuditoryTask:
         start_time = time.time()
         
         while time.time() - start_time < self.RW:  # Response Window duration
-            p1 = list(self.piezo_left)  # Left spout
-            p2 = list(self.piezo_right)  # Right spout
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
     
             # Check if a lick is detected on the left spout
             if p1 and p1[-1] > self.threshold_left:
