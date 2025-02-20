@@ -288,7 +288,7 @@ class TwoChoiceAuditoryTask:
     
         # Ignore any further licks after the first one
         if self.first_lick is not None:
-        return 
+            return 
     
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
