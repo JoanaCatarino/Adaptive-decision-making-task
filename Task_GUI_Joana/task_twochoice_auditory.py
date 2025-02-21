@@ -270,6 +270,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                             
                         else:
+                            threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
     
         # Right piezo        
@@ -305,6 +306,7 @@ class TwoChoiceAuditoryTask:
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
+                            threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
     
     
@@ -332,7 +334,10 @@ class TwoChoiceAuditoryTask:
         # Small delay to ensure execution before another lick
         #time.sleep(0.01)
     
-        
+    def white_noise(self):
+        white_noise()
+    
+    
     def main(self):
         
         while self.running:
