@@ -278,6 +278,8 @@ class TwoChoiceAuditoryTask:
                             print('Wrong spout')
                             self.incorrect_trials += 1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            
+                        break
     
             # Check for right spout lick
             if p2 and p2[-1] > self.threshold_right:
@@ -298,6 +300,8 @@ class TwoChoiceAuditoryTask:
                             print('Wrong spout')
                             self.incorrect_trials += 1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            
+                        break
     
             time.sleep(0.001)  # Reduce CPU load
 
