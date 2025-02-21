@@ -266,7 +266,7 @@ class TwoChoiceAuditoryTask:
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
         
-        if self.RW_start = True:
+        if self.RW_start == True:
             print('saw that it is open')
         
             # Left piezo
