@@ -268,7 +268,7 @@ class TwoChoiceAuditoryTask:
                     # **Ensure lick happens inside the exact response window time**
                     if self.response_window_start <= self.tlick <= (self.response_window_start + self.RW):
                         if self.first_lick is None:  # First lick of the trial
-                        self.first_lick = side
+                            self.first_lick = side
     
                         if self.correct_spout == self.first_lick:
                             threading.Thread(target=self.reward, args=(side,)).start()
