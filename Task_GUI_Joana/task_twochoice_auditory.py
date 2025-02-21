@@ -115,9 +115,6 @@ class TwoChoiceAuditoryTask:
         self.print_thread = threading.Thread(target=self.main, daemon=True)
         self.print_thread.start()   
         
-        # Start lick detection in a separate thread
-        self.lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
-        self.lick_thread.start()
         
         
     def stop(self):
