@@ -307,8 +307,6 @@ class TwoChoiceAuditoryTask:
             self.omissions += 1
             self.gui_controls.update_omissions(self.omissions)
    
-            
-
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
