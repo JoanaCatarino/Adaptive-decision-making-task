@@ -253,6 +253,8 @@ class TwoChoiceAuditoryTask:
     
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
+        
+        lick_detected = False  # Flag to track if a lick occurred
     
         # Left piezo
         if p1:
@@ -266,6 +268,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
+                        lick_detected = True 
                         
                         if self.correct_spout == self.first_lick:
     
@@ -312,6 +315,7 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
+                        lick_detected = True 
                         
                         if self.correct_spout == self.first_lick:
     
@@ -340,10 +344,11 @@ class TwoChoiceAuditoryTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-                #else:
-                    #print('No lick detected')
-                    #self.omissions += 1
-                    #self.gui_controls.update_omissions(self.omissions)
+        # If no lick was detected in the response window, log omission
+        if not lick_detected:
+            print('No lick detected')
+            self.omissions += 1
+            self.gui_controls.update_omissions(self.omissions)
                 
                 
     
