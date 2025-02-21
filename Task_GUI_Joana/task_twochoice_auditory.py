@@ -205,24 +205,6 @@ class TwoChoiceAuditoryTask:
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
-            
-            # Trigger response window 
-            time.sleep(0.1)  # Short delay before starting response window
-            self.response_window_start = time.time()  # Store exact time response window starts
-            self.response_window_active = True
-            print('Response window started')
-    
-            # Wait for response window duration but allow real-time updates
-            start_time = time.time()
-            while time.time() - start_time < self.RW:
-                if not self.response_window_active:  # If a lick happens, exit early
-                    break
-                time.sleep(0.01)
-    
-            # Close response window if no lick happened
-            if self.response_window_active:
-                self.response_window_active = False
-                print('Response window closed')
 
             
             # Initialize trial data
@@ -356,6 +338,10 @@ class TwoChoiceAuditoryTask:
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
+                    self.response_window_start = time.time()  # Store exact time response window starts
+                    self.response_window_active = True
+            
+        self.detect_licks()
         
             
     def append_trial_to_csv(self, trial_data):
