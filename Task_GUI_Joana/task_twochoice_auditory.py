@@ -202,7 +202,7 @@ class TwoChoiceAuditoryTask:
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
             # Run lick detection continuously
-            self.detect_licks()
+            threading.Thread(target=self.detect_licks, daemon=True)
             
             #if self.first_lick is None:
                 #print('No licks detected')
