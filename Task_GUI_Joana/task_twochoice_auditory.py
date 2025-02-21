@@ -55,6 +55,10 @@ class TwoChoiceAuditoryTask:
         self.total_licks = 0
         self.licks_left = 0
         self.licks_right = 0
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
+        self.omissions = 0
         
         # Booleans
         self.trialstarted = False
@@ -86,11 +90,19 @@ class TwoChoiceAuditoryTask:
         self.total_licks = 0 
         self.licks_left = 0 
         self.licks_right = 0 
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
+        self.omissions = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
+        self.gui_controls.update_correct_trials(0)
+        self.gui_controls.update_incorrect_trials(0)
+        self.gui_controls.update_early_licks(0)
+        self.gui_controls.update_omissions(0)
         
         # Reset the performance plot
         self.gui_controls.lick_plot.reset_plot() # plot main tab
@@ -176,7 +188,7 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
-            trial_number= self.total_trials +1
+            self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
@@ -191,11 +203,11 @@ class TwoChoiceAuditoryTask:
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
+            print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
             # Initialize trial data
             trial_data = {
-                'trial_number': trial_number,
+                'trial_number': self.total_trials,
                 'trial_time': self.ttrial,
                 'lick': 0,
                 'left_spout': 0,
@@ -209,7 +221,6 @@ class TwoChoiceAuditoryTask:
             
             self.trials.append(trial_data) # Store trial data
             
-            self.total_trials = trial_number
             self.gui_controls.update_total_trials(self.total_trials)
             
             # Append trial data to csv file
@@ -263,8 +274,10 @@ class TwoChoiceAuditoryTask:
         
                             self.total_licks += 1
                             self.licks_left += 1
+                            self.correct_trials += 1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
+                            self.gui_controls.update_correct_trials(self.correct_trials)
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
@@ -272,6 +285,13 @@ class TwoChoiceAuditoryTask:
                         else:
                             threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
+                            self.incorrect_trials +=1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+            #else:
+                #print('No lick detected')
+                #self.omissions += 1
+                #self.gui_controls.update_omissions(self.omissions)
+                
     
         # Right piezo        
         if p2:
@@ -300,15 +320,25 @@ class TwoChoiceAuditoryTask:
         
                             self.total_licks += 1
                             self.licks_right += 1
+                            self.correct_trials += 1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
+                            self.gui_controls.update_correct_trials(self.correct_trials)
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
                             threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
+                            self.incorrect_trials +=1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
+                #else:
+                    #print('No lick detected')
+                    #self.omissions += 1
+                    #self.gui_controls.update_omissions(self.omissions)
+                
+                
     
     def reward(self, side):
         
