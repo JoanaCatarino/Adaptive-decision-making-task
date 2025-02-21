@@ -201,14 +201,12 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
-            # Run lick detection continuously
-            self.detect_licks()
-            
-            #if self.first_lick is None:
-                #print('No licks detected')
-                #self.omissions += 1
-                #self.gui_controls.update_omissions(self.omissions)    
-            
+            trial_end_time = self.ttrial + self.RW
+            while self.running and self.t < trial_end_time:
+                self.detect_licks()
+                time.sleep(0.001)  # Small delay to avoid CPU overload
+                
+            self.trialstarted = False
             
             # Initialize trial data
             trial_data = {
@@ -230,6 +228,8 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
+            
+            
             
     
     def led_indicator(self, RW):
@@ -373,6 +373,9 @@ class TwoChoiceAuditoryTask:
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
+                    
+     
+                    
         
             
             
