@@ -192,18 +192,23 @@ class TwoChoiceAuditoryTask:
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
-            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz)
+            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
-            
-            # Determine the correct response spout for this tone
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+            
+            # Run lick detection continuously
+            self.detect_licks()
+            
+            #if self.first_lick is None:
+                #print('No licks detected')
+                #self.omissions += 1
+                #self.gui_controls.update_omissions(self.omissions)    
+            
             
             # Initialize trial data
             trial_data = {
@@ -287,10 +292,7 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-            else:
-                print('No lick detected')
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
+            
                 
     
         # Right piezo        
@@ -332,10 +334,6 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-            else:
-                print('No lick detected')
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
                 
                 
     
@@ -376,8 +374,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     
-            # Run lick detection continuously
-            self.detect_licks()
+            
             
             
     def append_trial_to_csv(self, trial_data):
