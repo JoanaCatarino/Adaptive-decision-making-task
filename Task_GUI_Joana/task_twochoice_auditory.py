@@ -188,7 +188,7 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
-            sel.RW_start = False
+            self.RW_start = False
             self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
