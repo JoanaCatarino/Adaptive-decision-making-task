@@ -115,6 +115,10 @@ class TwoChoiceAuditoryTask:
         self.print_thread = threading.Thread(target=self.main, daemon=True)
         self.print_thread.start()   
         
+        # Start lick detection in a separate thread
+        self.lick_thread = threading.Thread(target=self.detect_licks, daemon=True)
+        self.lick_thread.start()
+        
         
     def stop(self):
         print("Stopping Spout Sampling Task...")
@@ -243,8 +247,6 @@ class TwoChoiceAuditoryTask:
             self.append_trial_to_csv(trial_data)
             
             
-            
-    
     def led_indicator(self, RW):
         
         """ Turn on LED during trial duration without blocking main loop"""
@@ -265,13 +267,13 @@ class TwoChoiceAuditoryTask:
             p2 = list(self.piezo_reader.piezo_adder2)
     
             if self.trialstarted and self.response_window_active:
+                side = None
                 if p1 and p1[-1] > self.threshold_left:
                     side = 'left'
                 elif p2 and p2[-1] > self.threshold_right:
                     side = 'right'
-                else:
-                    side = None
-    
+                
+               
                 if side:
                     with self.lock:
                         self.tlick = time.time()  # Get absolute time of lick
@@ -310,11 +312,10 @@ class TwoChoiceAuditoryTask:
                                 self.incorrect_trials += 1
                                 self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-                            # **Close response window immediately after first valid lick**
+                            # Shut down response window after first valid lick
                             self.response_window_active = False
                             print('Response window closed due to lick.')
-                        else:
-                            print(f"Lick detected at {self.tlick:.2f}, but outside response window.")
+                        
 
         time.sleep(0.001)  # Prevents CPU overload
                 
@@ -356,8 +357,6 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
         
-        # Run lick detection continuously
-        self.detect_licks()
             
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
