@@ -227,7 +227,7 @@ class TwoChoiceAuditoryTask:
             self.append_trial_to_csv(trial_data)
             
     
-    def sound_cue(self, fequency):
+    def sound_cue(self, frequency):
         if frequency == '5KHz':
             tone_5KHz()
         elif frequency == '10KHz':
