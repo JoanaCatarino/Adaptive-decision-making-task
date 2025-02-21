@@ -188,7 +188,6 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
-            self.RW_start = False
             self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
@@ -202,18 +201,13 @@ class TwoChoiceAuditoryTask:
             self.sound_cue(self.current_tone)
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             
+            
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
-            self.RW_start = True
-            
-            if self.first_lick is None:
-                print('No lick detected')
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
-                
-            self.RW_start = False
+            # Start monitoring licks within response window
+            self.check_licks_in_RW()
                 
             self.trialstarted = False
             
@@ -253,120 +247,73 @@ class TwoChoiceAuditoryTask:
         led_white_l.on()
         time.sleep(self.RW) # This should actually be changed to the duration of the full trial
         led_white_l.off()
+     
         
+    def check_licks_in_RW(self):
+        """Monitors licks within the response window (RW) and logs omissions if no lick occurs."""
         
-    def detect_licks(self):
+        start_time = time.time()
+        lick_detected = False
     
-        """Checks for licks and delivers rewards in parallel."""
-
-        # Ensure piezo data is updated before checking
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        while (time.time() - start_time) < self.RW:
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout data
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout data
     
-        # Small delay to prevent CPU overload and stabilize readings
-        time.sleep(0.001)
-        
-        if self.RW_start == True:
-            print('saw that it is open')
-        
-            # Left piezo
-            if p1:
-                latest_value1 = p1[-1]
-        
-                if latest_value1 > self.threshold_left:
-                    with self.lock:
-                        self.tlick_l = self.t
-                        elapsed_left = self.tlick_l - self.ttrial
-        
-                        if self.first_lick is None and (0 < elapsed_left < self.RW):
-                            self.first_lick = 'left'
-                            self.tlick = self.tlick_l
-                            
-                            if self.correct_spout == self.first_lick:
-        
-                                # Deliver reward in a separate thread
-                                threading.Thread(target=self.reward, args=('left',)).start()
-                                self.RW_start = False 
-                                
-                                # Update trial data
-                                self.trials[-1]['lick'] = 1
-                                self.trials[-1]['left_spout'] = 1
-                                self.trials[-1]['lick_time'] = self.tlick
-                                
-                                self.append_trial_to_csv(self.trials[-1])
-            
-                                self.total_licks += 1
-                                self.licks_left += 1
-                                self.correct_trials += 1
-                                self.gui_controls.update_total_licks(self.total_licks)
-                                self.gui_controls.update_licks_left(self.licks_left)
-                                self.gui_controls.update_correct_trials(self.correct_trials)
-                                
-                                # Update live stair plot
-                                self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-                                
-                            else:
-                                threading.Thread(target=self.white_noise, daemon=True).start()
-                                print('wrong spout')
-                                self.incorrect_trials +=1
-                                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                                self.RW_start = False
-                
-                    
-        
-            # Right piezo        
-            if p2:
-                latest_value2 = p2[-1]
-        
-                if latest_value2 > self.threshold_right:
-                    with self.lock:
-                        self.tlick_r = self.t
-                        elapsed_right = self.tlick_r - self.ttrial
-        
-                        if self.first_lick is None and (0 < elapsed_right < self.RW):
-                            self.first_lick = 'right'
-                            self.tlick = self.tlick_r
-                            
-                            if self.correct_spout == self.first_lick:
-        
-                                # Deliver reward in a separate thread
-                                threading.Thread(target=self.reward, args=('right',)).start()
-                                self.RW_start = False
-                                
-                                # Update trial data
-                                self.trials[-1]['lick'] = 1
-                                self.trials[-1]['right_spout'] = 1
-                                self.trials[-1]['lick_time'] = self.tlick
-                                
-                                self.append_trial_to_csv(self.trials[-1])
-            
-                                self.total_licks += 1
-                                self.licks_right += 1
-                                self.correct_trials += 1
-                                self.gui_controls.update_total_licks(self.total_licks)
-                                self.gui_controls.update_licks_right(self.licks_right)
-                                self.gui_controls.update_correct_trials(self.correct_trials)
-                                
-                                # Update live stair plot
-                                self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-                            else:
-                                threading.Thread(target=self.white_noise, daemon=True).start()
-                                print('wrong spout')
-                                self.incorrect_trials +=1
-                                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                                self.RW_start = False
-                                
-                        
+            # Check for left spout lick
+            if p1 and p1[-1] > self.threshold_left:
+                with self.lock:
+                    self.tlick_l = self.t
+                    elapsed_left = self.tlick_l - self.ttrial
+    
+                    if self.first_lick is None and elapsed_left > 0:
+                        self.first_lick = 'left'
+                        self.tlick = self.tlick_l
+                        lick_detected = True
+    
+                        if self.correct_spout == 'left':
+                            threading.Thread(target=self.reward, args=('left',)).start()
+                            self.update_trial_data(1, left_spout=1)
+                        else:
+                            threading.Thread(target=self.white_noise, daemon=True).start()
+                            print('Wrong spout')
+                            self.incorrect_trials += 1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+    
+            # Check for right spout lick
+            if p2 and p2[-1] > self.threshold_right:
+                with self.lock:
+                    self.tlick_r = self.t
+                    elapsed_right = self.tlick_r - self.ttrial
+    
+                    if self.first_lick is None and elapsed_right > 0:
+                        self.first_lick = 'right'
+                        self.tlick = self.tlick_r
+                        lick_detected = True
+    
+                        if self.correct_spout == 'right':
+                            threading.Thread(target=self.reward, args=('right',)).start()
+                            self.update_trial_data(1, right_spout=1)
+                        else:
+                            threading.Thread(target=self.white_noise, daemon=True).start()
+                            print('Wrong spout')
+                            self.incorrect_trials += 1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+    
+            time.sleep(0.001)  # Reduce CPU load
 
-                
-                
+        # If no lick occurred, log omission
+        if not lick_detected:
+            print('Omission')
+            self.omissions += 1
+            self.gui_controls.update_omissions(self.omissions)
+            self.trials[-1]['lick'] = 0  # No lick recorded
+            self.append_trial_to_csv(self.trials[-1])
+            
+
     
     def reward(self, side):
-        
         """Delivers a reward without blocking the main loop."""
-        
-        print(f"Delivering reward - {side}")
-    
+
         # Ensure pump action executes properly with a short delay
         time.sleep(0.01)
     
@@ -382,8 +329,7 @@ class TwoChoiceAuditoryTask:
             pump_r.on()
             print('Reward delivered - right')
     
-        # Small delay to ensure execution before another lick
-        #time.sleep(0.01)
+      
     
     def white_noise(self):
         white_noise()
@@ -400,8 +346,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     
-            # Run lick detection continuously
-            self.detect_licks()
+            
             
             
     def append_trial_to_csv(self, trial_data):
