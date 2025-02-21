@@ -203,14 +203,22 @@ class TwoChoiceAuditoryTask:
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
             # Trigger response window 
-            self.response_window_start = time.time()  # Store exact time the response window starts
-            self.response_window_active = True
-            print('Response window started')
-            
-            time.sleep(self.RW)
-            if self.response_window_active:  # If still open (no lick happened), close it
-                self.response_window_active = False
-                print(f"Response window ended at t = {self.t:.2f} (No lick detected)")
+           time.sleep(0.1)  # Short delay before starting response window
+           self.response_window_start = time.time()  # Store exact time response window starts
+           self.response_window_active = True
+           print('Response window started')
+    
+           # Wait for response window duration but allow real-time updates
+           start_time = time.time()
+           while time.time() - start_time < self.RW:
+               if not self.response_window_active:  # If a lick happens, exit early
+                   break
+               time.sleep(0.01)
+    
+           # Close response window if no lick happened
+           if self.response_window_active:
+               self.response_window_active = False
+               print('Response window closed')
 
             
             # Initialize trial data
@@ -247,64 +255,68 @@ class TwoChoiceAuditoryTask:
         
         
     def detect_licks(self):
-    
+        """ Continuously detects licks but only evaluates them when the response window is active. """
         
-        # Check for licks at all times
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        while self.running:
+            self.t = time.time() - self.tstart  # Update current time
     
-        if self.trialstarted and self.response_window_active:
-            if p1 and p1[-1] > self.threshold_left:
-                side = 'left'
-            elif p2 and p2[-1] > self.threshold_right:
-                side = 'right'
-            else:
-                side = None
+            # Check for licks at all times
+            p1 = list(self.piezo_reader.piezo_adder1)
+            p2 = list(self.piezo_reader.piezo_adder2)
     
-            if side:
-                with self.lock:
-                    self.tlick = self.t  # Record lick time
+            if self.trialstarted and self.response_window_active:
+                if p1 and p1[-1] > self.threshold_left:
+                    side = 'left'
+                elif p2 and p2[-1] > self.threshold_right:
+                    side = 'right'
+                else:
+                    side = None
     
-                    # **Ensure lick happens inside the exact response window time**
-                    if self.response_window_start <= self.tlick <= (self.response_window_start + self.RW):
-                        if self.first_lick is None:  # First lick of the trial
-                            self.first_lick = side
+                if side:
+                    with self.lock:
+                        self.tlick = time.time()  # Get absolute time of lick
     
-                        if self.correct_spout == self.first_lick:
-                            threading.Thread(target=self.reward, args=(side,)).start()
-                            print(f"Correct lick on {side} spout!")
-                            self.correct_trials += 1
-                            self.gui_controls.update_correct_trials(self.correct_trials)
+                        # **Check if the lick happens within the exact response window**
+                        if self.response_window_start <= self.tlick <= (self.response_window_start + self.RW):
+                            if self.first_lick is None:  # First lick of the trial
+                                self.first_lick = side
     
-                            self.trials[-1]['lick'] = 1
-                            self.trials[-1]['lick_time'] = self.tlick
-                            self.trials[-1][f'{side}_spout'] = 1
+                            if self.correct_spout == self.first_lick:
+                                threading.Thread(target=self.reward, args=(side,)).start()
+                                print(f"Correct lick on {side} spout!")
     
-                            self.append_trial_to_csv(self.trials[-1])
+                                self.correct_trials += 1
+                                self.gui_controls.update_correct_trials(self.correct_trials)
     
-                            if side == 'left':
-                                self.licks_left += 1
-                                self.gui_controls.update_licks_left(self.licks_left)
+                                self.trials[-1]['lick'] = 1
+                                self.trials[-1]['lick_time'] = self.tlick
+                                self.trials[-1][f'{side}_spout'] = 1
+    
+                                self.append_trial_to_csv(self.trials[-1])
+    
+                                if side == 'left':
+                                    self.licks_left += 1
+                                    self.gui_controls.update_licks_left(self.licks_left)
+                                else:
+                                    self.licks_right += 1
+                                    self.gui_controls.update_licks_right(self.licks_right)
+    
+                                self.total_licks += 1
+                                self.gui_controls.update_total_licks(self.total_licks)
+    
                             else:
-                                self.licks_right += 1
-                                self.gui_controls.update_licks_right(self.licks_right)
+                                threading.Thread(target=self.punishment, daemon=True).start()
+                                print('Wrong spout')
+                                self.incorrect_trials += 1
+                                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-                            self.total_licks += 1
-                            self.gui_controls.update_total_licks(self.total_licks)
-    
+                            # **Close response window immediately after first valid lick**
+                            self.response_window_active = False
+                            print('Response window closed due to lick.')
                         else:
-                            threading.Thread(target=self.punishment, daemon=True).start()
-                            print('Wrong spout')
-                            self.incorrect_trials += 1
-                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-    
-                        # **Close response window immediately after first valid lick**
-                        self.response_window_active = False
-                        print('Response window closed')
-                        
-    
-        
-                
+                            print(f"Lick detected at {self.tlick:.2f}, but outside response window.")
+
+        time.sleep(0.001)  # Prevents CPU overload
                 
     
     def reward(self, side):
@@ -344,8 +356,8 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
         
-        # Run lick detection continuously
-        self.detect_licks()
+            # Run lick detection continuously
+            self.detect_licks()
             
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
