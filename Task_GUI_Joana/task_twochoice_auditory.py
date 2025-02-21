@@ -244,7 +244,6 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     self.tlick_l = self.t
                     elapsed_left = self.tlick_l - self.ttrial
-                    print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
@@ -269,6 +268,9 @@ class TwoChoiceAuditoryTask:
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                            
+                        else:
+                            print('wrong spout')
     
         # Right piezo        
         if p2:
@@ -278,7 +280,6 @@ class TwoChoiceAuditoryTask:
                 with self.lock:
                     self.tlick_r = self.t
                     elapsed_right = self.tlick_r - self.ttrial
-                    print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
@@ -303,6 +304,8 @@ class TwoChoiceAuditoryTask:
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        else:
+                            print('wrong spout')
     
     
     def reward(self, side):
