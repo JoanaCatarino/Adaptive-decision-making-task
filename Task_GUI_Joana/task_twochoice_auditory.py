@@ -227,6 +227,13 @@ class TwoChoiceAuditoryTask:
             self.append_trial_to_csv(trial_data)
             
     
+    def sound_cue(self, fequency):
+        if frequency == '5KHz':
+            tone_5KHz()
+        elif frequency == '10KHz':
+            tone_10KHz()
+    
+    
     def led_indicator(self, RW):
         
         """ Turn on LED during trial duration without blocking main loop"""
