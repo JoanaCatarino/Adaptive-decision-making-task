@@ -356,8 +356,8 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
         
-            # Run lick detection continuously
-            self.detect_licks()
+        # Run lick detection continuously
+        self.detect_licks()
             
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
