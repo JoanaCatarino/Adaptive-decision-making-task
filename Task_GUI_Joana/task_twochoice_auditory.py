@@ -374,6 +374,9 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     
+            # Run lick detection continuously
+            self.detect_licks()
+                    
             
             
             
