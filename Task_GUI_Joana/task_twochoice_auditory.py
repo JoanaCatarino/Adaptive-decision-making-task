@@ -306,8 +306,7 @@ class TwoChoiceAuditoryTask:
             print('Omission')
             self.omissions += 1
             self.gui_controls.update_omissions(self.omissions)
-            self.trials[-1]['lick'] = 0  # No lick recorded
-            self.append_trial_to_csv(self.trials[-1])
+   
             
 
     
