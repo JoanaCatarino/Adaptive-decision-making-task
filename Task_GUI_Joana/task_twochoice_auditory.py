@@ -240,7 +240,7 @@ class TwoChoiceAuditoryTask:
         led_white_l.off()
         
         
-   def detect_licks(self):
+    def detect_licks(self):
     
         while self.running:
             self.t = time.time() - self.tstart  # Update current time
