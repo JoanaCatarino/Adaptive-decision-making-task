@@ -332,11 +332,10 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-    
-                else:
-                    print('No lick detected')
-                    self.omissions += 1
-                    self.gui_controls.update_omissions(self.omissions)
+            else:
+                print('No lick detected')
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
                 
                 
     
