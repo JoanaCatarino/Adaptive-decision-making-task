@@ -287,10 +287,10 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-            #else:
-                #print('No lick detected')
-                #self.omissions += 1
-                #self.gui_controls.update_omissions(self.omissions)
+            else:
+                print('No lick detected')
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
                 
     
         # Right piezo        
@@ -333,18 +333,16 @@ class TwoChoiceAuditoryTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-                #else:
-                    #print('No lick detected')
-                    #self.omissions += 1
-                    #self.gui_controls.update_omissions(self.omissions)
+                else:
+                    print('No lick detected')
+                    self.omissions += 1
+                    self.gui_controls.update_omissions(self.omissions)
                 
                 
     
     def reward(self, side):
         
         """Delivers a reward without blocking the main loop."""
-        
-        print(f"Delivering reward - {side}")
     
         # Ensure pump action executes properly with a short delay
         time.sleep(0.01)
