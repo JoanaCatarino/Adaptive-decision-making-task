@@ -203,7 +203,10 @@ class TwoChoiceAuditoryTask:
             # Play sound
             self.sound_cue(self.current_tone)
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            t_response_start = time.time()
             
+            while time.time() - t_response_start < self.RW:
+                self.detect_licks()
             
             # Trial finish - Turn Blue led OFF
             self.trialstarted = False
@@ -372,14 +375,11 @@ class TwoChoiceAuditoryTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
-           
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
                     
-            # Run lick detection continuously
-            self.detect_licks()
             
             
     def append_trial_to_csv(self, trial_data):
