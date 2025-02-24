@@ -205,8 +205,8 @@ class TwoChoiceAuditoryTask:
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             t_response_start = time.time()
             
-            while time.time() - t_response_start < self.RW:
-                self.detect_licks()
+            lick_thread = threading.Thread(target=self.detect_licks_for_duration, args=(self.RW, t_response_start))
+            lick_thread.start()
             
             # Trial finish - Turn Blue led OFF
             self.trialstarted = False
@@ -250,6 +250,15 @@ class TwoChoiceAuditoryTask:
         led_white_l.off()
         
         
+    def detect_licks_for_duration(self, duration, start_time):
+        """ Detects licks only during the response window (RW) in a separate thread. """
+        while time.time() - start_time < duration:
+            self.detect_licks()
+            time.sleep(0.001)  # Small sleep to prevent CPU overload
+        print("Response window ended. No more licks will be detected.")
+        
+    
+    
     def detect_licks(self):
     
         """Checks for licks and delivers rewards in parallel."""
