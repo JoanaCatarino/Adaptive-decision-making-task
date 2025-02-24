@@ -215,7 +215,7 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
-            if self.t - self.RW_start > self.RW
+            if self.t - self.RW_start > self.RW:
                 self.trialstarted = False
                 led_blue.off()
             
