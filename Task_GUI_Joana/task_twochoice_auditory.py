@@ -211,6 +211,9 @@ class TwoChoiceAuditoryTask:
                 print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
                 # Start response window
                 self.RW_start = self.t
+                
+            # Wait for response window to finish if no lick happens
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
@@ -345,6 +348,9 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            
+                        self.trialstarted = False
+                        return
                 
                     
         
@@ -387,8 +393,21 @@ class TwoChoiceAuditoryTask:
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            
+                        self.trialstarted = False
+                        return
                    
 
+    def wait_for_response(self):
+        """Ends the trial after the response window if no lick occurs."""
+        time.sleep(self.RW)  # Wait for RW duration
+        with self.lock:
+            if self.first_lick is None:  # No lick detected
+                print("Response window ended, no lick detected.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
+                self.trialstarted = False  # End trial
+    
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
