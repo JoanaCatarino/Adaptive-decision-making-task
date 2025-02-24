@@ -201,7 +201,7 @@ class TwoChoiceAuditoryTask:
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Play sound
-            if self.tone_selected = True:
+            if self.tone_selected == True:
                 self.play_sound(self.current_tone)
                 self.tone_selected = False
                 print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
