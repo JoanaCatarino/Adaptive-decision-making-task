@@ -202,7 +202,8 @@ class TwoChoiceAuditoryTask:
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Turn bllue Led ON
-            threading.Thread(target=self.blue_led_on, daemon=True).start() 
+            #threading.Thread(target=self.blue_led_on, daemon=True).start() 
+            led_blue.on()
             
             # 2. Waiting Window - No licking allowed
             if self.detect_licks_during_waiting_window():
