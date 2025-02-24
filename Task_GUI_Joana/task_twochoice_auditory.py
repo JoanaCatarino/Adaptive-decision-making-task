@@ -63,6 +63,7 @@ class TwoChoiceAuditoryTask:
         # Booleans
         self.trialstarted = False
         self.running = False
+        self.tone_selected = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -195,12 +196,15 @@ class TwoChoiceAuditoryTask:
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
+            self.tone_selected = True
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Play sound
-            self.play_sound(self.current_tone)
-            print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            if self.tone_selected = True:
+                self.play_sound(self.current_tone)
+                self.tone_selected = False
+                print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             # Start response window
             self.RW_start = self.t
             
