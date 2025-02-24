@@ -49,6 +49,7 @@ class TwoChoiceAuditoryTask:
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
+        self.WW = 1
         
         # Counters
         self.total_trials = 0
