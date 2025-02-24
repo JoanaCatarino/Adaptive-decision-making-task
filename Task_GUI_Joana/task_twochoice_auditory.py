@@ -197,22 +197,21 @@ class TwoChoiceAuditoryTask:
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
-            self.tone_selected = True
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Turn bllue Led ON
-            #threading.Thread(target=self.blue_led_on, daemon=True).start() 
-            led_blue.on()
+            threading.Thread(target=self.blue_led_on, daemon=True).start() 
+            #led_blue.on()
             
-            # 2. Waiting Window - No licking allowed
-            #if self.detect_licks_during_waiting_window():
-                #print("Lick detected during Waiting Window - Aborting trial")
-                #led_blue.off()
-                #self.trialstarted = False
-                #self.early_licks += 1
-                #self.gui_controls.update_early_licks(self.early_licks)
-                #return
+            #2. Waiting Window - No licking allowed
+            if self.detect_licks_during_waiting_window():
+                print("Lick detected during Waiting Window - Aborting trial")
+                led_blue.off()
+                self.trialstarted = False
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                return
             
             # 3. Play sound
             self.play_sound(self.current_tone)
@@ -226,7 +225,9 @@ class TwoChoiceAuditoryTask:
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
             # End trial and Turn blue led OFF
-            threading.Thread(target=self.blue_led_off, daemon=True).start() 
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            self.trialstarted = False
+            
             
             # Initialize trial data
             trial_data = {
