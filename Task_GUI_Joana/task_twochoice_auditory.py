@@ -213,7 +213,7 @@ class TwoChoiceAuditoryTask:
                 self.trialstarted = False
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
-                return 
+                #return 
             
             # 3. Play sound
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
