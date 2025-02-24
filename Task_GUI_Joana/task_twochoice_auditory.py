@@ -200,24 +200,31 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
+            # Turn bllue Led ON
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
-            # Play sound
-            if self.tone_selected == True:
-                
-                self.play_sound(self.current_tone)
-                self.tone_selected = False
-                print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
-                # Start response window
-                self.RW_start = self.t
+            # 2. Waiting Window - No licking allowed
+            if self.detect_licks_during_waiting_window():
+                print("Lick detected during Waiting Window - Aborting trial")
+                led_blue.off()
+                self.trialstarted = False
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                return
+            
+            # 3. Play sound
+            self.play_sound(self.current_tone)
+            print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            
+            # 4. Start response window
+            self.RW_start = self.t
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
             
-            if self.t - self.RW_start > self.RW:
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+            # End trial and Turn blue led OFF
+            threading.Thread(target=self.blue_led_off, daemon=True).start() 
             
             # Initialize trial data
             trial_data = {
@@ -239,7 +246,31 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
+       
             
+    
+    def detect_licks_during_waiting_window(self):
+        
+        start_time = self.t
+    
+        while self.t - start_time < self.WW:  # Waiting Window duration
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+            
+            # Check if a lick is detected
+            if p1 and p1[-1] > self.threshold_left:
+                print("Lick detected during Waiting Window! Aborting trial.")
+                return True  # Abort trial
+    
+            if p2 and p2[-1] > self.threshold_right:
+                print("Lick detected during Waiting Window! Aborting trial.")
+                return True  # Abort trial
+            
+            time.sleep(0.001)  # Small delay to prevent CPU overload
+        
+        return False  # No licks detected, trial can proceed
+    
+    
     
     def play_sound(self, frequency):
         
