@@ -200,18 +200,20 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
-            # Turn bllue Led ON
-            #threading.Thread(target=self.blue_led_on, daemon=True).start() 
-            led_blue.on()
+            # Turn blue Led ON
+            threading.Thread(target=self.blue_led_on, daemon=True).start() 
+        
             
             # 2. Waiting Window - No licking allowed
-            if self.detect_licks_during_waiting_window():
-                print("Lick detected during Waiting Window - Aborting trial")
-                led_blue.off()
-                self.trialstarted = False
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                return
+            start_WW = time.time()
+            while time.time() - start_WW < self.WW:
+               if self.detect_licks_during_waiting_window():
+                   print("Lick detected during Waiting Window - Aborting trial")
+                   led_blue.off()
+                   self.trialstarted = False
+                   self.early_licks += 1
+                   self.gui_controls.update_early_licks(self.early_licks)
+                   return 
             
             # 3. Play sound
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
@@ -252,9 +254,9 @@ class TwoChoiceAuditoryTask:
     
     def detect_licks_during_waiting_window(self):
         
-        start_time = self.t
+        start_time = time.time()
     
-        while self.t - start_time < self.WW:  # Waiting Window duration
+        while time.time() - start_time < self.WW:  # Waiting Window duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
