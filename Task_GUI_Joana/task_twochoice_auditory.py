@@ -238,15 +238,14 @@ class TwoChoiceAuditoryTask:
     
     def play_sound(self, frequency):
         
-        def play():
-            if frequency == "5KHz":
-                tone_5KHz()  
-            elif frequency == "10KHz":
-                tone_10KHz()
-            elif frequency == "white_noise":
-                white_noise()
+        if frequency == "5KHz":
+            tone_5KHz()  
+        elif frequency == "10KHz":
+            tone_10KHz()
+        elif frequency == "white_noise":
+            white_noise()
 
-        threading.Thread(target=play, daemon=True).start()
+        #threading.Thread(target=play, daemon=True).start()
     
     
     def led_indicator(self, RW):
@@ -371,11 +370,6 @@ class TwoChoiceAuditoryTask:
             time.sleep(self.valve_opening)
             pump_r.on()
             print('Reward delivered - right')
-    
-      
-    
-    def white_noise(self):
-        white_noise()
     
     
     def main(self):
