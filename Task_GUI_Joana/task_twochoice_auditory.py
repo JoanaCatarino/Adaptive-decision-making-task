@@ -74,6 +74,7 @@ class TwoChoiceAuditoryTask:
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
+        self.WW_start = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -205,6 +206,7 @@ class TwoChoiceAuditoryTask:
         
             # 2. Waiting Window - No licking allowed
             self.WW_start = self.t
+            print(f'{self.WW_start}') 
             if self.detect_licks_during_waiting_window():
                 print("Lick detected during Waiting Window - Aborting trial")
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
