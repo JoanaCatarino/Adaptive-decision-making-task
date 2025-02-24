@@ -203,10 +203,9 @@ class TwoChoiceAuditoryTask:
             # Turn blue Led ON
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
         
-            
             # 2. Waiting Window - No licking allowed
-            start_WW = time.time()
-            while time.time() - start_WW < self.WW:
+            start_WW = self.t
+            while self.t - start_WW < self.WW:
                if self.detect_licks_during_waiting_window():
                    print("Lick detected during Waiting Window - Aborting trial")
                    led_blue.off()
@@ -254,24 +253,19 @@ class TwoChoiceAuditoryTask:
     
     def detect_licks_during_waiting_window(self):
         
-        start_time = time.time()
-    
-        while time.time() - start_time < self.WW:  # Waiting Window duration
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-            
-            # Check if a lick is detected
-            if p1 and p1[-1] > self.threshold_left:
-                print("Lick detected during Waiting Window! Aborting trial.")
-                return True  # Abort trial
-    
-            if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during Waiting Window! Aborting trial.")
-                return True  # Abort trial
-            
-            time.sleep(0.001)  # Small delay to prevent CPU overload
+        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
         
-        return False  # No licks detected, trial can proceed
+        # Check if a lick is detected
+        if p1 and p1[-1] > self.threshold_left:
+            print("Lick detected during Waiting Window! Aborting trial.")
+            return True  # Abort trial
+
+        if p2 and p2[-1] > self.threshold_right:
+            print("Lick detected during Waiting Window! Aborting trial.")
+            return True  # Abort trial
+        
+        time.sleep(0.001)  # Small delay to prevent CPU overload
     
     
     
