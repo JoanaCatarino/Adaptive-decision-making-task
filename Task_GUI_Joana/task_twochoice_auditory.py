@@ -205,8 +205,8 @@ class TwoChoiceAuditoryTask:
                 self.play_sound(self.current_tone)
                 self.tone_selected = False
                 print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
-            # Start response window
-            self.RW_start = self.t
+                # Start response window
+                self.RW_start = self.t
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
