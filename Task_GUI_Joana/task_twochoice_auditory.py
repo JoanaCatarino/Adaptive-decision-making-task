@@ -197,20 +197,15 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
-            # Turn Blue Led ON
-            led_blue.on()
-            
             # Play sound
-            self.sound_cue(self.current_tone)
-            print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
-            t_response_start = time.time()
+            #self.sound_cue(self.current_tone)
+            #print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             
-            lick_thread = threading.Thread(target=self.detect_licks_for_duration, args=(self.RW, t_response_start))
-            lick_thread.start()
-            
-            # Trial finish - Turn Blue led OFF
+            # Start LED in a separate thread
+            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
+            print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+                
             self.trialstarted = False
-            led_blue.off()
             
             # Initialize trial data
             trial_data = {
@@ -250,97 +245,101 @@ class TwoChoiceAuditoryTask:
         led_white_l.off()
         
         
-    def detect_licks_for_duration(self, duration, start_time):
-        """ Detects licks only during the response window (RW) in a separate thread. """
-        while time.time() - start_time < duration:
-            self.detect_licks()
-            time.sleep(0.001)  # Small sleep to prevent CPU overload
-        print("Response window ended. No more licks will be detected.")
-        
-    
-    
     def detect_licks(self):
-        """ Checks for licks and delivers rewards only during the response window. """
+    
+        """Checks for licks and delivers rewards in parallel."""
 
-        if self.t is None or self.ttrial is None:
-            return  # Prevent crashes if trial timing isn't set
-    
-        # Compute elapsed time since trial start
-        elapsed_time = self.t - self.ttrial
-    
-        # ✅ Ensure licks are only detected within the response window
-        if not (0 < elapsed_time < self.RW):
-            return  # Ignore licks outside RW
-    
         # Ensure piezo data is updated before checking
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
     
-        time.sleep(0.001)  # Small delay to prevent CPU overload
-    
+        # Small delay to prevent CPU overload and stabilize readings
+        time.sleep(0.001)
+        
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
+        
             if latest_value1 > self.threshold_left:
                 with self.lock:
                     self.tlick_l = self.t
                     elapsed_left = self.tlick_l - self.ttrial
-    
-                    if self.first_lick is None:
+        
+                    if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
-    
+                            
                         if self.correct_spout == self.first_lick:
-                            threading.Thread(target=self.reward, args=('left',)).start()
+        
+                            # Deliver reward in a separate thread
+                            threading.Thread(target=self.reward, args=('left',)).start() 
+                                
+                            # Update trial data
                             self.trials[-1]['lick'] = 1
                             self.trials[-1]['left_spout'] = 1
                             self.trials[-1]['lick_time'] = self.tlick
+                                
                             self.append_trial_to_csv(self.trials[-1])
+            
                             self.total_licks += 1
                             self.licks_left += 1
                             self.correct_trials += 1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
+                                
+                            # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                                
                         else:
                             threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
-                            self.incorrect_trials += 1
+                            self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-    
-        # Right piezo
+                
+                    
+        
+        # Right piezo        
         if p2:
             latest_value2 = p2[-1]
+        
             if latest_value2 > self.threshold_right:
                 with self.lock:
                     self.tlick_r = self.t
                     elapsed_right = self.tlick_r - self.ttrial
-    
-                    if self.first_lick is None:
+        
+                    if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
-    
+                            
                         if self.correct_spout == self.first_lick:
+        
+                            # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
+                                
+                            # Update trial data
                             self.trials[-1]['lick'] = 1
                             self.trials[-1]['right_spout'] = 1
                             self.trials[-1]['lick_time'] = self.tlick
+                            
                             self.append_trial_to_csv(self.trials[-1])
+            
                             self.total_licks += 1
                             self.licks_right += 1
                             self.correct_trials += 1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
+                            
+                            # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
                             threading.Thread(target=self.white_noise, daemon=True).start()
                             print('wrong spout')
-                            self.incorrect_trials += 1
+                            self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                
-            
+                   
+
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
@@ -371,11 +370,14 @@ class TwoChoiceAuditoryTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
             
+           
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
                 if self.check_animal_quiet():
                     self.start_trial()
                     
+            # Run lick detection continuously
+            self.detect_licks()
             
             
     def append_trial_to_csv(self, trial_data):
@@ -399,5 +401,3 @@ class TwoChoiceAuditoryTask:
         
         # Update the GUI thresholds
         self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
-   
-   
