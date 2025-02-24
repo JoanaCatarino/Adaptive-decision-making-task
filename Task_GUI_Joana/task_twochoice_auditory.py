@@ -260,7 +260,7 @@ class TwoChoiceAuditoryTask:
     
     
     def detect_licks(self):
-    """ Checks for licks and delivers rewards only during the response window. """
+        """ Checks for licks and delivers rewards only during the response window. """
 
         if self.t is None or self.ttrial is None:
             return  # Prevent crashes if trial timing isn't set
