@@ -208,7 +208,7 @@ class TwoChoiceAuditoryTask:
             while self.t - self.WW_start < self.WW:
                if self.detect_licks_during_waiting_window():
                    print("Lick detected during Waiting Window - Aborting trial")
-                   led_blue.off()
+                   threading.Thread(target=self.blue_led_off, daemon=True).start()
                    self.trialstarted = False
                    self.early_licks += 1
                    self.gui_controls.update_early_licks(self.early_licks)
@@ -253,11 +253,12 @@ class TwoChoiceAuditoryTask:
     
     def detect_licks_during_waiting_window(self):
         
-        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-        
         while self.t - self.WW_start < self.WW:
         
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+        
+
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
                 print("Lick detected during Waiting Window! Aborting trial.")
@@ -269,7 +270,8 @@ class TwoChoiceAuditoryTask:
         
             time.sleep(0.001)  # Small delay to prevent CPU overload
             
-        return False # No licks detected, trial can proceed
+        return False
+       
     
     
     
