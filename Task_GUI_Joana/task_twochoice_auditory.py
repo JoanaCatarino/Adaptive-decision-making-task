@@ -204,8 +204,10 @@ class TwoChoiceAuditoryTask:
             self.sound_cue(self.current_tone)
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             
-                
+            
+            # Trial finish - Turn Blue led OFF
             self.trialstarted = False
+            led_blue.off()
             
             # Initialize trial data
             trial_data = {
