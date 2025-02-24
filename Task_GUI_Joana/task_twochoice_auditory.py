@@ -243,6 +243,8 @@ class TwoChoiceAuditoryTask:
                 tone_5KHz()  
             elif frequency == "10KHz":
                 tone_10KHz()
+            elif frequency == "white_noise":
+                white_noise()
 
         threading.Thread(target=play, daemon=True).start()
     
@@ -303,7 +305,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                                 
                         else:
-                            threading.Thread(target=self.white_noise, daemon=True).start()
+                            self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
@@ -345,7 +347,7 @@ class TwoChoiceAuditoryTask:
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
-                            threading.Thread(target=self.white_noise, daemon=True).start()
+                            self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
