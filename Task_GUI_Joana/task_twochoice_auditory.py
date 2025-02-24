@@ -71,6 +71,7 @@ class TwoChoiceAuditoryTask:
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
+        self.RW_start = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -198,8 +199,10 @@ class TwoChoiceAuditoryTask:
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Play sound
-            #self.sound_cue(self.current_tone)
-            #print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            self.sound_cue(self.current_tone)
+            print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            # Start response window
+            self.RW_start = self.t
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
@@ -263,7 +266,7 @@ class TwoChoiceAuditoryTask:
             if latest_value1 > self.threshold_left:
                 with self.lock:
                     self.tlick_l = self.t
-                    elapsed_left = self.tlick_l - self.ttrial
+                    elapsed_left = self.tlick_l - self.RW_start
         
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
@@ -306,7 +309,7 @@ class TwoChoiceAuditoryTask:
             if latest_value2 > self.threshold_right:
                 with self.lock:
                     self.tlick_r = self.t
-                    elapsed_right = self.tlick_r - self.ttrial
+                    elapsed_right = self.tlick_r - self.RW_start
         
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
