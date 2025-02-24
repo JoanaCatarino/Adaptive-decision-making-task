@@ -34,14 +34,14 @@ def play_sound(sound, sample_rate=44100):
 
 def tone_10KHz():
     frequency = 10000  # frequency in Hz
-    duration = 0.2  # Duration in seconds
+    duration = 0.5  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
 def tone_5KHz():
     frequency = 5000  # frequency in Hz
-    duration = 0.2  # Duration in seconds
+    duration = 0.5  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
