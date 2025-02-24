@@ -200,7 +200,7 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
-            led_blue.on()
+            threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
             # Play sound
             if self.tone_selected == True:
@@ -217,7 +217,7 @@ class TwoChoiceAuditoryTask:
             
             if self.t - self.RW_start > self.RW:
                 self.trialstarted = False
-                led_blue.off()
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
             
             # Initialize trial data
             trial_data = {
@@ -260,6 +260,13 @@ class TwoChoiceAuditoryTask:
         led_white_l.on()
         time.sleep(self.RW) # This should actually be changed to the duration of the full trial
         led_white_l.off()
+        
+    def blue_led_on(self):
+        led_blue.on()
+        
+    
+    def blue_led_off(self):
+        led_blue.off()
         
         
     def detect_licks(self):
