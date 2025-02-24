@@ -44,7 +44,7 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = 0.1 # Inter-trial interval in seconds
+        self.ITI = 1 # Inter-trial interval in seconds
         self.RW = 1 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
