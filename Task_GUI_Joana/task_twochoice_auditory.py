@@ -204,14 +204,14 @@ class TwoChoiceAuditoryTask:
             #threading.Thread(target=self.blue_led_on, daemon=True).start() 
             led_blue.on()
             
-            #2. Waiting Window - No licking allowed
-            if self.detect_licks_during_waiting_window():
-                print("Lick detected during Waiting Window - Aborting trial")
-                led_blue.off()
-                self.trialstarted = False
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                return
+            # 2. Waiting Window - No licking allowed
+            #if self.detect_licks_during_waiting_window():
+                #print("Lick detected during Waiting Window - Aborting trial")
+                #led_blue.off()
+                #self.trialstarted = False
+                #self.early_licks += 1
+                #self.gui_controls.update_early_licks(self.early_licks)
+                #return
             
             # 3. Play sound
             self.play_sound(self.current_tone)
