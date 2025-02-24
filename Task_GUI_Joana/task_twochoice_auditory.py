@@ -214,16 +214,17 @@ class TwoChoiceAuditoryTask:
                 return
             
             # 3. Play sound
-            self.play_sound(self.current_tone)
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
+            self.play_sound(self.current_tone)
             
             # 4. Start response window
             self.RW_start = self.t
             
             
             # End trial and Turn blue led OFF
-            threading.Thread(target=self.blue_led_off, daemon=True).start()
             self.trialstarted = False
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            
             
             
             # Initialize trial data
