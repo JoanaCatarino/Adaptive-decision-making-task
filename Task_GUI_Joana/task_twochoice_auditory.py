@@ -199,7 +199,7 @@ class TwoChoiceAuditoryTask:
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Play sound
-            self.sound_cue(self.current_tone)
+            self.play_sound(self.current_tone)
             print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
             # Start response window
             self.RW_start = self.t
@@ -232,11 +232,15 @@ class TwoChoiceAuditoryTask:
             self.append_trial_to_csv(trial_data)
             
     
-    def sound_cue(self, frequency):
-        if frequency == '5KHz':
-            tone_5KHz()
-        elif frequency == '10KHz':
-            tone_10KHz()
+    def play_sound(self, frequency):
+        
+        def play():
+            if frequency == "5KHz":
+                tone_5KHz()  
+            elif frequency == "10KHz":
+                tone_10KHz()
+
+        threading.Thread(target=play, daemon=True).start()
     
     
     def led_indicator(self, RW):
