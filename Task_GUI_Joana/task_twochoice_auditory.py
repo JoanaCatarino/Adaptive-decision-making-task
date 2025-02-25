@@ -427,7 +427,10 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-           
+
+            if self.trialstarted = False:
+                led_blue.off()
+                
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
                 if self.check_animal_quiet():
