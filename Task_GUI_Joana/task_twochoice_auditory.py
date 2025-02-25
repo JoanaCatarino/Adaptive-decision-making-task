@@ -46,10 +46,11 @@ class TwoChoiceAuditoryTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 1 # Inter-trial interval in seconds
-        self.RW = 2 # Response window in seconds
-        self.threshold_left = 10
-        self.threshold_right = 10
-        self.valve_opening = 0.2  # Reward duration   
+        self.RW = 3 # Response window in seconds
+        self.threshold_left = 20
+        self.threshold_right = 20
+        self.valve_opening = 0.2  # Reward duration  
+        self.WW = 1 # Waiting window
         
         # Counters
         self.total_trials = 0
@@ -204,6 +205,15 @@ class TwoChoiceAuditoryTask:
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
+            # Waiting window - no licks allowed
+            if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+                print("Trial aborted due to early lick.")
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                self.trialstarted = False  # Reset trial state
+                threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                return 
+            
             # Play sound  
             self.play_sound(self.current_tone)
             
@@ -239,20 +249,21 @@ class TwoChoiceAuditoryTask:
             
     
     def detect_licks_during_waiting_window(self):
+        """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        start_time = self.t
-    
-        while self.t - start_time < self.WW:  # Waiting Window duration
+        start_time = self.t  # Mark the WW start time
+        
+        while self.t - start_time < self.WW:  # Wait for WW duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
-                print("Lick detected during Waiting Window! Aborting trial.")
+                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
     
             if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during Waiting Window! Aborting trial.")
+                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
