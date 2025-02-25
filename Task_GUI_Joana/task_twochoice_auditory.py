@@ -332,11 +332,11 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 print('should turn off')
                                
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
-                
-                # ✅ **End Trial**
-                self.trialstarted = False
-                self.RW_start = None  # Reset response window
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            
+            # ✅ **End Trial**
+            self.trialstarted = False
+            self.RW_start = None  # Reset response window
                 
 
 
