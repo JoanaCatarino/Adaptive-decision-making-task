@@ -75,6 +75,7 @@ class TwoChoiceAuditoryTask:
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
+        self.WW_start = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -208,17 +209,17 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
             # Waiting window - no licks allowed
-            start_time = self.t  # Use self.t instead of time.time()
+            WW_start = self.t  # Use self.t instead of time.time()
             
             # Waiting window - no licks allowed
-            while self.t - start_time < self.WW:  # Ensure WW duration is correct
-                if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
-                    print("Trial aborted due to early lick.")
-                    self.early_licks += 1
-                    self.gui_controls.update_early_licks(self.early_licks)
-                    self.trialstarted = False  # Reset trial state
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()  
-                    return 
+            while self.t - WW_start < self.WW:  # Ensure WW duration is correct
+                self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+                print("Trial aborted due to early lick.")
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                self.trialstarted = False  # Reset trial state
+                threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                return 
             
             # Play sound  
             self.play_sound(self.current_tone)
@@ -257,27 +258,23 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
+        p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+        p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
         
-            
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-            
-            # Debugging: Print self.t every 100ms to check if it's updating
-            print(f"WW Active - Elapsed: {self.t - start_time:.2f}s")
-            
-            # Check if a lick is detected
-            if p1 and p1[-1] > self.threshold_left:
-                print("Lick detected during WW! Aborting trial.")
-                return True  # Abort trial
-    
-            if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during WW! Aborting trial.")
-                return True  # Abort trial
-            
-            time.sleep(0.001)  # Small delay to prevent CPU overload
-            
-        print("Waiting Window complete, proceeding to sound.")
-        return False  # No licks detected, trial can proceed
+        # Debugging: Print self.t every 100ms to check if it's updating
+        print(f"WW Active - Elapsed: {self.t - start_time:.2f}s")
+        
+        # Check if a lick is detected
+        if p1 and p1[-1] > self.threshold_left:
+            print("Lick detected during WW! Aborting trial.")
+            return True  # Abort trial
+
+        if p2 and p2[-1] > self.threshold_right:
+            print("Lick detected during WW! Aborting trial.")
+            return True  # Abort trial
+        
+        time.sleep(0.001)  # Small delay to prevent CPU overload
+       
     
     
     
