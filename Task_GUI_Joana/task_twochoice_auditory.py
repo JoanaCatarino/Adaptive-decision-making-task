@@ -350,7 +350,7 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
                     
-                    elif self.first_lick is None and (elapsed_left > self.RW):                        
+            elif latest_value1 < self.threshold_left and self.first_lick is None and (elapsed_left > self.RW):                        
                         print("Response window ended, no lick detected.")
                         self.omissions += 1
                         self.gui_controls.update_omissions(self.omissions)
