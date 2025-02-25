@@ -281,8 +281,10 @@ class TwoChoiceAuditoryTask:
     def count_RW(self):
         start_time = time.time()
         while time.time() - start_time < 3:  # Run until 3 seconds pass
-            print("3 seconds elapsed!")        
-            return True
+            pass
+        
+        print("3 seconds elapsed!")        
+        return True
         
     
     def detect_licks_during_waiting_window(self):
