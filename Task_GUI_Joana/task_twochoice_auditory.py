@@ -333,7 +333,7 @@ class TwoChoiceAuditoryTask:
                 print('should turn off')
                 
                 #self.blue_led_off()
-                time.sleep(0.001)
+                time.sleep(0.1)
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 
                 # ✅ **End Trial**
