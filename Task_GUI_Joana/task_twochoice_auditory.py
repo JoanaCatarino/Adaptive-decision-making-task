@@ -220,7 +220,7 @@ class TwoChoiceAuditoryTask:
             self.RW_start = time.time()
                 
             # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, args=(self.RW,)).start()
+            threading.Thread(target=self.wait_for_response, args=(self.RW, self.RW_start,)).start()
             
             # Turning LED off after reward/punishment or after response window finished
             
@@ -392,8 +392,9 @@ class TwoChoiceAuditoryTask:
                         return
                    
 
-    def wait_for_response(self, RW):
+    def wait_for_response(self, RW, RW_start):
         """Ends the trial after the response window if no lick occurs."""
+        '''
         time.sleep(self.RW)  # Wait for RW duration
         with self.lock:
             if self.first_lick is None:  # No lick detected
@@ -401,6 +402,17 @@ class TwoChoiceAuditoryTask:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
+                
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+        '''
+         # Wait for RW duration
+        with self.lock:
+            if (time.time()-self.RW_start > self.RW) and self.first_lick is None:  # No lick detected
+                print("Response window ended, no lick detected.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
+                self.trialstarted = False  # End trial
+                
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
     
     
@@ -428,9 +440,6 @@ class TwoChoiceAuditoryTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
 
-            if self.trialstarted == False:
-                led_blue.off()
-                
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
                 if self.check_animal_quiet():
