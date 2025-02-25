@@ -325,7 +325,7 @@ class TwoChoiceAuditoryTask:
                         self.tlick_r = current_time
                         self.process_lick('right')
                         
-            else elapsed_time >= self.RW:
+            elif elapsed_time >= self.RW:
                 # no lick detected
                 print("Response window ended, no lick detected.")
                 self.omissions += 1
