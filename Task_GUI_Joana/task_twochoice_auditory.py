@@ -220,7 +220,7 @@ class TwoChoiceAuditoryTask:
             # Start response window
             self.RW_start = time.time()
             
-            if (time.time()-self.RW_start > self.RW) and self.first_lick is None:  # No lick detected
+            if  self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
