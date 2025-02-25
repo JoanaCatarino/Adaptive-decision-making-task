@@ -227,7 +227,6 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
-            led_blue.off()
             
             # Initialize trial data
             trial_data = {
