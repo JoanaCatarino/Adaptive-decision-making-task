@@ -46,9 +46,9 @@ class TwoChoiceAuditoryTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 1 # Inter-trial interval in seconds
-        self.RW = 1 # Response window in seconds
-        self.threshold_left = 20
-        self.threshold_right = 20
+        self.RW = 2 # Response window in seconds
+        self.threshold_left = 10
+        self.threshold_right = 10
         self.valve_opening = 0.2  # Reward duration   
         
         # Counters
@@ -209,10 +209,6 @@ class TwoChoiceAuditoryTask:
             
             # Start response window
             self.RW_start = self.t
-                
-            # Start LED in a separate thread
-            #threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            #print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
                 
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
