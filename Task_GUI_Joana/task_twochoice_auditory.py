@@ -395,7 +395,7 @@ class TwoChoiceAuditoryTask:
     def wait_for_response(self, RW):
         """Ends the trial after the response window if no lick occurs."""
        
-        time.sleep(2.8)  # Wait for RW duration
+        asyncio.sleep(self.RW)  # Wait for RW duration
         with self.lock:
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
