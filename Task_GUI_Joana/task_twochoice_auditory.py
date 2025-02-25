@@ -202,17 +202,23 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
+            self.t = time.time() - self.tstart
+            
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
             # Waiting window - no licks allowed
-            if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
-                print("Trial aborted due to early lick.")
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                self.trialstarted = False  # Reset trial state
-                threading.Thread(target=self.blue_led_off, daemon=True).start()  
-                return 
+            start_time = self.t  # Use self.t instead of time.time()
+            
+            # Waiting window - no licks allowed
+            while self.t - start_time < self.WW:  # Ensure WW duration is correct
+                if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+                    print("Trial aborted due to early lick.")
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_licks)
+                    self.trialstarted = False  # Reset trial state
+                    threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                    return 
             
             # Play sound  
             self.play_sound(self.current_tone)
@@ -251,12 +257,7 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        start_time = self.t  # Use self.t instead of time.time()
-        print(f"Waiting Window started at {start_time:.2f}, duration: {self.WW} sec")
         
-        while self.t - start_time < self.WW:  # Ensure WW duration is correct
-            # Force an update of self.t from the main loop
-            self.t = time.time() - self.tstart  # Make sure self.t updates frequently
             
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
