@@ -203,7 +203,6 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
-            
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
@@ -257,7 +256,7 @@ class TwoChoiceAuditoryTask:
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
         
-            #self.t = time.time() - self.tstart  # Make sure self.t updates
+            self.t = time.time() - self.tstart  # Make sure self.t updates
         
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
