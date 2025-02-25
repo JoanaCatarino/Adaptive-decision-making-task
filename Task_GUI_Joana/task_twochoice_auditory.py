@@ -49,6 +49,7 @@ class TwoChoiceAuditoryTask:
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
+        self.WW = 3 # waiting window
         
         # Counters
         self.total_trials = 0
@@ -203,12 +204,28 @@ class TwoChoiceAuditoryTask:
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
+            # Waiting window - no licks allowed
+            self.WW_start = time.time()
+            while time.time() - self.WW_start < self.WW:
+                p1 = list(self.piezo_reader.piezo_adder1)
+                p2 = list(self.piezo_reader.piezo_adder2)
+    
+                if p1 and max(p1[-10:]) > self.threshold_left or p2 and max(p2[-10:]) > self.threshold_right:
+                    print(f"Lick detected during {self.WW}s waiting window. Trial aborted.")
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_licks)
+                    threading.Thread(target=self.blue_led_off, daemon=True).start()
+                    self.trialstarted = False
+                    return  # Abort trial if a lick is detected
+    
+                time.sleep(0.001)  # Check for licks every 10ms
+            
+            
             # Play sound  
             self.play_sound(self.current_tone)
             
             # Start response window
             self.RW_start = self.t
-            
                 
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
