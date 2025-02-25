@@ -201,28 +201,23 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
+            # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
-            # Play sound
-            if self.tone_selected == True:
-                
-                self.play_sound(self.current_tone)
-                self.tone_selected = False
-                print(f'Trial {self.total_trials}: Playing {self.current_tone} tone - correct spout:{self.correct_spout}.')
-                # Start response window
-                self.RW_start = self.t
+            # Play sound  
+            self.play_sound(self.current_tone)
+            
+            # Start response window
+            self.RW_start = self.t
                 
             # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+            #threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
+            #print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
                 
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
             
-                        
-            #if self.t - self.RW_start > self.RW:
-                #self.trialstarted = False
-                #threading.Thread(target=self.blue_led_off, daemon=True).start() 
+            # Turning LED off after reward/punishment or after response window finished
             
             # Initialize trial data
             trial_data = {
