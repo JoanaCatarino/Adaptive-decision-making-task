@@ -405,7 +405,7 @@ class TwoChoiceAuditoryTask:
                 print('should turn off')
                 self.blue_led_thread = threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 if self.blue_led_thread.is_alive():
-                    self.blue_led_thread..join()
+                    self.blue_led_thread.join()
         '''
          # Wait for RW duration
         with self.lock:
