@@ -212,16 +212,17 @@ class TwoChoiceAuditoryTask:
                 # Start response window
                 self.RW_start = self.t
                 
-            # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, daemon=True).start()
-            
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+                
+            # Wait for response window to finish if no lick happens
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
             
-            if self.t - self.RW_start > self.RW:
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                        
+            #if self.t - self.RW_start > self.RW:
+                #self.trialstarted = False
+                #threading.Thread(target=self.blue_led_off, daemon=True).start() 
             
             # Initialize trial data
             trial_data = {
@@ -350,6 +351,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.trialstarted = False
+                        threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
                 
                     
@@ -395,6 +397,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.trialstarted = False
+                        threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
                    
 
@@ -407,6 +410,7 @@ class TwoChoiceAuditoryTask:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
     
     
     def reward(self, side):
