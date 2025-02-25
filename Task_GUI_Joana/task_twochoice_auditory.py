@@ -269,7 +269,7 @@ class TwoChoiceAuditoryTask:
     
         
     
-    def detect_licks_during_WW(self):
+    def detect_licks_during_WW(self, WW_start):
         """Checks for licks continuously during the Waiting Window (WW) without blocking execution."""
     
         print(f"WW Started at {WW_start:.2f}s, duration: {self.WW}s")
