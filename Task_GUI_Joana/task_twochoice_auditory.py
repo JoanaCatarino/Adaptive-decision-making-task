@@ -279,8 +279,8 @@ class TwoChoiceAuditoryTask:
         
         
     def count_RW(self):
-        start_time = time.time()
-        while time.time() - start_time < 3:  # Run until 3 seconds pass
+        start_time = asyncio.time()
+        while asyncio.time() - start_time < 3:  # Run until 3 seconds pass
             pass
         
         print("3 seconds elapsed!")        
