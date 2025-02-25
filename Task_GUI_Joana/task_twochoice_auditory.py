@@ -208,7 +208,6 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
             # Waiting window - no licks allowed
-            self.WW_start = self.t
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
@@ -254,6 +253,7 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
+        self.WW_start = self.t
         
         while self.t - self.WW_start < self.WW:  # Wait for WW duration
         
