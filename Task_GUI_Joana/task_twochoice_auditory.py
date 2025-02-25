@@ -213,13 +213,13 @@ class TwoChoiceAuditoryTask:
             
             # Waiting window - no licks allowed
             while self.t - WW_start < self.WW:  # Ensure WW duration is correct
-                self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
-                print("Trial aborted due to early lick.")
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                self.trialstarted = False  # Reset trial state
-                threading.Thread(target=self.blue_led_off, daemon=True).start()  
-                return 
+                if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+                    print("Trial aborted due to early lick.")
+                    self.early_licks += 1
+                    self.gui_controls.update_early_licks(self.early_licks)
+                    self.trialstarted = False  # Reset trial state
+                    threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                    return 
             
             # Play sound  
             self.play_sound(self.current_tone)
