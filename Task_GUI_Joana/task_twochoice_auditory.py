@@ -284,16 +284,6 @@ class TwoChoiceAuditoryTask:
         elif frequency == "white_noise":
             white_noise()
 
-        #threading.Thread(target=play, daemon=True).start()
-    
-    
-    def led_indicator(self, RW):
-        
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_white_l.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_white_l.off()
         
     def blue_led_on(self):
         led_blue.on()
@@ -417,9 +407,8 @@ class TwoChoiceAuditoryTask:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
-                
-            # Ensure LED turn off
-            led_blue.off()
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                print('LED should now be off')
     
     
     def reward(self, side):
