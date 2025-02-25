@@ -208,13 +208,14 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
             
             # Waiting window - no licks allowed
-            #if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
-                #print("Trial aborted due to early lick.")
-                #self.early_licks += 1
-                #self.gui_controls.update_early_licks(self.early_licks)
-                #self.trialstarted = False  # Reset trial state
-                #threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                #return  # Exit trial 
+            self.WW_start = self.t
+            if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+                print("Trial aborted due to early lick.")
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                self.trialstarted = False  # Reset trial state
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                return  # Exit trial 
             
             # Play sound  
             self.play_sound(self.current_tone)
@@ -253,9 +254,10 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        WW_start = time.time()  # Mark the WW start time
         
-        while time.time() - WW_start < self.WW:  # Wait for WW duration
+        while self.t - self.WW_start < self.WW:  # Wait for WW duration
+        
+            self.t = time.time() - self.tstart   
         
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
@@ -407,7 +409,6 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 
                 
     
