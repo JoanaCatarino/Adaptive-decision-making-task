@@ -217,6 +217,7 @@ class TwoChoiceAuditoryTask:
         
             # Play sound  
             self.play_sound(self.current_tone)
+            print(f'{self.t}')
             
             # Start response window
             self.RW_start = self.t
