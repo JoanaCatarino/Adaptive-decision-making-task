@@ -217,8 +217,6 @@ class TwoChoiceAuditoryTask:
                     threading.Thread(target=self.blue_led_off, daemon=True).start()
                     self.trialstarted = False
                     return  # Abort trial if a lick is detected
-    
-                time.sleep(0.001)  # Check for licks every 10ms
             
             
             # Play sound  
