@@ -292,8 +292,94 @@ class TwoChoiceAuditoryTask:
             time.sleep(0.001)  # Small delay to prevent CPU overload
         
         return False  # No licks detected, trial can proceed    
+ 
+
+
+    def detect_licks(self):
+        """Checks for licks and delivers rewards in parallel."""
     
+        # Ensure piezo data is updated before checking
+        p1 = list(self.piezo_reader.piezo_adder1)
+        p2 = list(self.piezo_reader.piezo_adder2)
     
+        # Small delay to prevent CPU overload and stabilize readings
+        time.sleep(0.001)
+    
+        # ✅ **Get Current Time**
+        current_time = time.time()
+        
+        # ✅ **Check if within Response Window**
+        if self.RW_start is not None:
+            elapsed_time = current_time - self.RW_start
+            
+            if 0 < elapsed_time < self.RW:
+                # ✅ **Check Left Piezo**
+                if p1 and p1[-1] > self.threshold_left:
+                    with self.lock:
+                        self.tlick_l = current_time
+                        self.process_lick('left')
+    
+                # ✅ **Check Right Piezo**
+                elif p2 and p2[-1] > self.threshold_right:
+                    with self.lock:
+                        self.tlick_r = current_time
+                        self.process_lick('right')
+
+
+    def process_lick(self, side):
+        """Handles lick response (reward or punishment)."""
+    
+        if self.first_lick is None:  # First lick in RW
+            self.first_lick = side
+            self.tlick = self.tlick_l if side == 'left' else self.tlick_r
+    
+            if self.correct_spout == self.first_lick:
+                # ✅ **Deliver reward**
+                threading.Thread(target=self.reward, args=(side,)).start()
+    
+                # ✅ **Update trial data**
+                self.trials[-1]['lick'] = 1
+                self.trials[-1][f'{side}_spout'] = 1
+                self.trials[-1]['lick_time'] = self.tlick
+                self.append_trial_to_csv(self.trials[-1])
+    
+                # ✅ **Update GUI & Stats**
+                self.total_licks += 1
+                if side == 'left':
+                    self.licks_left += 1
+                    self.gui_controls.update_licks_left(self.licks_left)
+                else:
+                    self.licks_right += 1
+                    self.gui_controls.update_licks_right(self.licks_right)
+                    
+                self.correct_trials += 1
+                self.gui_controls.update_total_licks(self.total_licks)
+                self.gui_controls.update_correct_trials(self.correct_trials)
+            
+            else:
+                # ❌ **Wrong spout → Punishment**
+                self.play_sound('white_noise')
+                print('wrong spout')
+                self.incorrect_trials += 1
+                self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+    
+            # ✅ **End Trial**
+            self.trialstarted = False
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+    
+        '''
+elif latest_value1 < self.threshold_left and self.first_lick is None and (elapsed_left > self.RW):                        
+            print("Response window ended, no lick detected.")
+            self.omissions += 1
+            self.gui_controls.update_omissions(self.omissions)
+            self.trialstarted = False  # End trial
+            print('should turn off')
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            return
+    '''
+    
+ 
+    '''
     def detect_licks(self):
     
         """Checks for licks and delivers rewards in parallel."""
@@ -349,16 +435,7 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
-                    
-            elif latest_value1 < self.threshold_left and self.first_lick is None and (elapsed_left > self.RW):                        
-                        print("Response window ended, no lick detected.")
-                        self.omissions += 1
-                        self.gui_controls.update_omissions(self.omissions)
-                        self.trialstarted = False  # End trial
-                        print('should turn off')
-                        threading.Thread(target=self.blue_led_off, daemon=True).start()
-                        return
-                
+
         
         # Right piezo        
         if p2:
@@ -403,7 +480,7 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
-                    
+    '''                
                    
 
     def wait_for_response(self, RW):
