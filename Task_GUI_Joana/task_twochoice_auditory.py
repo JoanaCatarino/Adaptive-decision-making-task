@@ -45,7 +45,7 @@ class TwoChoiceAuditoryTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI = 1 # Inter-trial interval in seconds
-        self.RW = 1 # Response window in seconds
+        self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
@@ -208,10 +208,7 @@ class TwoChoiceAuditoryTask:
             
             # Start response window
             self.RW_start = self.t
-                
-            # Start LED in a separate thread
-            #threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            #print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+            
                 
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
@@ -239,30 +236,7 @@ class TwoChoiceAuditoryTask:
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
        
-            
-    
-    def detect_licks_during_waiting_window(self):
-        
-        start_time = self.t
-    
-        while self.t - start_time < self.WW:  # Waiting Window duration
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-            
-            # Check if a lick is detected
-            if p1 and p1[-1] > self.threshold_left:
-                print("Lick detected during Waiting Window! Aborting trial.")
-                return True  # Abort trial
-    
-            if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during Waiting Window! Aborting trial.")
-                return True  # Abort trial
-            
-            time.sleep(0.001)  # Small delay to prevent CPU overload
-        
-        return False  # No licks detected, trial can proceed
-    
-    
+
     
     def play_sound(self, frequency):
         
@@ -274,15 +248,7 @@ class TwoChoiceAuditoryTask:
             white_noise()
 
         #threading.Thread(target=play, daemon=True).start()
-    
-    
-    def led_indicator(self, RW):
-        
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_white_l.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_white_l.off()
+
         
     def blue_led_on(self):
         led_blue.on()
@@ -348,7 +314,6 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
                 
-                    
         
         # Right piezo        
         if p2:
