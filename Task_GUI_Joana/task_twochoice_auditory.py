@@ -65,7 +65,6 @@ class TwoChoiceAuditoryTask:
         # Booleans
         self.trialstarted = False
         self.running = False
-        self.omission_counted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -194,7 +193,6 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
-            self.omission_counted = False
             self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
@@ -207,15 +205,11 @@ class TwoChoiceAuditoryTask:
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
-            
-            # Waiting window - no licks allowed
-            if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
+        
+            # ✅ Run Waiting Window (WW)
+            if not self.waiting_window():  
                 print("Trial aborted due to early lick.")
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                self.trialstarted = False  # Reset trial state
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                return  # Exit trial 
+                return  # Exit trial immediately
             
             # Play sound  
             self.play_sound(self.current_tone)
@@ -224,7 +218,7 @@ class TwoChoiceAuditoryTask:
             self.RW_start = self.t
                 
             # Wait for response window to finish if no lick happens
-            #threading.Thread(target=self.wait_for_response, daemon=True).start()
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
             
@@ -248,32 +242,34 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
-       
-            
     
-    def detect_licks_during_waiting_window(self):
-        """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        self.WW_start = time.time()
-        
-        while time.time() - self.WW_start < self.WW:  # Wait for WW duration
+    def waiting_window(self):
+
+        self.WW_start = self.t  # Record the WW start time using self.t
+        print(f"Waiting Window started at {self.WW_start:.2f}, duration: {self.WW} sec")
     
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-            
-            # Check if a lick is detected
-            if p1 and p1[-1] > self.threshold_left:
+        while (self.t - self.WW_start) < self.WW:  # Check WW duration
+            self.t = time.time() - self.tstart  # Update self.t
+    
+            # Read piezo sensors
+            p1 = list(self.piezo_reader.piezo_adder1)
+            p2 = list(self.piezo_reader.piezo_adder2)
+    
+            # If any lick is detected, abort trial
+            if (p1 and p1[-1] > self.threshold_left) or (p2 and p2[-1] > self.threshold_right):
                 print("Lick detected during WW! Aborting trial.")
-                return True  # Abort trial
+                led_blue.off()  # Turn off LED
+                self.trialstarted = False
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                return False  # Abort trial
     
-            if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during WW! Aborting trial.")
-                return True  # Abort trial
-            
-            time.sleep(0.001)  # Small delay to prevent CPU overload
-        
-        return False  # No licks detected, trial can proceed
-       
+            time.sleep(0.01)  # Small delay to prevent CPU overload
+    
+        print("Waiting Window completed, proceeding to trial.")
+        return True  # Trial can proceed
+
     
     
     def play_sound(self, frequency):
@@ -394,20 +390,7 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
-                    
-                    
-        # Check for omissions
-        if self.first_lick is None and (self.t - self.RW_start >= self.RW):
-            print("Response window ended, no lick detected.")
-            
-            with self.lock:
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
-                self.omission_counted = True
-                self.trialstarted = False  
-    
-                # Ensure LED turns off
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
+   
                    
 
     def wait_for_response(self):
@@ -417,10 +400,10 @@ class TwoChoiceAuditoryTask:
             
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
-                self.trialstarted = False  # End trial
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
+                self.trialstarted = False  # End trial
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
                 
                 
     def reward(self, side):
