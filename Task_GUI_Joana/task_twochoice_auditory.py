@@ -220,13 +220,15 @@ class TwoChoiceAuditoryTask:
             # Start response window
             self.RW_start = time.time()
             
-            if  self.first_lick is None:  # No lick detected
-                print("Response window ended, no lick detected.")
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
-                self.trialstarted = False  # End trial
-                print('should turn off')
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
+            while (time.time()-self.RW_start) >= self.RW:
+                if self.first_lick is None:  # No lick detected
+                    print("Response window ended, no lick detected.")
+                    self.omissions += 1
+                    self.gui_controls.update_omissions(self.omissions)
+                    self.trialstarted = False  # End trial
+                    print('should turn off')
+                    threading.Thread(target=self.blue_led_off, daemon=True).start()
+                    return
                 
             # Wait for response window to finish if no lick happens
            # threading.Thread(target=self.wait_for_response, args=(self.RW,)).start()
