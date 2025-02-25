@@ -196,6 +196,7 @@ class TwoChoiceAuditoryTask:
             self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            led_blue.off()
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
