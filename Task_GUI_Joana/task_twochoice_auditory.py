@@ -227,6 +227,7 @@ class TwoChoiceAuditoryTask:
             threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
+            led_blue.off()
             
             # Initialize trial data
             trial_data = {
@@ -410,6 +411,8 @@ class TwoChoiceAuditoryTask:
         """Ends the trial after the response window if no lick occurs."""
         time.sleep(self.RW)  # Wait for RW duration
         with self.lock:
+            print("wait_for_response() executed.")  # DEBUGGING LINE
+            
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
                 self.omissions += 1
