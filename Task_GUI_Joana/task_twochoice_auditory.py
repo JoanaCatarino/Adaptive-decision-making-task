@@ -212,7 +212,7 @@ class TwoChoiceAuditoryTask:
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
-                threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                led_blue.off()
                 return  # Exit trial 
             
             # Play sound  
@@ -255,8 +255,6 @@ class TwoChoiceAuditoryTask:
         WW_start = time.time()  # Mark the WW start time
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
-        
-            self.t = time.time() - self.tstart  # Make sure self.t updates
         
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
