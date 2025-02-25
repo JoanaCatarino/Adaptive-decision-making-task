@@ -408,8 +408,10 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 self.trialstarted = False  # End trial
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                print('LED should now be off')
+                led_blue.off()
+                time.sleep(0.01)
+                led_blue.off()
+                
     
     
     def reward(self, side):
@@ -435,8 +437,6 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-           
-            led_blue.off()    
            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
