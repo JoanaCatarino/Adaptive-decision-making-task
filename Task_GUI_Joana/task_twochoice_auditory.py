@@ -395,7 +395,7 @@ class TwoChoiceAuditoryTask:
     def wait_for_response(self, RW):
         """Ends the trial after the response window if no lick occurs."""
        
-        time.sleep(self.RW)  # Wait for RW duration
+        time.sleep(2)  # Wait for RW duration
         with self.lock:
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
@@ -403,7 +403,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
                 print('should turn off')
-                led_blue.off()
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
 
                
         '''
