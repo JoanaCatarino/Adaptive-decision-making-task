@@ -261,9 +261,6 @@ class TwoChoiceAuditoryTask:
         p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
         p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
         
-        # Debugging: Print self.t every 100ms to check if it's updating
-        print(f"WW Active - Elapsed: {self.t - start_time:.2f}s")
-        
         # Check if a lick is detected
         if p1 and p1[-1] > self.threshold_left:
             print("Lick detected during WW! Aborting trial.")
