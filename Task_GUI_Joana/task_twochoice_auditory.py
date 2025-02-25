@@ -223,7 +223,7 @@ class TwoChoiceAuditoryTask:
             self.RW_start = self.t
                 
             # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, daemon=True).start()
+            #threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
             
@@ -253,12 +253,10 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        self.WW_start = self.t
+        self.WW_start = time.time()
         
-        while self.t - self.WW_start < self.WW:  # Wait for WW duration
-        
-            self.t = time.time() - self.tstart   
-        
+        while time.time() - self.WW_start < self.WW:  # Wait for WW duration
+    
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
@@ -350,7 +348,6 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
-                
                     
         
         # Right piezo        
@@ -396,6 +393,19 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
+                    
+                    
+        # Check for omissions
+        if self.first_lick is None and (self.t - self.RW_start > self.RW):
+            print("Response window ended, no lick detected.")
+            
+            with self.lock:
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
+                self.trialstarted = False  
+    
+                # Ensure LED turns off
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
                    
 
     def wait_for_response(self):
@@ -411,8 +421,6 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 
                 
-    
-    
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
 
