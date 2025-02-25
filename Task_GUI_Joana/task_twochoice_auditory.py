@@ -275,7 +275,6 @@ class TwoChoiceAuditoryTask:
        
     
     
-    
     def play_sound(self, frequency):
         
         if frequency == "5KHz":
@@ -416,7 +415,9 @@ class TwoChoiceAuditoryTask:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                
+            # Ensure LED turn off
+            threading.Thread(target=self.blue_led_off, daemon=True).start() 
     
     
     def reward(self, side):
