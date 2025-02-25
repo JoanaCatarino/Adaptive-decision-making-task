@@ -403,7 +403,9 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
                 print('should turn off')
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                self.blue_led_thread = threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                if self.blue_led_thread.is_alive():
+                    self.blue_led_thread..join()
         '''
          # Wait for RW duration
         with self.lock:
