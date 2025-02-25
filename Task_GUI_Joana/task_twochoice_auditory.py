@@ -324,6 +324,17 @@ class TwoChoiceAuditoryTask:
                     with self.lock:
                         self.tlick_r = current_time
                         self.process_lick('right')
+                        
+            elif elapsed_time > self.RW:
+                # no lick detected
+                print("Response window ended, no lick detected.")
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
+                print('should turn off')
+                # ✅ **End Trial**
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                
 
 
     def process_lick(self, side):
