@@ -251,9 +251,12 @@ class TwoChoiceAuditoryTask:
     def detect_licks_during_waiting_window(self):
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
-        start_time = self.t  # Mark the WW start time
+        start_time = self.t  # Use self.t instead of time.time()
         
-        while self.t - start_time < self.WW:  # Wait for WW duration
+        while self.t - start_time < self.WW:  # Ensure WW duration is correct
+            # Force an update of self.t from the main loop
+            self.t = time.time() - self.tstart  # Make sure self.t updates frequently
+            
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
