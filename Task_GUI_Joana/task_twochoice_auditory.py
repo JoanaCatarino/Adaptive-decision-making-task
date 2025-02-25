@@ -203,7 +203,6 @@ class TwoChoiceAuditoryTask:
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
-            self.t = time.time() - self.tstart
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
@@ -257,6 +256,9 @@ class TwoChoiceAuditoryTask:
         WW_start = time.time()  # Mark the WW start time
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
+        
+            #self.t = time.time() - self.tstart  # Make sure self.t updates
+        
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
@@ -400,7 +402,6 @@ class TwoChoiceAuditoryTask:
         """Ends the trial after the response window if no lick occurs."""
         time.sleep(self.RW)  # Wait for RW duration
         with self.lock:
-            print("wait_for_response() executed.")  # DEBUGGING LINE
             
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
@@ -408,9 +409,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 self.trialstarted = False  # End trial
-                led_blue.off()
-                time.sleep(0.01)
-                led_blue.off()
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
                 
     
     
