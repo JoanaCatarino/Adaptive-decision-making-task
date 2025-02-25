@@ -392,7 +392,7 @@ class TwoChoiceAuditoryTask:
                         return
                    
 
-    def wait_for_response(self):
+    def wait_for_response(self, RW):
         """Ends the trial after the response window if no lick occurs."""
         time.sleep(self.RW)  # Wait for RW duration
         with self.lock:
