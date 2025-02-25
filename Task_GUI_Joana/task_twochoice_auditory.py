@@ -213,7 +213,7 @@ class TwoChoiceAuditoryTask:
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
-                led_blue.off()
+                threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 return  # Exit trial 
             
             # Play sound  
@@ -403,11 +403,12 @@ class TwoChoiceAuditoryTask:
             
             if self.first_lick is None:  # No lick detected
                 print("Response window ended, no lick detected.")
+                self.trialstarted = False  # End trial
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                self.trialstarted = False  # End trial
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                
                 
     
     
