@@ -65,7 +65,7 @@ class TwoChoiceAuditoryTask:
         # Booleans
         self.trialstarted = False
         self.running = False
-        self.tone_selected = False
+        self.omission_counted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -194,6 +194,7 @@ class TwoChoiceAuditoryTask:
         
         with self.lock:
             self.trialstarted = True
+            self.omission_counted = False
             self.total_trials +=1
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
@@ -396,12 +397,13 @@ class TwoChoiceAuditoryTask:
                     
                     
         # Check for omissions
-        if self.first_lick is None and (self.t - self.RW_start > self.RW):
+        if self.first_lick is None and (self.t - self.RW_start >= self.RW):
             print("Response window ended, no lick detected.")
             
             with self.lock:
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
+                self.omission_counted = True
                 self.trialstarted = False  
     
                 # Ensure LED turns off
