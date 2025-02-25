@@ -11,6 +11,7 @@ import time
 import csv
 import os
 import random
+import asyncio
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
