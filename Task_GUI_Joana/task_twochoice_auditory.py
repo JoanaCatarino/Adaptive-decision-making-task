@@ -50,7 +50,7 @@ class TwoChoiceAuditoryTask:
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration  
-        self.WW = 3 # Waiting window
+        self.WW = 1 # Waiting window
         
         # Counters
         self.total_trials = 0
@@ -206,11 +206,15 @@ class TwoChoiceAuditoryTask:
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
         
-            # ✅ Run Waiting Window (WW)
-            if not self.waiting_window():  
+            # Waiting window    
+            WW_thread = threading.Thread(target=self.detect_licks_during_WW)
+            WW_thread.start()
+            WW_thread.join()  # Wait for WW to finish
+
+            if not self.trialstarted:  # If WW was aborted
                 print("Trial aborted due to early lick.")
                 return  # Exit trial immediately
-            
+        
             # Play sound  
             self.play_sound(self.current_tone)
             
@@ -242,36 +246,8 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
-    
+
         
-    def waiting_window(self):
-
-        self.WW_start = self.t  # Record the WW start time using self.t
-        print(f"Waiting Window started at {self.WW_start:.2f}, duration: {self.WW} sec")
-    
-        while (self.t - self.WW_start) < self.WW:  # Check WW duration
-            self.t = time.time() - self.tstart  # Update self.t
-    
-            # Read piezo sensors
-            p1 = list(self.piezo_reader.piezo_adder1)
-            p2 = list(self.piezo_reader.piezo_adder2)
-    
-            # If any lick is detected, abort trial
-            if (p1 and p1[-1] > self.threshold_left) or (p2 and p2[-1] > self.threshold_right):
-                print("Lick detected during WW! Aborting trial.")
-                led_blue.off()  # Turn off LED
-                self.trialstarted = False
-                self.early_licks += 1
-                self.gui_controls.update_early_licks(self.early_licks)
-                return False  # Abort trial
-    
-            time.sleep(0.01)  # Small delay to prevent CPU overload
-    
-        print("Waiting Window completed, proceeding to trial.")
-        return True  # Trial can proceed
-
-    
-    
     def play_sound(self, frequency):
         
         if frequency == "5KHz":
@@ -288,7 +264,37 @@ class TwoChoiceAuditoryTask:
     
     def blue_led_off(self):
         led_blue.off()
+    
         
+    
+    def detect_licks_during_WW(self):
+        """Checks for licks continuously during the Waiting Window (WW) without blocking execution."""
+    
+        WW_start = self.t  # Mark WW start time
+        print(f"WW Started at {WW_start:.2f}s, duration: {self.WW}s")
+    
+        while (self.t - WW_start) < self.WW:  # Run until WW duration ends
+            self.t = time.time() - self.tstart  # Update self.t
+    
+            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+    
+            # Small delay to prevent CPU overload
+            time.sleep(0.001)
+    
+            # ✅ Check for left or right lick
+            if (p1 and p1[-1] > self.threshold_left) or (p2 and p2[-1] > self.threshold_right):
+                print(f"Lick detected during WW at {self.t:.2f}s! Aborting trial.")
+                led_blue.off()  # Turn off LED
+                self.trialstarted = False
+                self.early_licks += 1
+                self.gui_controls.update_early_licks(self.early_licks)
+                return False  # Abort trial
+    
+        print(f"WW Completed at {self.t:.2f}s, proceeding to trial.")
+        return True  # Trial can proceed
+                    
+    
         
     def detect_licks(self):
     
