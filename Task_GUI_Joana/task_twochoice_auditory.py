@@ -409,6 +409,7 @@ class TwoChoiceAuditoryTask:
                 self.trialstarted = False  # End trial
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
                 print('LED should now be off')
+                return
     
     
     def reward(self, side):
