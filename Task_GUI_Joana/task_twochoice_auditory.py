@@ -406,11 +406,9 @@ class TwoChoiceAuditoryTask:
                 print("Response window ended, no lick detected.")
                 self.omissions += 1
                 self.gui_controls.update_omissions(self.omissions)
-                self.trialstarted = False  # End trial
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                print('LED should now be off')
-                return
-    
+                self.trialstarted = False  # End trial
+                
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
