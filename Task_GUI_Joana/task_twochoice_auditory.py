@@ -220,15 +220,6 @@ class TwoChoiceAuditoryTask:
             # Start response window
             self.RW_start = time.time()
             
-            if self.count_RW():
-                if self.first_lick is None:  # No lick detected
-                    print("Response window ended, no lick detected.")
-                    self.omissions += 1
-                    self.gui_controls.update_omissions(self.omissions)
-                    self.trialstarted = False  # End trial
-                    print('should turn off')
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                    return
                 
             # Wait for response window to finish if no lick happens
            # threading.Thread(target=self.wait_for_response, args=(self.RW,)).start()
@@ -278,13 +269,6 @@ class TwoChoiceAuditoryTask:
         led_blue.off()
         
         
-    def count_RW(self):
-        start_time = asyncio.time()
-        while asyncio.time() - start_time < 3:  # Run until 3 seconds pass
-            pass
-        
-        print("3 seconds elapsed!")        
-        return True
         
     
     def detect_licks_during_waiting_window(self):
@@ -364,6 +348,15 @@ class TwoChoiceAuditoryTask:
                             
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                        return
+                    
+                    elif self.first_lick is None and (elapsed_left > self.RW):                        
+                        print("Response window ended, no lick detected.")
+                        self.omissions += 1
+                        self.gui_controls.update_omissions(self.omissions)
+                        self.trialstarted = False  # End trial
+                        print('should turn off')
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
                         return
                 
         
