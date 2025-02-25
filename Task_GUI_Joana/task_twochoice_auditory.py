@@ -208,7 +208,7 @@ class TwoChoiceAuditoryTask:
         
             # Waiting window
             self.WW_start = self.t
-            WW_thread = threading.Thread(target=self.detect_licks_during_WW)
+            WW_thread = threading.Thread(target=self.detect_licks_during_WW, args=(self.WW_start))
             WW_thread.start()
             WW_thread.join()  # Wait for WW to finish
 
