@@ -417,7 +417,7 @@ class TwoChoiceAuditoryTask:
                 self.trialstarted = False  # End trial
                 
             # Ensure LED turn off
-            threading.Thread(target=self.blue_led_off, daemon=True).start() 
+            led_blue.off()
     
     
     def reward(self, side):
