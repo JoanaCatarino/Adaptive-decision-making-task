@@ -352,7 +352,7 @@ class TwoChoiceAuditoryTask:
     
                             else:
                                 self.play_sound('white_noise')
-                                print('Wrong spout")
+                                print('Wrong spout')
                                 self.incorrect_trials += 1
                                 self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
