@@ -484,7 +484,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>577</y>
+         <y>609</y>
          <width>131</width>
          <height>19</height>
         </rect>
@@ -507,7 +507,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>173</x>
-         <y>613</y>
+         <y>643</y>
          <width>41</width>
          <height>20</height>
         </rect>
@@ -525,7 +525,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>612</y>
+         <y>642</y>
          <width>51</width>
          <height>22</height>
         </rect>
@@ -540,7 +540,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>23</x>
-         <y>613</y>
+         <y>643</y>
          <width>90</width>
          <height>20</height>
         </rect>
@@ -558,7 +558,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>677</y>
+         <y>687</y>
          <width>131</width>
          <height>19</height>
         </rect>
@@ -578,7 +578,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>717</y>
+         <y>722</y>
          <width>161</width>
          <height>20</height>
         </rect>
@@ -596,7 +596,7 @@ background-color: rgb(255, 203, 198);</string>
        <property name="geometry">
         <rect>
          <x>21</x>
-         <y>747</y>
+         <y>752</y>
          <width>161</width>
          <height>20</height>
         </rect>
@@ -709,7 +709,7 @@ border-color: rgb(227, 153, 100);</string>
        <property name="geometry">
         <rect>
          <x>21</x>
-         <y>491</y>
+         <y>487</y>
          <width>131</width>
          <height>19</height>
         </rect>
@@ -732,7 +732,7 @@ border-color: rgb(227, 153, 100);</string>
        <property name="geometry">
         <rect>
          <x>22</x>
-         <y>524</y>
+         <y>517</y>
          <width>161</width>
          <height>20</height>
         </rect>
@@ -788,9 +788,9 @@ border-color: rgb(227, 153, 100);</string>
       <widget class="QCheckBox" name="chk_NoPunishment">
        <property name="geometry">
         <rect>
-         <x>190</x>
-         <y>520</y>
-         <width>161</width>
+         <x>22</x>
+         <y>537</y>
+         <width>160</width>
          <height>30</height>
         </rect>
        </property>
@@ -801,6 +801,175 @@ border-color: rgb(227, 153, 100);</string>
        </property>
        <property name="text">
         <string>No Punishment</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_AssociationTrials_2">
+       <property name="geometry">
+        <rect>
+         <x>278</x>
+         <y>496</y>
+         <width>40</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(171, 78, 15);</string>
+       </property>
+       <property name="text">
+        <string>Level 1</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_QuietWindow_2">
+       <property name="geometry">
+        <rect>
+         <x>248</x>
+         <y>518</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(171, 78, 15);</string>
+       </property>
+       <property name="text">
+        <string>Automatic Reward</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_QuietWindow_3">
+       <property name="geometry">
+        <rect>
+         <x>248</x>
+         <y>538</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(171, 78, 15);</string>
+       </property>
+       <property name="text">
+        <string>No punishment</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_QuietWindow_4">
+       <property name="geometry">
+        <rect>
+         <x>248</x>
+         <y>558</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(171, 78, 15);</string>
+       </property>
+       <property name="text">
+        <string>Ignore licks in WW</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_AssociationTrials_3">
+       <property name="geometry">
+        <rect>
+         <x>396</x>
+         <y>495</y>
+         <width>40</width>
+         <height>19</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(32, 95, 95);</string>
+       </property>
+       <property name="text">
+        <string>Level 2</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_QuietWindow_5">
+       <property name="geometry">
+        <rect>
+         <x>374</x>
+         <y>518</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(32, 95, 95);</string>
+       </property>
+       <property name="text">
+        <string>No punishment</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_QuietWindow_7">
+       <property name="geometry">
+        <rect>
+         <x>374</x>
+         <y>538</y>
+         <width>101</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(32, 95, 95);</string>
+       </property>
+       <property name="text">
+        <string>Ignore licks in WW</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="chk_NoPunishment_2">
+       <property name="geometry">
+        <rect>
+         <x>23</x>
+         <y>564</y>
+         <width>191</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Ignore licks in Waiting Window</string>
        </property>
       </widget>
      </widget>
