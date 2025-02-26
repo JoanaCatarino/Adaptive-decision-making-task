@@ -264,7 +264,6 @@ class TwoChoiceAuditoryTask:
     def blue_led_on(self):
         led_blue.on()
         
-    
     def blue_led_off(self):
         led_blue.off()
         
@@ -293,34 +292,40 @@ class TwoChoiceAuditoryTask:
  
 
 
-    def detect_licks(self):
-        """Checks for licks and delivers rewards in parallel.
-           Terminates trial if no licks occur during RW.
+   def detect_licks(self):
+        """Checks for licks and delivers rewards. 
+           If no lick happens in the response window (RW), it terminates the trial and shuts off the LED.
         """
     
         # Ensure piezo data is updated before checking
         p1 = list(self.piezo_reader.piezo_adder1)
         p2 = list(self.piezo_reader.piezo_adder2)
     
-        # Track the start time of response window
+        # Get response window expiration time
         RW_expiry = self.RW_start + self.RW
     
-        # Start a loop to check for licks and RW expiration
-        while self.trialstarted:
-            self.current_time = time.time()  # Get current time
+        # ✅ Define the timeout function INSIDE detect_licks()
+        def terminate_if_no_lick():
+            """Terminates trial if no lick is detected within RW."""
+            while self.trialstarted:  
+                if time.time() >= RW_expiry and self.first_lick is None:
+                    with self.lock:
+                        print("No lick detected, terminating trial.")
+                        self.trialstarted = False
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
+                    return  # Stop the function once the trial ends
     
-            # Check if RW has expired
-            if self.current_time >= RW_expiry and self.first_lick is None:
-                with self.lock:
-                    print("No lick detected, terminating trial.")
-                    self.trialstarted = False
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                return  # Exit function since trial is over
+        # ✅ Start a thread to monitor the response window timeout
+        threading.Thread(target=terminate_if_no_lick, daemon=True).start()
+    
+        # ✅ Normal lick detection process continues
+        while self.trialstarted:
+            self.t = time.time()  # Get current time
     
             # Left piezo
             if p1:
                 latest_value1 = p1[-1]
-            
+    
                 if latest_value1 > self.threshold_left:
                     with self.lock:
                         self.tlick_l = self.t
@@ -331,10 +336,7 @@ class TwoChoiceAuditoryTask:
                             self.tlick = self.tlick_l
     
                             if self.correct_spout == self.first_lick:
-                                # Deliver reward in a separate thread
                                 threading.Thread(target=self.reward, args=('left',)).start()
-    
-                                # Update trial data
                                 self.trials[-1]['lick'] = 1
                                 self.trials[-1]['left_spout'] = 1
                                 self.trials[-1]['lick_time'] = self.tlick
@@ -347,20 +349,19 @@ class TwoChoiceAuditoryTask:
                                 self.gui_controls.update_licks_left(self.licks_left)
                                 self.gui_controls.update_correct_trials(self.correct_trials)
     
-                                # Update live stair plot
                                 self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
     
                             else:
                                 self.play_sound('white_noise')
-                                print('Wrong spout')
+                                print("Wrong spout")
                                 self.incorrect_trials += 1
                                 self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
                             self.trialstarted = False
                             threading.Thread(target=self.blue_led_off, daemon=True).start()
-                            return  # Trial ends
+                            return  # Stop function once trial ends
     
-            # Right piezo        
+            # Right piezo
             if p2:
                 latest_value2 = p2[-1]
     
@@ -374,10 +375,7 @@ class TwoChoiceAuditoryTask:
                             self.tlick = self.tlick_r
     
                             if self.correct_spout == self.first_lick:
-                                # Deliver reward in a separate thread
                                 threading.Thread(target=self.reward, args=('right',)).start()
-    
-                                # Update trial data
                                 self.trials[-1]['lick'] = 1
                                 self.trials[-1]['right_spout'] = 1
                                 self.trials[-1]['lick_time'] = self.tlick
@@ -390,7 +388,6 @@ class TwoChoiceAuditoryTask:
                                 self.gui_controls.update_licks_right(self.licks_right)
                                 self.gui_controls.update_correct_trials(self.correct_trials)
     
-                                # Update live stair plot
                                 self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
     
                             else:
@@ -401,7 +398,7 @@ class TwoChoiceAuditoryTask:
     
                             self.trialstarted = False
                             threading.Thread(target=self.blue_led_off, daemon=True).start()
-                            return  # Trial ends
+                            return  # Stop function once trial ends
 
                    
 
