@@ -393,12 +393,20 @@ class TwoChoiceAuditoryTask:
                         return
                    
 
+    def omission_callback(self):
+        print('No licks detected - aborting trial')
+        self.trialstarted = False
+        threading.Thread(target=self.blue_led_off, daemon=True).start() 
+
     def wait_for_response(self):
-        """Ends the trial after the response window if no lick occurs."""
         
-        t_3_start = self.RW_start
-        t_3_end = t_3_start + 3
-        print(t_3_start, t_3_end)
+        timer_3 = threading.Timer(self.RW, self.omission_callback)
+        timer_3.start()
+
+                
+        
+        
+        
         
         '''
         time.sleep(self.RW)  # Wait for RW duration
