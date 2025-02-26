@@ -292,7 +292,7 @@ class TwoChoiceAuditoryTask:
  
 
 
-   def detect_licks(self):
+    def detect_licks(self):
         """Checks for licks and delivers rewards. 
            If no lick happens in the response window (RW), it terminates the trial and shuts off the LED.
         """
@@ -304,7 +304,7 @@ class TwoChoiceAuditoryTask:
         # Get response window expiration time
         RW_expiry = self.RW_start + self.RW
     
-        # ✅ Define the timeout function INSIDE detect_licks()
+        # Define the timeout function INSIDE detect_licks()
         def terminate_if_no_lick():
             """Terminates trial if no lick is detected within RW."""
             while self.trialstarted:  
@@ -315,10 +315,10 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                     return  # Stop the function once the trial ends
     
-        # ✅ Start a thread to monitor the response window timeout
+        # Start a thread to monitor the response window timeout
         threading.Thread(target=terminate_if_no_lick, daemon=True).start()
     
-        # ✅ Normal lick detection process continues
+        # Normal lick detection process continues
         while self.trialstarted:
             self.t = time.time()  # Get current time
     
