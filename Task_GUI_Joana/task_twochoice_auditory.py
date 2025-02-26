@@ -5,13 +5,13 @@ Created on Sat Jul 20 17:51:07 2024
 @author: JoanaCatarino
 """
 
+
 import threading
 import numpy as np
 import time
 import csv
 import os
 import random
-import asyncio
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
@@ -219,10 +219,9 @@ class TwoChoiceAuditoryTask:
             
             # Start response window
             self.RW_start = time.time()
-            
                 
             # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, daemon=True).start()
+            threading.Thread(target=self.wait_for_response, args=(self.RW,)).start()
             
             # Turning LED off after reward/punishment or after response window finished
             
@@ -264,10 +263,9 @@ class TwoChoiceAuditoryTask:
     def blue_led_on(self):
         led_blue.on()
         
+    
     def blue_led_off(self):
-        print('before led blue off')
         led_blue.off()
-        print ('after led blue off')
         
     
     def detect_licks_during_waiting_window(self):
@@ -291,9 +289,8 @@ class TwoChoiceAuditoryTask:
             time.sleep(0.001)  # Small delay to prevent CPU overload
         
         return False  # No licks detected, trial can proceed    
- 
-
-
+    
+    
     def detect_licks(self):
     
         """Checks for licks and delivers rewards in parallel."""
@@ -311,7 +308,7 @@ class TwoChoiceAuditoryTask:
         
             if latest_value1 > self.threshold_left:
                 with self.lock:
-                    self.tlick_l = self.t
+                    self.tlick_l = time.time()
                     elapsed_left = self.tlick_l - self.RW_start
         
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
@@ -350,7 +347,6 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
                 
-                    
         
         # Right piezo        
         if p2:
@@ -358,7 +354,7 @@ class TwoChoiceAuditoryTask:
         
             if latest_value2 > self.threshold_right:
                 with self.lock:
-                    self.tlick_r = self.t
+                    self.tlick_r = time.time()
                     elapsed_right = self.tlick_r - self.RW_start
         
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
@@ -397,7 +393,7 @@ class TwoChoiceAuditoryTask:
                         return
                    
 
-    def wait_for_response(self):
+    def wait_for_response(self, RW):
         """Ends the trial after the response window if no lick occurs."""
         time.sleep(self.RW)  # Wait for RW duration
         with self.lock:
@@ -407,8 +403,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_omissions(self.omissions)
                 self.trialstarted = False  # End trial
                 threading.Thread(target=self.blue_led_off, daemon=True).start() 
-                
-                
+    
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
@@ -433,7 +428,7 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-
+                
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
                 if self.check_animal_quiet():
