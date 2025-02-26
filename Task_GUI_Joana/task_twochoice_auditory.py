@@ -343,6 +343,7 @@ class TwoChoiceAuditoryTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
+                        self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
@@ -388,6 +389,7 @@ class TwoChoiceAuditoryTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
+                        self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start() 
                         return
@@ -399,9 +401,10 @@ class TwoChoiceAuditoryTask:
         threading.Thread(target=self.blue_led_off, daemon=True).start() 
 
     def wait_for_response(self):
+        self.timer_3 = threading.Timer(self.RW, self.omission_callback)
+        self.timer_3.start()
         
-        timer_3 = threading.Timer(self.RW, self.omission_callback)
-        timer_3.start()
+        
 
                 
         
