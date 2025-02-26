@@ -200,7 +200,8 @@ class TwoChoiceAuditoryTask:
             self.current_tone = random.choice(['5KHz', '10KHz'])
             self.tone_selected = True
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print(f'current tone:{self.current_tone} - correct spout:{self.correct_spout}')
+            print(
+                f' trial:{self.total_trials}  current tone:{self.current_tone} - correct spout:{self.correct_spout}')
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
@@ -404,27 +405,11 @@ class TwoChoiceAuditoryTask:
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
+    
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
         self.timer_3.start()
         
-        
-
-                
-        
-        
-        
-        
-        '''
-        time.sleep(self.RW)  # Wait for RW duration
-        with self.lock:
-            if self.first_lick is None:  # No lick detected
-                print("Response window ended, no lick detected.")
-                self.omissions += 1
-                self.gui_controls.update_omissions(self.omissions)
-                self.trialstarted = False  # End trial
-                threading.Thread(target=self.blue_led_off, daemon=True).start() 
-        '''
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
