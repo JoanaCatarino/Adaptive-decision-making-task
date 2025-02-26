@@ -219,6 +219,7 @@ class TwoChoiceAuditoryTask:
             
             # Start response window
             self.RW_start = time.time()
+            print(self.RW_start)
                 
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
@@ -397,8 +398,11 @@ class TwoChoiceAuditoryTask:
 
     def omission_callback(self):
         print('No licks detected - aborting trial')
+        print(time.time())
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start() 
+        self.omissions += 1
+        self.gui_controls.update_omissions(self.omissions)
 
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
