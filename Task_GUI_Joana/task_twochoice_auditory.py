@@ -45,7 +45,7 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = 3 # Inter-trial interval in seconds
+        self.ITI = random.randint(3, 6)  # Random ITI between 3 and 6 seconds only using round numbers
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
@@ -435,6 +435,10 @@ class TwoChoiceAuditoryTask:
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
                 
+            # Randomize ITI for each trial
+            self.ITI = random.randint(3, 6)  # ITI is now randomized per trial
+            print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
                 if self.check_animal_quiet():
