@@ -453,15 +453,15 @@ class TwoChoiceAuditoryTask:
                 else:
                     pass
                 
-            if self.next_trial_eligible is True:
-                if ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                    print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
-        
-                    if self.check_animal_quiet():
-                        self.start_trial()
-                        self.next_trial_eligible = False
-                 
-                self.detect_licks()
+            
+            if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
+    
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.next_trial_eligible = False
+             
+            self.detect_licks()
                 
             
             
