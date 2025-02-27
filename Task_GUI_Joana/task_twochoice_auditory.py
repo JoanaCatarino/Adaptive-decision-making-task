@@ -445,7 +445,7 @@ class TwoChoiceAuditoryTask:
             self.current_time = time.time()
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((time.time() - (self.ttrial +self.RW)> self.ITI)) and self.trialstarted == False):
+            if (self.ttrial is None or ((time.time() - (self.tend)> self.ITI)) and self.trialstarted == False):
                 
                 #print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
