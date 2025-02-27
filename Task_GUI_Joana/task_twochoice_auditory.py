@@ -442,9 +442,8 @@ class TwoChoiceAuditoryTask:
         while self.running:
             
             self.current_time = time.time()
-            elapsed_time = self.current_time - self.tend  
     
-            if self.ttrial is None or ((elapsed_time >= self.ITI) and not self.trialstarted):
+            if self.ttrial is None or (((self.current_time- self.tend) >= self.ITI) and not self.trialstarted):
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
                 if self.check_animal_quiet():
