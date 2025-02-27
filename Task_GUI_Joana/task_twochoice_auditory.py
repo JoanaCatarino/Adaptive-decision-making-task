@@ -76,6 +76,7 @@ class TwoChoiceAuditoryTask:
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
+        self.current_time = None
         self.tend = None # end of the trial
         
         # Lock for thread-safe operations
@@ -440,10 +441,10 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             
-            current_time = time.time()
+            self.current_time = time.time()
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((current_time - self.tend) > self.ITI) and self.trialstarted == False):
+            if (self.ttrial is None or ((self.current_time - self.tend) > self.ITI) and self.trialstarted == False):
                 
                 #print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
