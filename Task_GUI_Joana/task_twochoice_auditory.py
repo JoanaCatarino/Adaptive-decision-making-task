@@ -45,8 +45,7 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        #self.ITI = random.randint(3, 6)/10  # Random ITI between 3 and 6 seconds using number with ms precision
-        self.ITI = 3
+        self.ITI = random.randint(3, 6)/10  # Random ITI between 3 and 6 seconds using number with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
