@@ -434,13 +434,12 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             self.t = time.time() - self.tstart # update current time based on the elapsed time
-                
-            # Randomize ITI for each trial
-            self.ITI = random.randint(3, 6)  # ITI is now randomized per trial
-            print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
+                
+                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                
                 if self.check_animal_quiet():
                     self.start_trial()
                     
