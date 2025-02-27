@@ -222,6 +222,8 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend= time.time()
+                print(self.tend)
                 self.early_lick_termination = True
                 return  # Exit trial 
            
@@ -355,6 +357,7 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
+                        print(self.tend)
                         self.next_trial_eligible = True
                         return
                 
@@ -403,6 +406,7 @@ class TwoChoiceAuditoryTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
+                        print(self.tend)
                         self.next_trial_eligible = True
                         return
                    
@@ -412,6 +416,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
+        print(self.tend)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
         self.next_trial_eligible = True
