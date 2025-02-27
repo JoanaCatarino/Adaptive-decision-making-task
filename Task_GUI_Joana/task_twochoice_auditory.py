@@ -258,7 +258,6 @@ class TwoChoiceAuditoryTask:
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
        
-
     
     def play_sound(self, frequency):
         
