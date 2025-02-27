@@ -449,12 +449,12 @@ class TwoChoiceAuditoryTask:
     
             elapsed_since_last_trial = self.current_time - self.tend  
     
-            print(f"[DEBUG] Inside main loop | Elapsed: {elapsed_since_last_trial:.2f} sec | ITI: 3 sec | Trial Started: {self.trialstarted}")
+            print(f"[DEBUG] Inside main loop | Elapsed: {elapsed_since_last_trial:.0f} sec | ITI: 3 sec | Trial Started: {self.trialstarted}")
     
             # **Ensure self.trialstarted resets before checking ITI**
             self.trialstarted = False  
     
-            print(f"[DEBUG] ITI Check: Elapsed = {elapsed_since_last_trial:.2f}, Required = 3, TrialStarted = {self.trialstarted}")
+            print(f"[DEBUG] ITI Check: Elapsed = {elapsed_since_last_trial:.0f}, Required = 3, TrialStarted = {self.trialstarted}")
     
             # **Allow first trial to start immediately or wait for ITI**
             if self.ttrial is None or (elapsed_since_last_trial >= 3 and not self.trialstarted):
