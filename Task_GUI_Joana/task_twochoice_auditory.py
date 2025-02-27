@@ -217,12 +217,9 @@ class TwoChoiceAuditoryTask:
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
-                
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
-                
                 self.tend = time.time()
-                print(self.tend)
                 return  # Exit trial 
            
             
@@ -358,9 +355,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
-                        
                         self.tend = time.time()
-                        print(self.tend)
                         return
                 
         
@@ -407,9 +402,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
-                        
                         self.tend = time.time()
-                        print(self.tend)
                         return
                    
 
@@ -417,10 +410,7 @@ class TwoChoiceAuditoryTask:
         print('No licks detected - aborting trial')
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
-        
         self.tend = time.time()
-        print(self.tend)
-        
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
