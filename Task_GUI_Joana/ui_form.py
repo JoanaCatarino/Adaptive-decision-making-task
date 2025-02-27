@@ -154,7 +154,7 @@ class Ui_TaskGui(object):
         self.txt_ITImin.setFont(font5)
         self.lbl_ITI = QLabel(self.TaskSettings)
         self.lbl_ITI.setObjectName(u"lbl_ITI")
-        self.lbl_ITI.setGeometry(QRect(24, 438, 21, 20))
+        self.lbl_ITI.setGeometry(QRect(25, 438, 21, 20))
         self.lbl_ITI.setFont(font5)
         self.lbl_TD_s = QLabel(self.TaskSettings)
         self.lbl_TD_s.setObjectName(u"lbl_TD_s")

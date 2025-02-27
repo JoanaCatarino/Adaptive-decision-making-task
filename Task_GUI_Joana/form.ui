@@ -447,7 +447,7 @@ background-color: rgb(255, 203, 198);</string>
       <widget class="QLabel" name="lbl_ITI">
        <property name="geometry">
         <rect>
-         <x>24</x>
+         <x>25</x>
          <y>438</y>
          <width>21</width>
          <height>20</height>
