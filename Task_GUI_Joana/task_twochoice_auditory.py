@@ -443,6 +443,9 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     
+                    # Set ITI for next trial
+                    self.ITI = random.randint(3, 6)
+                    
             # Run lick detection continuously
             self.detect_licks()
             
