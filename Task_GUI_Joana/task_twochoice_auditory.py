@@ -449,25 +449,29 @@ class TwoChoiceAuditoryTask:
         while self.running:
             
             if self.first_trial:
+                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.first_trial = False
+                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trial
                 else:
                     pass
              
             if self.early_lick_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
+                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trialv
                 else:
                     pass
                 
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
-    
+                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.next_trial_eligible = False
+                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trial
              
             self.detect_licks()
                 
