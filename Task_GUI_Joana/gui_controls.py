@@ -249,7 +249,8 @@ class GuiControls:
         # Check for inputs received in the QLineEdits
         self.ui.txt_QuietWindow.textChanged.connect(self.check_update_state)
         self.ui.txt_ResponseWindow.textChanged.connect(self.check_update_state)
-        self.ui.txt_TrialDuration.textChanged.connect(self.check_update_state)
+        self.ui.txt_ITImin.textChanged.connect(self.check_update_state)
+        self.ui.txt_ITImax.textChanged.connect(self.check_update_state)
         self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)
         self.ui.txt_ThresholdLeft.textChanged.connect(self.check_update_state)
         self.ui.txt_ThresholdRight.textChanged.connect(self.check_update_state)
@@ -272,7 +273,8 @@ class GuiControls:
         #Set validators to QLineEdit widgets - To only accept numbers as input
         self.ui.txt_QuietWindow.setValidator(self.float_validator)
         self.ui.txt_ResponseWindow.setValidator(self.float_validator)
-        self.ui.txt_TrialDuration.setValidator(self.float_validator)
+        self.ui.txt_ITImin.setValidator(self.float_validator)
+        self.ui.txt_ITImax.setValidator(self.float_validator)
         self.ui.txt_ValveOpening.setValidator(self.float_validator)
         self.ui.txt_ThresholdLeft.setValidator(self.float_validator)
         self.ui.txt_ThresholdRight.setValidator(self.float_validator)
@@ -284,7 +286,8 @@ class GuiControls:
         if (
             self.ui.txt_QuietWindow.text().strip()
             or self.ui.txt_ResponseWindow.text().strip()
-            or self.ui.txt_TrialDuration.text().strip()
+            or self.ui.txt_ITImin.text().strip()
+            or self.ui.txt_ITImax.text().strip()
             or self.ui.txt_ValveOpening.text().strip()
             or self.ui.txt_ThresholdLeft.text().strip()
             or self.ui.txt_ThresholdRight.text().strip()
@@ -301,7 +304,8 @@ class GuiControls:
         enable = selected_task not in ('','Test rig') # Make the QLineEdits be disabled when no task is selected or when test rig is selected
         self.ui.txt_QuietWindow.setEnabled(enable)
         self.ui.txt_ResponseWindow.setEnabled(enable)
-        self.ui.txt_TrialDuration.setEnabled(enable)
+        self.ui.txt_ITImin.setEnabled(enable)
+        self.ui.txt_ITImax.setEnabled(enable)
         self.ui.txt_ValveOpening.setEnabled(enable)
         self.ui.chk_AutomaticRewards.setEnabled(enable)
         self.ui.chk_NoPunishment.setEnabled(enable)
@@ -450,7 +454,8 @@ class GuiControls:
             # Get the values from the GUI
             quiet_window = self.ui.txt_QuietWindow.text()
             response_window = self.ui.txt_ResponseWindow.text()
-            trial_duration = self.ui.txt_TrialDuration.text()
+            ITImin = self.ui.txt_ITImin.text()
+            ITImax = self.ui.txt_ITImax.text()
             valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration/pump
             threshold_left = self.ui.txt_ThresholdLeft.text()  # For left piezo threshold
             threshold_right = self.ui.txt_ThresholdRight.text()  # For right piezo threshold
@@ -458,7 +463,8 @@ class GuiControls:
             # Validate and convert inputs to floats
             new_quiet_window = float(quiet_window) if quiet_window else None
             new_response_window = float(response_window) if response_window else None
-            new_trial_duration = float(trial_duration) if trial_duration else None
+            new_ITImin = float(ITImin) if ITImin else None
+            new_ITImax = float(ITImax) if ITImax else None
             new_valve_opening = float(valve_opening) if valve_opening else None
             new_threshold_left = float(threshold_left) if threshold_left else None
             new_threshold_right = float(threshold_right) if threshold_right else None
@@ -477,11 +483,13 @@ class GuiControls:
                     print(f"Response window: {new_response_window} s")
                     self.ui.btn_Update.setEnabled(False)
                     
-                # Update trial duration
+                # Update ITI interval - still need to see how to do this
+                '''
                 if new_trial_duration is not None:
                     self.current_task.trial_duration = new_trial_duration
                     print(f"Trial duration: {new_trial_duration} s")
                     self.ui.btn_Update.setEnabled(False)
+                '''
                                
                 # Update valve opening
                 if new_valve_opening is not None:
