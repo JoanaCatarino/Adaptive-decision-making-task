@@ -45,7 +45,8 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = random.randint(3, 6)  # Random ITI between 3 and 6 seconds only using round numbers
+        #self.ITI = random.randint(3, 6)/10  # Random ITI between 3 and 6 seconds using number with ms precision
+        self.ITI = 3
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
@@ -75,6 +76,7 @@ class TwoChoiceAuditoryTask:
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
+        self.tend = None # end of the trial
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -214,7 +216,9 @@ class TwoChoiceAuditoryTask:
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
-                threading.Thread(target=self.blue_led_off, daemon=True).start()  
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend = time.time()
+                print(self.tend)
                 return  # Exit trial 
            
             # Play sound  
@@ -348,7 +352,9 @@ class TwoChoiceAuditoryTask:
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
-                        threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        self.tend = time.time()
+                        print(self.tend)
                         return
                 
         
@@ -394,16 +400,18 @@ class TwoChoiceAuditoryTask:
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
-                        threading.Thread(target=self.blue_led_off, daemon=True).start() 
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        self.tend = time.time()
+                        print(self.tend)
                         return
                    
 
     def omission_callback(self):
         print('No licks detected - aborting trial')
-        print('end')
-        print(time.time())
         self.trialstarted = False
-        threading.Thread(target=self.blue_led_off, daemon=True).start() 
+        threading.Thread(target=self.blue_led_off, daemon=True).start()
+        self.tend = time.time()
+        print(self.tend)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
@@ -435,10 +443,9 @@ class TwoChoiceAuditoryTask:
     def main(self):
         
         while self.running:
-            #self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((time.time() - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
+            if (self.ttrial is None or ((time.time() - self.tend > self.ITI)) and self.trialstarted == False):
                 
                 print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
@@ -446,7 +453,7 @@ class TwoChoiceAuditoryTask:
                     self.start_trial()
                     
                     # Set ITI for next trial
-                    self.ITI = random.randint(3, 6)
+                    #self.ITI = random.randint(3, 6)/10
                     
             # Run lick detection continuously
             self.detect_licks()
