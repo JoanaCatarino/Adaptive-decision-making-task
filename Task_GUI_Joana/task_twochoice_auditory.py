@@ -457,13 +457,18 @@ class TwoChoiceAuditoryTask:
             print(f"[DEBUG] ITI Check: Elapsed = {elapsed_since_last_trial:.0f}, Required = 3, TrialStarted = {self.trialstarted}")
     
             # **Allow first trial to start immediately or wait for ITI**
-            if self.ttrial is None or (elapsed_since_last_trial >= 3 and not self.trialstarted):
+            if self.ttrial is None or (elapsed_since_last_trial >= self.ITI and not self.trialstarted):
                 print(f"[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
                 if self.check_animal_quiet():
                     self.start_trial()
                     print(f"[DEBUG] Trial started. ttrial set to {self.ttrial:.2f}")
     
+            else:
+                print('expect None for', self.ttrial,' for variable self.ttrial, but get', self.ttrial)
+                print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
+                print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
+                print('if condition not fullfiled')
             self.detect_licks()
             
             
