@@ -193,7 +193,7 @@ class TwoChoiceAuditoryTask:
         with self.lock:
             self.trialstarted = True
             self.total_trials +=1
-            self.ttrial = self.t # Update trial start time
+            self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
@@ -435,10 +435,10 @@ class TwoChoiceAuditoryTask:
     def main(self):
         
         while self.running:
-            self.t = time.time() - self.tstart # update current time based on the elapsed time
+            #self.t = time.time() - self.tstart # update current time based on the elapsed time
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((self.t - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
+            if (self.ttrial is None or ((time.time() - (self.ttrial + self.RW) > self.ITI)) and self.trialstarted == False):
                 
                 print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
