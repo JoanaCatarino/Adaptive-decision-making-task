@@ -399,7 +399,7 @@ class TwoChoiceAuditoryTask:
 
     def omission_callback(self):
         print('No licks detected - aborting trial')
-        print(f'end: {time.time()})
+        print(f'end: {time.time()}')
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start() 
         self.omissions += 1
