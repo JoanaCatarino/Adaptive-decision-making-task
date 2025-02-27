@@ -409,7 +409,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
-        print(self.tend)
+        print(f"[DEBUG] Trial aborted. tend set to {self.tend:.2f}")
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
@@ -443,15 +443,21 @@ class TwoChoiceAuditoryTask:
         while self.running:
             
             self.current_time = time.time()
+            elapsed_time = self.current_time - self.tend
+            
+            print(f"[DEBUG] Running main loop | Elapsed: {elapsed_time:.2f} sec | ITI: {self.ITI} sec | Trial Started: {self.trialstarted}")
+
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((time.time() - (self.tend)> self.ITI)) and self.trialstarted == False):
+            if (self.ttrial is None or ((elapsed_time > self.ITI) and self.trialstarted == False)):
                 
+                print(f"[DEBUG] ITI complete! Starting new trial after {self.ITI} sec wait.")
                 #print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
                 if self.check_animal_quiet():
                     self.start_trial()
                     
+                    print(f"[DEBUG] Trial started. ttrial set to {self.ttrial:.2f}")
                     # Set ITI for next trial
                     #self.ITI = random.randint(3, 6)/10
                     
