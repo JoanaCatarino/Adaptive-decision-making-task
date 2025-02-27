@@ -288,11 +288,9 @@ class TwoChoiceAuditoryTask:
             
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
-                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
     
             if p2 and p2[-1] > self.threshold_right:
-                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
@@ -449,7 +447,7 @@ class TwoChoiceAuditoryTask:
             # Start a new trial if enough time has passed since the last trial and all conditions are met
             if (self.ttrial is None or (elapsed_time > self.ITI)) and self.trialstarted == False):
                 
-                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                #print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
                 if self.check_animal_quiet():
                     self.start_trial()
