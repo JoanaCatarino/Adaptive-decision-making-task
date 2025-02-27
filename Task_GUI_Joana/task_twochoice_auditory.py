@@ -409,7 +409,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
-        print(f"[DEBUG] Trial aborted. tend set to {self.tend:.2f}")
+        print(f'[DEBUG] Trial aborted. tend set to {self.tend:.2f}')
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
@@ -448,13 +448,14 @@ class TwoChoiceAuditoryTask:
     
                 if self.check_animal_quiet():
                     self.start_trial()
-                 
+            '''     
             else:
                 print('expect None for', self.ttrial,' for variable self.ttrial, but get', self.ttrial)
                 print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
                 print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
                 print('if condition not fullfiled')
                 print('----------------------------------------------------------------------')
+            '''
             self.detect_licks()
             
             
