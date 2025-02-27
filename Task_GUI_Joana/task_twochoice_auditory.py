@@ -200,7 +200,7 @@ class TwoChoiceAuditoryTask:
             self.current_tone = random.choice(['5KHz', '10KHz'])
             self.tone_selected = True
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print(f' start: {time.time()})
+            print(time.time())
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
             
@@ -399,7 +399,7 @@ class TwoChoiceAuditoryTask:
 
     def omission_callback(self):
         print('No licks detected - aborting trial')
-        print(f'end: {time.time()}')
+        print(time.time())
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start() 
         self.omissions += 1
