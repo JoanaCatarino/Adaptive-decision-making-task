@@ -442,15 +442,15 @@ class TwoChoiceAuditoryTask:
     def main(self):
         while self.running:
             
-            self.current_time = time.time()
             print(time.time())
-            print(self.tend)
-            
-            
             
             if self.trialstarted is False and self.prev_trialstarted is True:
                 print('Prpepared to start next trial, starting ITI')
                 self.tend = time.time()
+                print(self.tend)
+                
+            else:
+                print(self.prev_trialstarted, self.trialstarted)
                 
             self.prev_trialstarted = self.trialstarted
     
