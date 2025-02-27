@@ -129,7 +129,8 @@ class TwoChoiceAuditoryTask:
         
         if self.print_thread.is_alive():
             self.print_thread.join()
-        pump_l.on() 
+        pump_l.on()
+        led_blue.off()
         
     
     def load_spout_tone_mapping(self):
@@ -197,6 +198,7 @@ class TwoChoiceAuditoryTask:
             self.total_trials +=1
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            self.tend = None
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
@@ -215,12 +217,15 @@ class TwoChoiceAuditoryTask:
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
+                
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
+                
                 self.tend = time.time()
                 print(self.tend)
                 return  # Exit trial 
            
+            
             # Play sound  
             self.play_sound(self.current_tone)
             
@@ -353,6 +358,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        
                         self.tend = time.time()
                         print(self.tend)
                         return
@@ -401,6 +407,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        
                         self.tend = time.time()
                         print(self.tend)
                         return
@@ -410,8 +417,10 @@ class TwoChoiceAuditoryTask:
         print('No licks detected - aborting trial')
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
+        
         self.tend = time.time()
         print(self.tend)
+        
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
@@ -444,8 +453,11 @@ class TwoChoiceAuditoryTask:
         
         while self.running:
             
+            current_time = time.time()
+            elapsed_time = current_time - self.tend
+            
             # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or ((time.time() - self.tend > self.ITI)) and self.trialstarted == False):
+            if (self.ttrial is None or (elapsed_time > self.ITI)) and self.trialstarted == False):
                 
                 print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 
