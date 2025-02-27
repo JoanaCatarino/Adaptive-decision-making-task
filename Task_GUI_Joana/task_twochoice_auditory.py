@@ -450,7 +450,7 @@ class TwoChoiceAuditoryTask:
             
             if self.trialstarted is False and self.prev_trialstarted is True:
                 print('Prpepared to start next trial, starting ITI')
-                self.tend(time.time())
+                self.tend = time.time()
                 
             self.prev_trialstarted = self.trialstarted
     
