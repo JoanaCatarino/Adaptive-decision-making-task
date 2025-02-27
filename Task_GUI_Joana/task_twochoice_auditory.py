@@ -442,8 +442,11 @@ class TwoChoiceAuditoryTask:
         while self.running:
             
             self.current_time = time.time()
+            print(time.time())
+            print(self.tend)
+            
     
-            if self.ttrial is None or (((time.time() - (self.ttrial + self.RW)) >= self.ITI) and not self.trialstarted):
+            if self.ttrial is None or (((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted):
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
                 if self.check_animal_quiet():
@@ -454,6 +457,7 @@ class TwoChoiceAuditoryTask:
                 print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
                 print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
                 print('if condition not fullfiled')
+                print('------------------------------------------------')
           
             self.detect_licks()
             
