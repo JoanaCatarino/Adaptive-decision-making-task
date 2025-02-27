@@ -67,6 +67,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         self.running = False
         self.tone_selected = False
+        self.prev_trialstarted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -445,7 +446,13 @@ class TwoChoiceAuditoryTask:
             print(time.time())
             print(self.tend)
             
+            
+            if self.trialstarted is False and self.prev_trialstarted is True:
+                print('Prpepared to start next trial, starting ITI')
+                
+            self.prev_trialstarted = self.trialstarted
     
+            '''
             if self.ttrial is None or (((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted):
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
@@ -459,6 +466,7 @@ class TwoChoiceAuditoryTask:
                 print('if condition not fullfiled')
                 print('------------------------------------------------')
           
+            '''
             self.detect_licks()
             
             
