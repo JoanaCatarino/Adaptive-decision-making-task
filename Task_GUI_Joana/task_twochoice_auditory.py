@@ -445,7 +445,7 @@ class TwoChoiceAuditoryTask:
             self.current_time = time.time()
             elapsed_time = self.current_time - self.tend
             
-            print(f"[DEBUG] Running main loop | Elapsed: {elapsed_time:.2f} sec | ITI: {self.ITI} sec | Trial Started: {self.trialstarted}")
+            print(f"[DEBUG] Running main loop |  | ITI: {self.ITI} sec | Trial Started: {self.trialstarted}")
 
             
             # Start a new trial if enough time has passed since the last trial and all conditions are met
