@@ -68,6 +68,7 @@ class TwoChoiceAuditoryTask:
         self.running = False
         self.tone_selected = False
         self.prev_trialstarted = False
+        self.first_trial = True
         
         # Time variables
         self.tstart = None # start of the task
@@ -188,7 +189,6 @@ class TwoChoiceAuditoryTask:
             else:
                 print('Waiting for enough data to check quiet window')
             
-            time.sleep(0.1) # prevents excessive CPU usage
     
      
     def start_trial(self):
@@ -409,10 +409,10 @@ class TwoChoiceAuditoryTask:
         print('No licks detected - aborting trial')
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
-        #self.tend = time.time()
-        #print(f'[DEBUG] Trial aborted. tend set to {self.tend:.2f}')
+        self.tend = time.time()
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
+      
 
     
     def wait_for_response(self):
@@ -442,20 +442,15 @@ class TwoChoiceAuditoryTask:
     def main(self):
         while self.running:
             
-            print(time.time())
-            
-            if self.trialstarted is False and self.prev_trialstarted is True:
-                print('Prpepared to start next trial, starting ITI')
-                self.tend = time.time()
-                print(self.tend)
+            if self.first_trial:
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.first_trial = False
+                else:
+                    pass
                 
-            else:
-                print(self.prev_trialstarted, self.trialstarted)
-                
-            self.prev_trialstarted = self.trialstarted
-    
             
-            if self.ttrial is None or (((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted):
+            if ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
                 if self.check_animal_quiet():
