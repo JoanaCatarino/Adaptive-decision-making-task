@@ -222,10 +222,10 @@ class TwoChoiceAuditoryTask:
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
+                print(self.tend)
                 self.next_trial_eligible = True
                 return  # Exit trial 
            
-            
             # Play sound  
             self.play_sound(self.current_tone)
             
