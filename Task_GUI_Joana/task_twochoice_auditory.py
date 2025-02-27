@@ -69,6 +69,7 @@ class TwoChoiceAuditoryTask:
         self.tone_selected = False
         self.prev_trialstarted = False
         self.first_trial = True
+        self.early_lick_termination = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -221,9 +222,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.tend = time.time()
-                print(self.tend)
-                self.next_trial_eligible = True
+                self.early_lick_termination = True
                 return  # Exit trial 
            
             # Play sound  
@@ -451,8 +450,14 @@ class TwoChoiceAuditoryTask:
                     self.first_trial = False
                 else:
                     pass
+             
+            if self.early_lick_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.early_lick_termination = False
+                else:
+                    pass
                 
-            
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
