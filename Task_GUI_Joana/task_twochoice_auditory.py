@@ -440,35 +440,22 @@ class TwoChoiceAuditoryTask:
     
     def main(self):
         while self.running:
+            
             self.current_time = time.time()
+            elapsed_time = self.current_time - self.tend  
     
-            # **Fix: Set self.tend if it's None (before first trial)**
-            if self.tend is None:
-                print("[DEBUG] self.tend is None - Setting to current time.")
-                self.tend = self.current_time  
-    
-            elapsed_since_last_trial = self.current_time - self.tend  
-    
-            print(f"[DEBUG] Inside main loop | Elapsed: {elapsed_since_last_trial:.0f} sec | ITI: 3 sec | Trial Started: {self.trialstarted}")
-    
-            # **Ensure self.trialstarted resets before checking ITI**
-            self.trialstarted = False  
-    
-            print(f"[DEBUG] ITI Check: Elapsed = {elapsed_since_last_trial:.0f}, Required = 3, TrialStarted = {self.trialstarted}")
-    
-            # **Allow first trial to start immediately or wait for ITI**
-            if self.ttrial is None or (elapsed_since_last_trial >= self.ITI and not self.trialstarted):
+            if self.ttrial is None or ((elapsed_time >= self.ITI) and not self.trialstarted)):
                 print(f"[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
                 if self.check_animal_quiet():
                     self.start_trial()
-                    print(f"[DEBUG] Trial started. ttrial set to {self.ttrial:.2f}")
-    
+                 
             else:
                 print('expect None for', self.ttrial,' for variable self.ttrial, but get', self.ttrial)
                 print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
                 print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
                 print('if condition not fullfiled')
+                print('----------------------------------------------------------------------')
             self.detect_licks()
             
             
