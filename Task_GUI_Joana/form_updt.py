@@ -170,7 +170,7 @@ class Ui_TaskGui(object):
         self.txt_ITImin.setFont(font)
         self.txt_ITImin.setObjectName("txt_ITImin")
         self.lbl_ITI = QtWidgets.QLabel(self.TaskSettings)
-        self.lbl_ITI.setGeometry(QtCore.QRect(24, 438, 21, 20))
+        self.lbl_ITI.setGeometry(QtCore.QRect(25, 438, 21, 20))
         font = QtGui.QFont()
         font.setPointSize(9)
         self.lbl_ITI.setFont(font)
