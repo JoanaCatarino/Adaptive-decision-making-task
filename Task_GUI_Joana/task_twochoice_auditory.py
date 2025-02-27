@@ -220,7 +220,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.tend = time.time()
+                #self.tend = time.time()
                 return  # Exit trial 
            
             
@@ -354,7 +354,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
-                        self.tend = time.time()
+                        #self.tend = time.time()
                         return
                 
         
@@ -401,7 +401,7 @@ class TwoChoiceAuditoryTask:
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
-                        self.tend = time.time()
+                        #self.tend = time.time()
                         return
                    
 
@@ -409,8 +409,8 @@ class TwoChoiceAuditoryTask:
         print('No licks detected - aborting trial')
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
-        self.tend = time.time()
-        print(f'[DEBUG] Trial aborted. tend set to {self.tend:.2f}')
+        #self.tend = time.time()
+        #print(f'[DEBUG] Trial aborted. tend set to {self.tend:.2f}')
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
@@ -447,12 +447,14 @@ class TwoChoiceAuditoryTask:
             print(self.tend)
             
             
+            
             if self.trialstarted is False and self.prev_trialstarted is True:
                 print('Prpepared to start next trial, starting ITI')
+                self.tend(time.time())
                 
             self.prev_trialstarted = self.trialstarted
     
-            '''
+            
             if self.ttrial is None or (((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted):
                 print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
     
@@ -466,7 +468,7 @@ class TwoChoiceAuditoryTask:
                 print('if condition not fullfiled')
                 print('------------------------------------------------')
           
-            '''
+            
             self.detect_licks()
             
             
