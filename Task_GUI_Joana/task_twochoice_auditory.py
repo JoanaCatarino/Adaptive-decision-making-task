@@ -80,6 +80,7 @@ class TwoChoiceAuditoryTask:
         self.RW_start = None
         self.current_time = None
         self.tend = None # end of the trial
+        self.next_trial_eligible = False
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -412,8 +413,8 @@ class TwoChoiceAuditoryTask:
         self.tend = time.time()
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
+        self.next_trial_eligible = True
       
-
     
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
@@ -449,23 +450,24 @@ class TwoChoiceAuditoryTask:
                 else:
                     pass
                 
-            
-            if ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
-    
-                if self.check_animal_quiet():
-                    self.start_trial()
+            if self.next_trial_eligible is True:
+                if ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                    print("[DEBUG] ITI complete! Starting new trial after 3 sec wait.")
+        
+                    if self.check_animal_quiet():
+                        self.start_trial()
+                        self.next_trial_eligible = False
+                  
+                else:
+                    print('expect None for', self.ttrial,' for variable self.ttrial, but get', self.ttrial)
+                    print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
+                    print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
+                    print('if condition not fullfiled')
+                    print('------------------------------------------------')
               
-            else:
-                print('expect None for', self.ttrial,' for variable self.ttrial, but get', self.ttrial)
-                print('expect >= ', self.ITI, ' for variable self.ITI, but get', self.ITI)
-                print('expect not', self.trialstarted, ' for variable self.trialstarted, but get', self.trialstarted)
-                print('if condition not fullfiled')
-                print('------------------------------------------------')
-          
-            
-            self.detect_licks()
-            
+                
+                self.detect_licks()
+                
             
             
     def append_trial_to_csv(self, trial_data):
