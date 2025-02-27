@@ -45,7 +45,7 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = round(random.uniform(3, 6), 1)  # Random ITI between 3 and 6 seconds using number with ms precision
+        self.ITI = round(random.uniform(3, 9), 1)  # Random ITI between 3 and 6 seconds using number with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
@@ -449,29 +449,29 @@ class TwoChoiceAuditoryTask:
         while self.running:
             
             if self.first_trial:
-                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.first_trial = False
-                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
                 else:
                     pass
              
             if self.early_lick_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
-                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trialv
+                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trialv
                 else:
                     pass
                 
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.next_trial_eligible = False
-                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
              
             self.detect_licks()
                 
