@@ -45,7 +45,7 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = random.randint(3, 6)/10  # Random ITI between 3 and 6 seconds using number with ms precision
+        self.ITI = round(random.uniform(3, 6), 1)  # Random ITI between 3 and 6 seconds using number with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
@@ -453,7 +453,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.first_trial = False
-                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trial
+                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trial
                 else:
                     pass
              
@@ -462,7 +462,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
-                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trialv
+                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trialv
                 else:
                     pass
                 
@@ -471,7 +471,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.next_trial_eligible = False
-                    self.ITI = random.randint(3, 6)/10 # Set ITI for next trial
+                    self.ITI = round(random.uniform(3, 6), 1) # Set ITI for next trial
              
             self.detect_licks()
                 
