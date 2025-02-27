@@ -439,34 +439,28 @@ class TwoChoiceAuditoryTask:
     
     
     def main(self):
+        
         while self.running:
+            
+            print("[DEBUG] main() is running...") 
             self.current_time = time.time()
-            elapsed_since_last_trial = self.current_time - self.tend  
-    
-            print(f"[DEBUG] Inside main loop | Elapsed: {elapsed_since_last_trial:.2f} sec | ITI: {self.ITI} sec | Trial Started: {self.trialstarted}")
-    
-            # **Force reset trialstarted**  
-            self.trialstarted = False  
-    
-            if self.tend is None:
-                print("[DEBUG] self.tend is None - Initializing tend to prevent blocking.")
-                self.tend = self.current_time  
-    
-            # **Allow first trial to start immediately or wait for ITI**
-            if self.ttrial is None or (elapsed_since_last_trial >= self.ITI and not self.trialstarted):
+         
+            # Start a new trial if enough time has passed since the last trial and all conditions are met
+            if (self.ttrial is None or (((current_time - self.tend) >= self.ITI) and self.trialstarted == False)):
+                
                 print(f"[DEBUG] ITI complete! Starting new trial after {self.ITI} sec wait.")
-    
+                #print(f"Next ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                
                 if self.check_animal_quiet():
                     self.start_trial()
-    
+                    
                     print(f"[DEBUG] Trial started. ttrial set to {self.ttrial:.2f}")
-    
-                    # Set ITI for the next trial
-                    self.ITI = random.randint(3, 6)
-                    print(f"[DEBUG] New ITI set: {self.ITI} sec")
-    
+                    # Set ITI for next trial
+                    #self.ITI = random.randint(3, 6)/10
+                    
             # Run lick detection continuously
             self.detect_licks()
+            
             
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
