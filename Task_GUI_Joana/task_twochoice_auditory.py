@@ -409,6 +409,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
+        print(self.tend)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
 
