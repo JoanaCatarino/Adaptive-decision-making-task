@@ -69,6 +69,7 @@ class TwoChoiceAuditoryTask:
         self.prev_trialstarted = False
         self.first_trial = True
         self.early_lick_termination = False
+        autom_reward_termination = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -239,9 +240,7 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
                 print(self.tend)
-    
-                # **Wait for ITI before allowing next trial**
-                threading.Timer(self.ITI, self.allow_next_trial).start()
+                self.autom_reward_termination = True
                 return  # Exit trial
             else:
                 # If Automatic Reward is not enabled
@@ -492,7 +491,16 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trialv
+                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+                else:
+                    pass
+                
+            if self.autom_reward_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.autom_reward_termination = False
+                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
                 else:
                     pass
                 
