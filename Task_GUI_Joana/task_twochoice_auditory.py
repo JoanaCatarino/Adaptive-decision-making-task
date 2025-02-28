@@ -240,12 +240,15 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
                 print(self.tend)
-                self.autom_reward_termination = True
+    
+                # **Schedule next trial after ITI**
+                self.schedule_next_trial()
                 return  # Exit trial
-            else:
-                # If Automatic Reward is not enabled
-                self.RW_start = time.time()
-                
+    
+            else:  
+                # **If Automatic Reward is NOT checked, proceed with standard response window**
+                self.RW_start = time.time()  # Start response window
+            
                 # Wait for response window to finish if no lick happens
                 threading.Thread(target=self.wait_for_response, daemon=True).start()
             
@@ -317,10 +320,19 @@ class TwoChoiceAuditoryTask:
         return False  # No licks detected, trial can proceed    
     
     
-    def allow_next_trial(self):
-        """ Marks the trial as completed and allows the next trial to start after ITI """
+    def schedule_next_trial(self):
+        """ Ensures the next trial starts after ITI """
         self.next_trial_eligible = True
         print("Next trial is now allowed after ITI.")
+        
+        # Start the next trial after ITI delay
+        threading.Timer(self.ITI, self.check_and_start_next_trial).start()
+    
+    def check_and_start_next_trial(self):
+        """ Starts the next trial if conditions allow it """
+        if self.next_trial_eligible and not self.trialstarted:
+            print("Starting next trial automatically.")
+            self.start_trial()
         
     
     def detect_licks(self):
@@ -491,15 +503,6 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
-                else:
-                    pass
-                
-            if self.autom_reward_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
-                if self.check_animal_quiet():
-                    self.start_trial()
-                    self.autom_reward_termination = False
                     self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
                 else:
                     pass
