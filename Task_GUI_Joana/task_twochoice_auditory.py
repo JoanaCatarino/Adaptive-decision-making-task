@@ -350,8 +350,11 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                                 
                         else:
-                            self.play_sound('white_noise')
-                            print('wrong spout')
+                            if not self.gui_controls.ui.chk_NoPunishment.isChecked():
+                                self.play_sound('white_noise')
+                                print('wrong spout')
+                            else:
+                                print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
@@ -399,8 +402,11 @@ class TwoChoiceAuditoryTask:
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
-                            self.play_sound('white_noise')
-                            print('wrong spout')
+                            if not self.gui_controls.ui.chk_NoPunishment.isChecked():
+                                self.play_sound('white_noise')
+                                print('wrong spout')
+                            else:
+                                print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
