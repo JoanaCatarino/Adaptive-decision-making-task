@@ -69,7 +69,7 @@ class TwoChoiceAuditoryTask:
         self.prev_trialstarted = False
         self.first_trial = True
         self.early_lick_termination = False
-        self.autom_reward_termination = False
+        self.next_trial_automRew = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -237,10 +237,9 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
                 self.trialstarted = False
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
-                time.sleep(1)
                 self.tend = time.time()
                 print(self.tend)
-                self.next_trial_eligible = True
+                self.schedule_next_trial()
              
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -314,6 +313,22 @@ class TwoChoiceAuditoryTask:
             time.sleep(0.001)  # Small delay to prevent CPU overload
         
         return False  # No licks detected, trial can proceed    
+    
+    
+    def schedule_next_trial(self):
+        self.next_trial_automRew = True
+        print("Next trial is now allowed after ITI.")
+    
+        self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+    
+        # Start the next trial after ITI delay
+        threading.Timer(self.ITI, self.check_and_start_next_trial).start()
+        
+    def check_and_start_next_trial(self):
+        """ Starts the next trial if conditions allow it """
+        if self.next_trial_automRew and not self.trialstarted:
+            print("Starting next trial automatically.")
+            self.start_trial()
     
    
 
