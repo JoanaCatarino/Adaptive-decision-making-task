@@ -237,7 +237,7 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
                 self.trialstarted = False
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
-                time.sleep(0.1)
+                time.sleep(1)
                 self.tend = time.time()
                 print(self.tend)
                 self.next_trial_eligible = True
