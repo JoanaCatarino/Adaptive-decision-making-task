@@ -284,16 +284,19 @@ class TwoChoiceAuditoryTask:
         
         WW_start = time.time()  # Mark the WW start time
         
+        ignore_licks = self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() # Check if Ignore Licks during WW option is checked in the gui
+        
         while time.time() - WW_start < self.WW:  # Wait for WW duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
             p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
             
             # Check if a lick is detected
-            if p1 and p1[-1] > self.threshold_left:
-                return True  # Abort trial
-    
-            if p2 and p2[-1] > self.threshold_right:
-                return True  # Abort trial
+            if not ignore_licks:
+                if p1 and p1[-1] > self.threshold_left:
+                    return True  # Abort trial
+        
+                if p2 and p2[-1] > self.threshold_right:
+                    return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
         
