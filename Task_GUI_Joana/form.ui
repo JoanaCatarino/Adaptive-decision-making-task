@@ -954,7 +954,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>Ignore licks in WW</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="chk_NoPunishment_2">
+      <widget class="QCheckBox" name="chk_IgnoreLicksWW">
        <property name="geometry">
         <rect>
          <x>23</x>
