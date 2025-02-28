@@ -233,6 +233,16 @@ class TwoChoiceAuditoryTask:
             if self.gui_controls.ui.chk_AutomaticReward.isChecked():
                 print(f"Automatic reward given at {self.correct_spout}")
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
+    
+                # **Properly reset for next trial**
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend = time.time()
+                print(self.tend)
+    
+                # **Wait for ITI before allowing next trial**
+                threading.Timer(self.ITI, self.allow_next_trial).start()
+                return  # Exit trial
             else:
                 # If Automatic Reward is not enabled
                 self.RW_start = time.time()
@@ -263,13 +273,6 @@ class TwoChoiceAuditoryTask:
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
             
-            if self.gui_controls.ui.chk_AutomaticReward.isChecked():
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.tend = time.time()
-                print(self.tend)
-                self.next_trial_eligible = True
-       
     
     def play_sound(self, frequency):
         
@@ -314,6 +317,12 @@ class TwoChoiceAuditoryTask:
         
         return False  # No licks detected, trial can proceed    
     
+    
+    def allow_next_trial(self):
+        """ Marks the trial as completed and allows the next trial to start after ITI """
+        self.next_trial_eligible = True
+        print("Next trial is now allowed after ITI.")
+        
     
     def detect_licks(self):
     
