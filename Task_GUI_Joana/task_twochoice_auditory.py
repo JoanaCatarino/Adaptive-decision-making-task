@@ -233,11 +233,6 @@ class TwoChoiceAuditoryTask:
             if self.gui_controls.ui.chk_AutomaticReward.isChecked():
                 print(f"Automatic reward given at {self.correct_spout}")
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.tend = time.time()
-                print(self.tend)
-                self.next_trial_eligible = True
             else:
                 # If Automatic Reward is not enabled
                 self.RW_start = time.time()
@@ -267,6 +262,13 @@ class TwoChoiceAuditoryTask:
             
             # Append trial data to csv file
             self.append_trial_to_csv(trial_data)
+            
+            if self.gui_controls.ui.chk_AutomaticReward.isChecked():
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend = time.time()
+                print(self.tend)
+                self.next_trial_eligible = True
        
     
     def play_sound(self, frequency):
