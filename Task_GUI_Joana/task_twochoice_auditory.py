@@ -230,8 +230,9 @@ class TwoChoiceAuditoryTask:
             # Play sound  
             self.play_sound(self.current_tone)
             
-            # **Check if Automatic Reward is enabled**
-            if self.gui_controls.ui.chk_AutomaticReward.isChecked():
+            autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
+            
+            if autom_rewards:
                 print(f"Automatic reward given at {self.correct_spout}")
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
                 self.trialstarted = False
@@ -241,11 +242,11 @@ class TwoChoiceAuditoryTask:
                 print(self.tend)
                 self.next_trial_eligible = True
              
-            # **If Automatic Reward is NOT checked, proceed with standard response window**
-            self.RW_start = time.time()  # Start response window
-        
-            # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, daemon=True).start()
+            if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
+                self.RW_start = time.time()  # Start response window
+            
+                # Wait for response window to finish if no lick happens
+                threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
             
