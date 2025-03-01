@@ -3401,7 +3401,7 @@ color: rgb(112, 112, 112);</string>
        <string>10KHz Trials:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_Action_L_blocks_2">
+     <widget class="QLabel" name="box_10KHzTrials">
       <property name="geometry">
        <rect>
         <x>1014</x>
@@ -3502,7 +3502,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_VO_ms_2</zorder>
      <zorder>box_5KHzTrials</zorder>
      <zorder>lbl_10KHzTrials</zorder>
-     <zorder>box_Action_L_blocks_2</zorder>
+     <zorder>box_10KHzTrials</zorder>
      <zorder>lbl_5KHzTrials</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
