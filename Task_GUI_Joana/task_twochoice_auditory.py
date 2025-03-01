@@ -45,7 +45,9 @@ class TwoChoiceAuditoryTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = round(random.uniform(3, 9), 1)  # Random ITI between 3 and 6 seconds using number with ms precision
+        self.ITI_min = 3 # default ITI min
+        self.ITI_max = 9 # default ITI
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
@@ -319,18 +321,18 @@ class TwoChoiceAuditoryTask:
         self.next_trial_automRew = True
         print("Next trial is now allowed after ITI.")
     
-        self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
     
         # Start the next trial after ITI delay
         threading.Timer(self.ITI, self.check_and_start_next_trial).start()
         
+    
     def check_and_start_next_trial(self):
         """ Starts the next trial if conditions allow it """
         if self.next_trial_automRew and not self.trialstarted:
             print("Starting next trial automatically.")
             self.start_trial()
     
-   
 
     def detect_licks(self):
     
@@ -491,7 +493,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.first_trial = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
                 else:
                     pass
              
@@ -500,7 +502,7 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.early_lick_termination = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
                 else:
                     pass
                 
@@ -509,11 +511,10 @@ class TwoChoiceAuditoryTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.next_trial_eligible = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
                 
-            
             
     def append_trial_to_csv(self, trial_data):
         """ Append trial data to the CSV file. """
@@ -528,11 +529,4 @@ class TwoChoiceAuditoryTask:
                 writer.writeheader()  # Write header only if file does not exist
             writer.writerow(trial_data)  # Append trial data
                 
-                
-    def set_thresholds(self, left, right):
-        """Sets the thresholds for the piezo adders and updates the GUI."""
-        self.threshold_left = left
-        self.threshold_right = right
-        
-        # Update the GUI thresholds
-        self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
+ 

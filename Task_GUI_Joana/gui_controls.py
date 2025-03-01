@@ -483,14 +483,18 @@ class GuiControls:
                     print(f"Response window: {new_response_window} s")
                     self.ui.btn_Update.setEnabled(False)
                     
-                # Update ITI interval - still need to see how to do this
-                '''
-                if new_trial_duration is not None:
-                    self.current_task.trial_duration = new_trial_duration
-                    print(f"Trial duration: {new_trial_duration} s")
+                # Update ITI interval - min value
+                if new_ITImin is not None:
+                    self.current_task.ITI_min = new_ITImin
+                    print(f"ITImin: {new_ITImin}")
                     self.ui.btn_Update.setEnabled(False)
-                '''
-                               
+                    
+                # Update ITI interval - min value
+                if new_ITImax is not None:
+                    self.current_task.ITI_max = new_ITImax
+                    print(f"ITImin: {new_ITImax}")
+                    self.ui.btn_Update.setEnabled(False)
+              
                 # Update valve opening
                 if new_valve_opening is not None:
                     self.current_task.valve_opening = new_valve_opening
