@@ -5,7 +5,6 @@ Created on Sat Jul 20 17:51:07 2024
 @author: JoanaCatarino
 """
 
-
 import threading
 import numpy as np
 import time
@@ -63,6 +62,7 @@ class TwoChoiceAuditoryTask:
         self.incorrect_trials = 0
         self.early_licks = 0
         self.omissions = 0
+        self.trial_duration = 0
         
         # Booleans
         self.trialstarted = False
@@ -226,6 +226,8 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend= time.time()
                 print(self.tend)
+                self.trial_duration = (self.ttrial - self.tend)
+                self.gui_controls.update_trial_duration(self.trial_duration)
                 self.early_lick_termination = True
                 return  # Exit trial 
            

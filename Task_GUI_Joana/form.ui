@@ -1219,7 +1219,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>574</x>
-        <y>468</y>
+        <y>462</y>
         <width>471</width>
         <height>31</height>
        </rect>
@@ -1472,7 +1472,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>574</x>
-        <y>502</y>
+        <y>496</y>
         <width>471</width>
         <height>30</height>
        </rect>
@@ -1653,7 +1653,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>574</x>
-        <y>537</y>
+        <y>531</y>
         <width>471</width>
         <height>31</height>
        </rect>
@@ -1834,7 +1834,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>574</x>
-        <y>572</y>
+        <y>566</y>
         <width>471</width>
         <height>31</height>
        </rect>
@@ -2462,7 +2462,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>734</x>
-        <y>413</y>
+        <y>407</y>
         <width>131</width>
         <height>20</height>
        </rect>
@@ -2483,7 +2483,7 @@ color: rgb(73, 192, 203);</string>
       <property name="geometry">
        <rect>
         <x>580</x>
-        <y>441</y>
+        <y>435</y>
         <width>451</width>
         <height>20</height>
        </rect>
@@ -2508,7 +2508,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>550</x>
-        <y>474</y>
+        <y>468</y>
         <width>20</width>
         <height>20</height>
        </rect>
@@ -2530,7 +2530,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>556</x>
-        <y>508</y>
+        <y>502</y>
         <width>10</width>
         <height>20</height>
        </rect>
@@ -2552,7 +2552,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>551</x>
-        <y>544</y>
+        <y>538</y>
         <width>20</width>
         <height>20</height>
        </rect>
@@ -2574,7 +2574,7 @@ color: rgb(112, 112, 112);</string>
       <property name="geometry">
        <rect>
         <x>551</x>
-        <y>581</y>
+        <y>575</y>
         <width>20</width>
         <height>20</height>
        </rect>
@@ -3298,7 +3298,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_TrialDuration">
       <property name="geometry">
        <rect>
-        <x>573</x>
+        <x>571</x>
         <y>630</y>
         <width>81</width>
         <height>16</height>
@@ -3318,9 +3318,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="box_TotalTrials_2">
       <property name="geometry">
        <rect>
-        <x>660</x>
+        <x>658</x>
         <y>630</y>
-        <width>51</width>
+        <width>41</width>
         <height>20</height>
        </rect>
       </property>
@@ -3343,9 +3343,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_VO_ms_2">
       <property name="geometry">
        <rect>
-        <x>720</x>
+        <x>702</x>
         <y>630</y>
-        <width>41</width>
+        <width>16</width>
         <height>20</height>
        </rect>
       </property>
@@ -3356,6 +3356,92 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="text">
        <string>[s]</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="box_5KHzTrials">
+      <property name="geometry">
+       <rect>
+        <x>835</x>
+        <y>630</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(234, 234, 234);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_10KHzTrials">
+      <property name="geometry">
+       <rect>
+        <x>931</x>
+        <y>632</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>10KHz Trials:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="box_Action_L_blocks_2">
+      <property name="geometry">
+       <rect>
+        <x>1014</x>
+        <y>632</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(234, 234, 234);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_5KHzTrials">
+      <property name="geometry">
+       <rect>
+        <x>755</x>
+        <y>631</y>
+        <width>71</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>5KHz Trials: </string>
       </property>
      </widget>
      <zorder>bkg_Trials</zorder>
@@ -3414,6 +3500,10 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_TrialDuration</zorder>
      <zorder>box_TotalTrials_2</zorder>
      <zorder>lbl_VO_ms_2</zorder>
+     <zorder>box_5KHzTrials</zorder>
+     <zorder>lbl_10KHzTrials</zorder>
+     <zorder>box_Action_L_blocks_2</zorder>
+     <zorder>lbl_5KHzTrials</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
