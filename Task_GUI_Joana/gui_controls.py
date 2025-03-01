@@ -444,7 +444,9 @@ class GuiControls:
     def update_omissions(self, omissions):
         self.ui.box_Omissions.setText(f'{omissions}')
         self.ui.OV_box_Omissions.setText(f'{omissions}') 
-    
+        
+    def update_trial_duration(self, trial_duration):
+        self.ui.box_TrialDuration.setText('f{trial_duration.2f}')
 
     def update_task_params(self):
     

@@ -243,6 +243,8 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
                 print(self.tend)
+                self.trial_duration = (self.ttrial - self.tend)
+                self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
              
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
@@ -396,6 +398,8 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
                         print(self.tend)
+                        self.trial_duration = (self.ttrial - self.tend)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         return
                 
@@ -457,6 +461,8 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
+        self.trial_duration = (self.ttrial - self.tend)
+        self.gui_controls.update_trial_duration(self.trial_duration)
         print(self.tend)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
