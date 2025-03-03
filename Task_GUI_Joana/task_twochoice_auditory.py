@@ -211,6 +211,7 @@ class TwoChoiceAuditoryTask:
         with self.lock:
             self.trialstarted = True
             self.total_trials +=1
+            self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             self.early_lick_termination = False
@@ -253,6 +254,7 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.early_lick_termination = True
                 self.ww_completed = 0
+                self.save_data()
                 self.schedule_next_trial()
                 return  # Exit trial 
            
@@ -264,12 +266,14 @@ class TwoChoiceAuditoryTask:
             if autom_rewards:
                 print(f"Automatic reward given at {self.correct_spout}")
                 threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
+                self.trials[-1]['reward'] = 1
                 self.trialstarted = False
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.light = False
                 self.tend = time.time()
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
+                self.save_data()
                 self.schedule_next_trial()
              
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
@@ -279,16 +283,7 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.wait_for_response, daemon=True).start()
             
             # Turning LED off after reward/punishment or after response window finished
-            
-            # Collect all trial data
-            trial_data = self.collect_trial_data()
-            
-            self.trials.append(trial_data) # Store trial data
-            
-            self.gui_controls.update_total_trials(self.total_trials)
-            
-            # Append trial data to csv file
-            self.append_trial_to_csv(trial_data)
+        
             
     
     def play_sound(self, frequency):
@@ -417,6 +412,7 @@ class TwoChoiceAuditoryTask:
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.save_data()
                         self.next_trial_eligible = True
                         return
                 
@@ -474,6 +470,7 @@ class TwoChoiceAuditoryTask:
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.save_data()
                         self.next_trial_eligible = True
                         return
                    
@@ -489,6 +486,7 @@ class TwoChoiceAuditoryTask:
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
         self.omission_occured = True
+        self.save_data()
         self.next_trial_eligible = True
       
     
@@ -569,8 +567,8 @@ class TwoChoiceAuditoryTask:
         trial_data = {
             'trial_number': self.total_trials,
             'trial_start': self.ttrial,
-            'trial_end':self.tend if self.tend else time.time(),
-            'trial_duration': self.trial_duration if self.trial_duration else 0,
+            'trial_end':self.tend,
+            'trial_duration': self.trial_duration,
             'ITI': self.ITI,
             'light_On': light_on,
             'ww_completed': self.ww_completed,
@@ -599,6 +597,14 @@ class TwoChoiceAuditoryTask:
             'session_start': self.tstart}
         
         return trial_data
+    
+    def save_data(self):
+        # Collect all trial data
+        trial_data = self.collect_trial_data()
+       
+        # Store and save
+        self.trials.append(trial_data)
+        self.append_trial_to_csv(trial_data)  # Save to CSV
         
         
     
