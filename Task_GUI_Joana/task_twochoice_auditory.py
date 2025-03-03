@@ -239,7 +239,7 @@ class TwoChoiceAuditoryTask:
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
-                self.trials['early_lick'] = 1
+                self.trials[-1]['early_lick'] = 1
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.light = False
@@ -480,7 +480,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
-        self.trials['omission'] = 1
+        self.trials[-1]['omission'] = 1
         self.next_trial_eligible = True
       
     
