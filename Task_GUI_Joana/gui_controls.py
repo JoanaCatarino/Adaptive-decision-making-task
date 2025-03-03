@@ -446,12 +446,12 @@ class GuiControls:
         self.ui.OV_box_Omissions.setText(f'{omissions}') 
         
     def update_trial_duration(self, trial_duration):
-        self.ui.box_TrialDuration.setText(f'{trial_duration}')
+        self.ui.box_TrialDuration.setText(f'{trial_duration:2f}')
         
     def update_sound_5KHz(self, sound_5KHz):
         self.ui.box_5KHzTrials.setText(f'{sound_5KHz}')
         
-    def update_sound_10KHz(self, sound__10KHz)
+    def update_sound_10KHz(self, sound__10KHz):
         self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
 
     
