@@ -19,7 +19,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWin
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
-#from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
+from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
 
 # Import different functions/classes
@@ -446,7 +446,13 @@ class GuiControls:
         self.ui.OV_box_Omissions.setText(f'{omissions}') 
         
     def update_trial_duration(self, trial_duration):
-        self.ui.box_TrialDuration.setText('f{trial_duration}')
+        self.ui.box_TrialDuration.setText(f'{trial_duration.2f}')
+        
+    def update_sound_5KHz(self, sound_5KHz):
+        self.ui.box_5KHzTrials.setText(f'{sound_5KHz}')
+        
+    def update_sound_10KHz(self, sound_10KHz):
+        self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
 
     
 def update_task_params(self):

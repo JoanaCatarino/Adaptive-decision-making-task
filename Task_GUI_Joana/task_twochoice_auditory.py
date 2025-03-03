@@ -63,6 +63,8 @@ class TwoChoiceAuditoryTask:
         self.early_licks = 0
         self.omissions = 0
         self.trial_duration = 0
+        self.sound_5KHz = 0
+        self.sound_10KHz = 0
         
         # Booleans
         self.trialstarted = False
@@ -207,12 +209,19 @@ class TwoChoiceAuditoryTask:
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
-            self.tone_selected = True
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
             print('start')
             print(time.time())
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
+            
+            # Update Sound Counters
+            if self.current_tone == '5KHz':
+                self.sound_5KHz +=1
+                self.gui_controls.update_sound_5KHz(self.sound_5KHz)
+            elif self.current_tone == '10KHz':
+                self.sound_10KHz +=1
+                self.gui_controls.update_sound_10KHz(self.sound_10KHz)
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 
@@ -226,7 +235,7 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend= time.time()
                 print(self.tend)
-                self.trial_duration = (self.ttrial - self.tend)
+                self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.early_lick_termination = True
                 return  # Exit trial 
@@ -243,7 +252,7 @@ class TwoChoiceAuditoryTask:
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
                 print(self.tend)
-                self.trial_duration = (self.ttrial - self.tend)
+                self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
              
@@ -398,7 +407,7 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
                         print(self.tend)
-                        self.trial_duration = (self.ttrial - self.tend)
+                        self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         return
@@ -452,6 +461,8 @@ class TwoChoiceAuditoryTask:
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
                         print(self.tend)
+                        self.trial_duration = (self.tend-self.ttrial)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         return
                    
