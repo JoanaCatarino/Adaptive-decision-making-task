@@ -162,7 +162,7 @@ class FreeLickingTask:
             # Initialize trial data
             trial_data = {
                 'trial_number': trial_number,
-                'trial_time': self.ttrial,
+                'trial_start': self.ttrial,
                 'lick': 0,
                 'left_spout': 0,
                 'right_spout': 0,
@@ -170,8 +170,8 @@ class FreeLickingTask:
                 'RW': self.RW,
                 'QW': self.QW,
                 'ITI': self.ITI,
-                'Threshold_left': self.threshold_left,
-                'Threshold_right': self.threshold_right}
+                'threshold_left': self.threshold_left,
+                'threshold_right': self.threshold_right}
             
             self.trials.append(trial_data) # Store trial data
             
