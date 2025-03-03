@@ -213,6 +213,8 @@ class TwoChoiceAuditoryTask:
             self.total_trials +=1
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            self.early_lick_termination = False
+            self.omission_occured = False
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
@@ -228,12 +230,15 @@ class TwoChoiceAuditoryTask:
                 self.sound_10KHz +=1
                 self.gui_controls.update_sound_10KHz(self.sound_10KHz)
             
+            self.is_5KHz = 1 if self.current_tone == "5KHz" else 0
+            self.is_10KHz = 1 if self.current_tone == "10KHz" else 0
+            
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start()
             self.light = True
             
             # Waiting window - no licks allowed
-            ww_completed = 1
+            self.ww_completed = 1
             
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
@@ -246,7 +251,8 @@ class TwoChoiceAuditoryTask:
                 self.tend= time.time()
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
-                ww_completed = 0
+                self.early_lick_termination = True
+                self.ww_completed = 0
                 self.schedule_next_trial()
                 return  # Exit trial 
            
@@ -275,7 +281,7 @@ class TwoChoiceAuditoryTask:
             # Turning LED off after reward/punishment or after response window finished
             
             # Collect all trial data
-            trial_data = self.collect_trial_data(ww_completed)
+            trial_data = self.collect_trial_data()
             
             self.trials.append(trial_data) # Store trial data
             
@@ -397,11 +403,12 @@ class TwoChoiceAuditoryTask:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
                                 self.play_sound('white_noise')
                                 print('wrong spout')
+                                self.trials[-1]['punishment'] = 1
                             else:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.trials[-1]['punishment'] = 1
+                            
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
@@ -453,11 +460,12 @@ class TwoChoiceAuditoryTask:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
                                 self.play_sound('white_noise')
                                 print('wrong spout')
+                                self.trials[-1]['punishment'] = 1
                             else:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.trials[-1]['punishment'] = 1
+                            
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
@@ -480,7 +488,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
-        self.trials[-1]['omission'] = 1
+        self.omission_occured = True
         self.next_trial_eligible = True
       
     
@@ -551,8 +559,6 @@ class TwoChoiceAuditoryTask:
 
         # Determine if there was a sound (1) or not (0)
         sound_played = 1 if self.current_tone in ["5KHz", "10KHz"] else 0
-        is_5KHz = 1 if self.current_tone == "5KHz" else 0
-        is_10KHz = 1 if self.current_tone == "10KHz" else 0
         
         # Get GUI button states (1 if checked, 0 if not)
         automatic_rewards = 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0
@@ -563,22 +569,22 @@ class TwoChoiceAuditoryTask:
         trial_data = {
             'trial_number': self.total_trials,
             'trial_start': self.ttrial,
-            'trial_end':self.tend,
-            'trial_duration':self.trial_duration,
+            'trial_end':self.tend if self.tend else time.time(),
+            'trial_duration': self.trial_duration if self.trial_duration else 0,
             'ITI': self.ITI,
             'light_On': light_on,
-            'ww_completed': ww_completed,
-            'early_lick': 0,
+            'ww_completed': self.ww_completed,
+            'early_lick': 1 if self.early_lick_termination else 0,
             'stim': sound_played,
-            '5KHz': is_5KHz,
-            '10KHz': is_10KHz,
+            '5KHz': self.is_5KHz,
+            '10KHz': self.is_10KHz,
             'lick': 0,
             'left_spout': 0,
             'right_spout': 0,
             'lick_time': None,
             'reward': 0,
             'punishment':0,
-            'omission': 0,
+            'omission': 1 if self.omission_occured else 0,,
             'RW': self.RW,
             'QW': self.QW,
             'WW': self.WW,
