@@ -224,17 +224,17 @@ class TwoChoiceAuditoryTask:
             if self.current_tone == '5KHz':
                 self.sound_5KHz +=1
                 self.gui_controls.update_sound_5KHz(self.sound_5KHz)
-                self.trials['5KHz'] = 1
             elif self.current_tone == '10KHz':
                 self.sound_10KHz +=1
                 self.gui_controls.update_sound_10KHz(self.sound_10KHz)
-                self.trials['10KHz'] = 1
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start()
             self.light = True
             
             # Waiting window - no licks allowed
+            ww_completed = 1
+            
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
@@ -246,6 +246,7 @@ class TwoChoiceAuditoryTask:
                 self.tend= time.time()
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
+                ww_completed = 0
                 self.schedule_next_trial()
                 return  # Exit trial 
            
@@ -274,7 +275,7 @@ class TwoChoiceAuditoryTask:
             # Turning LED off after reward/punishment or after response window finished
             
             # Collect all trial data
-            trial_data = self.collect_trial_data()
+            trial_data = self.collect_trial_data(ww_completed)
             
             self.trials.append(trial_data) # Store trial data
             
@@ -543,16 +544,15 @@ class TwoChoiceAuditoryTask:
             writer.writerow(trial_data)  # Append trial data
             
     
-    def collect_trial_data(self):
+    def collect_trial_data(self, ww_completed):
         
         # Track if the light was turned on
         light_on = 1  if self.light else 0
-        
-        # Check if Waiting Window was completed (1) or aborted (0)
-        ww_completed = 1 if not self.detect_licks_during_waiting_window() else 0
 
         # Determine if there was a sound (1) or not (0)
         sound_played = 1 if self.current_tone in ["5KHz", "10KHz"] else 0
+        is_5KHz = 1 if self.current_tone == "5KHz" else 0
+        is_10KHz = 1 if self.current_tone == "10KHz" else 0
         
         # Get GUI button states (1 if checked, 0 if not)
         automatic_rewards = 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0
@@ -570,8 +570,8 @@ class TwoChoiceAuditoryTask:
             'ww_completed': ww_completed,
             'early_lick': 0,
             'stim': sound_played,
-            '5KHz': 0,
-            '10KHz': 0,
+            '5KHz': is5KHz,
+            '10KHz': is10KHz,
             'lick': 0,
             'left_spout': 0,
             'right_spout': 0,
