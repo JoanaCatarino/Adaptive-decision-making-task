@@ -584,7 +584,7 @@ class TwoChoiceAuditoryTask:
             'lick_time': None,
             'reward': 0,
             'punishment':0,
-            'omission': 1 if self.omission_occured else 0,,
+            'omission': 1 if self.omission_occured else 0,
             'RW': self.RW,
             'QW': self.QW,
             'WW': self.WW,
