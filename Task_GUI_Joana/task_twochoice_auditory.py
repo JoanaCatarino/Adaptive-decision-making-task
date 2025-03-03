@@ -578,8 +578,8 @@ class TwoChoiceAuditoryTask:
         # Store trial data
         trial_data = {
             'trial_number': self.total_trials,
-            'trial_start': (self.ttrial-self.tstart),
-            'trial_end':(self.tend-self.tstart),
+            'trial_start': self.ttrial,
+            'trial_end':self.tend,
             'trial_duration':self.trial_duration,
             'ITI': self.ITI,
             'light_On': light_on,
@@ -605,7 +605,8 @@ class TwoChoiceAuditoryTask:
             'threshold_right': self.threshold_right,
             'autom_reward': automatic_rewards,
             'no_punishment': no_punishment,
-            'ignore_licks': ignore_licks_ww}
+            'ignore_licks': ignore_licks_ww,
+            'session_start': self.tstart}
         
         return trial_data
         
