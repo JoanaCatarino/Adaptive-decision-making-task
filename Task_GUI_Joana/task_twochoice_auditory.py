@@ -66,6 +66,8 @@ class TwoChoiceAuditoryTask:
         self.sound_5KHz = 0
         self.sound_10KHz = 0
         self.current_trial_omission = 0
+        self.reward_received = 0
+        self.punishment_received = 0
         
         # Booleans
         self.trialstarted = False
@@ -275,7 +277,7 @@ class TwoChoiceAuditoryTask:
             # Turning LED off after reward/punishment or after response window finished
             
             # Collect all trial data
-            trial_data = self.collect_trial_data(sound_duration, reward_received, punishment_received)
+            trial_data = self.collect_trial_data()
             
             self.trials.append(trial_data) # Store trial data
             
@@ -358,8 +360,8 @@ class TwoChoiceAuditoryTask:
         time.sleep(0.001)
         
         # Initialize reward and punishment tracking
-        reward_received = 0
-        punishment_received = 0
+        self.reward_received = 0
+        self.punishment_received = 0
         
         # Left piezo
         if p1:
@@ -376,7 +378,7 @@ class TwoChoiceAuditoryTask:
                             
                         if self.correct_spout == self.first_lick:
         
-                            reward_received = 1
+                            self.reward_received = 1
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start() 
                                 
@@ -401,7 +403,7 @@ class TwoChoiceAuditoryTask:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
                                 self.play_sound('white_noise')
                                 print('wrong spout')
-                                punishment_received = 1
+                                self.punishment_received = 1
                             else:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
@@ -433,7 +435,7 @@ class TwoChoiceAuditoryTask:
                             
                         if self.correct_spout == self.first_lick:
         
-                            reward_received = 1
+                            self.reward_received = 1
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
                                 
@@ -457,7 +459,7 @@ class TwoChoiceAuditoryTask:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
                                 self.play_sound('white_noise')
                                 print('wrong spout')
-                                punishment_received = 1
+                                self.punishment_received = 1
                             else:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
@@ -590,8 +592,8 @@ class TwoChoiceAuditoryTask:
             'left_spout': 0,
             'right_spout': 0,
             'lick_time': None,
-            'reward': reward_received,
-            'punishment': punishment_received,
+            'reward': self.reward_received,
+            'punishment': self.punishment_received,
             'omission': is_omission,
             'RW': self.RW,
             'QW': self.QW,
