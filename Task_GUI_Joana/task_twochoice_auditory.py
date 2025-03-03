@@ -73,7 +73,7 @@ class TwoChoiceAuditoryTask:
         self.prev_trialstarted = False
         self.first_trial = True
         self.early_lick_termination = False
-        self.next_trial_automRew = False
+        self.next_trial_ready = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -210,8 +210,6 @@ class TwoChoiceAuditoryTask:
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
             self.current_tone = random.choice(['5KHz', '10KHz'])
             self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print('start')
-            print(time.time())
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
             
@@ -237,7 +235,7 @@ class TwoChoiceAuditoryTask:
                 print(self.tend)
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
-                self.early_lick_termination = True
+                self.schedule_next_trial()
                 return  # Exit trial 
            
             # Play sound  
@@ -331,7 +329,7 @@ class TwoChoiceAuditoryTask:
     
     
     def schedule_next_trial(self):
-        self.next_trial_automRew = True
+        self.next_trial_ready = True
         print("Next trial is now allowed after ITI.")
     
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
@@ -342,7 +340,7 @@ class TwoChoiceAuditoryTask:
     
     def check_and_start_next_trial(self):
         """ Starts the next trial if conditions allow it """
-        if self.next_trial_automRew and not self.trialstarted:
+        if self.next_trial_ready and not self.trialstarted:
             print("Starting next trial automatically.")
             self.start_trial()
     
