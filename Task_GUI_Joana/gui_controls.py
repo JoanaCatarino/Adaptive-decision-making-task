@@ -453,74 +453,74 @@ class GuiControls:
         self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
 
     
-def update_task_params(self):
-    
-    # Input new variables in the Gui and update them real time in the current task
-    
-        try:
-            # Get the values from the GUI
-            quiet_window = self.ui.txt_QuietWindow.text()
-            response_window = self.ui.txt_ResponseWindow.text()
-            ITImin = self.ui.txt_ITImin.text()
-            ITImax = self.ui.txt_ITImax.text()
-            valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration/pump
-            threshold_left = self.ui.txt_ThresholdLeft.text()  # For left piezo threshold
-            threshold_right = self.ui.txt_ThresholdRight.text()  # For right piezo threshold
-    
-            # Validate and convert inputs to floats
-            new_quiet_window = float(quiet_window) if quiet_window else None
-            new_response_window = float(response_window) if response_window else None
-            new_ITImin = float(ITImin) if ITImin else None
-            new_ITImax = float(ITImax) if ITImax else None
-            new_valve_opening = float(valve_opening) if valve_opening else None
-            new_threshold_left = float(threshold_left) if threshold_left else None
-            new_threshold_right = float(threshold_right) if threshold_right else None
-    
-            # Ensure there's a running task and it's of the correct type
-            if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor)):
-                # Update quiet window
-                if new_quiet_window is not None:
-                    self.current_task.QW = new_quiet_window
-                    print(f"Quiet window: {new_quiet_window} s")
-                    self.ui.btn_Update.setEnabled(False)
-                
-                # Update response window
-                if new_response_window is not None:
-                    self.current_task.RW = new_response_window
-                    print(f"Response window: {new_response_window} s")
-                    self.ui.btn_Update.setEnabled(False)
+    def update_task_params(self):
+        
+        # Input new variables in the Gui and update them real time in the current task
+        
+            try:
+                # Get the values from the GUI
+                quiet_window = self.ui.txt_QuietWindow.text()
+                response_window = self.ui.txt_ResponseWindow.text()
+                ITImin = self.ui.txt_ITImin.text()
+                ITImax = self.ui.txt_ITImax.text()
+                valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration/pump
+                threshold_left = self.ui.txt_ThresholdLeft.text()  # For left piezo threshold
+                threshold_right = self.ui.txt_ThresholdRight.text()  # For right piezo threshold
+        
+                # Validate and convert inputs to floats
+                new_quiet_window = float(quiet_window) if quiet_window else None
+                new_response_window = float(response_window) if response_window else None
+                new_ITImin = float(ITImin) if ITImin else None
+                new_ITImax = float(ITImax) if ITImax else None
+                new_valve_opening = float(valve_opening) if valve_opening else None
+                new_threshold_left = float(threshold_left) if threshold_left else None
+                new_threshold_right = float(threshold_right) if threshold_right else None
+        
+                # Ensure there's a running task and it's of the correct type
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor)):
+                    # Update quiet window
+                    if new_quiet_window is not None:
+                        self.current_task.QW = new_quiet_window
+                        print(f"Quiet window: {new_quiet_window} s")
+                        self.ui.btn_Update.setEnabled(False)
                     
-                # Update ITI interval - min value
-                if new_ITImin is not None:
-                    self.current_task.ITI_min = new_ITImin
-                    print(f"ITImin: {new_ITImin}")
-                    self.ui.btn_Update.setEnabled(False)
+                    # Update response window
+                    if new_response_window is not None:
+                        self.current_task.RW = new_response_window
+                        print(f"Response window: {new_response_window} s")
+                        self.ui.btn_Update.setEnabled(False)
+                        
+                    # Update ITI interval - min value
+                    if new_ITImin is not None:
+                        self.current_task.ITI_min = new_ITImin
+                        print(f"ITImin: {new_ITImin}")
+                        self.ui.btn_Update.setEnabled(False)
+                        
+                    # Update ITI interval - min value
+                    if new_ITImax is not None:
+                        self.current_task.ITI_max = new_ITImax
+                        print(f"ITImin: {new_ITImax}")
+                        self.ui.btn_Update.setEnabled(False)
+                  
+                    # Update valve opening
+                    if new_valve_opening is not None:
+                        self.current_task.valve_opening = new_valve_opening
+                        print(f"Valve opening: {new_valve_opening} s")
+                        self.ui.btn_Update.setEnabled(False)
                     
-                # Update ITI interval - min value
-                if new_ITImax is not None:
-                    self.current_task.ITI_max = new_ITImax
-                    print(f"ITImin: {new_ITImax}")
-                    self.ui.btn_Update.setEnabled(False)
-              
-                # Update valve opening
-                if new_valve_opening is not None:
-                    self.current_task.valve_opening = new_valve_opening
-                    print(f"Valve opening: {new_valve_opening} s")
-                    self.ui.btn_Update.setEnabled(False)
-                
-                # Update threshold_left
-                if new_threshold_left is not None: 
-                    self.current_task.threshold_left = new_threshold_left
-                    print(f"Threshold left piezo: {new_threshold_left}")
-                    self.ui.btn_Update.setEnabled(False)
-                
-                # Update threshold_right
-                if new_threshold_right is not None:
-                    self.current_task.threshold_right = new_threshold_right
-                    print(f"Threshold right piezo: {new_threshold_right}")
-                    self.ui.btn_Update.setEnabled(False)
-            else:
-                print("No active Task or invalid task type.")
-        except ValueError:
-            print("Invalid input for one or more parameters. Please enter valid numbers.")
-
+                    # Update threshold_left
+                    if new_threshold_left is not None: 
+                        self.current_task.threshold_left = new_threshold_left
+                        print(f"Threshold left piezo: {new_threshold_left}")
+                        self.ui.btn_Update.setEnabled(False)
+                    
+                    # Update threshold_right
+                    if new_threshold_right is not None:
+                        self.current_task.threshold_right = new_threshold_right
+                        print(f"Threshold right piezo: {new_threshold_right}")
+                        self.ui.btn_Update.setEnabled(False)
+                else:
+                    print("No active Task or invalid task type.")
+            except ValueError:
+                print("Invalid input for one or more parameters. Please enter valid numbers.")
+    
