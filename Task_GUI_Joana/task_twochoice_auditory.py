@@ -552,7 +552,7 @@ class TwoChoiceAuditoryTask:
             writer.writerow(trial_data)  # Append trial data
             
     
-    def collect_trial_data(self, ww_completed):
+    def collect_trial_data(self):
         
         # Track if the light was turned on
         light_on = 1  if self.light else 0
