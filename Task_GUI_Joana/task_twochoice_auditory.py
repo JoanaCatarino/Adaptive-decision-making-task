@@ -218,10 +218,10 @@ class TwoChoiceAuditoryTask:
             # Update Sound Counters
             if self.current_tone == '5KHz':
                 self.sound_5KHz +=1
-                self.gui_controls.update_sound_count(self.sound_5KHz)
+                self.gui_controls.update_sound_5KHz(self.sound_5KHz)
             elif self.current_tone == '10KHz':
                 self.sound_10KHz +=1
-                self.gui_controls.update_sound_count(self.sound_10KHz)
+                self.gui_controls.update_sound_10KHz(self.sound_10KHz)
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start() 

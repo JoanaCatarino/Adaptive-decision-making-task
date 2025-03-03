@@ -448,8 +448,10 @@ class GuiControls:
     def update_trial_duration(self, trial_duration):
         self.ui.box_TrialDuration.setText(f'{trial_duration}')
         
-    def update_sound_count(self, sound_5KHz, sound_10KHz):
+    def update_sound_5KHz(self, sound_5KHz):
         self.ui.box_5KHzTrials.setText(f'{sound_5KHz}')
+        
+    def update_sound_10KHz(self, sound__10KHz)
         self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
 
     
