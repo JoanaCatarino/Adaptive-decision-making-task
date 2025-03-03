@@ -75,7 +75,7 @@ class TwoChoiceAuditoryTask:
         self.first_trial = True
         self.early_lick_termination = False
         self.next_trial_ready = False
-        self.light = false
+        self.light = False
         
         # Time variables
         self.tstart = None # start of the task
