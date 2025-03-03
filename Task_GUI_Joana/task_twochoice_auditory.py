@@ -224,11 +224,11 @@ class TwoChoiceAuditoryTask:
             if self.current_tone == '5KHz':
                 self.sound_5KHz +=1
                 self.gui_controls.update_sound_5KHz(self.sound_5KHz)
-                self.trials[-1]['5KHz'] = 1
+                self.trials['5KHz'] = 1
             elif self.current_tone == '10KHz':
                 self.sound_10KHz +=1
                 self.gui_controls.update_sound_10KHz(self.sound_10KHz)
-                self.trials[-1]['10KHz'] = 1
+                self.trials['10KHz'] = 1
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start()
@@ -239,7 +239,7 @@ class TwoChoiceAuditoryTask:
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
                 self.gui_controls.update_early_licks(self.early_licks)
-                self.trials[-1]['early_lick'] = 1
+                self.trials['early_lick'] = 1
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.light = False
@@ -479,7 +479,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
-        self.trials[-1]['omission'] = 1
+        self.trials['omission'] = 1
         self.next_trial_eligible = True
       
     
