@@ -461,7 +461,7 @@ class TwoChoiceAuditoryTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
-        self.trial_duration = (self.ttrial - self.tend)
+        self.trial_duration = (self.tend-self.ttrial)
         print(self.trial_duration)
         self.gui_controls.update_trial_duration(self.trial_duration)
         print(self.tend)
