@@ -446,9 +446,10 @@ class GuiControls:
         self.ui.OV_box_Omissions.setText(f'{omissions}') 
         
     def update_trial_duration(self, trial_duration):
-        self.ui.box_TrialDuration.setText('f{trial_duration.2f}')
+        self.ui.box_TrialDuration.setText('f{trial_duration}')
 
-    def update_task_params(self):
+    
+def update_task_params(self):
     
     # Input new variables in the Gui and update them real time in the current task
     
