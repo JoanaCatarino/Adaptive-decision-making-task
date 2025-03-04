@@ -73,7 +73,7 @@ class PlotPerformance(QWidget):
         self.ax2 = self.ax.twinx()
         
         # Plot d' (d-prime) on the secondary y-axis (right)
-        self.ax2.plot(trial_numbers, d_prime, color='#27605F', linewidth=2, label="d'")
+        self.ax2.step(trial_numbers, d_prime, where='post', color='#27605F', linewidth=2, label="d'")
       
         # Update Labels & Formatting
         self.ax.set_ylabel("HR/FA", labelpad=9)
