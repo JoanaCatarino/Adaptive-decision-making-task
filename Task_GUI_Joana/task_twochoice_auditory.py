@@ -65,6 +65,7 @@ class TwoChoiceAuditoryTask:
         self.trial_duration = 0
         self.sound_5KHz = 0
         self.sound_10KHz = 0
+        self.autom_rewards = 0
         
         # Booleans
         self.trialstarted = False
@@ -113,6 +114,7 @@ class TwoChoiceAuditoryTask:
         self.trial_duration = 0
         self.sound_5KHz = 0
         self.sound_10KHz = 0
+        self.autom_rewards = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -125,6 +127,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_trial_duration(0)
         self.gui_controls.update_sound_5KHz(0)
         self.gui_controls.update_sound_10KHz(0)
+        self.gui_controls.update_autom_rewards(0)
         
         # Reset the performance plot
         self.gui_controls.lick_plot.reset_plot() # plot main tab
@@ -269,6 +272,8 @@ class TwoChoiceAuditoryTask:
                 self.trials[-1]['reward'] = 1
                 self.trialstarted = False
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.autom_rewards += 1
+                self.gui_controls.update_autom_rewards(self.autom_rewards)
                 self.light = False
                 self.tend = time.time()
                 self.trial_duration = (self.tend-self.ttrial)

@@ -453,6 +453,9 @@ class GuiControls:
         
     def update_sound_10KHz(self, sound_10KHz):
         self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
+        
+    def update_autom_rewards(self, autom_rewards):
+        self.ui.box_AutomRewards.setText(f'{autom_rewards}')
 
     
     def update_task_params(self):
