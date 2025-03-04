@@ -110,11 +110,30 @@ class PlotPerformance(QWidget):
         self.correct_trials.clear()
         self.incorrect_trials.clear()
     
-        self.ax.clear()  # Clear the existing plot
-        self.ax.set_ylabel("HR/FA")
-        self.ax2.clear()
-        self.ax2.set_ylabel("d'")
+        # Clear both y-axes
+        self.ax.clear()
+        if hasattr(self, 'ax2'):  # Check if ax2 exists before clearing
+            self.ax2.clear()
+    
+        # Reinitialize the primary y-axis (HR & FA)
+        self.ax.set_xlabel("Trial Number")
+        self.ax.set_ylabel("HR / FA", color='black')
+        self.ax.set_ylim(0, 1)
         self.ax.grid(True)
+    
+        # Reinitialize the secondary y-axis (d-prime)
+        if hasattr(self, 'ax2'):
+            self.ax2.set_ylabel("d' (d-prime)", color='blue')
     
         # Redraw the canvas
         self.canvas.draw()
+
+
+
+
+
+
+
+
+
+
