@@ -23,6 +23,7 @@ class PlotPerformance(QWidget):
         self.figure = Figure()
         self.canvas = FigureCanvas(self.figure)
         self.ax = self.figure.add_subplot(111)
+        self.ax2 = self.ax.twinx()  # Create secondary y-axis
 
         # Initialize Data Lists
         self.total_trials = []
@@ -31,6 +32,8 @@ class PlotPerformance(QWidget):
         
         # Set Up Plot
         self.ax.set_ylabel("HR/FA")
+        self.ax2.set_ylabel("d'", color='gray')
+        self.ax.set_ylim(0, 1)  # Ensure HR/FA stays within 0-1
         self.ax.grid(True)
 
         # Layout
@@ -58,6 +61,10 @@ class PlotPerformance(QWidget):
         HR = ((np.array(self.correct_trials) + 0.5) / (np.array(self.total_trials) + 1)) # Hit rate
         FA = ((np.array(self.incorrect_trials) + 0.5) / (np.array(self.total_trials) + 1)) # False alarms
         
+        # Clip HR and FA to avoid -inf and inf issues in norm.ppf()
+        HR = np.clip(HR, 0.01, 0.99)
+        FA = np.clip(FA, 0.01, 0.99)
+        
         # Calculate d' (d-prime)
         d_prime = norm.ppf(HR) - norm.ppf(FA)
 
@@ -66,32 +73,30 @@ class PlotPerformance(QWidget):
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
+        self.ax2.clear()
+        
         self.ax.step(trial_numbers, HR, where='post', color='black', linewidth=2, label='Hit Rate')
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
         
-        # Create a second y-axis
-        self.ax2 = self.ax.twinx()
-        
         # Plot d' (d-prime) on the secondary y-axis (right)
-        self.ax2.step(trial_numbers, d_prime, where='post', color='#27605F', linewidth=2, label="d'")
+        self.ax2.plot(trial_numbers, d_prime, color='gray', linewidth=2, label="d'")
       
         # Update Labels & Formatting
         self.ax.set_ylabel("HR/FA", labelpad=9)
-        self.ax2.set_ylabel("d'", color='#27605F')
+        self.ax2.set_ylabel("d'", color=gray)
         self.ax.grid(True)
         
         # Set y-axis tick labels to whole numbers
         self.ax.set_ylim(0, 1)
         
+        # Ensure x-axis labels are integers (no decimals)
+        self.ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        
         # Add legend and set colors
-        legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
-        for text, color in zip(legend.get_texts(), ['black', 'red']):
-            text.set_color(color)
-            
-        # Add legend and set colors
-        legend = self.ax2.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
-        for text, color in zip(legend.get_texts(), ['#27605F']):
-            text.set_color(color)
+        # Combine Legends for both axes
+        lines1, labels1 = self.ax.get_legend_handles_labels()
+        lines2, labels2 = self.ax2.get_legend_handles_labels()
+        self.ax.legend(lines1 + lines2, labels1 + labels2, loc='upper center', bbox_to_anchor=(0.5, 1.2), ncol=3, frameon=False, prop={'size':9})
             
         # Adjust layout to increase padding at the top
         self.figure.subplots_adjust(top=0.85)  
@@ -109,22 +114,20 @@ class PlotPerformance(QWidget):
         self.total_trials.clear()
         self.correct_trials.clear()
         self.incorrect_trials.clear()
-    
-        # Clear both y-axes
+
+        # Clear both axes
         self.ax.clear()
-        if hasattr(self, 'ax2'):  # Check if ax2 exists before clearing
-            self.ax2.clear()
-    
+        self.ax2.clear()
+
         # Reinitialize the primary y-axis (HR & FA)
         self.ax.set_xlabel("Trial Number")
         self.ax.set_ylabel("HR / FA", color='black')
         self.ax.set_ylim(0, 1)
-        self.ax.grid(True)
-    
+        self.ax.grid(True, linestyle='dotted')
+
         # Reinitialize the secondary y-axis (d-prime)
-        if hasattr(self, 'ax2'):
-            self.ax2.set_ylabel("d' (d-prime)", color='blue')
-    
+        self.ax2.set_ylabel("d'", color='gray')
+
         # Redraw the canvas
         self.canvas.draw()
 
