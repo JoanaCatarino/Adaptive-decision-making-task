@@ -145,11 +145,16 @@ class TwoChoiceAuditoryTask:
         print("Stopping Spout Sampling Task...")
         
         self.running = False
+        self.trialstarted = False
         
         if self.print_thread.is_alive():
             self.print_thread.join()
         pump_l.on()
         led_blue.off()
+        
+        self.gui_controls.chk_AutomaticRewards.checked.disconnect()
+        self.gui_controls.chk_NoPunishment.checked.disconnect()
+        self.gui_controls.chk_IgnoreLicksWW.checked.disconnect()
         
     
     def load_spout_tone_mapping(self):
