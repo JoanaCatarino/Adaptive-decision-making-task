@@ -32,7 +32,7 @@ class PlotPerformance(QWidget):
         
         # Set Up Plot
         self.ax.set_ylabel("HR/FA")
-        self.ax2.set_ylabel("d'", color='gray')
+        self.ax2.set_ylabel("d'", color='#27605F')
         self.ax.set_ylim(0, 1)  # Ensure HR/FA stays within 0-1
         self.ax.grid(True)
 
@@ -79,11 +79,11 @@ class PlotPerformance(QWidget):
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
         
         # Plot d' (d-prime) on the secondary y-axis (right)
-        self.ax2.plot(trial_numbers, d_prime, color='gray', linewidth=2, label="d'")
+        self.ax2.plot(trial_numbers, d_prime, color='#27605F', linewidth=2, label="d'")
       
         # Update Labels & Formatting
         self.ax.set_ylabel("HR/FA", labelpad=9)
-        self.ax2.set_ylabel("d'", color=gray)
+        self.ax2.set_ylabel("d'", color='#27605F')
         self.ax.grid(True)
         
         # Set y-axis tick labels to whole numbers
@@ -126,7 +126,7 @@ class PlotPerformance(QWidget):
         self.ax.grid(True, linestyle='dotted')
 
         # Reinitialize the secondary y-axis (d-prime)
-        self.ax2.set_ylabel("d'", color='gray')
+        self.ax2.set_ylabel("d'", color='#27605F')
 
         # Redraw the canvas
         self.canvas.draw()
