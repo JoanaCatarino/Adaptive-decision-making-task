@@ -23,6 +23,7 @@ class PlotPerformance(QWidget):
         self.ax = self.figure.add_subplot(111)
 
         # Initialize Data Lists
+        self.times = []
         self.total_trials = []
         self.correct_trials = []
         self.incorrect_trials = []
