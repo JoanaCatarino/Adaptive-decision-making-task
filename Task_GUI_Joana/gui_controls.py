@@ -99,6 +99,7 @@ class GuiControls:
         
         # Initialize functions for the performance plot
         self.setup_lick_plot()
+        self.setup_performance_plot()
 
 
     #Piezo functions
