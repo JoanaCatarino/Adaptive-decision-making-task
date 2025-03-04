@@ -98,7 +98,7 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
         # Initialize functions for the performance plot
-        #self.setup_lick_plot()
+        self.setup_lick_plot()
         self.setup_performance_plot()
 
 
@@ -167,7 +167,7 @@ class GuiControls:
         plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
         
-        self.performance_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
+        self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         plt_layout1.addWidget(self.performance_plot)
@@ -178,7 +178,7 @@ class GuiControls:
         plt_layout2.setContentsMargins(0, 0, 0, 0)
         plt_layout2.setSpacing(0)
         
-        self.performance_plot_ov = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
+        self.performance_plot_ov = PlotPerformance(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
         self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         plt_layout2.addWidget(self.performance_plot_ov)
