@@ -12,6 +12,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.ticker import FuncFormatter
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
 import datetime
+import numpy as np
 
 class PlotPerformance(QWidget):
     def __init__(self, parent=None):
@@ -56,8 +57,9 @@ class PlotPerformance(QWidget):
         self.incorrect_trials.append(incorrect_trials)
         
         # Calculate variables for plots
-        HR = ((self.correct_trials + 0.5)/(self.total_trials + 1)) # Hit Rate
-        FA = ((self.incorrect_trials + 0.5)/(self.total_trials +1)) # False Alarms
+        HR = ((np.array(self.correct_trials) + 0.5) / (np.array(self.total_trials) + 1)) # Hit rate
+        FA = ((np.array(self.incorrect_trials) + 0.5) / (np.array(self.total_trials) + 1)) # False alarms
+
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
