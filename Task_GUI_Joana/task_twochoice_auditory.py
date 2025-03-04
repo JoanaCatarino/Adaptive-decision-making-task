@@ -152,10 +152,6 @@ class TwoChoiceAuditoryTask:
         pump_l.on()
         led_blue.off()
         
-        self.gui_controls.chk_AutomaticRewards.checked.disconnect()
-        self.gui_controls.chk_NoPunishment.checked.disconnect()
-        self.gui_controls.chk_IgnoreLicksWW.checked.disconnect()
-        
     
     def load_spout_tone_mapping(self):
         """ Reads the CSV file and assigns the correct spout for each frequency based on the animal ID. """
@@ -424,6 +420,8 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.save_data()
                         self.next_trial_eligible = True
+                        # Update live stair plot
+                        self.gui_controls.update_performance_plot(self.tlick, self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                 
         
@@ -482,6 +480,7 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.save_data()
                         self.next_trial_eligible = True
+                        self.gui_controls.update_performance_plot(self.tlick, self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                    
 

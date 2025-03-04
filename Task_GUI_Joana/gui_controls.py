@@ -158,6 +158,38 @@ class GuiControls:
         if hasattr(self, 'lick_plot_ov'):
             self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, time)
             
+    
+    def setup_performance_plot(self):
+        # Licks plot in the main tab
+        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout1.setContentsMargins(0, 0, 0, 0)
+        plt_layout1.setSpacing(0)
+        
+        self.performance_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
+        self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        plt_layout1.addWidget(self.performance_plot)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
+        
+        # Licks plot in the overview tab
+        plt_layout2 = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout2.setContentsMargins(0, 0, 0, 0)
+        plt_layout2.setSpacing(0)
+        
+        self.performance_plot_ov = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
+        self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        plt_layout2.addWidget(self.performance_plot_ov)
+        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
+
+    
+    def update_performance_plot(self, total_trials, correct_trials, incorrect_trials, time):
+        if hasattr(self, 'performance_plot'):
+            self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials, time)
+            
+        if hasattr(self, 'performance_plot_ov'):
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials, time)        
+    
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -309,6 +341,7 @@ class GuiControls:
         self.ui.txt_ValveOpening.setEnabled(enable)
         self.ui.chk_AutomaticRewards.setEnabled(enable)
         self.ui.chk_NoPunishment.setEnabled(enable)
+        self.ui.chk_IgnoreLicksWW.setEnabled(enable)
 
     # set enable and disable functions for the test rig controls
     def enable_controls(self):
