@@ -376,7 +376,6 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
-                        self.tlick_real = self.tlick - self.tstart
                             
                         if self.correct_spout == self.first_lick:
         
@@ -398,8 +397,6 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick_real, self.total_licks, self.licks_left, self.licks_right)
                                 
                         else:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
@@ -422,7 +419,7 @@ class TwoChoiceAuditoryTask:
                         self.save_data()
                         self.next_trial_eligible = True
                         # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.tlick, self.total_trials, self.correct_trials, self.incorrect_trials)
+                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                 
         
@@ -438,7 +435,6 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
-                        self.tlick_real = self.tlick - self.tstart
                             
                         if self.correct_spout == self.first_lick:
         
@@ -460,8 +456,6 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick_real, self.total_licks, self.licks_left, self.licks_right)
                         else:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
                                 self.play_sound('white_noise')
@@ -482,7 +476,7 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.save_data()
                         self.next_trial_eligible = True
-                        self.gui_controls.update_performance_plot(self.tlick, self.total_trials, self.correct_trials, self.incorrect_trials)
+                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                    
 

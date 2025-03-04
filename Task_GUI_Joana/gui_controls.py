@@ -185,12 +185,12 @@ class GuiControls:
         self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
 
     
-    def update_performance_plot(self, total_trials, correct_trials, incorrect_trials, time):
+    def update_performance_plot(self, total_trials, correct_trials, incorrect_trials):
         if hasattr(self, 'performance_plot'):
-            self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials, time)
+            self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             
         if hasattr(self, 'performance_plot_ov'):
-            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials, time)        
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)        
     
 
     def populate_ddm_animalID(self):
