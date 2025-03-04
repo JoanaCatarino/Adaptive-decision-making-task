@@ -30,7 +30,6 @@ class PlotPerformance(QWidget):
         self.incorrect_trials = []
         
         # Set Up Plot
-        self.ax.set_xlabel("Trial Number")
         self.ax.set_ylabel("HR/FA")
         self.ax.grid(True)
 
@@ -60,7 +59,7 @@ class PlotPerformance(QWidget):
         FA = ((np.array(self.incorrect_trials) + 0.5) / (np.array(self.total_trials) + 1)) # False alarms
 
         # Generate x-axis values(trial_numbers)
-        trial_numbers = np.arange(1, len(self.total_trials)+1)
+        trial_numbers = np.arange(1, len(self.total_trials)+1, dtype=int)
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
@@ -69,7 +68,6 @@ class PlotPerformance(QWidget):
       
         
         # Update Labels & Formatting
-        self.ax.set_xlabel('Trial Number')
         self.ax.set_ylabel("HR/FA", labelpad=9)
         self.ax.grid(True)
         
@@ -97,7 +95,6 @@ class PlotPerformance(QWidget):
         self.incorrect_trials.clear()
     
         self.ax.clear()  # Clear the existing plot
-        self.ax.set_xlabel('Trial Number')
         self.ax.set_ylabel("HR/FA")
         self.ax.grid(True)
     
