@@ -33,6 +33,7 @@ from stylesheet import stylesheet
 from camera import start_camera, stop_camera, update_frame
 from piezo_plot import LivePlotWidget
 from performance_plot import PlotLicks
+from performance_plot_advanced import PlotPerformance
 from piezo_reader import PiezoReader
 from gpio_map import *
 
