@@ -131,7 +131,7 @@ class PlotPerformance(QWidget):
         # Adjust layout to increase padding at the top
         self.figure.subplots_adjust(top=0.85)  
         self.figure.subplots_adjust(right=0.5)
-        self.figure.subplots_adjust(left=0.5)
+        self.figure.subplots_adjust(left=0.4)
 
         # Redraw Canvas
         self.ax.relim() 
