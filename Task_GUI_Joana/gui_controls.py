@@ -184,15 +184,15 @@ class GuiControls:
             
     def reset_plot(self):
         """Reset the currently displayed plot dynamically."""
-        print("Resetting plot...")  # Debugging statement
-    
         if self.current_plot:
-            print("Deleting current plot")
-            self.current_plot.deleteLater()  # Ensure it's removed from memory
-            self.current_plot = None
-    
+           print("Deleting current plot")
+           self.clear_layout(self.ui.plt_AnimalPerformance.layout())
+           self.current_plot.deleteLater()
+           self.current_plot = None
+
         if self.current_plot_ov:
             print("Deleting overview plot")
+            self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
             self.current_plot_ov.deleteLater()
             self.current_plot_ov = None
         
