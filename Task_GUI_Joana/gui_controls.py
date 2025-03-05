@@ -97,11 +97,11 @@ class GuiControls:
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
-        # Initialize performance plot dynamically
-        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
-        self.setup_plots()
+        # Initialize functions for the performance plot
+        #self.setup_lick_plot()
+        self.setup_performance_plot()
 
-    
+
     #Piezo functions
     def setup_piezo_plots(self):
 
@@ -128,53 +128,6 @@ class GuiControls:
         # Update each piezo plot with new data
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
-        
-    def setup_plots(self):
-        # Map task to corresponding setup function instead of plot class
-        plot_setup_map = {
-            'Free Licking': self.setup_lick_plot,
-            'Spout Sampling': self.setup_lick_plot,
-            'Two-Choice Auditory Task': self.setup_performance_plot,
-            'Adaptive Sensorimotor Task': self.setup_performance_plot,
-            'Adaptive Sensorimotor Task w/ Distractor': self.setup_performance_plot,
-        }
-    
-        # Get the selected task
-        selected_task = self.ui.ddm_Task.currentText()
-    
-        # Get the corresponding setup function or do nothing if task not in map
-        setup_function = plot_setup_map.get(selected_task)
-    
-        if setup_function:
-            # **Clear layouts before calling setup function**
-            self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-            self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
-    
-            # **Explicitly delete old plots to avoid memory issues**
-            if hasattr(self, 'current_plot'):
-                self.current_plot.deleteLater()
-                del self.current_plot
-    
-            if hasattr(self, 'current_plot_ov'):
-                self.current_plot_ov.deleteLater()
-                del self.current_plot_ov
-    
-            # Call the appropriate function to set up the plot
-            setup_function()
-    
-        # Force UI update to reflect changes
-        self.ui.plt_AnimalPerformance.update()
-        self.ui.OV_plt_AnimalPerformance.update()
-            
-            
-    def clear_layout(self, layout):
-        """Removes all widgets from a layout to prevent overlapping plots."""
-        if layout is not None:
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
-                if widget is not None:
-                    widget.deleteLater()  # Properly delete the widget to free memory
         
     def setup_lick_plot(self):
         # Licks plot in the main tab
@@ -213,6 +166,7 @@ class GuiControls:
         plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
         plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
+        plt_layout1.figure.tight_layout(pad=3.3)  # Reapply tight layout
         
         self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -237,9 +191,8 @@ class GuiControls:
             self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             
         if hasattr(self, 'performance_plot_ov'):
-            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials) 
- 
-            
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)        
+    
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -420,7 +373,7 @@ class GuiControls:
         # Stop any currently running task
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
-        
+
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
         #self.start_camera()
@@ -431,8 +384,6 @@ class GuiControls:
 
         # Read the selected task from the dropdown menu
         selected_task = self.ui.ddm_Task.currentText()
-        
-        self.setup_plots()
 
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
