@@ -152,16 +152,16 @@ class GuiControls:
         if PlotClass:
             # Main tab plot
             plt_layout1 = QVBoxLayout()
-            self.performance_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
-            self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout1.addWidget(self.performance_plot)
+            self.current_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
+            self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout1.addWidget(self.current_plot)
             self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
 
             # Overview tab plot
             plt_layout2 = QVBoxLayout()
-            self.performance_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
-            self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout2.addWidget(self.performance_plot_ov)
+            self.current_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
+            self.current_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout2.addWidget(self.current_plot_ov)
             self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
             
             
