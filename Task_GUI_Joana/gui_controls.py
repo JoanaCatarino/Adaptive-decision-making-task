@@ -143,10 +143,6 @@ class GuiControls:
 
         # Get the appropriate plot class or None if the task doesn't require a plot
         PlotClass = plot_map.get(selected_task)
-
-        # **Clear existing layouts before adding new plots**
-        self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-        self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
         
         if PlotClass:
             # **Main tab plot**
@@ -162,16 +158,6 @@ class GuiControls:
             self.current_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             plt_layout2.addWidget(self.current_plot_ov)
             self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
-            
-            
-    def clear_layout(self, layout):
-        """Removes all widgets from a layout to prevent overlapping plots."""
-        if layout is not None:
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
-                if widget is not None:
-                    widget.deleteLater()  # Properly delete the widget to free memory
         
     
     def update_plot(self, *args):
