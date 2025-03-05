@@ -379,9 +379,6 @@ class GuiControls:
 
         # Reset the plot before starting a new task
         self.reset_plot()
-        
-        # Ensure that s new plot is set for a new task
-        self.setup_plots()
 
         # Ensure the camera is stopped and restarted
         #self.stop_camera()

@@ -89,6 +89,9 @@ class FreeLickingTask:
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
         
+        # Ensure that s new plot is set for a new task
+        self.gui_controls.setup_plots()
+        
         self.running = True
         self.tstart = time.time() # record the start time
         
