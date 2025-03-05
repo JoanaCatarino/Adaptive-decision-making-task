@@ -48,20 +48,36 @@ class PlotPerformance(QWidget):
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
         
         # Apply tight layout to ensure everything fits 
-        self.figure.tight_layout(pad=3.5)  #2.9 before
+        self.figure.tight_layout(pad=3.3)  #2.9 before
 
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
 
-        # Append Data
-        trial_number = sum(self.total_trials)+1
+        # Increment trial number
+        trial_number = len(self.total_trials) + 1  
+        self.trial_numbers.append(trial_number)
         self.total_trials.append(total_trials)
-        self.correct_trials.append(correct_trials)
-        self.incorrect_trials.append(incorrect_trials)
-        
-        # Calculate variables for plots
-        HR = ((np.array(self.correct_trials) + 0.5) / (np.array(self.total_trials) + 1)) # Hit rate
-        FA = ((np.array(self.incorrect_trials) + 0.5) / (np.array(self.total_trials) + 1)) # False alarms
+    
+        # If new data is provided, update values; otherwise, repeat the last recorded values
+        if len(self.correct_trials) > 0:
+            last_correct = self.correct_trials[-1]
+            last_incorrect = self.incorrect_trials[-1]
+        else:
+            last_correct = 0
+            last_incorrect = 0
+    
+        # If no new correct/incorrect trial data, repeat previous values
+        self.correct_trials.append(correct_trials if correct_trials is not None else last_correct)
+        self.incorrect_trials.append(incorrect_trials if incorrect_trials is not None else last_incorrect)
+    
+        # Convert lists to NumPy arrays
+        total_trials_arr = np.array(self.total_trials)
+        correct_trials_arr = np.array(self.correct_trials)
+        incorrect_trials_arr = np.array(self.incorrect_trials)
+    
+        # Calculate Hit Rate (HR) and False Alarm Rate (FA)
+        HR = (correct_trials_arr + 0.5) / (total_trials_arr + 1) #Hit rate
+        FA = (incorrect_trials_arr + 0.5) / (total_trials_arr + 1) # False alarm
         
         # Clip HR and FA to avoid -inf and inf issues in norm.ppf()
         HR = np.clip(HR, 0.01, 0.99)
@@ -70,8 +86,8 @@ class PlotPerformance(QWidget):
         # Calculate d' (d-prime)
         d_prime = norm.ppf(HR) - norm.ppf(FA)
 
-        # Generate x-axis values(trial_numbers)
-        trial_numbers = np.arange(1, len(self.total_trials)+1, dtype=int)
+        # Ensure trial numbers are actual trial count
+        trial_numbers = np.array(self.trial_numbers, dtype=int)
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
