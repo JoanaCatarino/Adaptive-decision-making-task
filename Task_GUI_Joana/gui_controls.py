@@ -184,11 +184,17 @@ class GuiControls:
             
     def reset_plot(self):
         """Reset the currently displayed plot dynamically."""
-        if self.current_plot and hasattr(self.current_plot, 'reset_plot'):
-            self.current_plot.reset_plot()
+        print("Resetting plot...")  # Debugging statement
     
-        if self.current_plot_ov and hasattr(self.current_plot_ov, 'reset_plot'):
-            self.current_plot_ov.reset_plot()
+        if self.current_plot:
+            print("Deleting current plot")
+            self.current_plot.deleteLater()  # Ensure it's removed from memory
+            self.current_plot = None
+    
+        if self.current_plot_ov:
+            print("Deleting overview plot")
+            self.current_plot_ov.deleteLater()
+            self.current_plot_ov = None
         
 
     def populate_ddm_animalID(self):
