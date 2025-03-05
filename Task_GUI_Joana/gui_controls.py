@@ -100,7 +100,6 @@ class GuiControls:
         # Initialize performance plot dynamically
         self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
 
-        
     
     #Piezo functions
     def setup_piezo_plots(self):
@@ -381,7 +380,7 @@ class GuiControls:
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
 
-        self.setup_plots()
+        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
 
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
