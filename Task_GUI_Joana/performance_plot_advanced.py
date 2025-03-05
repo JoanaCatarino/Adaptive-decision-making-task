@@ -53,12 +53,14 @@ class PlotPerformance(QWidget):
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
 
-        # Increment trial number
-        trial_number = len(self.total_trials) + 1  
+        # Increment trial number (should match total number of trials, including omissions)
+        trial_number = len(self.trial_numbers) + 1  # Use independent counter
         self.trial_numbers.append(trial_number)
+        
+        # Always append total trials to keep trial history
         self.total_trials.append(total_trials)
     
-        # If new data is provided, update values; otherwise, repeat the last recorded values
+        # If this is the first trial, initialize previous values
         if len(self.correct_trials) > 0:
             last_correct = self.correct_trials[-1]
             last_incorrect = self.incorrect_trials[-1]
@@ -66,9 +68,10 @@ class PlotPerformance(QWidget):
             last_correct = 0
             last_incorrect = 0
     
-        # If no new correct/incorrect trial data, repeat previous values
+        # Keep previous values if no new correct/incorrect trial data is received
         self.correct_trials.append(correct_trials if correct_trials is not None else last_correct)
         self.incorrect_trials.append(incorrect_trials if incorrect_trials is not None else last_incorrect)
+
     
         # Convert lists to NumPy arrays
         total_trials_arr = np.array(self.total_trials)
@@ -92,6 +95,10 @@ class PlotPerformance(QWidget):
         # Clear and Redraw Stair Plot
         self.ax.clear()
         self.ax2.clear()
+        
+        # Reapply layout settings to keep correct aspect ratio
+        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
+        self.figure.tight_layout(pad=3.3)  # Reapply tight layout
         
         self.ax.step(trial_numbers, HR, where='post', color='black', linewidth=2, label='Hit Rate')
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
