@@ -171,7 +171,7 @@ class GuiControls:
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
         # Apply layout to ensure correct proportions
-        self.performance_plot.figure.tight_layout(pad=3.3)
+        self.performance_plot.figure.tight_layout(pad=3.1)
         self.performance_plot.figure.subplots_adjust(top=0.85, right=0.95)
         
         plt_layout1.addWidget(self.performance_plot)
