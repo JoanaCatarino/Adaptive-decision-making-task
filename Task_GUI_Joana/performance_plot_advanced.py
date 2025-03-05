@@ -48,7 +48,7 @@ class PlotPerformance(QWidget):
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
         
         # Apply tight layout to ensure everything fits 
-        self.figure.tight_layout(pad=2.9)
+        self.figure.tight_layout(pad=3.3)
         
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
@@ -71,7 +71,6 @@ class PlotPerformance(QWidget):
         # Keep previous values if no new correct/incorrect trial data is received
         self.correct_trials.append(correct_trials if correct_trials is not None else last_correct)
         self.incorrect_trials.append(incorrect_trials if incorrect_trials is not None else last_incorrect)
-
     
         # Convert lists to NumPy arrays
         total_trials_arr = np.array(self.total_trials)
@@ -95,6 +94,10 @@ class PlotPerformance(QWidget):
         # Clear and Redraw Stair Plot
         self.ax.clear()
         self.ax2.clear()
+        
+        # **Reapply layout settings to maintain correct aspect ratio**
+        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
+        self.figure.tight_layout(pad=3.3)  # Reapply tight layout
         
         self.ax.step(trial_numbers, HR, where='post', color='black', linewidth=2, label='Hit Rate')
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
