@@ -182,23 +182,6 @@ class GuiControls:
         if hasattr(self, 'current_plot_ov'):
             self.current_plot_ov.update_plot(*args)
             
-    def reset_plot(self):
-        """Reset the currently displayed plot dynamically and clear layouts."""
-        print("RESETTING PLOT...")  # Debugging statement
-    
-        # Remove current plot from layout and delete it
-        if self.current_plot:
-            print("Deleting current plot from GUI")
-            self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-            self.current_plot.deleteLater()
-            self.current_plot = None
-    
-        if self.current_plot_ov:
-            print("Deleting overview plot from GUI")
-            self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
-            self.current_plot_ov.deleteLater()
-            self.current_plot_ov = None
-    
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
@@ -404,7 +387,6 @@ class GuiControls:
 
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask(self, csv_file_path)
-            self.setup_plots()
 
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask(self, csv_file_path) 
@@ -453,9 +435,6 @@ class GuiControls:
 
         # Disable test rig controls
         self.disable_controls()
-        
-        # Reset and remove the plot properly
-        self.reset_plot()
 
         # Update start/stop button states
         self.update_button_states()
