@@ -420,8 +420,6 @@ class GuiControls:
         # Stop any currently running task
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
-
-        self.setup_plots()
         
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
@@ -433,6 +431,8 @@ class GuiControls:
 
         # Read the selected task from the dropdown menu
         selected_task = self.ui.ddm_Task.currentText()
+        
+        self.setup_plots()
 
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
