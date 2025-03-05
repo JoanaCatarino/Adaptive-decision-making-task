@@ -421,6 +421,8 @@ class GuiControls:
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
 
+        self.setup_plots()
+        
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
         #self.start_camera()
