@@ -166,7 +166,6 @@ class GuiControls:
         plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
         plt_layout1.setContentsMargins(0, 0, 0, 0)
         plt_layout1.setSpacing(0)
-        plt_layout1.figure.tight_layout(pad=3.3)  # Reapply tight layout
         
         self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
