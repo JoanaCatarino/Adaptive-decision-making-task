@@ -56,7 +56,7 @@ class AdaptiveSensorimotorTask:
         # Block parameters
         self.current_block = 'sound'  # Always start with sound block
         self.trials_in_block = 0
-        self.trial_limit = random.randint(40, 60)  # Random trial count per block
+        self.trial_limit = random.randint(5, 10)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
         
         # Counters
@@ -215,7 +215,7 @@ class AdaptiveSensorimotorTask:
         else:
             self.current_block = "sound"
         
-        self.trial_limit = random.randint(40, 60)  # Random number of trials for new block
+        self.trial_limit = random.randint(5, 10)  # Random number of trials for new block - should be 40-60
         self.trials_in_block = 0  # Reset trial count for new block
         print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
         print(f"Total trials in previous block: {self.total_trials}")    
