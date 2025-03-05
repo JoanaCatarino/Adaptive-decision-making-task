@@ -44,12 +44,19 @@ class AdaptiveSensorimotorTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = round(random.uniform(3, 9), 1)  # Random ITI between 3 and 6 seconds using number with ms precision
+        self.ITI_min = 3 # default ITI min
+        self.ITI_max = 9 # default ITI
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
         self.WW = 1 # waiting window
+        
+        # Block parameters
+        self.current_block = 'sound'  # Always start with sound block
+        self.trials_in_block = 0
+        self.trial_limit = random.randint(40, 60)  # Random trial count per block
         
         # Counters
         self.total_trials = 0
@@ -60,14 +67,16 @@ class AdaptiveSensorimotorTask:
         self.incorrect_trials = 0
         self.early_licks = 0
         self.omissions = 0
+        self.trial_duration = 0
+        self.sound_5KHz = 0
+        self.sound_10KHz = 0
+        self.autom_rewards = 0
         
         # Booleans
         self.trialstarted = False
         self.running = False
-        self.tone_selected = False
-        self.prev_trialstarted = False
         self.first_trial = True
-        self.early_lick_termination = False
+        self.next_trial_ready = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -103,6 +112,10 @@ class AdaptiveSensorimotorTask:
         self.incorrect_trials = 0
         self.early_licks = 0
         self.omissions = 0
+        self.trial_duration = 0
+        self.sound_5KHz = 0
+        self.sound_10KHz = 0
+        self.autom_rewards = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -112,10 +125,13 @@ class AdaptiveSensorimotorTask:
         self.gui_controls.update_incorrect_trials(0)
         self.gui_controls.update_early_licks(0)
         self.gui_controls.update_omissions(0)
+        self.gui_controls.update_trial_duration(0)
+        self.gui_controls.update_sound_5KHz(0)
+        self.gui_controls.update_sound_10KHz(0)
+        self.gui_controls.update_autom_rewards(0)
         
-        # Reset the performance plot
-        self.gui_controls.lick_plot.reset_plot() # plot main tab
-        self.gui_controls.lick_plot_ov.reset_plot() # plot overview tab
+        self.gui_controls.performance_plot.reset_plot() # Plot main tab
+        self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
         
         self.running = True
         self.tstart = time.time() # record the start time
@@ -129,6 +145,7 @@ class AdaptiveSensorimotorTask:
         print("Stopping Spout Sampling Task...")
         
         self.running = False
+        self.trialstarted = False
         
         if self.print_thread.is_alive():
             self.print_thread.join()
@@ -188,9 +205,20 @@ class AdaptiveSensorimotorTask:
                     
             else:
                 print('Waiting for enough data to check quiet window')
+                
+    
+    def switch_block(self):
+        """Switch between sound and action blocks."""
+        if self.current_block == "sound":
+            self.current_block = random.choice(["action-left", "action-right"])
+        else:
+            self.current_block = "sound"
+        
+        self.trial_limit = random.randint(40, 60)  # Random number of trials for new block
+        self.trials_in_block = 0  # Reset trial count for new block
+        print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
             
     
-     
     def start_trial(self):
         
         """ Initiates a trial, runs LED in paralledl, and logs trial start"""
@@ -198,22 +226,36 @@ class AdaptiveSensorimotorTask:
         with self.lock:
             self.trialstarted = True
             self.total_trials +=1
+            self.gui_controls.update_total_trials(self.total_trials)
+            self.trials_in_block +=1
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
-            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
-            self.current_tone = random.choice(['5KHz', '10KHz'])
-            self.tone_selected = True
-            self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            print('start')
-            print(time.time())
-            print(
-                f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
-            
+            # Determine trial type
+            if self.current_block == "sound":
+                self.current_tone = random.choice(["5KHz", "10KHz"])
+                self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+            elif self.current_block == "action-left":
+                self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                self.correct_spout = "left"  # Always reward left, punish right
+            elif self.current_block == "action-right":
+                self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                self.correct_spout = "right"  # Always reward right, punish left
+            print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
+        
+        
+            # Update Sound Counters
+            if self.current_tone == '5KHz':
+                self.sound_5KHz +=1
+                self.gui_controls.update_sound_5KHz(self.sound_5KHz)
+            elif self.current_tone == '10KHz':
+                self.sound_10KHz +=1
+                self.gui_controls.update_sound_10KHz(self.sound_10KHz)
+                
             # Turn LED on
-            threading.Thread(target=self.blue_led_on, daemon=True).start() 
+            threading.Thread(target=self.blue_led_on, daemon=True).start()
             
-            # Waiting window - no licks allowed
+            
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
@@ -221,42 +263,38 @@ class AdaptiveSensorimotorTask:
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend= time.time()
-                print(self.tend)
-                self.early_lick_termination = True
+                self.trial_duration = (self.tend-self.ttrial)
+                self.gui_controls.update_trial_duration(self.trial_duration)
+                self.schedule_next_trial()
                 return  # Exit trial 
            
             # Play sound  
             self.play_sound(self.current_tone)
             
-            # Start response window
-            self.RW_start = time.time()
+            autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
+            
+            if autom_rewards:
+                print(f"Automatic reward given at {self.correct_spout}")
+                threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.autom_rewards += 1
+                self.gui_controls.update_autom_rewards(self.autom_rewards)
+                self.tend = time.time()
+                self.trial_duration = (self.tend-self.ttrial)
+                self.gui_controls.update_trial_duration(self.trial_duration)
+                self.schedule_next_trial()
                 
-            # Wait for response window to finish if no lick happens
-            threading.Thread(target=self.wait_for_response, daemon=True).start()
+            if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
+                self.RW_start = time.time()  # Start response window
             
-            # Turning LED off after reward/punishment or after response window finished
-            
-            # Initialize trial data
-            trial_data = {
-                'trial_number': self.total_trials,
-                'trial_time': self.ttrial,
-                'lick': 0,
-                'left_spout': 0,
-                'right_spout': 0,
-                'lick_time': None,
-                'RW': self.RW,
-                'QW': self.QW,
-                'ITI': self.ITI,
-                'Threshold_left': self.threshold_left,
-                'Threshold_right': self.threshold_right}
-            
-            self.trials.append(trial_data) # Store trial data
-            
-            self.gui_controls.update_total_trials(self.total_trials)
-            
-            # Append trial data to csv file
-            self.append_trial_to_csv(trial_data)
-       
+                # Wait for response window to finish if no lick happens
+                threading.Thread(target=self.wait_for_response, daemon=True).start()
+                
+            # Check for block switch
+            if self.trials_in_block >= self.trial_limit:
+                self.switch_block()
+         
     
     def play_sound(self, frequency):
         
@@ -267,13 +305,9 @@ class AdaptiveSensorimotorTask:
         elif frequency == "white_noise":
             white_noise()
 
-        #threading.Thread(target=play, daemon=True).start()
-
-        
     def blue_led_on(self):
         led_blue.on()
         
-    
     def blue_led_off(self):
         led_blue.off()
         
@@ -289,9 +323,11 @@ class AdaptiveSensorimotorTask:
             
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
+                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
     
             if p2 and p2[-1] > self.threshold_right:
+                print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
@@ -299,6 +335,23 @@ class AdaptiveSensorimotorTask:
         return False  # No licks detected, trial can proceed    
     
     
+    def schedule_next_trial(self):
+        self.next_trial_ready = True
+        print("Next trial is now allowed after ITI.")
+    
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
+    
+        # Start the next trial after ITI delay
+        threading.Timer(self.ITI, self.check_and_start_next_trial).start()
+        
+    
+    def check_and_start_next_trial(self):
+        """ Starts the next trial if conditions allow it """
+        if self.next_trial_ready and not self.trialstarted:
+            print("Starting next trial automatically.")
+            self.start_trial()
+    
+
     def detect_licks(self):
     
         """Checks for licks and delivers rewards in parallel."""
@@ -327,23 +380,13 @@ class AdaptiveSensorimotorTask:
         
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start() 
-                                
-                            # Update trial data
-                            self.trials[-1]['lick'] = 1
-                            self.trials[-1]['left_spout'] = 1
-                            self.trials[-1]['lick_time'] = self.tlick
-                                
-                            self.append_trial_to_csv(self.trials[-1])
-            
+
                             self.total_licks += 1
                             self.licks_left += 1
                             self.correct_trials += 1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
-                                
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                                 
                         else:
                             self.play_sound('white_noise')
@@ -355,7 +398,8 @@ class AdaptiveSensorimotorTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
-                        print(self.tend)
+                        self.trial_duration = (self.tend-self.ttrial)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         return
                 
@@ -377,14 +421,7 @@ class AdaptiveSensorimotorTask:
         
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
-                                
-                            # Update trial data
-                            self.trials[-1]['lick'] = 1
-                            self.trials[-1]['right_spout'] = 1
-                            self.trials[-1]['lick_time'] = self.tlick
-                            
-                            self.append_trial_to_csv(self.trials[-1])
-            
+                           
                             self.total_licks += 1
                             self.licks_right += 1
                             self.correct_trials += 1
@@ -392,8 +429,6 @@ class AdaptiveSensorimotorTask:
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         else:
                             self.play_sound('white_noise')
                             print('wrong spout')
@@ -404,7 +439,8 @@ class AdaptiveSensorimotorTask:
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
-                        print(self.tend)
+                        self.trial_duration = (self.tend-self.ttrial)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         return
                    
@@ -414,12 +450,12 @@ class AdaptiveSensorimotorTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
-        print(self.tend)
+        self.trial_duration = (self.tend-self.ttrial)
+        self.gui_controls.update_trial_duration(self.trial_duration)
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
         self.next_trial_eligible = True
       
-    
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
         self.timer_3.start()
@@ -452,16 +488,7 @@ class AdaptiveSensorimotorTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.first_trial = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
-                else:
-                    pass
-             
-            if self.early_lick_termination and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
-                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
-                if self.check_animal_quiet():
-                    self.start_trial()
-                    self.early_lick_termination = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trialv
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
                 else:
                     pass
                 
@@ -470,30 +497,13 @@ class AdaptiveSensorimotorTask:
                 if self.check_animal_quiet():
                     self.start_trial()
                     self.next_trial_eligible = False
-                    self.ITI = round(random.uniform(3, 9), 1) # Set ITI for next trial
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
                 
-            
-            
-    def append_trial_to_csv(self, trial_data):
-        """ Append trial data to the CSV file. """
-        file_exists = os.path.isfile(self.file_path)
+
+    
+
         
-        # Replace None or empty values with NaN
-        trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
         
-        with open(self.file_path, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
-            if not file_exists:
-                writer.writeheader()  # Write header only if file does not exist
-            writer.writerow(trial_data)  # Append trial data
-                
-                
-    def set_thresholds(self, left, right):
-        """Sets the thresholds for the piezo adders and updates the GUI."""
-        self.threshold_left = left
-        self.threshold_right = right
-        
-        # Update the GUI thresholds
-        self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
+    
