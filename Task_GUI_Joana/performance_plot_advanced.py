@@ -26,13 +26,14 @@ class PlotPerformance(QWidget):
         self.ax2 = self.ax.twinx()  # Create secondary y-axis
 
         # Initialize Data Lists
+        self.trial_numbers = []
         self.total_trials = []
         self.correct_trials = []
         self.incorrect_trials = []
         
         # Set Up Plot
         self.ax.set_ylabel("HR/FA")
-        self.ax2.set_ylabel("d'", color='#27605F')
+        self.ax2.set_ylabel("d'", color='#9DB4C0')
         self.ax.set_ylim(0, 1)  # Ensure HR/FA stays within 0-1
         self.ax.grid(True)
 
@@ -53,6 +54,7 @@ class PlotPerformance(QWidget):
         """Update stair plot with new lick data."""
 
         # Append Data
+        trial_number = sum(self.total_trials)+1
         self.total_trials.append(total_trials)
         self.correct_trials.append(correct_trials)
         self.incorrect_trials.append(incorrect_trials)
@@ -79,11 +81,11 @@ class PlotPerformance(QWidget):
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
         
         # Plot d' (d-prime) on the secondary y-axis (right)
-        self.ax2.plot(trial_numbers, d_prime, color='#27605F', linewidth=2, label="d'")
+        self.ax2.plot(trial_numbers, d_prime, color='#9DB4C0', linewidth=2, label="d'")
       
         # Update Labels & Formatting
         self.ax.set_ylabel("HR/FA", labelpad=9)
-        self.ax2.set_ylabel("d'", color='#27605F')
+        self.ax2.set_ylabel("d'", color='#9DB4C0')
         self.ax.grid(True)
         
         # Set y-axis tick labels to whole numbers
@@ -91,6 +93,13 @@ class PlotPerformance(QWidget):
         
         # Ensure x-axis labels are integers (no decimals)
         self.ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        
+        # Format y-axes
+        self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.2f}'))
+        self.ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.2f}'))
+        
+        # Ensure right y-axis labels are visible
+        self.ax2.tick_params(axis='y', labelcolor='#27605F')
         
         # Add legend and set colors
         # Combine Legends for both axes
@@ -126,7 +135,8 @@ class PlotPerformance(QWidget):
         self.ax.grid(True, linestyle='dotted')
 
         # Reinitialize the secondary y-axis (d-prime)
-        self.ax2.set_ylabel("d'", color='#27605F')
+        self.ax2.set_ylabel("d'", color='#9DB4C0')
+        self.ax2.tick_params(axis='y', labelcolor='#27605F')
 
         # Redraw the canvas
         self.canvas.draw()
