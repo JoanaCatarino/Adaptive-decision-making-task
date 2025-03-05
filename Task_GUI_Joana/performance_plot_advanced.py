@@ -127,11 +127,6 @@ class PlotPerformance(QWidget):
         lines1, labels1 = self.ax.get_legend_handles_labels()
         lines2, labels2 = self.ax2.get_legend_handles_labels()
         self.ax.legend(lines1 + lines2, labels1 + labels2, loc='upper center', bbox_to_anchor=(0.5, 1.2), ncol=3, frameon=False, prop={'size':9})
-            
-        # Adjust layout to increase padding at the top
-        self.figure.subplots_adjust(top=0.85)  
-        self.figure.subplots_adjust(right=0.95)
-        self.figure.subplots_adjust(left=0.9)
 
         # Redraw Canvas
         self.ax.relim() 
