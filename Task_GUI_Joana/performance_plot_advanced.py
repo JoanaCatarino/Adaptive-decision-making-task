@@ -161,13 +161,4 @@ class PlotPerformance(QWidget):
 
         # Redraw the canvas
         self.canvas.draw()
-
-
-
-
-
-
-
-
-
-
+        
