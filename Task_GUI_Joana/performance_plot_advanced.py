@@ -81,22 +81,25 @@ class PlotPerformance(QWidget):
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
         
         # Plot d' (d-prime) on the secondary y-axis (right)
-        self.ax2.plot(trial_numbers, d_prime, color='#9DB4C0', linewidth=2, label="d'")
+        self.ax2.step(trial_numbers, d_prime, color='#9DB4C0', linewidth=2, label="d'")
       
         # Update Labels & Formatting
-        self.ax.set_ylabel("HR/FA", labelpad=9)
+        self.ax.set_ylabel("HR/FA", labelpad=7)
         self.ax2.set_ylabel("d'", color='#9DB4C0')
         self.ax.grid(True)
         
         # Set y-axis tick labels to whole numbers
         self.ax.set_ylim(0, 1)
         
+        # **Explicitly Set Y-Axis Limits for d'**
+        self.ax2.set_ylim(min(d_prime) - 0.5, max(d_prime) + 0.5)  # Expand limits slightly
+        
         # Ensure x-axis labels are integers (no decimals)
         self.ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
         
         # Format y-axes
-        self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.2f}'))
-        self.ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.2f}'))
+        self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.1f}'))
+        self.ax2.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:.1f}'))
         
         # Ensure right y-axis labels are visible
         self.ax2.tick_params(axis='y', labelcolor='#27605F')
@@ -136,6 +139,7 @@ class PlotPerformance(QWidget):
 
         # Reinitialize the secondary y-axis (d-prime)
         self.ax2.set_ylabel("d'", color='#9DB4C0')
+        self.ax2.set_ylim(-2, 2)  # Reset range for d'
         self.ax2.tick_params(axis='y', labelcolor='#27605F')
 
         # Redraw the canvas
