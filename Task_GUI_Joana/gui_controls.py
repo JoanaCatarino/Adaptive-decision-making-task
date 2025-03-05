@@ -101,6 +101,7 @@ class GuiControls:
         self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
 
         
+    
     #Piezo functions
     def setup_piezo_plots(self):
 
@@ -149,18 +150,18 @@ class GuiControls:
         self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
         
         if PlotClass:
-            # **Main tab plot**
+            # Main tab plot
             plt_layout1 = QVBoxLayout()
-            self.current_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
-            self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout1.addWidget(self.current_plot)
+            self.performance_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
+            self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout1.addWidget(self.performance_plot)
             self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
-    
-            # **Overview tab plot**
+
+            # Overview tab plot
             plt_layout2 = QVBoxLayout()
-            self.current_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
-            self.current_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout2.addWidget(self.current_plot_ov)
+            self.performance_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
+            self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout2.addWidget(self.performance_plot_ov)
             self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
             
             
@@ -175,27 +176,13 @@ class GuiControls:
         
     
     def update_plot(self, *args):
-        """Update the currently displayed plot dynamically with the correct arguments."""
-        if self.current_plot and hasattr(self.current_plot, 'update_plot'):
+        """Update the currently displayed plot dynamically."""
+        if hasattr(self, 'current_plot'):
             self.current_plot.update_plot(*args)
     
-        if self.current_plot_ov and hasattr(self.current_plot_ov, 'update_plot'):
+        if hasattr(self, 'current_plot_ov'):
             self.current_plot_ov.update_plot(*args)
-            
-    def reset_plot(self):
-        """Reset the currently displayed plot dynamically."""
-        if self.current_plot:
-           print("Deleting current plot")
-           self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-           self.current_plot.deleteLater()
-           self.current_plot = None
-
-        if self.current_plot_ov:
-            print("Deleting overview plot")
-            self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
-            self.current_plot_ov.deleteLater()
-            self.current_plot_ov = None
-        
+    
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
