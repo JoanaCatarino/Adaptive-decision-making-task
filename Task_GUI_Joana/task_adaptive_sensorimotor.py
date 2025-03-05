@@ -218,7 +218,26 @@ class AdaptiveSensorimotorTask:
         self.trial_limit = random.randint(5, 10)  # Random number of trials for new block - should be 40-60
         self.trials_in_block = 0  # Reset trial count for new block
         print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
-        print(f"Total trials in previous block: {self.total_trials}")    
+        
+    def update_block_color(self):
+        """Changes the background color of the active block and resets others."""
+        sound_color = "background-color: lightblue;"
+        action_left_color = "background-color: lightgreen;"
+        action_right_color = "background-color: lightcoral;"
+        reset_color = "background-color: none;"  # Reset color for inactive blocks
+    
+        # Reset previous styles
+        self.gui_controls.ui.box_SoundBlocks.setStyleSheet(reset_color)
+        self.gui_controls.ui.box_Action_L_blocks.setStyleSheet(reset_color)
+        self.gui_controls.ui.box_Action_R_blocks.setStyleSheet(reset_color)
+    
+        # Apply color to the active block
+        if self.current_block == "sound":
+            self.gui_controls.ui.box_SoundBlocks.setStyleSheet(sound_color)
+        elif self.current_block == "action-left":
+            self.gui_controls.ui.box_Action_L_blocks.setStyleSheet(action_left_color)
+        elif self.current_block == "action-right":
+            self.gui_controls.ui.box_Action_R_blocks.setStyleSheet(action_right_color)
     
     def start_trial(self):
         
