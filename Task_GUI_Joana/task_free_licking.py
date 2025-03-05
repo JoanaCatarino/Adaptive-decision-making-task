@@ -232,7 +232,7 @@ class FreeLickingTask:
                         self.gui_controls.update_licks_left(self.licks_left)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
     
         # Right piezo        
         if p2:
@@ -264,7 +264,7 @@ class FreeLickingTask:
                         self.gui_controls.update_licks_right(self.licks_right)
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
     
     
     def reward(self, side):

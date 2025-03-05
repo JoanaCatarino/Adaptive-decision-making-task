@@ -97,11 +97,11 @@ class GuiControls:
         self.piezo_timer.timeout.connect(self.update_piezo_plots)
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
-        # Initialize functions for the performance plot
-        #self.setup_lick_plot()
-        self.setup_performance_plot()
+        # Initialize performance plot dynamically
+        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
 
-
+        
+    
     #Piezo functions
     def setup_piezo_plots(self):
 
@@ -129,68 +129,60 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
-    def setup_lick_plot(self):
-        # Licks plot in the main tab
-        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout1.setContentsMargins(0, 0, 0, 0)
-        plt_layout1.setSpacing(0)
+    def setup_plots(self):
+        ''' Dynamically loads the correct plot type based on the selected task'''
         
-        self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
-        self.lick_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # Map task to corresponding plot types
+        plot_map = {
+            'Free Licking': PlotLicks,
+            'Spout Sampling': PlotLicks,
+            'Two-Choice Auditory Task': PlotPerformance,
+            'Adaptive Sensorimotor Task': PlotPerformance,
+            'Adaptive Sensorimotor Task w/ Distractor': PlotPerformance}
         
-        plt_layout1.addWidget(self.lick_plot)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
-        
-        # Licks plot in the overview tab
-        plt_layout2 = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout2.setContentsMargins(0, 0, 0, 0)
-        plt_layout2.setSpacing(0)
-        
-        self.lick_plot_ov = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
-        self.lick_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        plt_layout2.addWidget(self.lick_plot_ov)
-        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
+        # Get the selected task
+        selected_task = self.ui.ddm_Task.currentText()
 
-    
-    def update_lick_plot(self, total_licks, licks_left, licks_right, time):
-        if hasattr(self, 'lick_plot'):
-            self.lick_plot.update_plot(total_licks, licks_left, licks_right, time)
-            
-        if hasattr(self, 'lick_plot_ov'):
-            self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, time)
-            
-    
-    def setup_performance_plot(self):
-        # Licks plot in the main tab
-        plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout1.setContentsMargins(0, 0, 0, 0)
-        plt_layout1.setSpacing(0)
-        
-        self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
-        self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        plt_layout1.addWidget(self.performance_plot)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
-        
-        # Licks plot in the overview tab
-        plt_layout2 = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout2.setContentsMargins(0, 0, 0, 0)
-        plt_layout2.setSpacing(0)
-        
-        self.performance_plot_ov = PlotPerformance(parent=self.ui.OV_plt_AnimalPerformance)  # Create stair plot
-        self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        plt_layout2.addWidget(self.performance_plot_ov)
-        self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
+        # Get the appropriate plot class or None if the task doesn't require a plot
+        PlotClass = plot_map.get(selected_task)
 
-    
-    def update_performance_plot(self, total_trials, correct_trials, incorrect_trials):
-        if hasattr(self, 'performance_plot'):
-            self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
+        # **Clear existing layouts before adding new plots**
+        self.clear_layout(self.ui.plt_AnimalPerformance.layout())
+        self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
+        
+        if PlotClass:
+            # Main tab plot
+            plt_layout1 = QVBoxLayout()
+            self.performance_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
+            self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout1.addWidget(self.performance_plot)
+            self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
+
+            # Overview tab plot
+            plt_layout2 = QVBoxLayout()
+            self.performance_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
+            self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout2.addWidget(self.performance_plot_ov)
+            self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
             
-        if hasattr(self, 'performance_plot_ov'):
-            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)        
+            
+    def clear_layout(self, layout):
+        """Removes all widgets from a layout to prevent overlapping plots."""
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()  # Properly delete the widget to free memory
+        
+    
+    def update_plot(self, *args):
+    """Update the currently displayed plot dynamically."""
+    if hasattr(self, 'current_plot'):
+        self.current_plot.update_plot(*args)
+
+    if hasattr(self, 'current_plot_ov'):
+        self.current_plot_ov.update_plot(*args)
     
 
     def populate_ddm_animalID(self):

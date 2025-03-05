@@ -261,7 +261,7 @@ class TwoChoiceAuditoryTask:
                 self.save_data()
                 self.schedule_next_trial()
                 # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                self.gui_controls.update_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 return  # Exit trial 
            
             # Play sound  
@@ -284,7 +284,7 @@ class TwoChoiceAuditoryTask:
                 self.save_data()
                 self.schedule_next_trial()
                 # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                self.gui_controls.update_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
              
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -423,7 +423,7 @@ class TwoChoiceAuditoryTask:
                         self.save_data()
                         self.next_trial_eligible = True
                         # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        self.gui_controls.update_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                 
         
@@ -480,7 +480,7 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.save_data()
                         self.next_trial_eligible = True
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        self.gui_controls.update_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                    
 
@@ -498,7 +498,7 @@ class TwoChoiceAuditoryTask:
         self.save_data()
         self.next_trial_eligible = True
         # Update live stair plot
-        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        self.gui_controls.update_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
       
     
     def wait_for_response(self):
