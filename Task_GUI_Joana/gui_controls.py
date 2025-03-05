@@ -101,7 +101,6 @@ class GuiControls:
         self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
 
         
-    
     #Piezo functions
     def setup_piezo_plots(self):
 
@@ -146,22 +145,22 @@ class GuiControls:
         PlotClass = plot_map.get(selected_task)
 
         # **Clear existing layouts before adding new plots**
-        self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-        self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
+        #self.clear_layout(self.ui.plt_AnimalPerformance.layout())
+        #self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
         
         if PlotClass:
-            # Main tab plot
+            # **Main tab plot**
             plt_layout1 = QVBoxLayout()
-            self.performance_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
-            self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout1.addWidget(self.performance_plot)
+            self.current_plot = PlotClass(parent=self.ui.plt_AnimalPerformance)
+            self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout1.addWidget(self.current_plot)
             self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
-
-            # Overview tab plot
+    
+            # **Overview tab plot**
             plt_layout2 = QVBoxLayout()
-            self.performance_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
-            self.performance_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-            plt_layout2.addWidget(self.performance_plot_ov)
+            self.current_plot_ov = PlotClass(parent=self.ui.OV_plt_AnimalPerformance)
+            self.current_plot_ov.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            plt_layout2.addWidget(self.current_plot_ov)
             self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
             
             
@@ -176,19 +175,19 @@ class GuiControls:
         
     
     def update_plot(self, *args):
-        """Update the currently displayed plot dynamically."""
-        if hasattr(self, 'current_plot'):
+        """Update the currently displayed plot dynamically with the correct arguments."""
+        if self.current_plot and hasattr(self.current_plot, 'update_plot'):
             self.current_plot.update_plot(*args)
     
-        if hasattr(self, 'current_plot_ov'):
+        if self.current_plot_ov and hasattr(self.current_plot_ov, 'update_plot'):
             self.current_plot_ov.update_plot(*args)
             
     def reset_plot(self):
         """Reset the currently displayed plot dynamically."""
-        if hasattr(self, 'current_plot'):
+        if self.current_plot and hasattr(self.current_plot, 'reset_plot'):
             self.current_plot.reset_plot()
     
-        if hasattr(self, 'current_plot_ov'):
+        if self.current_plot_ov and hasattr(self.current_plot_ov, 'reset_plot'):
             self.current_plot_ov.reset_plot()
         
 
