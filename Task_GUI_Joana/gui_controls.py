@@ -130,7 +130,6 @@ class GuiControls:
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
     def setup_plots(self):
-        ''' Dynamically loads the correct plot type based on the selected task'''
         
         # Map task to corresponding plot types
         plot_map = {
