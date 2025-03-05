@@ -93,11 +93,7 @@ class PlotPerformance(QWidget):
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
-        self.ax2.clear()
-        
-        # Adjust layout to increase padding at the top
-        self.figure.subplots_adjust(top=0.85)  
-        self.figure.subplots_adjust(right=1)# 0.95
+        self.ax2.clear()        
         
         self.ax.step(trial_numbers, HR, where='post', color='black', linewidth=2, label='Hit Rate')
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
@@ -135,6 +131,7 @@ class PlotPerformance(QWidget):
         # Adjust layout to increase padding at the top
         self.figure.subplots_adjust(top=0.85)  
         self.figure.subplots_adjust(right=0.95)
+        self.figure.subplots_adjust(left=0.95)
 
         # Redraw Canvas
         self.ax.relim() 
