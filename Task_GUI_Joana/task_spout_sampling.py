@@ -92,8 +92,7 @@ class SpoutSamplingTask:
         self.gui_controls.update_licks_right(0)
         
         # Reset the performance plot
-        self.gui_controls.lick_plot.reset_plot() # plot main tab
-        self.gui_controls.lick_plot_ov.reset_plot() # plot overview tab
+        self.gui_controls.reset_plot()
         
         self.running = True
         self.tstart = time.time() # record the start time

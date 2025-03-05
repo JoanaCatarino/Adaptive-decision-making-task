@@ -182,7 +182,15 @@ class GuiControls:
     
         if hasattr(self, 'current_plot_ov'):
             self.current_plot_ov.update_plot(*args)
+            
+    def reset_plot(self):
+        """Reset the currently displayed plot dynamically."""
+        if hasattr(self, 'current_plot'):
+            self.current_plot.reset_plot()
     
+        if hasattr(self, 'current_plot_ov'):
+            self.current_plot_ov.reset_plot()
+        
 
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
