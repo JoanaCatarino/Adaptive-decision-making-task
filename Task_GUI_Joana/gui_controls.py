@@ -491,12 +491,19 @@ class GuiControls:
         
     def update_autom_rewards(self, autom_rewards):
         self.ui.box_AutomRewards.setText(f'{autom_rewards}')
+        
+    def update_sound_blocks(self, sound_block_count):
+        self.ui.box_SoundBlocks.setText(f'{sound_block_count}')
+        
+    def update_action_r_blocks(self, action_right_block_count):
+        self.ui.box_Action_R_blocks.setText(f'{action_right_block_count}')
+        
+    def update_action_l_blocks(self, action_left_block_count):
+        self.ui.box_Action_L_blocks.setText(f'{action_left_block_count}')
 
     
     def update_task_params(self):
-        
         # Input new variables in the Gui and update them real time in the current task
-        
             try:
                 # Get the values from the GUI
                 quiet_window = self.ui.txt_QuietWindow.text()
