@@ -89,7 +89,7 @@ class FreeLickingTask:
         self.gui_controls.update_licks_left(0)
         self.gui_controls.update_licks_right(0)
         
-        self.gui_controls.reset_plot()
+        self.gui_controls.reset_plots()
         
         self.running = True
         self.tstart = time.time() # record the start time
