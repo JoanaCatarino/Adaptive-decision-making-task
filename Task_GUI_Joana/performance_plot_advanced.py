@@ -53,6 +53,9 @@ class PlotPerformance(QWidget):
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
 
+         # Apply tight layout to ensure everything fits 
+         self.figure.tight_layout(pad=2.5)  #2.9 before        
+
         # Append Data
         trial_number = sum(self.total_trials)+1
         self.total_trials.append(total_trials)
