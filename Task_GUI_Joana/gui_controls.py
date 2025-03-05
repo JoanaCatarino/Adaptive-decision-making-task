@@ -380,8 +380,6 @@ class GuiControls:
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
 
-        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_plots)
-
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
         #self.start_camera()
@@ -406,6 +404,7 @@ class GuiControls:
 
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask(self, csv_file_path)
+            self.setup_plots()
 
         elif selected_task == 'Spout Sampling':
             self.current_task = SpoutSamplingTask(self, csv_file_path) 
