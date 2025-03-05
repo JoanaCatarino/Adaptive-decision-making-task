@@ -176,12 +176,12 @@ class GuiControls:
         
     
     def update_plot(self, *args):
-    """Update the currently displayed plot dynamically."""
-    if hasattr(self, 'current_plot'):
-        self.current_plot.update_plot(*args)
-
-    if hasattr(self, 'current_plot_ov'):
-        self.current_plot_ov.update_plot(*args)
+        """Update the currently displayed plot dynamically."""
+        if hasattr(self, 'current_plot'):
+            self.current_plot.update_plot(*args)
+    
+        if hasattr(self, 'current_plot_ov'):
+            self.current_plot_ov.update_plot(*args)
     
 
     def populate_ddm_animalID(self):
