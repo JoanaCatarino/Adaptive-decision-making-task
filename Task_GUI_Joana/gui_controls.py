@@ -145,8 +145,8 @@ class GuiControls:
         PlotClass = plot_map.get(selected_task)
 
         # **Clear existing layouts before adding new plots**
-        #self.clear_layout(self.ui.plt_AnimalPerformance.layout())
-        #self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
+        self.clear_layout(self.ui.plt_AnimalPerformance.layout())
+        self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
         
         if PlotClass:
             # **Main tab plot**
