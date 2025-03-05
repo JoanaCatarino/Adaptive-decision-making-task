@@ -129,6 +129,9 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_sound_10KHz(0)
         self.gui_controls.update_autom_rewards(0)
         
+        self.gui_controls.performance_plot.reset_plot() # Plot main tab
+        self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
+        
         self.running = True
         self.tstart = time.time() # record the start time
         
