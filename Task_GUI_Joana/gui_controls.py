@@ -137,7 +137,7 @@ class GuiControls:
             'Spout Sampling': PlotLicks,
             'Two-Choice Auditory Task': PlotPerformance,
             'Adaptive Sensorimotor Task': PlotPerformance,
-            'Adaptive Sensorimotor Task w/ Distractor': PlotPerformance}
+            'Adaptive Sensorimotor Task w/ Distractor': PlotPerformance,}
         
         # Get the selected task
         selected_task = self.ui.ddm_Task.currentText()
@@ -182,6 +182,23 @@ class GuiControls:
     
         if hasattr(self, 'current_plot_ov'):
             self.current_plot_ov.update_plot(*args)
+            
+    def reset_plot(self):
+        """Reset the currently displayed plot dynamically and clear layouts."""
+        print("RESETTING PLOT...")  # Debugging statement
+    
+        # Remove current plot from layout and delete it
+        if self.current_plot:
+            print("Deleting current plot from GUI")
+            self.clear_layout(self.ui.plt_AnimalPerformance.layout())
+            self.current_plot.deleteLater()
+            self.current_plot = None
+    
+        if self.current_plot_ov:
+            print("Deleting overview plot from GUI")
+            self.clear_layout(self.ui.OV_plt_AnimalPerformance.layout())
+            self.current_plot_ov.deleteLater()
+            self.current_plot_ov = None
     
 
     def populate_ddm_animalID(self):
@@ -364,6 +381,8 @@ class GuiControls:
         if self.current_task and hasattr(self.current_task, 'stop'):
             self.stop_task()
 
+        self.setup_plots()
+
         # Ensure the camera is stopped and restarted
         #self.stop_camera()
         #self.start_camera()
@@ -436,6 +455,9 @@ class GuiControls:
 
         # Disable test rig controls
         self.disable_controls()
+        
+        # Reset and remove the plot properly
+        self.reset_plot()
 
         # Update start/stop button states
         self.update_button_states()
