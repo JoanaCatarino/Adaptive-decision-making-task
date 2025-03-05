@@ -234,7 +234,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_left(self.licks_left)
                             
                             # Update live stair plot
-                            self.gui_controls.update_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         
                         else:
                             print ('Lick left but reward is right')
@@ -270,7 +270,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_right(self.licks_right)
                             
                             # Update live stair plot
-                            self.gui_controls.update_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
         
                     else:
                         print('Lick right but reward is left')
