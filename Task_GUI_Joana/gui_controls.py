@@ -170,10 +170,6 @@ class GuiControls:
         self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)  # Create stair plot
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
-        # Apply layout to ensure correct proportions
-        self.performance_plot.figure.tight_layout(pad=2.9)
-        self.performance_plot.figure.subplots_adjust(top=0.85, right=0.95)
-        
         plt_layout1.addWidget(self.performance_plot)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout1)
         

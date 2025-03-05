@@ -64,7 +64,6 @@ class PlotLicks(QWidget):
         self.ax.set_ylabel("Licks", labelpad=9)
         self.ax.grid(True)
         
-        
         # Set y-axis tick labels to whole numbers
         self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x)}'))
         

@@ -95,9 +95,9 @@ class PlotPerformance(QWidget):
         self.ax.clear()
         self.ax2.clear()
         
-        # **Reapply layout settings to maintain correct aspect ratio**
-        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
-        self.figure.tight_layout(pad=2.9)  # Reapply tight layout
+        # Adjust layout to increase padding at the top
+        self.figure.subplots_adjust(top=0.85)  
+        self.figure.subplots_adjust(right=0.95)
         
         self.ax.step(trial_numbers, HR, where='post', color='black', linewidth=2, label='Hit Rate')
         self.ax.step(trial_numbers, FA, where='post', color='red', linewidth=2, label='False Alarm')
