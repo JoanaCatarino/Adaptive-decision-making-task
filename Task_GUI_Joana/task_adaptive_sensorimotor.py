@@ -315,6 +315,8 @@ class AdaptiveSensorimotorTask:
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
+                # Update live stair plot
+                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 return  # Exit trial 
            
             # Play sound  
@@ -333,6 +335,8 @@ class AdaptiveSensorimotorTask:
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
+                # Update live stair plot
+                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -450,6 +454,8 @@ class AdaptiveSensorimotorTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
+                        # Update live stair plot
+                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                 
         
@@ -491,6 +497,8 @@ class AdaptiveSensorimotorTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
+                        # Update live stair plot
+                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
                    
 
@@ -504,6 +512,8 @@ class AdaptiveSensorimotorTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.gui_controls.update_omissions(self.omissions)
         self.next_trial_eligible = True
+        # Update live stair plot
+        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
       
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
