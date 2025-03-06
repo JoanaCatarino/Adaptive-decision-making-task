@@ -218,7 +218,7 @@ class AdaptiveSensorimotorTask:
                 if quiet_left and quiet_right:
                     return True # Animal was quiet
                 else:
-                    print('Licks detected during Quiet Window')
+                    #print('Licks detected during Quiet Window')
                     
             else:
                 print('Waiting for enough data to check quiet window')
@@ -483,9 +483,9 @@ class AdaptiveSensorimotorTask:
         self.trialstarted = False
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
+        self.omissions += 1
         self.trial_duration = (self.tend-self.ttrial)
         self.gui_controls.update_trial_duration(self.trial_duration)
-        self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
         self.next_trial_eligible = True
       
