@@ -150,7 +150,7 @@ class AdaptiveSensorimotorTask:
         self.tstart = time.time() # record the start time
         
         self.sound_block_count +=1 # Count the first block
-        self.gui_controls.update_sound_blocks(0)
+        self.gui_controls.update_sound_blocks(self.sound_block_count)
         self.last_block = 'sound'
         
         # Start main loop in a separate thread
