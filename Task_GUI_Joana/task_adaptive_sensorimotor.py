@@ -236,6 +236,11 @@ class AdaptiveSensorimotorTask:
         return accuracy >= 0.85
     
     def switch_block(self):
+        
+        # Switch between sound and action blocks only if criteroa is met (85% correct)
+        if not self.should_switch_block():
+          print("Block switch criteria not met. Remaining in the current block.")
+          return  # Stay in the current block if criteria are not met
         """Switch between sound and action blocks and update block counters."""
         if self.current_block == "sound":
             self.current_block = random.choice(["action-left", "action-right"])
