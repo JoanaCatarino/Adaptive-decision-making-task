@@ -238,7 +238,7 @@ class AdaptiveSensorimotorTask:
     def switch_block(self):
         
         # Switch between sound and action blocks only if criteroa is met (85% correct)
-        if not self.should_switch_block():
+        while not self.should_switch_block():
           print("Block switch criteria not met. Remaining in the current block.")
           return  # Stay in the current block if criteria are not met
         """Switch between sound and action blocks and update block counters."""
@@ -266,7 +266,6 @@ class AdaptiveSensorimotorTask:
         print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
         print(f"Block counts - Sound: {self.sound_block_count}, Action-Left: {self.action_left_block_count}, Action-Right: {self.action_right_block_count}")
 
-        
     
     def start_trial(self):
         
