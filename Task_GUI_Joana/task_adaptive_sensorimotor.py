@@ -56,7 +56,7 @@ class AdaptiveSensorimotorTask:
         # Block parameters
         self.current_block = 'sound'  # Always start with sound block
         self.trials_in_block = 0
-        self.trial_limit = random.randint(5, 10)  # Random trial count per block - should be 40-60
+        self.trial_limit = random.randint(10, 15)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
         
         # Block counters
@@ -217,12 +217,23 @@ class AdaptiveSensorimotorTask:
                
                 if quiet_left and quiet_right:
                     return True # Animal was quiet
-                #else:
-                    #print('Licks detected during Quiet Window')
+                else:
+                    print('Licks detected during Quiet Window')
                     
             else:
                 print('Waiting for enough data to check quiet window')
                 
+    
+    def should_switch_block(self):
+        """Checks if block switch criteria are met: 85% correct in last 20 trials."""
+        if len(self.trials) < 5: #Should be 20
+            return False  # Not enough trials to evaluate
+        
+        last_20_trials = self.trials[-5:] #Should be 20
+        correct_count = sum(1 for trial in last_20_trials if trial.get('correct', False))
+        accuracy = correct_count / 5 #Should be 20
+        
+        return accuracy >= 0.85
     
     def switch_block(self):
         """Switch between sound and action blocks and update block counters."""
@@ -231,7 +242,7 @@ class AdaptiveSensorimotorTask:
         else:
             self.current_block = "sound"
         
-        self.trial_limit = random.randint(5, 10)  # Random number of trials for new block - should be 40-60
+        self.trial_limit = random.randint(10, 15)  # Random number of trials for new block - should be 40-60
         self.trials_in_block = 0  # Reset trial count for new block
         
         # Update block counters only once per block switch
