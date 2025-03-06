@@ -291,7 +291,7 @@ class AdaptiveSensorimotorTask:
                 self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
                 self.correct_spout = "right"  # Always reward right, punish left
             print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
-        
+            self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block} | {self.current_tone} - {self.correct_spout}")
         
             # Update Sound Counters
             if self.current_tone == '5KHz':
@@ -559,10 +559,3 @@ class AdaptiveSensorimotorTask:
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
-                
-
-    
-
-        
-        
-    
