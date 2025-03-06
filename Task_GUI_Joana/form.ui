@@ -3298,7 +3298,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_TrialDuration">
       <property name="geometry">
        <rect>
-        <x>571</x>
+        <x>570</x>
         <y>606</y>
         <width>81</width>
         <height>16</height>
@@ -3318,9 +3318,9 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="box_TrialDuration">
       <property name="geometry">
        <rect>
-        <x>658</x>
+        <x>657</x>
         <y>606</y>
-        <width>51</width>
+        <width>50</width>
         <height>20</height>
        </rect>
       </property>
@@ -3343,7 +3343,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_VO_ms_2">
       <property name="geometry">
        <rect>
-        <x>717</x>
+        <x>710</x>
         <y>606</y>
         <width>16</width>
         <height>20</height>
@@ -3487,6 +3487,31 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="box_CurrentTrial">
+      <property name="geometry">
+       <rect>
+        <x>744</x>
+        <y>605</y>
+        <width>311</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(214, 236, 238);</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
@@ -3549,6 +3574,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_5KHzTrials</zorder>
      <zorder>lbl_TotalTrials</zorder>
      <zorder>box_TotalTrials</zorder>
+     <zorder>box_CurrentTrial</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
@@ -3559,7 +3585,7 @@ color: rgb(112, 112, 112);</string>
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>301</width>
+        <width>331</width>
         <height>811</height>
        </rect>
       </property>
@@ -3619,7 +3645,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_Omissions">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>105</x>
          <y>764</y>
          <width>71</width>
          <height>20</height>
@@ -3637,7 +3663,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_CorrectTrials">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>185</x>
          <y>701</y>
          <width>41</width>
          <height>20</height>
@@ -3662,7 +3688,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_IncorrectTrials">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>185</x>
          <y>734</y>
          <width>41</width>
          <height>20</height>
@@ -3687,7 +3713,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_TotalTrials">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>185</x>
          <y>640</y>
          <width>41</width>
          <height>20</height>
@@ -3712,7 +3738,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_TotalTrials">
        <property name="geometry">
         <rect>
-         <x>97</x>
+         <x>102</x>
          <y>639</y>
          <width>71</width>
          <height>16</height>
@@ -3730,7 +3756,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_Omissions">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>185</x>
          <y>767</y>
          <width>41</width>
          <height>20</height>
@@ -3755,7 +3781,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_IncorrectTrials">
        <property name="geometry">
         <rect>
-         <x>73</x>
+         <x>78</x>
          <y>734</y>
          <width>91</width>
          <height>16</height>
@@ -3773,7 +3799,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_CorrectTrials">
        <property name="geometry">
         <rect>
-         <x>81</x>
+         <x>86</x>
          <y>702</y>
          <width>81</width>
          <height>16</height>
@@ -3791,9 +3817,9 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_CurrentTrial">
        <property name="geometry">
         <rect>
-         <x>59</x>
+         <x>18</x>
          <y>600</y>
-         <width>81</width>
+         <width>80</width>
          <height>16</height>
         </rect>
        </property>
@@ -3812,9 +3838,9 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_CurrentTrial">
        <property name="geometry">
         <rect>
-         <x>151</x>
+         <x>101</x>
          <y>600</y>
-         <width>91</width>
+         <width>200</width>
          <height>20</height>
         </rect>
        </property>
@@ -3838,7 +3864,7 @@ color: rgb(112, 112, 112);</string>
         <rect>
          <x>15</x>
          <y>112</y>
-         <width>271</width>
+         <width>301</width>
          <height>221</height>
         </rect>
        </property>
@@ -3854,7 +3880,7 @@ color: rgb(112, 112, 112);</string>
         <rect>
          <x>14</x>
          <y>347</y>
-         <width>271</width>
+         <width>301</width>
          <height>221</height>
         </rect>
        </property>
@@ -3868,7 +3894,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_lbl_TotalLicks">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>105</x>
          <y>671</y>
          <width>71</width>
          <height>16</height>
@@ -3886,7 +3912,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QLabel" name="OV_box_TotalLicks">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>185</x>
          <y>670</y>
          <width>41</width>
          <height>20</height>
@@ -3911,7 +3937,7 @@ color: rgb(112, 112, 112);</string>
       <widget class="QWidget" name="OV_bkg_Task" native="true">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>27</x>
          <y>30</y>
          <width>271</width>
          <height>21</height>
