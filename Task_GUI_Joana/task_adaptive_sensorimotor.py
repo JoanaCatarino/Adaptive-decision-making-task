@@ -223,7 +223,7 @@ class AdaptiveSensorimotorTask:
             else:
                 print('Waiting for enough data to check quiet window')
                 
-    
+    '''
     def should_switch_block(self):
         """Checks if block switch criteria are met: 85% correct in last 20 trials."""
         if len(self.trials) < 5: #Should be 20
@@ -234,13 +234,13 @@ class AdaptiveSensorimotorTask:
         accuracy = correct_count / 5 #Should be 20
         
         return accuracy >= 0.85
-    
+    '''
     def switch_block(self):
         
         # Switch between sound and action blocks only if criteroa is met (85% correct)
-        while not self.should_switch_block():
-          print("Block switch criteria not met. Remaining in the current block.")
-          return  # Stay in the current block if criteria are not met
+        #while not self.should_switch_block():
+          #print("Block switch criteria not met. Remaining in the current block.")
+          #return  # Stay in the current block if criteria are not met
         """Switch between sound and action blocks and update block counters."""
         if self.current_block == "sound":
             self.current_block = random.choice(["action-left", "action-right"])
