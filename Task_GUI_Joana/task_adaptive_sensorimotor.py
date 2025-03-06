@@ -227,7 +227,7 @@ class AdaptiveSensorimotorTask:
                     
             else:
                 print('Waiting for enough data to check quiet window')
-                
+             
     def should_switch_block(self):
         """Check if the last 5 valid trials meet the 85% correct threshold."""
         valid_trials = [trial for trial in self.trial_history if trial is not None]
@@ -244,9 +244,9 @@ class AdaptiveSensorimotorTask:
 
     def switch_block(self):
         # Switch between sound and action blocks only if criteroa is met (85% correct)
-        if not self.should_switch_block():
-            print("Block switch criteria not met. Staying in the current block.")
-            return  # Stay in the current block if criteria not met
+        #if not self.should_switch_block():
+            #print("Block switch criteria not met. Staying in the current block.")
+            #return  # Stay in the current block if criteria not met
         """Switch between sound and action blocks and update block counters."""
         if self.current_block == "sound":
             self.current_block = random.choice(["action-left", "action-right"])
@@ -585,3 +585,49 @@ class AdaptiveSensorimotorTask:
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
+            
+    '''
+    def save_trial_data(self):
+        
+        trial_data = {
+            'trial_number': self.total_trials,
+            'trial_start': self.ttrial,
+            'trial_end': self.tend,
+            'trial_duration': self.trial_duration,
+            'ITI': self.ITI,
+            'block': self.current_block,
+            'light_On': 1,  # Assume light is always ON for trials
+            'ww_completed': 1 if not self.early_licks else 0,
+            'early_lick': 1 if self.early_licks else 0,
+            'stim': 1,  # Assuming sound is always played in trials
+            'stim_duration': 1,  # Set actual sound duration if different
+            '5KHz': 1 if self.current_tone == '5KHz' else 0,
+            '10KHz': 1 if self.current_tone == '10KHz' else 0,
+            'lick': 1 if self.first_lick else 0,
+            'left_spout': 1 if self.first_lick == 'left' else 0,
+            'right_spout': 1 if self.first_lick == 'right' else 0,
+            'lick_time': self.tlick if self.first_lick else None,
+            'reward': 1 if self.first_lick and self.correct_spout == self.first_lick else 0,
+            'punishment': 1 if self.first_lick and self.correct_spout != self.first_lick else 0,
+            'punish_duration': 0.5 if self.first_lick and self.correct_spout != self.first_lick else 0,
+            'omission': 1 if self.first_lick is None else 0,
+            'RW': self.RW,
+            'QW': self.QW,
+            'WW': self.WW,
+            'valve_opening': self.valve_opening,
+            'ITI_min': self.ITI_min,
+            'ITI_max': self.ITI_max,
+            'threshold_left': self.threshold_left,
+            'threshold_right': self.threshold_right,
+            'autom_reward': 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
+            'no_punishment': 0,  # Implement based on GUI settings
+            'ignore_licks': 0,  # Implement based on GUI settings
+            'session_start': self.tstart
+        }
+    
+        # Append to CSV
+        with open(self.file_path, mode='a', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
+            writer.writerow(trial_data)
+            
+    '''
