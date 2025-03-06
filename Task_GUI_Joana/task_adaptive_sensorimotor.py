@@ -59,6 +59,7 @@ class AdaptiveSensorimotorTask:
         self.trial_limit = random.randint(5, 10)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
         self.sound_block_count +=1 # Count the first block
+        self.last_block = 'sound'
         
         # Block counters
         self.sound_block_count = 0
@@ -140,6 +141,9 @@ class AdaptiveSensorimotorTask:
         self.gui_controls.update_sound_5KHz(0)
         self.gui_controls.update_sound_10KHz(0)
         self.gui_controls.update_autom_rewards(0)
+        self.gui_controls.update_sound_blocks(0)
+        self.gui_controls.update_action_l_blocks(0)
+        self.gui_controls.update_action_r_blocks(0)
         
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
