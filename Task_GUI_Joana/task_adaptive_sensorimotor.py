@@ -217,7 +217,7 @@ class AdaptiveSensorimotorTask:
                
                 if quiet_left and quiet_right:
                     return True # Animal was quiet
-                else:
+                #else:
                     #print('Licks detected during Quiet Window')
                     
             else:
