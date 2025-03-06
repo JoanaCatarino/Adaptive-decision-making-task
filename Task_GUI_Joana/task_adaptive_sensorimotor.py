@@ -58,12 +58,17 @@ class AdaptiveSensorimotorTask:
         self.trials_in_block = 0
         self.trial_limit = random.randint(10, 15)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
+        self.trial_history = []  # Stores last 5 trial results
         
         # Block counters
         self.sound_block_count = 0
         self.action_left_block_count = 0
         self.action_right_block_count = 0
         self.last_block = None  # Track last block to prevent duplicate counting
+        
+        # Sliding window for block switching (last 5 trials) # Should be last 20 trials
+        self.recent_correct_trials = 0
+        self.recent_total_trials = 0
         
         # Counters
         self.total_trials = 0
@@ -223,24 +228,25 @@ class AdaptiveSensorimotorTask:
             else:
                 print('Waiting for enough data to check quiet window')
                 
-    '''
     def should_switch_block(self):
-        """Checks if block switch criteria are met: 85% correct in last 20 trials."""
-        if len(self.trials) < 5: #Should be 20
-            return False  # Not enough trials to evaluate
-        
-        last_20_trials = self.trials[-5:] #Should be 20
-        correct_count = sum(1 for trial in last_20_trials if trial.get('correct', False))
-        accuracy = correct_count / 5 #Should be 20
-        
-        return accuracy >= 0.85
-    '''
+        """Check if the last 5 valid trials meet the 85% correct threshold."""
+        valid_trials = [trial for trial in self.trial_history if trial is not None]
+    
+        if len(valid_trials) < 5:
+            return False  # Not enough valid trials to evaluate
+    
+        recent_trials = valid_trials[-5:]  # Get last 5 valid trials
+        correct_trials = sum(recent_trials)  # Count correct ones
+        accuracy = (correct_trials / len(recent_trials)) * 100  # Calculate accuracy dynamically
+    
+        return accuracy >= 85
+
+
     def switch_block(self):
-        
         # Switch between sound and action blocks only if criteroa is met (85% correct)
-        #while not self.should_switch_block():
-          #print("Block switch criteria not met. Remaining in the current block.")
-          #return  # Stay in the current block if criteria are not met
+        if not self.should_switch_block():
+            print("Block switch criteria not met. Staying in the current block.")
+            return  # Stay in the current block if criteria not met
         """Switch between sound and action blocks and update block counters."""
         if self.current_block == "sound":
             self.current_block = random.choice(["action-left", "action-right"])
@@ -416,6 +422,8 @@ class AdaptiveSensorimotorTask:
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
         
+        trial_result = None  # Default to None (omission)
+        
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
@@ -437,6 +445,7 @@ class AdaptiveSensorimotorTask:
                             self.total_licks += 1
                             self.licks_left += 1
                             self.correct_trials += 1
+                            self.trial_history.append(1)  
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
@@ -445,6 +454,7 @@ class AdaptiveSensorimotorTask:
                             self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
+                            self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.timer_3.cancel()
@@ -480,6 +490,7 @@ class AdaptiveSensorimotorTask:
                             self.total_licks += 1
                             self.licks_right += 1
                             self.correct_trials += 1
+                            self.trial_history.append(1)  
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
@@ -488,6 +499,7 @@ class AdaptiveSensorimotorTask:
                             self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
+                            self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.timer_3.cancel()
@@ -500,6 +512,16 @@ class AdaptiveSensorimotorTask:
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
+                    
+        # Only add if it's a valid trial (correct or incorrect, not None)
+        if trial_result is not None:
+            self.trial_history.append(trial_result)
+            if len(self.trial_history) > 5:
+                self.trial_history.pop(0)  # Keep only last 5 trials
+
+        # Check for block switch
+        if self.trials_in_block >= self.trial_limit:
+            self.switch_block()
                    
 
     def omission_callback(self):
@@ -514,6 +536,10 @@ class AdaptiveSensorimotorTask:
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        
+        # Check for block switch
+        if self.trials_in_block >= self.trial_limit:
+         self.switch_block()
       
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
