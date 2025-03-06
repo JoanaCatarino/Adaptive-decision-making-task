@@ -59,6 +59,12 @@ class AdaptiveSensorimotorTask:
         self.trial_limit = random.randint(5, 10)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
         
+        # Block counters
+        self.sound_block_count = 0
+        self.action_left_block_count = 0
+        self.action_right_block_count = 0
+        self.last_block = None  # Track last block to prevent duplicate counting
+        
         # Counters
         self.total_trials = 0
         self.total_licks = 0
@@ -117,6 +123,9 @@ class AdaptiveSensorimotorTask:
         self.sound_5KHz = 0
         self.sound_10KHz = 0
         self.autom_rewards = 0
+        self.sound_block_count = 0
+        self.action_left_block_count = 0
+        self.action_right_block_count = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -209,7 +218,7 @@ class AdaptiveSensorimotorTask:
                 
     
     def switch_block(self):
-        """Switch between sound and action blocks."""
+        """Switch between sound and action blocks and update block counters."""
         if self.current_block == "sound":
             self.current_block = random.choice(["action-left", "action-right"])
         else:
@@ -217,27 +226,24 @@ class AdaptiveSensorimotorTask:
         
         self.trial_limit = random.randint(5, 10)  # Random number of trials for new block - should be 40-60
         self.trials_in_block = 0  # Reset trial count for new block
-        print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
         
-    def update_block_color(self):
-        """Changes the background color of the active block and resets others."""
-        sound_color = "background-color: lightblue;"
-        action_left_color = "background-color: lightgreen;"
-        action_right_color = "background-color: lightcoral;"
-        reset_color = "background-color: none;"  # Reset color for inactive blocks
-    
-        # Reset previous styles
-        self.gui_controls.ui.box_SoundBlocks.setStyleSheet(reset_color)
-        self.gui_controls.ui.box_Action_L_blocks.setStyleSheet(reset_color)
-        self.gui_controls.ui.box_Action_R_blocks.setStyleSheet(reset_color)
-    
-        # Apply color to the active block
-        if self.current_block == "sound":
-            self.gui_controls.ui.box_SoundBlocks.setStyleSheet(sound_color)
-        elif self.current_block == "action-left":
-            self.gui_controls.ui.box_Action_L_blocks.setStyleSheet(action_left_color)
-        elif self.current_block == "action-right":
-            self.gui_controls.ui.box_Action_R_blocks.setStyleSheet(action_right_color)
+        # Update block counters only once per block switch
+        if self.current_block != self.last_block:
+            if self.current_block == "sound":
+                self.sound_block_count += 1
+                self.gui_controls.update_sound_blocks(self.sound_block_count)
+            elif self.current_block == "action-left":
+                self.action_left_block_count += 1
+                self.gui_controls.update_action_l_blocks(self.action_left_block_count)
+            elif self.current_block == "action-right":
+                self.action_right_block_count += 1
+                self.gui_controls.update_action_r_blocks(self.action_right_block_count)
+            self.last_block = self.current_block  # Prevent duplicate counting
+        
+        print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
+        print(f"Block counts - Sound: {self.sound_block_count}, Action-Left: {self.action_left_block_count}, Action-Right: {self.action_right_block_count}")
+
+        
     
     def start_trial(self):
         
