@@ -639,7 +639,7 @@ class AdaptiveSensorimotorTask:
             'ignore_licks': 1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
             'session_start': self.tstart}
         return trial_data
-    '''
+    
     def save_data(self):
        # Collect all trial data
        trial_data = self.collect_trial_data()
@@ -647,7 +647,7 @@ class AdaptiveSensorimotorTask:
        # Store and save
        self.trials.append(trial_data)
        self.append_trial_to_csv(trial_data)  # Save to CSV
-    ''' 
+     
     def append_trial_to_csv(self, trial_data):
       """ Append trial data to the CSV file. """
       file_exists = os.path.isfile(self.file_path)
