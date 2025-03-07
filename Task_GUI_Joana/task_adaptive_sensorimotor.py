@@ -11,7 +11,6 @@ import time
 import csv
 import os
 import random
-import math # For NaN values
 from PyQt5.QtCore import QTimer
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
@@ -641,9 +640,10 @@ class AdaptiveSensorimotorTask:
             self.tstart
         ]
         
+        # Replace None or missing values with NaN
+        trial_data = [value if value is not None else np.nan for value in trial_data]
+        
         # Append data to the CSV file
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(trial_data)
-    
-    
+            writer.writerow(trial_data)    
