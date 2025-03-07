@@ -602,17 +602,11 @@ class AdaptiveSensorimotorTask:
     def save_trial_data(self):
         
         # Determine if a reward was given
-        was_rewarded = (
-            (self.first_lick and self.correct_spout == self.first_lick) or
-            self.gui_controls.ui.chk_AutomaticRewards.isChecked()
-        )
+        was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick) or
+            self.gui_controls.ui.chk_AutomaticRewards.isChecked())
         
         # Determine if punishment was given
-        was_punished = (
-            self.first_lick and self.correct_spout != self.first_lick
-        )
-        
-        
+        was_punished = (self.first_lick and self.correct_spout != self.first_lick)
         
         trial_data = {
             'trial_number': self.total_trials,
@@ -643,9 +637,9 @@ class AdaptiveSensorimotorTask:
             'autom_reward': 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
             'no_punishment': 1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  # Implement based on GUI settings
             'ignore_licks': 1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
-            'session_start': self.tstart
-        }
-    
+            'session_start': self.tstart}
+        return trial_data
+    '''
     def save_data(self):
        # Collect all trial data
        trial_data = self.collect_trial_data()
@@ -653,7 +647,7 @@ class AdaptiveSensorimotorTask:
        # Store and save
        self.trials.append(trial_data)
        self.append_trial_to_csv(trial_data)  # Save to CSV
-        
+    ''' 
     def append_trial_to_csv(self, trial_data):
       """ Append trial data to the CSV file. """
       file_exists = os.path.isfile(self.file_path)
