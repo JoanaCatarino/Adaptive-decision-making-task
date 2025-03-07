@@ -244,7 +244,7 @@ class AdaptiveSensorimotorTask:
 
     def switch_block(self):
         # Switch between sound and action blocks only if criteroa is met (85% correct)
-        #if not self.should_switch_block():
+        # if not self.should_switch_block():
             #print("Block switch criteria not met. Staying in the current block.")
             #return  # Stay in the current block if criteria not met
         """Switch between sound and action blocks and update block counters."""
@@ -646,9 +646,16 @@ class AdaptiveSensorimotorTask:
             'session_start': self.tstart
         }
     
-        # Append to CSV
-        with open(self.file_path, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
-            writer.writerow(trial_data)
-            
-    '''
+      
+    def append_trial_to_csv(self, trial_data):
+      """ Append trial data to the CSV file. """
+      file_exists = os.path.isfile(self.file_path)
+      
+      # Replace None or empty values with NaN
+      trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
+      
+      with open(self.file_path, mode='a', newline='') as file:
+          writer = csv.DictWriter(file, fieldnames=trial_data.keys())
+          if not file_exists:
+              writer.writeheader()  # Write header only if file does not exist
+          writer.writerow(trial_data)  # Append trial data      
