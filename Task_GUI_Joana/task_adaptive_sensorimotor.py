@@ -646,7 +646,14 @@ class AdaptiveSensorimotorTask:
             'session_start': self.tstart
         }
     
+    def save_data(self):
+       # Collect all trial data
+       trial_data = self.collect_trial_data()
       
+       # Store and save
+       self.trials.append(trial_data)
+       self.append_trial_to_csv(trial_data)  # Save to CSV
+        
     def append_trial_to_csv(self, trial_data):
       """ Append trial data to the CSV file. """
       file_exists = os.path.isfile(self.file_path)
