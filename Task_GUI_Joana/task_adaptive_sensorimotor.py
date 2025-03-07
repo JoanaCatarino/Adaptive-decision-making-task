@@ -323,6 +323,8 @@ class AdaptiveSensorimotorTask:
                 self.schedule_next_trial()
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                # Save trial data
+                self.save_trial_data()
                 return  # Exit trial 
            
             # Play sound  
@@ -343,6 +345,9 @@ class AdaptiveSensorimotorTask:
                 self.schedule_next_trial()
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                # Save trial data
+                self.save_trial_data()
+                
                 
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -466,7 +471,10 @@ class AdaptiveSensorimotorTask:
                         self.next_trial_eligible = True
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        # Save trial data
+                        self.save_trial_data()
                         return
+                    
                 
         
         # Right piezo        
@@ -511,6 +519,8 @@ class AdaptiveSensorimotorTask:
                         self.next_trial_eligible = True
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        # Save trial data
+                        self.save_trial_data()
                         return
                     
         # Only add if it's a valid trial (correct or incorrect, not None)
@@ -536,6 +546,8 @@ class AdaptiveSensorimotorTask:
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        # Save trial data
+        self.save_trial_data()
         
         # Check for block switch
         if self.trials_in_block >= self.trial_limit:
@@ -586,8 +598,21 @@ class AdaptiveSensorimotorTask:
              
             self.detect_licks()
             
-    '''
+   
     def save_trial_data(self):
+        
+        # Determine if a reward was given
+        was_rewarded = (
+            (self.first_lick and self.correct_spout == self.first_lick) or
+            self.gui_controls.ui.chk_AutomaticRewards.isChecked()
+        )
+        
+        # Determine if punishment was given
+        was_punished = (
+            self.first_lick and self.correct_spout != self.first_lick
+        )
+        
+        
         
         trial_data = {
             'trial_number': self.total_trials,
@@ -596,20 +621,16 @@ class AdaptiveSensorimotorTask:
             'trial_duration': self.trial_duration,
             'ITI': self.ITI,
             'block': self.current_block,
-            'light_On': 1,  # Assume light is always ON for trials
-            'ww_completed': 1 if not self.early_licks else 0,
             'early_lick': 1 if self.early_licks else 0,
             'stim': 1,  # Assuming sound is always played in trials
-            'stim_duration': 1,  # Set actual sound duration if different
             '5KHz': 1 if self.current_tone == '5KHz' else 0,
             '10KHz': 1 if self.current_tone == '10KHz' else 0,
             'lick': 1 if self.first_lick else 0,
             'left_spout': 1 if self.first_lick == 'left' else 0,
             'right_spout': 1 if self.first_lick == 'right' else 0,
             'lick_time': self.tlick if self.first_lick else None,
-            'reward': 1 if self.first_lick and self.correct_spout == self.first_lick else 0,
-            'punishment': 1 if self.first_lick and self.correct_spout != self.first_lick else 0,
-            'punish_duration': 0.5 if self.first_lick and self.correct_spout != self.first_lick else 0,
+            'reward': 1 if was_rewarded else 0,
+            'punishment': 1 if was_punished else 0,
             'omission': 1 if self.first_lick is None else 0,
             'RW': self.RW,
             'QW': self.QW,
@@ -620,8 +641,8 @@ class AdaptiveSensorimotorTask:
             'threshold_left': self.threshold_left,
             'threshold_right': self.threshold_right,
             'autom_reward': 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
-            'no_punishment': 0,  # Implement based on GUI settings
-            'ignore_licks': 0,  # Implement based on GUI settings
+            'no_punishment': 1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  # Implement based on GUI settings
+            'ignore_licks': 1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
             'session_start': self.tstart
         }
     
