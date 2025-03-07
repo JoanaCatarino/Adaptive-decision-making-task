@@ -599,7 +599,7 @@ class AdaptiveSensorimotorTask:
             self.detect_licks()
             
    
-    def collect_trial_data(self):
+    def save_data(self):
         
         # Determine if a reward was given
         was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick) or
@@ -608,55 +608,41 @@ class AdaptiveSensorimotorTask:
         # Determine if punishment was given
         was_punished = (self.first_lick and self.correct_spout != self.first_lick)
         
-        trial_data = {
-            'trial_number': self.total_trials,
-            'trial_start': self.ttrial,
-            'trial_end': self.tend,
-            'trial_duration': self.trial_duration,
-            'ITI': self.ITI,
-            'block': self.current_block,
-            'early_lick': 1 if self.early_licks else 0,
-            'stim': 1,  # Assuming sound is always played in trials
-            '5KHz': 1 if self.current_tone == '5KHz' else 0,
-            '10KHz': 1 if self.current_tone == '10KHz' else 0,
-            'lick': 1 if self.first_lick else 0,
-            'left_spout': 1 if self.first_lick == 'left' else 0,
-            'right_spout': 1 if self.first_lick == 'right' else 0,
-            'lick_time': self.tlick if self.first_lick else None,
-            'reward': 1 if was_rewarded else 0,
-            'punishment': 1 if was_punished else 0,
-            'omission': 1 if self.first_lick is None else 0,
-            'RW': self.RW,
-            'QW': self.QW,
-            'WW': self.WW,
-            'valve_opening': self.valve_opening,
-            'ITI_min': self.ITI_min,
-            'ITI_max': self.ITI_max,
-            'threshold_left': self.threshold_left,
-            'threshold_right': self.threshold_right,
-            'autom_reward': 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
-            'no_punishment': 1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  # Implement based on GUI settings
-            'ignore_licks': 1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
-            'session_start': self.tstart}
-        return trial_data
+        trial_data = [
+            self.total_trials,
+            self.ttrial,
+            self.tend,
+            self.trial_duration,
+            self.ITI,
+            self.current_block,
+            1 if self.early_licks else 0,
+            1,  # Assuming sound is always played in trials
+            1 if self.current_tone == '5KHz' else 0,
+            1 if self.current_tone == '10KHz' else 0,
+            1 if self.first_lick else 0,
+            1 if self.first_lick == 'left' else 0,
+            1 if self.first_lick == 'right' else 0,
+            self.tlick if self.first_lick else None,
+            1 if was_rewarded else 0,
+            1 if was_punished else 0,
+            1 if self.first_lick is None else 0,
+            self.RW,
+            self.QW,
+            self.WW,
+            self.valve_opening,
+            self.ITI_min,
+            self.ITI_max,
+            self.threshold_left,
+            self.threshold_right,
+            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  # Implement based on GUI settings
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
+            self.tstart
+        ]
+        
+        # Append data to the CSV file
+        with open(self.csv_file_path, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(trial_data)
     
-    def save_data(self):
-       # Collect all trial data
-       trial_data = self.collect_trial_data()
-      
-       # Store and save
-       self.trials.append(trial_data)
-       self.append_trial_to_csv(trial_data)  # Save to CSV
-     
-    def append_trial_to_csv(self, trial_data):
-      """ Append trial data to the CSV file. """
-      file_exists = os.path.isfile(self.file_path)
-      
-      # Replace None or empty values with NaN
-      trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
-      
-      with open(self.file_path, mode='a', newline='') as file:
-          writer = csv.DictWriter(file, fieldnames=trial_data.keys())
-          if not file_exists:
-              writer.writeheader()  # Write header only if file does not exist
-          writer.writerow(trial_data)  # Append trial data      
+    
