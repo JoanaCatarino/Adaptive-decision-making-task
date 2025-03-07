@@ -9,12 +9,12 @@ import numpy as np
 import pyaudio
 
 
-def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.5): # before amplitude was 0.5
+def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.05): # before amplitude was 0.5
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
     wave = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave
 
-def generate_white_noise(duration, sample_rate=44100, amplitude=0.1): # before amplitude was 0.1
+def generate_white_noise(duration, sample_rate=44100, amplitude=0.01): # before amplitude was 0.1
     return np.random.normal(0, amplitude, int(sample_rate*duration))
 
 def play_sound_blocking(sound, sample_rate=44100):
