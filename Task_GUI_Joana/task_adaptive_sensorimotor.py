@@ -324,7 +324,7 @@ class AdaptiveSensorimotorTask:
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
-                self.save_trial_data()
+                self.save_data()
                 return  # Exit trial 
            
             # Play sound  
@@ -346,7 +346,7 @@ class AdaptiveSensorimotorTask:
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
-                self.save_trial_data()
+                self.save_data()
                 
                 
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
@@ -472,7 +472,7 @@ class AdaptiveSensorimotorTask:
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
-                        self.save_trial_data()
+                        self.save_data()
                         return
                     
                 
@@ -520,7 +520,7 @@ class AdaptiveSensorimotorTask:
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
-                        self.save_trial_data()
+                        self.save_data()
                         return
                     
         # Only add if it's a valid trial (correct or incorrect, not None)
@@ -547,7 +547,7 @@ class AdaptiveSensorimotorTask:
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
         # Save trial data
-        self.save_trial_data()
+        self.save_data()
         
         # Check for block switch
         if self.trials_in_block >= self.trial_limit:
@@ -599,7 +599,7 @@ class AdaptiveSensorimotorTask:
             self.detect_licks()
             
    
-    def save_trial_data(self):
+    def collect_trial_data(self):
         
         # Determine if a reward was given
         was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick) or
