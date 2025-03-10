@@ -92,6 +92,7 @@ class AdaptiveSensorimotorTask:
         self.early_lick_counted = False
         self.sound_played = False
         self.omission_counted = False
+        self.catch_trial_counted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -111,7 +112,7 @@ class AdaptiveSensorimotorTask:
         self.first_lick = None
         
         # Catch trials
-        self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
+        self.catch_trials_fraction = 0.9 # 10% of the trials will be catch trials
         self.is_catch_trial = False
         
 
@@ -294,6 +295,7 @@ class AdaptiveSensorimotorTask:
             self.early_lick_counted = False # For saving data
             self.sound_played = False # For saving data
             self.omission_counted = False # For saving data
+            self.catch_trial_counted = False
             
             self.is_catch_trial = random.random() < self.catch_trials_fraction
             
@@ -302,6 +304,7 @@ class AdaptiveSensorimotorTask:
                 print(f'Trial {self.total_trials} - Catch trial')
                 self.current_tone = None
                 self.correct_spout = None
+                self.catch_trial_counted = True
                 self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
                 self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
             else:
@@ -717,7 +720,7 @@ class AdaptiveSensorimotorTask:
             1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
-            1 if self.is_catch_trial else 0, #catch trials
+            1 if self.catch_trial_counted else 0, #catch trials
             self.tstart #session start
         ]
         
