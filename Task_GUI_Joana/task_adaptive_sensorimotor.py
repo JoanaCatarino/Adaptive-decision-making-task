@@ -621,7 +621,7 @@ class AdaptiveSensorimotorTask:
         was_omission = self.omission_counted and not self.first_lick
         
         # Ensure punishment and omission never happen together
-        if was_punishment:
+        if was_punished:
             was_omission = 0
         
         trial_data = [
