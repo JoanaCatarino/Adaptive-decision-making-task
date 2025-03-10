@@ -356,7 +356,7 @@ class AdaptiveSensorimotorTask:
            
             # Play sound  
             self.play_sound(self.current_tone)
-            self.sound_played = True
+            #self.sound_played = True
             
             autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
             
@@ -394,9 +394,11 @@ class AdaptiveSensorimotorTask:
             return
         
         if frequency == "5KHz":
-            tone_5KHz()  
+            tone_5KHz() 
+            self.sound_played = True
         elif frequency == "10KHz":
             tone_10KHz()
+            self.sound_played = True
         elif frequency == "white_noise":
             white_noise()
 
