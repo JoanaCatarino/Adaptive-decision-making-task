@@ -469,6 +469,26 @@ class AdaptiveSensorimotorTask:
                         
                         self.total_licks += 1
                         self.licks_left += 1
+                        
+                        # Update GUI values
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
+        
+                        # End trial 
+                        self.timer_3.cancel()
+                        self.trialstarted = False
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        self.tend = time.time()
+                        self.trial_duration = self.tend - self.ttrial
+                        self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.is_catch_trial = False
+                        self.next_trial_eligible = True
+                
+                        # Save data
+                        self.save_data()
+                        return  # Exit function to prevent normal trial execution
+                        
+                        
 
             if p2 and p2[-1] > self.threshold_right:
                 with self.lock:
@@ -483,25 +503,24 @@ class AdaptiveSensorimotorTask:
                         self.total_licks += 1
                         self.licks_right += 1
                 
-            # Update GUI values
-            self.gui_controls.update_total_licks(self.total_licks)
-            self.gui_controls.update_licks_left(self.licks_left)
-            self.gui_controls.update_licks_right(self.licks_right)
+                        # Update GUI values
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
         
-            # End trial after response window
-            self.timer_3.cancel()
-            self.trialstarted = False
-            threading.Thread(target=self.blue_led_off, daemon=True).start()
-            self.tend = time.time()
-            self.trial_duration = self.tend - self.ttrial
-            self.gui_controls.update_trial_duration(self.trial_duration)
-            self.is_catch_trial = False
-            self.next_trial_eligible = True
-    
-            # Save data
-            self.save_data()
-            return  # Exit function to prevent normal trial execution
-        
+                        # End trial 
+                        self.timer_3.cancel()
+                        self.trialstarted = False
+                        threading.Thread(target=self.blue_led_off, daemon=True).start()
+                        self.tend = time.time()
+                        self.trial_duration = self.tend - self.ttrial
+                        self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.is_catch_trial = False
+                        self.next_trial_eligible = True
+                
+                        # Save data
+                        self.save_data()
+                        return  # Exit function to prevent normal trial execution
+                    
         
         # For normal trials
         # Left piezo
