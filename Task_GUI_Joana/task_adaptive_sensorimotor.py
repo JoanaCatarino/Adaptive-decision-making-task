@@ -641,7 +641,7 @@ class AdaptiveSensorimotorTask:
             self.tlick if self.first_lick else None,  #lick_time
             1 if was_rewarded else 0, #reward
             1 if was_punished else 0, #punishment
-            1 if self.omission_counted else 0,#omission
+            1 if was_omission else 0,#omission
             self.RW,
             self.QW,
             self.WW,
