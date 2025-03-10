@@ -492,7 +492,7 @@ class AdaptiveSensorimotorTask:
                 self.omissions += 1
                 self.omission_counted = True
                 self.gui_controls.update_omissions(self.omissions)
-                #self.next_trial_eligible = True
+                self.next_trial_eligible = True
         
             # End trial after response window
             self.trialstarted = False
@@ -500,7 +500,7 @@ class AdaptiveSensorimotorTask:
             self.tend = time.time()
             self.trial_duration = self.tend - self.ttrial
             self.gui_controls.update_trial_duration(self.trial_duration)
-            #self.next_trial_eligible = True
+            self.next_trial_eligible = True
     
             # Save data
             self.save_data()
