@@ -110,6 +110,10 @@ class AdaptiveSensorimotorTask:
         
         self.first_lick = None
         
+        # Catch trials
+        self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
+        self.is_catch_trial = False
+        
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -291,19 +295,28 @@ class AdaptiveSensorimotorTask:
             self.sound_played = False # For saving data
             self.omission_counted = False # For saving data
             
+            self.is_catch_trial = random.random() < self.catch_trials_fraction
+            
             # Determine trial type
-            if self.current_block == "sound":
-                self.current_tone = random.choice(["5KHz", "10KHz"])
-                self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
-            elif self.current_block == "action-left":
-                self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
-                self.correct_spout = "left"  # Always reward left, punish right
-            elif self.current_block == "action-right":
-                self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
-                self.correct_spout = "right"  # Always reward right, punish left
-            print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
-            self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
-            self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
+            if self.is_catch_trial:
+                print(f'Trial{self.total_trials} is a catch trial')
+                self.current_tone = None
+                self.correct_spout = None
+                self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
+                self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
+            else:
+                if self.current_block == "sound":
+                    self.current_tone = random.choice(["5KHz", "10KHz"])
+                    self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+                elif self.current_block == "action-left":
+                    self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                    self.correct_spout = "left"  # Always reward left, punish right
+                elif self.current_block == "action-right":
+                    self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                    self.correct_spout = "right"  # Always reward right, punish left
+                print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
+                self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
+                self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
         
             # Update Sound Counters
             if self.current_tone == '5KHz':
@@ -315,7 +328,6 @@ class AdaptiveSensorimotorTask:
                 
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start()
-            
             
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
@@ -369,6 +381,10 @@ class AdaptiveSensorimotorTask:
          
     
     def play_sound(self, frequency):
+        
+        if self.is_catch_trial:
+            print('Catch trial: no sound played')
+            return
         
         if frequency == "5KHz":
             tone_5KHz()  
@@ -437,6 +453,59 @@ class AdaptiveSensorimotorTask:
         
         trial_result = None  # Default to None (omission)
         
+        # Catch trial: Record licks without giving reward or punishment
+        if self.is_catch_trial:
+            if p1 and p1[-1] > self.threshold_left:
+            with self.lock:
+                self.tlick_l = time.time()
+                elapsed_left = self.tlick_l - self.RW_start
+                
+                if self.first_lick is None and (0 < elapsed_left < self.RW):
+                    self.first_lick = 'left'
+                    self.tlick = self.tlick_l  
+                    print(f"Catch trial: Lick detected on LEFT spout")
+                    
+                    self.total_licks += 1
+                    self.licks_left += 1
+
+            if p2 and p2[-1] > self.threshold_right:
+                with self.lock:
+                    self.tlick_r = time.time()
+                    elapsed_right = self.tlick_r - self.RW_start
+                    
+                    if self.first_lick is None and (0 < elapsed_right < self.RW):
+                        self.first_lick = 'right'
+                        self.tlick = self.tlick_r  
+                        print(f"Catch trial: Lick detected on RIGHT spout at {self.tlick_r}, but no reward/punishment given.")
+    
+                        self.total_licks += 1
+                        self.licks_right += 1
+                
+            # Update GUI values
+            self.gui_controls.update_total_licks(self.total_licks)
+            self.gui_controls.update_licks_left(self.licks_left)
+            self.gui_controls.update_licks_right(self.licks_right)
+            
+            # If no lick was detected during response window → mark as omission
+            if not lick_detected and (time.time() - self.RW_start) >= self.RW:
+                print("Catch trial: No licks detected → Marking as omission.")
+                self.omissions += 1
+                self.omission_counted = True
+                self.gui_controls.update_omissions(self.omissions)
+        
+            # End trial after response window
+            self.trialstarted = False
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            self.tend = time.time()
+            self.trial_duration = self.tend - self.ttrial
+            self.gui_controls.update_trial_duration(self.trial_duration)
+    
+            # Save data
+            self.save_data()
+            return  # Exit function to prevent normal trial execution
+        
+        
+        # For normal trials
         # Left piezo
         if p1:
             latest_value1 = p1[-1]
@@ -652,7 +721,8 @@ class AdaptiveSensorimotorTask:
             self.threshold_right,
             1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
-            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
+            1 if self.is_catch_trial else 0, #catch trials
             self.tstart #session start
         ]
         
