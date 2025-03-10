@@ -83,6 +83,7 @@ class AdaptiveSensorimotorTask:
         self.sound_5KHz = 0
         self.sound_10KHz = 0
         self.autom_rewards = 0
+        self.catch_trials = 0
         
         # Booleans
         self.trialstarted = False
@@ -139,6 +140,7 @@ class AdaptiveSensorimotorTask:
         self.sound_block_count = 0
         self.action_left_block_count = 0
         self.action_right_block_count = 0
+        self.catch_trials = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -155,6 +157,7 @@ class AdaptiveSensorimotorTask:
         self.gui_controls.update_sound_blocks(0)
         self.gui_controls.update_action_l_blocks(0)
         self.gui_controls.update_action_r_blocks(0)
+        self.gui_controls.update_catch_trials(0)
         
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
@@ -305,6 +308,8 @@ class AdaptiveSensorimotorTask:
                 self.current_tone = None
                 self.correct_spout = None
                 self.catch_trial_counted = True
+                self.catch_trials +=1
+                self.gui_controls.update_catch_trials(self.catch_trials)
                 self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
                 self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
             else:

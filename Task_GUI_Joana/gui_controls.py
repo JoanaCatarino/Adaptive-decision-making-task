@@ -500,6 +500,9 @@ class GuiControls:
         
     def update_action_l_blocks(self, action_left_block_count):
         self.ui.box_Action_L_blocks.setText(f'{action_left_block_count}')
+        
+    def update_catch_trials(self, catch_trials):
+        self.ui.box_CatchTrials.setText(f'{catch_trials}')
 
     
     def update_task_params(self):
