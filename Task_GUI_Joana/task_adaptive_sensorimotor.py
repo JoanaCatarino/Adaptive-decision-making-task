@@ -369,7 +369,7 @@ class AdaptiveSensorimotorTask:
                 self.save_data()
                 
                 
-            if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
+            if not autom_rewards or if self.is_catch_trial:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
             
                 # Wait for response window to finish if no lick happens
