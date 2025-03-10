@@ -609,23 +609,23 @@ class AdaptiveSensorimotorTask:
         was_punished = (self.first_lick and self.correct_spout != self.first_lick)
         
         trial_data = [
-            self.total_trials,
-            self.ttrial,
-            self.tend,
-            self.trial_duration,
-            self.ITI,
-            self.current_block,
-            1 if self.early_licks else 0,
-            1,  # Assuming sound is always played in trials
-            1 if self.current_tone == '5KHz' else 0,
-            1 if self.current_tone == '10KHz' else 0,
-            1 if self.first_lick else 0,
-            1 if self.first_lick == 'left' else 0,
-            1 if self.first_lick == 'right' else 0,
-            self.tlick if self.first_lick else None,
-            1 if was_rewarded else 0,
-            1 if was_punished else 0,
-            1 if self.first_lick is None else 0,
+            self.total_trials, #trial number
+            self.ttrial, #trial start
+            self.tend, #trial end
+            self.trial_duration, #trial duration
+            self.ITI, #ITI
+            self.current_block, #block
+            1 if self.detect_licks_during_waiting_window else 0, #early licks
+            1 if not self.detect_licks_during_waiting_window else 0,  # Assuming sound is always played in trials #stim
+            1 if self.current_tone == '5KHz' else 0, #5KHz
+            1 if self.current_tone == '10KHz' else 0, #10KHz
+            1 if self.first_lick else 0, #lick
+            1 if self.first_lick == 'left' else 0, #left spout
+            1 if self.first_lick == 'right' else 0, #right spoout
+            self.tlick if self.first_lick else None,  #lick_time
+            1 if was_rewarded else 0, #reward
+            1 if was_punished else 0, #punishment
+            1 if self.first_lick is None else 0,#omission
             self.RW,
             self.QW,
             self.WW,
@@ -635,9 +635,9 @@ class AdaptiveSensorimotorTask:
             self.threshold_left,
             self.threshold_right,
             1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
-            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  # Implement based on GUI settings
-            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  # Implement based on GUI settings
-            self.tstart
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0,  
+            self.tstart #session start
         ]
         
         # Replace None or missing values with NaN
