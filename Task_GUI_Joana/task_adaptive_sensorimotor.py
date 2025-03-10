@@ -485,16 +485,9 @@ class AdaptiveSensorimotorTask:
             self.gui_controls.update_total_licks(self.total_licks)
             self.gui_controls.update_licks_left(self.licks_left)
             self.gui_controls.update_licks_right(self.licks_right)
-            
-            # If no lick was detected during response window → mark as omission
-            if self.first_lick is None and (time.time() - self.RW_start) >= self.RW:
-                print("Catch trial: No licks detected - Marking as omission.")
-                self.omissions += 1
-                self.omission_counted = True
-                self.gui_controls.update_omissions(self.omissions)
-                self.next_trial_eligible = True
         
             # End trial after response window
+            self.timer_3.cancel()
             self.trialstarted = False
             threading.Thread(target=self.blue_led_off, daemon=True).start()
             self.tend = time.time()
