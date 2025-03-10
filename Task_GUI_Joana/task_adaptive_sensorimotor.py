@@ -617,6 +617,13 @@ class AdaptiveSensorimotorTask:
         # Determine if punishment was given
         was_punished = (self.first_lick and self.correct_spout != self.first_lick)
         
+        # Determine if omission happened
+        was omission = self.omission_counted and not self.first_lick
+        
+        # Ensure punishment and omission never happen together
+        if was_punishment:
+            was_omission = 0
+        
         trial_data = [
             self.total_trials, #trial number
             self.ttrial, #trial start
