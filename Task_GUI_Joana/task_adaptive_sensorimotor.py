@@ -492,6 +492,7 @@ class AdaptiveSensorimotorTask:
             self.tend = time.time()
             self.trial_duration = self.tend - self.ttrial
             self.gui_controls.update_trial_duration(self.trial_duration)
+            self.is_catch_trial = False
             self.next_trial_eligible = True
     
             # Save data
@@ -615,6 +616,7 @@ class AdaptiveSensorimotorTask:
         self.trial_duration = (self.tend-self.ttrial)
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.gui_controls.update_omissions(self.omissions)
+        self.is_catch_trial = False
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
