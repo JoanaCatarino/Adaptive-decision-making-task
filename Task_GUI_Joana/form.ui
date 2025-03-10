@@ -2957,13 +2957,13 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_Bias">
+     <widget class="QLabel" name="lbl_CatchTrials">
       <property name="geometry">
        <rect>
-        <x>980</x>
+        <x>940</x>
         <y>765</y>
-        <width>31</width>
-        <height>16</height>
+        <width>71</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="font">
@@ -2972,10 +2972,10 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="text">
-       <string>Bias:</string>
+       <string>Catch Trials:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_Bias">
+     <widget class="QLabel" name="box_CatchTrials">
       <property name="geometry">
        <rect>
         <x>1016</x>
@@ -3547,8 +3547,8 @@ color: rgb(112, 112, 112);</string>
      <zorder>box_Action_R_blocks</zorder>
      <zorder>lbl_ActionRBlocks</zorder>
      <zorder>txt_Chronometer</zorder>
-     <zorder>lbl_Bias</zorder>
-     <zorder>box_Bias</zorder>
+     <zorder>lbl_CatchTrials</zorder>
+     <zorder>box_CatchTrials</zorder>
      <zorder>plt_Camera</zorder>
      <zorder>plt_AnimalPerformance</zorder>
      <zorder>plt_LickTrace_Right</zorder>

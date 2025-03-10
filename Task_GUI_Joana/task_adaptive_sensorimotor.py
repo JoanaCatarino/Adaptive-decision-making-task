@@ -371,12 +371,12 @@ class AdaptiveSensorimotorTask:
                 # Save trial data
                 self.save_data()
                 
-            if not autom_rewards or self.is_catch_trial:   # **If Automatic Reward is NOT checked, proceed with standard response window**
+            if not autom_rewards:   # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
-                print('time stamp for RW')
+             
                 # Wait for response window to finish if no lick happens
                 threading.Thread(target=self.wait_for_response, daemon=True).start()
-                print('starting wait for response')
+                
             # Check for block switch
             if self.trials_in_block >= self.trial_limit:
                 self.switch_block()
@@ -697,11 +697,11 @@ class AdaptiveSensorimotorTask:
     def save_data(self):
         
         # Determine if a reward was given
-        was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick) or
+        was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick and not self.catch_trial_counted) or
             self.gui_controls.ui.chk_AutomaticRewards.isChecked())
         
         # Determine if punishment was given
-        was_punished = (self.first_lick and self.correct_spout != self.first_lick)
+        was_punished = (self.first_lick and self.correct_spout != self.first_lick and not self.catch_trial_counted)
         
         # Determine if omission happened
         was_omission = self.omission_counted and not self.first_lick
