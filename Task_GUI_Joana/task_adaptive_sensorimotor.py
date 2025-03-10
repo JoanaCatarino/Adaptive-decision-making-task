@@ -618,7 +618,7 @@ class AdaptiveSensorimotorTask:
         was_punished = (self.first_lick and self.correct_spout != self.first_lick)
         
         # Determine if omission happened
-        was omission = self.omission_counted and not self.first_lick
+        was_omission = self.omission_counted and not self.first_lick
         
         # Ensure punishment and omission never happen together
         if was_punishment:
