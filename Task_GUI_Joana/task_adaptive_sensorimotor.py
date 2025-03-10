@@ -299,7 +299,7 @@ class AdaptiveSensorimotorTask:
             
             # Determine trial type
             if self.is_catch_trial:
-                print(f'Trial{self.total_trials} is a catch trial')
+                print(f'Trial {self.total_trials} - Catch trial')
                 self.current_tone = None
                 self.correct_spout = None
                 self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
@@ -368,7 +368,7 @@ class AdaptiveSensorimotorTask:
                 # Save trial data
                 self.save_data()
                 
-            if not autom_rewards:   # **If Automatic Reward is NOT checked, proceed with standard response window**
+            if not autom_rewards or self.is_catch_trial:   # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
                 print('time stamp for RW')
                 # Wait for response window to finish if no lick happens
@@ -548,7 +548,6 @@ class AdaptiveSensorimotorTask:
                         return
                     
                 
-        
         # Right piezo        
         if p2:
             latest_value2 = p2[-1]
