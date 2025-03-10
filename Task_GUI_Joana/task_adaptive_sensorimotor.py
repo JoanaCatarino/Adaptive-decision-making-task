@@ -89,6 +89,9 @@ class AdaptiveSensorimotorTask:
         self.running = False
         self.first_trial = True
         self.next_trial_ready = False
+        self.early_lick_counted = False
+        self.sound_played = False
+        self.omission_counted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -284,6 +287,9 @@ class AdaptiveSensorimotorTask:
             self.trials_in_block +=1
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            self.early_lick_counted = False # For saving data
+            self.sound_played = False # For saving data
+            self.omission_counted = False # For saving data
             
             # Determine trial type
             if self.current_block == "sound":
@@ -314,6 +320,7 @@ class AdaptiveSensorimotorTask:
             if self.detect_licks_during_waiting_window():  # If a lick happens, abort trial
                 print("Trial aborted due to early lick.")
                 self.early_licks += 1
+                self.early_lick_counted = True
                 self.gui_controls.update_early_licks(self.early_licks)
                 self.trialstarted = False  # Reset trial state
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -329,6 +336,7 @@ class AdaptiveSensorimotorTask:
            
             # Play sound  
             self.play_sound(self.current_tone)
+            self.sound_played = True
             
             autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
             
@@ -540,6 +548,7 @@ class AdaptiveSensorimotorTask:
         threading.Thread(target=self.blue_led_off, daemon=True).start()
         self.tend = time.time()
         self.omissions += 1
+        self.omission_counted = True
         self.trial_duration = (self.tend-self.ttrial)
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.gui_controls.update_omissions(self.omissions)
@@ -615,8 +624,8 @@ class AdaptiveSensorimotorTask:
             self.trial_duration, #trial duration
             self.ITI, #ITI
             self.current_block, #block
-            1 if self.detect_licks_during_waiting_window else 0, #early licks
-            1 if not self.detect_licks_during_waiting_window else 0,  # Assuming sound is always played in trials #stim
+            1 if self.early_lick_counted else 0, #early licks
+            1 if self.sound_played else 0, #stim
             1 if self.current_tone == '5KHz' else 0, #5KHz
             1 if self.current_tone == '10KHz' else 0, #10KHz
             1 if self.first_lick else 0, #lick
@@ -625,7 +634,7 @@ class AdaptiveSensorimotorTask:
             self.tlick if self.first_lick else None,  #lick_time
             1 if was_rewarded else 0, #reward
             1 if was_punished else 0, #punishment
-            1 if self.first_lick is None else 0,#omission
+            1 if self.omission_counted else 0,#omission
             self.RW,
             self.QW,
             self.WW,
