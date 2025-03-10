@@ -370,10 +370,10 @@ class AdaptiveSensorimotorTask:
                 
             if not autom_rewards:   # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
-            
+                print('time stamp for RW')
                 # Wait for response window to finish if no lick happens
                 threading.Thread(target=self.wait_for_response, daemon=True).start()
-                
+                print('starting wait for response')
             # Check for block switch
             if self.trials_in_block >= self.trial_limit:
                 self.switch_block()
