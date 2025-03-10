@@ -456,17 +456,17 @@ class AdaptiveSensorimotorTask:
         # Catch trial: Record licks without giving reward or punishment
         if self.is_catch_trial:
             if p1 and p1[-1] > self.threshold_left:
-            with self.lock:
-                self.tlick_l = time.time()
-                elapsed_left = self.tlick_l - self.RW_start
-                
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l  
-                    print(f"Catch trial: Lick detected on LEFT spout")
+                with self.lock:
+                    self.tlick_l = time.time()
+                    elapsed_left = self.tlick_l - self.RW_start
                     
-                    self.total_licks += 1
-                    self.licks_left += 1
+                    if self.first_lick is None and (0 < elapsed_left < self.RW):
+                        self.first_lick = 'left'
+                        self.tlick = self.tlick_l  
+                        print(f"Catch trial: Lick detected on LEFT spout")
+                        
+                        self.total_licks += 1
+                        self.licks_left += 1
 
             if p2 and p2[-1] > self.threshold_right:
                 with self.lock:
