@@ -702,7 +702,7 @@ class AdaptiveSensorimotorTask:
             
    
     def save_data(self):
-        """ Saves trial data, ensuring missing variables are filled with NaN. """
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
     
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
@@ -718,41 +718,41 @@ class AdaptiveSensorimotorTask:
         if was_punished:
             was_omission = 0
     
-        # Define trial data, using getattr() to check for missing variables
+        # Define trial data, using hasattr() to check for missing variables
         trial_data = [
-            getattr(self, 'total_trials', np.nan),  # trial number
-            getattr(self, 'ttrial', np.nan),  # trial start
-            getattr(self, 'tend', np.nan),  # trial end
-            getattr(self, 'trial_duration', np.nan),  # trial duration
-            getattr(self, 'ITI', np.nan),  # ITI
-            getattr(self, 'current_block', np.nan),  # block
-            1 if getattr(self, 'early_lick_counted', False) else 0,  # early licks
-            1 if getattr(self, 'sound_played', False) else 0,  # stim
-            1 if getattr(self, 'current_tone', None) == '5KHz' else 0,  # 5KHz
-            1 if getattr(self, 'current_tone', None) == '10KHz' else 0,  # 10KHz
-            1 if getattr(self, 'first_lick', None) else 0,  # lick
-            1 if getattr(self, 'first_lick', None) == 'left' else 0,  # left spout
-            1 if getattr(self, 'first_lick', None) == 'right' else 0,  # right spout
-            getattr(self, 'tlick', np.nan) if getattr(self, 'first_lick', None) else np.nan,  # lick_time
-            1 if was_rewarded else 0,  # reward
-            1 if was_punished else 0,  # punishment
-            1 if was_omission else 0,  # omission
-            getattr(self, 'RW', np.nan),
-            getattr(self, 'QW', np.nan),
-            getattr(self, 'WW', np.nan),
-            getattr(self, 'valve_opening', np.nan),
-            getattr(self, 'ITI_min', np.nan),
-            getattr(self, 'ITI_max', np.nan),
-            getattr(self, 'threshold_left', np.nan),
-            getattr(self, 'threshold_right', np.nan),
-            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
-            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
-            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
-            1 if getattr(self, 'catch_trial_counted', False) else 0,  # catch trials
-            1 if getattr(self, 'is_distractor_trial', False) else 0,  # Distractor trial flag
-            1 if getattr(self, 'distractor_led', None) == "left" else 0,  # Distractor on left
-            1 if getattr(self, 'distractor_led', None) == "right" else 0,  # Distractor on right
-            getattr(self, 'tstart', np.nan)  # session start
+            np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
+            np.nan if not hasattr(self, 'ttrial') else self.ttrial,  # trial start
+            np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
+            np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
+            np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
+            np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
+            np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '5KHz' else 0),  # 5KHz
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '10KHz' else 0),  # 10KHz
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
+            np.nan if not hasattr(self, 'tlick') else (self.tlick if self.first_lick else np.nan),  # lick_time
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
+            np.nan if not hasattr(self, 'RW') else self.RW,
+            np.nan if not hasattr(self, 'QW') else self.QW,
+            np.nan if not hasattr(self, 'WW') else self.WW,
+            np.nan if not hasattr(self, 'valve_opening') else self.valve_opening,
+            np.nan if not hasattr(self, 'ITI_min') else self.ITI_min,
+            np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
+            np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
+            np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
+            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan
+            np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
+            np.nan if not hasattr(self, 'is_distractor_trial') else (1 if self.is_distractor_trial else 0),  # Distractor trial flag
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "left" else 0),  # Distractor on left
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "right" else 0),  # Distractor on right
+            np.nan if not hasattr(self, 'tstart') else self.tstart,  # session start
         ]
     
         # Append data to the CSV file
