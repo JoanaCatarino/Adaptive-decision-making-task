@@ -130,41 +130,6 @@ class AdaptiveSensorimotorTaskDistractor:
         pump_l.on()
         pump_r.on()
         
-        # Reset counters
-        self.total_trials = 0
-        self.total_licks = 0 
-        self.licks_left = 0 
-        self.licks_right = 0 
-        self.correct_trials = 0
-        self.incorrect_trials = 0
-        self.early_licks = 0
-        self.omissions = 0
-        self.trial_duration = 0
-        self.sound_5KHz = 0
-        self.sound_10KHz = 0
-        self.autom_rewards = 0
-        self.sound_block_count = 0
-        self.action_left_block_count = 0
-        self.action_right_block_count = 0
-        self.catch_trials = 0
-        
-        # Update GUI display
-        self.gui_controls.update_total_licks(0)
-        self.gui_controls.update_licks_left(0)
-        self.gui_controls.update_licks_right(0)
-        self.gui_controls.update_correct_trials(0)
-        self.gui_controls.update_incorrect_trials(0)
-        self.gui_controls.update_early_licks(0)
-        self.gui_controls.update_omissions(0)
-        self.gui_controls.update_trial_duration(0)
-        self.gui_controls.update_sound_5KHz(0)
-        self.gui_controls.update_sound_10KHz(0)
-        self.gui_controls.update_autom_rewards(0)
-        self.gui_controls.update_sound_blocks(0)
-        self.gui_controls.update_action_l_blocks(0)
-        self.gui_controls.update_action_r_blocks(0)
-        self.gui_controls.update_catch_trials(0)
-        
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
         
@@ -372,7 +337,6 @@ class AdaptiveSensorimotorTaskDistractor:
            
             # Play sound  
             self.play_sound(self.current_tone)
-            #self.sound_played = True
             
             autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
             
@@ -732,60 +696,59 @@ class AdaptiveSensorimotorTaskDistractor:
             
    
     def save_data(self):
-        
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
+    
         # Determine if a reward was given
-        was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick and not self.catch_trial_counted) or
-            self.gui_controls.ui.chk_AutomaticRewards.isChecked())
-        
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
+                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+    
         # Determine if punishment was given
-        was_punished = (self.first_lick and self.correct_spout != self.first_lick and not self.catch_trial_counted)
-        
+        was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
+    
         # Determine if omission happened
-        was_omission = self.omission_counted and not self.first_lick
-        
+        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
+    
         # Ensure punishment and omission never happen together
         if was_punished:
             was_omission = 0
-        
+    
+        # Define trial data, using hasattr() to check for missing variables
         trial_data = [
-            self.total_trials, #trial number
-            self.ttrial, #trial start
-            self.tend, #trial end
-            self.trial_duration, #trial duration
-            self.ITI, #ITI
-            self.current_block, #block
-            1 if self.early_lick_counted else 0, #early licks
-            1 if self.sound_played else 0, #stim
-            1 if self.current_tone == '5KHz' else 0, #5KHz
-            1 if self.current_tone == '10KHz' else 0, #10KHz
-            1 if self.first_lick else 0, #lick
-            1 if self.first_lick == 'left' else 0, #left spout
-            1 if self.first_lick == 'right' else 0, #right spoout
-            self.tlick if self.first_lick else None,  #lick_time
-            1 if was_rewarded else 0, #reward
-            1 if was_punished else 0, #punishment
-            1 if was_omission else 0,#omission
-            self.RW,
-            self.QW,
-            self.WW,
-            self.valve_opening,
-            self.ITI_min,
-            self.ITI_max,
-            self.threshold_left,
-            self.threshold_right,
-            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
-            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
-            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
-            1 if self.catch_trial_counted else 0, #catch trials
-            1 if self.is_distractor_trial else 0,  # Distractor trial flag
-            1 if self.distractor_led == "left" else 0,  # Distractor on left
-            1 if self.distractor_led == "right" else 0,  # Distractor on right
-            self.tstart #session start
+            np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
+            np.nan if not hasattr(self, 'ttrial') else self.ttrial,  # trial start
+            np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
+            np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
+            np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
+            np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
+            np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '5KHz' else 0),  # 5KHz
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '10KHz' else 0),  # 10KHz
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
+            np.nan if not hasattr(self, 'tlick') else (self.tlick if self.first_lick else np.nan),  # lick_time
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
+            np.nan if not hasattr(self, 'RW') else self.RW,
+            np.nan if not hasattr(self, 'QW') else self.QW,
+            np.nan if not hasattr(self, 'WW') else self.WW,
+            np.nan if not hasattr(self, 'valve_opening') else self.valve_opening,
+            np.nan if not hasattr(self, 'ITI_min') else self.ITI_min,
+            np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
+            np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
+            np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
+            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
+            np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
+            np.nan if not hasattr(self, 'is_distractor_trial') else (1 if self.is_distractor_trial else 0),  # Distractor trial flag
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "left" else 0),  # Distractor on left
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "right" else 0),  # Distractor on right
+            np.nan if not hasattr(self, 'tstart') else self.tstart  # session start
         ]
-        
-        # Replace None or missing values with NaN
-        trial_data = [value if value is not None else np.nan for value in trial_data]
-        
+    
         # Append data to the CSV file
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)

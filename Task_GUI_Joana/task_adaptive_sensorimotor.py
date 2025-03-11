@@ -124,41 +124,6 @@ class AdaptiveSensorimotorTask:
         pump_l.on()
         pump_r.on()
         
-        # Reset counters
-        self.total_trials = 0
-        self.total_licks = 0 
-        self.licks_left = 0 
-        self.licks_right = 0 
-        self.correct_trials = 0
-        self.incorrect_trials = 0
-        self.early_licks = 0
-        self.omissions = 0
-        self.trial_duration = 0
-        self.sound_5KHz = 0
-        self.sound_10KHz = 0
-        self.autom_rewards = 0
-        self.sound_block_count = 0
-        self.action_left_block_count = 0
-        self.action_right_block_count = 0
-        self.catch_trials = 0
-        
-        # Update GUI display
-        self.gui_controls.update_total_licks(0)
-        self.gui_controls.update_licks_left(0)
-        self.gui_controls.update_licks_right(0)
-        self.gui_controls.update_correct_trials(0)
-        self.gui_controls.update_incorrect_trials(0)
-        self.gui_controls.update_early_licks(0)
-        self.gui_controls.update_omissions(0)
-        self.gui_controls.update_trial_duration(0)
-        self.gui_controls.update_sound_5KHz(0)
-        self.gui_controls.update_sound_10KHz(0)
-        self.gui_controls.update_autom_rewards(0)
-        self.gui_controls.update_sound_blocks(0)
-        self.gui_controls.update_action_l_blocks(0)
-        self.gui_controls.update_action_r_blocks(0)
-        self.gui_controls.update_catch_trials(0)
-        
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
         
@@ -356,7 +321,6 @@ class AdaptiveSensorimotorTask:
            
             # Play sound  
             self.play_sound(self.current_tone)
-            #self.sound_played = True
             
             autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
             
