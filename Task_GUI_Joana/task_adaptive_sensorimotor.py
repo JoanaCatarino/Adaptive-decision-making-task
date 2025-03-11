@@ -747,12 +747,12 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
             1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
-            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
             np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
             np.nan if not hasattr(self, 'is_distractor_trial') else (1 if self.is_distractor_trial else 0),  # Distractor trial flag
             np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "left" else 0),  # Distractor on left
             np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "right" else 0),  # Distractor on right
-            np.nan if not hasattr(self, 'tstart') else self.tstart,  # session start
+            np.nan if not hasattr(self, 'tstart') else self.tstart  # session start
         ]
     
         # Append data to the CSV file
