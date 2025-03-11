@@ -702,61 +702,60 @@ class AdaptiveSensorimotorTask:
             
    
     def save_data(self):
-        
+        """ Saves trial data, ensuring missing variables are filled with NaN. """
+    
         # Determine if a reward was given
-        was_rewarded = ((self.first_lick and self.correct_spout == self.first_lick and not self.catch_trial_counted) or
-            self.gui_controls.ui.chk_AutomaticRewards.isChecked())
-        
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
+                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+    
         # Determine if punishment was given
-        was_punished = (self.first_lick and self.correct_spout != self.first_lick and not self.catch_trial_counted)
-        
+        was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
+    
         # Determine if omission happened
-        was_omission = self.omission_counted and not self.first_lick
-        
+        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
+    
         # Ensure punishment and omission never happen together
         if was_punished:
             was_omission = 0
-        
+    
+        # Define trial data, using getattr() to check for missing variables
         trial_data = [
-            self.total_trials, #trial number
-            self.ttrial, #trial start
-            self.tend, #trial end
-            self.trial_duration, #trial duration
-            self.ITI, #ITI
-            self.current_block, #block
-            1 if self.early_lick_counted else 0, #early licks
-            1 if self.sound_played else 0, #stim
-            1 if self.current_tone == '5KHz' else 0, #5KHz
-            1 if self.current_tone == '10KHz' else 0, #10KHz
-            1 if self.first_lick else 0, #lick
-            1 if self.first_lick == 'left' else 0, #left spout
-            1 if self.first_lick == 'right' else 0, #right spoout
-            self.tlick if self.first_lick else None,  #lick_time
-            1 if was_rewarded else 0, #reward
-            1 if was_punished else 0, #punishment
-            1 if was_omission else 0,#omission
-            self.RW,
-            self.QW,
-            self.WW,
-            self.valve_opening,
-            self.ITI_min,
-            self.ITI_max,
-            self.threshold_left,
-            self.threshold_right,
+            getattr(self, 'total_trials', np.nan),  # trial number
+            getattr(self, 'ttrial', np.nan),  # trial start
+            getattr(self, 'tend', np.nan),  # trial end
+            getattr(self, 'trial_duration', np.nan),  # trial duration
+            getattr(self, 'ITI', np.nan),  # ITI
+            getattr(self, 'current_block', np.nan),  # block
+            1 if getattr(self, 'early_lick_counted', False) else 0,  # early licks
+            1 if getattr(self, 'sound_played', False) else 0,  # stim
+            1 if getattr(self, 'current_tone', None) == '5KHz' else 0,  # 5KHz
+            1 if getattr(self, 'current_tone', None) == '10KHz' else 0,  # 10KHz
+            1 if getattr(self, 'first_lick', None) else 0,  # lick
+            1 if getattr(self, 'first_lick', None) == 'left' else 0,  # left spout
+            1 if getattr(self, 'first_lick', None) == 'right' else 0,  # right spout
+            getattr(self, 'tlick', np.nan) if getattr(self, 'first_lick', None) else np.nan,  # lick_time
+            1 if was_rewarded else 0,  # reward
+            1 if was_punished else 0,  # punishment
+            1 if was_omission else 0,  # omission
+            getattr(self, 'RW', np.nan),
+            getattr(self, 'QW', np.nan),
+            getattr(self, 'WW', np.nan),
+            getattr(self, 'valve_opening', np.nan),
+            getattr(self, 'ITI_min', np.nan),
+            getattr(self, 'ITI_max', np.nan),
+            getattr(self, 'threshold_left', np.nan),
+            getattr(self, 'threshold_right', np.nan),
             1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
-            1 if self.catch_trial_counted else 0, #catch trials
-            1 if self.is_distractor_trial else 0,  # Distractor trial flag
-            1 if self.distractor_led == "left" else 0,  # Distractor on left
-            1 if self.distractor_led == "right" else 0,  # Distractor on right
-            self.tstart #session start
+            1 if getattr(self, 'catch_trial_counted', False) else 0,  # catch trials
+            1 if getattr(self, 'is_distractor_trial', False) else 0,  # Distractor trial flag
+            1 if getattr(self, 'distractor_led', None) == "left" else 0,  # Distractor on left
+            1 if getattr(self, 'distractor_led', None) == "right" else 0,  # Distractor on right
+            getattr(self, 'tstart', np.nan)  # session start
         ]
-        
-        # Replace None or missing values with NaN
-        trial_data = [value if value is not None else np.nan for value in trial_data]
-        
+    
         # Append data to the CSV file
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(trial_data)    
+            writer.writerow(trial_data)
