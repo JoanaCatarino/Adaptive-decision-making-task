@@ -408,7 +408,7 @@ class GuiControls:
             self.current_task = AdaptiveSensorimotorTask(self, csv_file_path)
 
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
-            self.current_task = AdaptiveSensorimotorTaskDistractor()
+            self.current_task = AdaptiveSensorimotorTaskDistractor(self, csv_file_path)
 
         if self.current_task:
             self.current_task.start()

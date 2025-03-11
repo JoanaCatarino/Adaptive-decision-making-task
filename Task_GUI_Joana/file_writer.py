@@ -82,7 +82,7 @@ def create_data_file(date_label, animal_id_combobox, task_combobox, box_combobox
                "stim", "5KHz", "10KHz", "lick", "left_spout", "right_spout", "lick_time", "reward",
                "punishment", "omission", "RW", "QW", "WW", "valve_opening", "ITImin", "ITImax",
                "threshold_left", "threshold_right", "autom_reward", "no_punishment","ignore_licks", "catch_trial",
-               "session_start"]
+               "distractor_trial", "distractor_left", "distractor_right", "session_start"]
 
     # Create the CSV file and leave it open so tha the different heads can be defined per task
     with open(csv_file_path, 'w', newline='') as csv_file:
