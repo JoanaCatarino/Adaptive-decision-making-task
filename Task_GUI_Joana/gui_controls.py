@@ -402,20 +402,20 @@ class GuiControls:
         self.catch_trials = 0
         
         # Update GUI display
-        self.gui_controls.update_total_licks(0)
-        self.gui_controls.update_licks_left(0)
-        self.gui_controls.update_licks_right(0)
-        self.gui_controls.update_correct_trials(0)
-        self.gui_controls.update_incorrect_trials(0)
-        self.gui_controls.update_early_licks(0)
-        self.gui_controls.update_omissions(0)
-        self.gui_controls.update_trial_duration(0)
-        self.gui_controls.update_sound_5KHz(0)
-        self.gui_controls.update_sound_10KHz(0)
-        self.gui_controls.update_autom_rewards(0)
-        self.gui_controls.update_action_l_blocks(0)
-        self.gui_controls.update_action_r_blocks(0)
-        self.gui_controls.update_catch_trials(0)
+        self.update_total_licks(0)
+        self.update_licks_left(0)
+        self.update_licks_right(0)
+        self.update_correct_trials(0)
+        self.update_incorrect_trials(0)
+        self.update_early_licks(0)
+        self.update_omissions(0)
+        self.update_trial_duration(0)
+        self.update_sound_5KHz(0)
+        self.update_sound_10KHz(0)
+        self.update_autom_rewards(0)
+        self.update_action_l_blocks(0)
+        self.update_action_r_blocks(0)
+        self.update_catch_trials(0)
 
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
