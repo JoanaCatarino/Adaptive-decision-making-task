@@ -113,7 +113,7 @@ class AdaptiveSensorimotorTaskDistractor:
         self.first_lick = None
         
         # Catch trials
-        self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
+        self.catch_trials_fraction = 0.5 # 10% of the trials will be catch trials
         self.is_catch_trial = False
         
         # Distractor trials
@@ -320,14 +320,14 @@ class AdaptiveSensorimotorTaskDistractor:
             
             # Determine trial type
             if self.is_catch_trial:
-                print(f'Trial {self.total_trials} - Catch trial')
+                print(f'Trial {self.total_trials} - Catch trial | Distractor: {self.is_distractor_trial} ({self.distractor_led})')
                 self.current_tone = None
                 self.correct_spout = None
                 self.catch_trial_counted = True
                 self.catch_trials +=1
                 self.gui_controls.update_catch_trials(self.catch_trials)
-                self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial / Distractor: {self.is_distractor_trial} ({self.distractor_led})')
-                self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
+                self.gui_controls.ui.box_CurrentTrial.setText(f'Catch Trial | Distractor:{self.is_distractor_trial}({self.distractor_led})')
+                self.gui_controls.ui.OV_box_CurrentTrial.setText(f'Catch Trial | Distractor:{self.is_distractor_trial}({self.distractor_led})')
             else:
                 if self.current_block == "sound":
                     self.current_tone = random.choice(["5KHz", "10KHz"])
@@ -338,9 +338,9 @@ class AdaptiveSensorimotorTaskDistractor:
                 elif self.current_block == "action-right":
                     self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "right"  # Always reward right, punish left
-                print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout} / Distractor: {self.is_distractor_trial} ({self.distractor_led})")
-                self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} / Distractor: {self.is_distractor_trial} ({self.distractor_led})")
-                self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} / Distractor: {self.is_distractor_trial} ({self.distractor_led})")
+                print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout} | Distractor: {self.is_distractor_trial} ({self.distractor_led})")
+                self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} | Distractor:{self.is_distractor_trial}({self.distractor_led})")
+                self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} | Distractor:{self.is_distractor_trial}({self.distractor_led})")
         
             # Update Sound Counters
             if self.current_tone == '5KHz':
