@@ -66,16 +66,17 @@ class TwoChoiceAuditoryTask:
         self.sound_5KHz = 0
         self.sound_10KHz = 0
         self.autom_rewards = 0
+        self.catch_trials = 0
+        
         
         # Booleans
         self.trialstarted = False
         self.running = False
-        self.tone_selected = False
-        self.prev_trialstarted = False
         self.first_trial = True
-        self.early_lick_termination = False
         self.next_trial_ready = False
-        self.light = False
+        self.early_lick_counted = False
+        self.sound_played = False
+        self.omission_counted = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -115,6 +116,9 @@ class TwoChoiceAuditoryTask:
         self.sound_5KHz = 0
         self.sound_10KHz = 0
         self.autom_rewards = 0
+        self.action_left_block_count = 0
+        self.action_right_block_count = 0
+        self.catch_trials = 0
         
         # Update GUI display
         self.gui_controls.update_total_licks(0)
@@ -128,6 +132,9 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_sound_5KHz(0)
         self.gui_controls.update_sound_10KHz(0)
         self.gui_controls.update_autom_rewards(0)
+        self.gui_controls.update_action_l_blocks(0)
+        self.gui_controls.update_action_r_blocks(0)
+        self.gui_controls.update_catch_trials(0)
         
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
@@ -217,7 +224,6 @@ class TwoChoiceAuditoryTask:
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
-            self.early_lick_termination = False
             self.omission_occured = False
             
             # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
@@ -255,7 +261,6 @@ class TwoChoiceAuditoryTask:
                 self.tend= time.time()
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
-                self.early_lick_termination = True
                 self.ww_completed = 0
                 self.save_data()
                 self.schedule_next_trial()
