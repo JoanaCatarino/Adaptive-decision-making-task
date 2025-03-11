@@ -747,6 +747,9 @@ class AdaptiveSensorimotorTask:
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0,  
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0, 
             1 if self.catch_trial_counted else 0, #catch trials
+            1 if self.is_distractor_trial else 0,  # Distractor trial flag
+            1 if self.distractor_led == "left" else 0,  # Distractor on left
+            1 if self.distractor_led == "right" else 0,  # Distractor on right
             self.tstart #session start
         ]
         

@@ -113,7 +113,7 @@ class AdaptiveSensorimotorTaskDistractor:
         self.first_lick = None
         
         # Catch trials
-        self.catch_trials_fraction = 0.5 # 10% of the trials will be catch trials
+        self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
         self.is_catch_trial = False
         
         # Distractor trials
