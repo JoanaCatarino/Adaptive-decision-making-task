@@ -103,6 +103,7 @@ class TwoChoiceAuditoryTask:
         pump_l.on()
         pump_r.on()
         
+        '''
         # Reset counters
         self.total_trials = 0
         self.total_licks = 0 
@@ -135,6 +136,7 @@ class TwoChoiceAuditoryTask:
         self.gui_controls.update_action_l_blocks(0)
         self.gui_controls.update_action_r_blocks(0)
         self.gui_controls.update_catch_trials(0)
+        '''
         
         self.gui_controls.performance_plot.reset_plot() # Plot main tab
         self.gui_controls.performance_plot_ov.reset_plot() # Plot overview tab
@@ -549,77 +551,9 @@ class TwoChoiceAuditoryTask:
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
-                
-            
-    def append_trial_to_csv(self, trial_data):
-        """ Append trial data to the CSV file. """
-        file_exists = os.path.isfile(self.file_path)
-        
-        # Replace None or empty values with NaN
-        trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
-        
-        with open(self.file_path, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
-            if not file_exists:
-                writer.writeheader()  # Write header only if file does not exist
-            writer.writerow(trial_data)  # Append trial data
-            
-    
-    def collect_trial_data(self):
-        
-        # Track if the light was turned on
-        light_on = 1  if self.light else 0
 
-        # Determine if there was a sound (1) or not (0)
-        sound_played = 1 if self.current_tone in ["5KHz", "10KHz"] else 0
-        
-        # Get GUI button states (1 if checked, 0 if not)
-        automatic_rewards = 1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else 0
-        no_punishment = 1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else 0
-        ignore_licks_ww = 1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else 0
-        
-        # Store trial data
-        trial_data = {
-            'trial_number': self.total_trials,
-            'trial_start': self.ttrial,
-            'trial_end':self.tend,
-            'trial_duration': self.trial_duration,
-            'ITI': self.ITI,
-            'light_On': light_on,
-            'ww_completed': self.ww_completed,
-            'early_lick': 1 if self.early_lick_termination else 0,
-            'stim': sound_played,
-            '5KHz': self.is_5KHz,
-            '10KHz': self.is_10KHz,
-            'lick': 0,
-            'left_spout': 0,
-            'right_spout': 0,
-            'lick_time': None,
-            'reward': 0,
-            'punishment':0,
-            'omission': 1 if self.omission_occured else 0,
-            'RW': self.RW,
-            'QW': self.QW,
-            'WW': self.WW,
-            'Valve_Opening': self.valve_opening,
-            'ITI_min': self.ITI_min,
-            'ITI_max': self.ITI_max,
-            'threshold_left': self.threshold_left,
-            'threshold_right': self.threshold_right,
-            'autom_reward': automatic_rewards,
-            'no_punishment': no_punishment,
-            'ignore_licks': ignore_licks_ww,
-            'session_start': self.tstart}
-        
-        return trial_data
     
-    def save_data(self):
-        # Collect all trial data
-        trial_data = self.collect_trial_data()
-       
-        # Store and save
-        self.trials.append(trial_data)
-        self.append_trial_to_csv(trial_data)  # Save to CSV
+
         
         
     
