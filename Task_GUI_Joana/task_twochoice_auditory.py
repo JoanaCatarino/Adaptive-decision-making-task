@@ -264,7 +264,7 @@ class TwoChoiceAuditoryTask:
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.ww_completed = 0
-                self.save_data()
+                #self.save_data()
                 self.schedule_next_trial()
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
@@ -287,7 +287,7 @@ class TwoChoiceAuditoryTask:
                 self.tend = time.time()
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
-                self.save_data()
+                #self.save_data()
                 self.schedule_next_trial()
                 # Update live stair plot
                 self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
@@ -426,7 +426,7 @@ class TwoChoiceAuditoryTask:
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
-                        self.save_data()
+                        #self.save_data()
                         self.next_trial_eligible = True
                         # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
@@ -484,7 +484,7 @@ class TwoChoiceAuditoryTask:
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
-                        self.save_data()
+                        #self.save_data()
                         self.next_trial_eligible = True
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         return
@@ -501,7 +501,7 @@ class TwoChoiceAuditoryTask:
         self.omissions += 1
         self.gui_controls.update_omissions(self.omissions)
         self.omission_occured = True
-        self.save_data()
+        #self.save_data()
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
