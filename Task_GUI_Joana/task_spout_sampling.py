@@ -35,8 +35,8 @@ class SpoutSamplingTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = 0.1 # Inter-trial interval in seconds
-        self.RW = 1 # Response window in seconds
+        self.ITI = 1 # Inter-trial interval in seconds
+        self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
@@ -192,13 +192,6 @@ class SpoutSamplingTask:
                         if correct_spout == 'left': # Only reward if correct
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start()
-                            
-                            # Update trial data
-                            self.trials[-1]['lick'] = 1
-                            self.trials[-1]['left_spout'] = 1
-                            self.trials[-1]['lick_time'] = self.tlick
-                            
-                            self.append_trial_to_csv(self.trials[-1])
         
                             self.total_licks += 1
                             self.licks_left += 1
@@ -233,13 +226,6 @@ class SpoutSamplingTask:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
                             
-                            # Update trial data
-                            self.trials[-1]['lick'] = 1
-                            self.trials[-1]['right_spout'] = 1
-                            self.trials[-1]['lick_time'] = self.tlick
-                            
-                            self.append_trial_to_csv(self.trials[-1])
-        
                             self.total_licks += 1
                             self.licks_right += 1
                             self.gui_controls.update_total_licks(self.total_licks)
