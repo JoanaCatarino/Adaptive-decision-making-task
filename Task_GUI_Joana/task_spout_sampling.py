@@ -217,6 +217,7 @@ class SpoutSamplingTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         # Save trial data
                         self.save_data()
+                        return
     
         # Right piezo        
         if p2:
@@ -257,6 +258,7 @@ class SpoutSamplingTask:
                     self.trial_duration = (self.tend-self.ttrial)
                     # Save trial data
                     self.save_data()
+                    return
         
     
     def reward(self, side):
