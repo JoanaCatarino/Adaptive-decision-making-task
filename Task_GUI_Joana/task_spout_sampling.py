@@ -208,7 +208,7 @@ class SpoutSamplingTask:
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         
-                        elif correct spouts is not 'left':
+                        elif correct_spout is not 'left':
                             print ('Lick left but reward is right')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
