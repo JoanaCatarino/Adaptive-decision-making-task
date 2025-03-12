@@ -60,8 +60,9 @@ class SpoutSamplingTask:
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
-        self.tend = None
-        self.trial_duration = None
+        self.tend = None # end of trial
+        self.trial_duration = None # trial duration
+        self.RW_start = None # start of response window
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -151,10 +152,10 @@ class SpoutSamplingTask:
             
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
         
-
+            # Start response window
+            self.RW_start = self.t
     
     def led_indicator(self, RW):
         
@@ -186,7 +187,7 @@ class SpoutSamplingTask:
             if latest_value1 > self.threshold_left:
                 with self.lock:
                     self.tlick_l = self.t # Update last left lick time
-                    elapsed_left = self.tlick_l - self.ttrial
+                    elapsed_left = self.tlick_l - self.RW_start
                     print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
@@ -226,7 +227,7 @@ class SpoutSamplingTask:
             if latest_value2 > self.threshold_right:
                 with self.lock:
                     self.tlick_r = self.t
-                    elapsed_right = self.tlick_r - self.ttrial
+                    elapsed_right = self.tlick_r - self.RW_start
                     print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
