@@ -98,8 +98,8 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
         # Initialize functions for the performance plot
-        #self.setup_lick_plot()
-        self.setup_performance_plot()
+        self.setup_lick_plot()
+        #self.setup_performance_plot()
 
 
     #Piezo functions
