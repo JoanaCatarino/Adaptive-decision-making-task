@@ -45,7 +45,7 @@ class AdaptiveSensorimotorTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI_min = 3 # default ITI min
-        self.ITI_max = 9 # default ITI
+        self.ITI_max = 9 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
@@ -90,10 +90,12 @@ class AdaptiveSensorimotorTask:
         self.running = False
         self.first_trial = True
         self.next_trial_ready = False
+        self.next_trial_eligible = False
         self.early_lick_counted = False
         self.sound_played = False
         self.omission_counted = False
         self.catch_trial_counted = False
+        
         
         # Time variables
         self.tstart = None # start of the task
@@ -105,7 +107,6 @@ class AdaptiveSensorimotorTask:
         self.RW_start = None
         self.current_time = None
         self.tend = None # end of the trial
-        self.next_trial_eligible = False
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()

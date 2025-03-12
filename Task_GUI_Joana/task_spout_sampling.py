@@ -35,8 +35,10 @@ class SpoutSamplingTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI = 3 # Inter-trial interval in seconds
-        self.RW = 3 # Response window in seconds
+        self.ITI_min = 2 # default ITI min
+        self.ITI_max = 2 # default ITI max
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
+        self.RW = 2 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
         self.valve_opening = 0.2  # Reward duration   
@@ -52,6 +54,8 @@ class SpoutSamplingTask:
         # Booleans
         self.trialstarted = False
         self.running = False
+        self.first_trial = True
+        self.next_trial_eligible = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -146,7 +150,7 @@ class SpoutSamplingTask:
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
-            self.ttrial = self.t # Update trial start time
+            self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
             self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
@@ -186,15 +190,14 @@ class SpoutSamplingTask:
     
             if latest_value1 > self.threshold_left:
                 with self.lock:
-                    self.tlick_l = self.t # Update last left lick time
+                    self.tlick_l = time.time() # Update last left lick time
                     elapsed_left = self.tlick_l - self.ttrial
-                    print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
     
-                        if correct_spout == 'left': # Only reward if correct
+                        if correct_spout == self.first_lick: # Only reward if correct
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start()
         
@@ -205,17 +208,22 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-                        
-                        elif correct_spout != 'left':
+                            
+                        else:
                             print ('Lick left but reward is right')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
+                            
                         self.trialstarted = False
-                        self.tend = self.t
+                        self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.next_trial_eligible = True
+                        
+                        # Update live stair plot
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                    
                         # Save trial data
                         self.save_data()
                         return
@@ -226,15 +234,14 @@ class SpoutSamplingTask:
     
             if latest_value2 > self.threshold_right:
                 with self.lock:
-                    self.tlick_r = self.t
+                    self.tlick_r = time.time()
                     elapsed_right = self.tlick_r - self.ttrial
-                    print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
     
-                        if correct_spout == 'right':
+                        if correct_spout == self.first_lick:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
                             
@@ -245,29 +252,28 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
-                            # Update live stair plot
-                            self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
-                            
-        
-                    elif correct_spout != 'right':
-                        print('Lick right but reward is left')
-                        self.incorrect_trials +=1
-                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                        else:
+                            print('Lick right but reward is left')
+                            self.incorrect_trials +=1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                     
-                    self.trialstarted = False
-                    self.tend = self.t
-                    self.trial_duration = (self.tend-self.ttrial)
-                    # Save trial data
-                    self.save_data()
-                    return
+                        self.trialstarted = False
+                        self.tend = time.time()
+                        self.trial_duration = (self.tend-self.ttrial)
+                        self.gui_controls.update_trial_duration(self.trial_duration)
+                        self.next_trial_eligible = True
+                        
+                        # Update live stair plot
+                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        
+                        # Save trial data
+                        self.save_data()
+                        return
         
     
     def reward(self, side):
         
         """Delivers a reward without blocking the main loop."""
-    
-        # Ensure pump action executes properly with a short delay
-        time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
@@ -294,15 +300,24 @@ class SpoutSamplingTask:
     def main(self):
         
         while self.running:
-            self.t = time.time() - self.tstart # update current time based on the elapsed time
+            while self.running:
             
-           
-            # Start a new trial if enough time has passed since the last trial and all conditions are met
-            if (self.ttrial is None or (self.t - (self.ttrial + self.RW) > self.ITI)):
+            if self.first_trial:
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
                     self.start_trial()
-                    
-            # Run lick detection continuously
+                    self.first_trial = False
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
+                else:
+                    pass
+                
+            if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
+                print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.next_trial_eligible = False
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
+             
             self.detect_licks()
             
             
