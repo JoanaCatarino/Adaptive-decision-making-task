@@ -90,12 +90,10 @@ class AdaptiveSensorimotorTask:
         self.running = False
         self.first_trial = True
         self.next_trial_ready = False
-        self.next_trial_eligible = False
         self.early_lick_counted = False
         self.sound_played = False
         self.omission_counted = False
         self.catch_trial_counted = False
-        
         
         # Time variables
         self.tstart = None # start of the task
@@ -107,6 +105,7 @@ class AdaptiveSensorimotorTask:
         self.RW_start = None
         self.current_time = None
         self.tend = None # end of the trial
+        self.next_trial_eligible = False
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -629,7 +628,7 @@ class AdaptiveSensorimotorTask:
         """Delivers a reward without blocking the main loop."""
 
         # Ensure pump action executes properly with a short delay
-        time.sleep(0.01)
+        #time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
