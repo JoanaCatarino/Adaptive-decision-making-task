@@ -80,17 +80,6 @@ class SpoutSamplingTask:
         pump_l.on()
         pump_r.on()
         
-        # Reset counters
-        self.total_trials = 0
-        self.total_licks = 0 
-        self.licks_left = 0 
-        self.licks_right = 0 
-        
-        # Update GUI display
-        self.gui_controls.update_total_licks(0)
-        self.gui_controls.update_licks_left(0)
-        self.gui_controls.update_licks_right(0)
-        
         self.gui_controls.lick_plot.reset_plot() # Plot main tab
         self.gui_controls.lick_plot_ov.reset_plot() # Plot overview tab
         
@@ -151,37 +140,17 @@ class SpoutSamplingTask:
         
         with self.lock:
             self.trialstarted = True
-            trial_number= self.total_trials +1
+            self.total_trials +1
+            self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
             # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
+            #threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
-            
-            # Initialize trial data
-            trial_data = {
-                'trial_number': trial_number,
-                'trial_start': self.ttrial,
-                'lick': 0,
-                'left_spout': 0,
-                'right_spout': 0,
-                'lick_time': None,
-                'RW': self.RW,
-                'QW': self.QW,
-                'ITI': self.ITI,
-                'threshold_left': self.threshold_left,
-                'threshold_right': self.threshold_right}
-            
-            self.trials.append(trial_data) # Store trial data
-            
-            self.total_trials = trial_number
-            self.gui_controls.update_total_trials(self.total_trials)
-            
-            # Append trial data to csv file
-            self.append_trial_to_csv(trial_data)
-            
+            print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+        
+
     
     def led_indicator(self, RW):
         
@@ -241,6 +210,10 @@ class SpoutSamplingTask:
                         
                         else:
                             print ('Lick left but reward is right')
+                            
+                        
+                        # Save trial data
+                        self.save_data()
     
         # Right piezo        
         if p2:
@@ -274,16 +247,18 @@ class SpoutSamplingTask:
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                            
         
                     else:
                         print('Lick right but reward is left')
+                        
+                    # Save trial data
+                    self.save_data()
         
     
     def reward(self, side):
         
         """Delivers a reward without blocking the main loop."""
-        
-        print(f"Delivering reward - {side}")
     
         # Ensure pump action executes properly with a short delay
         time.sleep(0.01)
@@ -325,25 +300,62 @@ class SpoutSamplingTask:
             self.detect_licks()
             
             
-    def append_trial_to_csv(self, trial_data):
-        """ Append trial data to the CSV file. """
-        file_exists = os.path.isfile(self.file_path)
-        
-        # Replace None or empty values with NaN
-        trial_data = {key: (value if value is not None else np.nan) for key, value in trial_data.items()}
-        
-        with open(self.file_path, mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=trial_data.keys())
-            if not file_exists:
-                writer.writeheader()  # Write header only if file does not exist
-            writer.writerow(trial_data)  # Append trial data
-                
-                
-    def set_thresholds(self, left, right):
-        """Sets the thresholds for the piezo adders and updates the GUI."""
-        self.threshold_left = left
-        self.threshold_right = right
-        
-        # Update the GUI thresholds
-        self.gui_controls.update_thresholds(self.threshold_left, self.threshold_right)
+    def save_data(self):
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
+    
+        # Determine if a reward was given
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
+                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+    
+        # Determine if punishment was given
+        was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
+    
+        # Determine if omission happened
+        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
+    
+        # Ensure punishment and omission never happen together
+        if was_punished:
+            was_omission = 0
+    
+        # Define trial data, using hasattr() to check for missing variables
+        trial_data = [
+            np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
+            np.nan if not hasattr(self, 'ttrial') else self.ttrial,  # trial start
+            np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
+            np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
+            np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
+            np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
+            np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '5KHz' else 0),  # 5KHz
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '10KHz' else 0),  # 10KHz
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
+            np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
+            np.nan if not hasattr(self, 'tlick') else (self.tlick if self.first_lick else np.nan),  # lick_time
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
+            np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
+            np.nan if not hasattr(self, 'RW') else self.RW,
+            np.nan if not hasattr(self, 'QW') else self.QW,
+            np.nan if not hasattr(self, 'WW') else self.WW,
+            np.nan if not hasattr(self, 'valve_opening') else self.valve_opening,
+            np.nan if not hasattr(self, 'ITI_min') else self.ITI_min,
+            np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
+            np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
+            np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
+            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
+            np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
+            np.nan if not hasattr(self, 'is_distractor_trial') else (1 if self.is_distractor_trial else 0),  # Distractor trial flag
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "left" else 0),  # Distractor on left
+            np.nan if not hasattr(self, 'distractor_led') else (1 if self.distractor_led == "right" else 0),  # Distractor on right
+            np.nan if not hasattr(self, 'tstart') else self.tstart  # session start
+        ]
+    
+        # Append data to the CSV file
+        with open(self.csv_file_path, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(trial_data)
     

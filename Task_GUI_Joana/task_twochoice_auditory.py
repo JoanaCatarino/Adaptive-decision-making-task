@@ -201,6 +201,10 @@ class TwoChoiceAuditoryTask:
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
             
+            # Update gui with trial type
+            self.gui_controls.ui.box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
+            self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
+            
             # Update Sound Counters
             if self.current_tone == '5KHz':
                 self.sound_5KHz +=1
@@ -208,9 +212,6 @@ class TwoChoiceAuditoryTask:
             elif self.current_tone == '10KHz':
                 self.sound_10KHz +=1
                 self.gui_controls.update_sound_10KHz(self.sound_10KHz)
-            
-            self.is_5KHz = 1 if self.current_tone == "5KHz" else 0
-            self.is_10KHz = 1 if self.current_tone == "10KHz" else 0
             
             # Turn LED on
             threading.Thread(target=self.blue_led_on, daemon=True).start()
@@ -428,6 +429,7 @@ class TwoChoiceAuditoryTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
+                        # Update live stair plot
                         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
                         self.save_data()
