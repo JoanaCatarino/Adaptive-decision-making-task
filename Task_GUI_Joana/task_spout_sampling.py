@@ -157,7 +157,7 @@ class SpoutSamplingTask:
             self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             
-            print('Trial: {self.total_trials}')
+            print(f'Trial: {self.total_trials}')
             
         
     
