@@ -352,6 +352,9 @@ class SpoutSamplingTask:
     def save_data(self):
         """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
     
+        # Determine if omission happened
+        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
+    
         # Define trial data, using hasattr() to check for missing variables
         trial_data = [
             np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
