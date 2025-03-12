@@ -208,7 +208,6 @@ class SpoutSamplingTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
-                        self.trialstarted = False
                         self.tend = self.t
                         self.trial_duration = (self.tend-self.ttrial)
                         # Save trial data
@@ -248,7 +247,6 @@ class SpoutSamplingTask:
                         self.incorrect_trials +=1
                         self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                     
-                    self.trialstarted = False
                     self.tend = self.t
                     self.trial_duration = (self.tend-self.ttrial)
                     # Save trial data
