@@ -227,7 +227,7 @@ class SpoutSamplingTask:
             if latest_value2 > self.threshold_right:
                 with self.lock:
                     self.tlick_r = self.t
-                    elapsed_right = self.tlick_r - self.RW_start
+                    elapsed_right = self.tlick_r - self.ttrial
                     print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
