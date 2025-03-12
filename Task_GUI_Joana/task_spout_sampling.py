@@ -368,8 +368,8 @@ class SpoutSamplingTask:
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
             np.nan if not hasattr(self, 'tlick') else (self.tlick if self.first_lick else np.nan),  # lick_time
-            np.nan if not hasattr(self, 'is_rewarded') else (1 if is_rewarded else 0),  # reward
-            np.nan if not hasattr(self, 'is_punished') else (1 if is_punished else 0),  # punishment
+            np.nan if not hasattr(self, 'is_rewarded') else (1 if self.is_rewarded else 0),  # reward
+            np.nan if not hasattr(self, 'is_punished') else (1 if self.is_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
