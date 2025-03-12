@@ -66,6 +66,7 @@ class SpoutSamplingTask:
         self.tlick = None # time of 1st lick within response window
         self.tend = None # end of trial
         self.trial_duration = None # trial duration
+        self.RW_start = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -156,7 +157,8 @@ class SpoutSamplingTask:
             self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             
-            print(f"(Trial: {self.total_trials})")
+            print(Trial: {self.total_trials})
+            
         
     
     def led_indicator(self, RW):
