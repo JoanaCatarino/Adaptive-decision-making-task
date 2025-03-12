@@ -300,8 +300,7 @@ class SpoutSamplingTask:
     def main(self):
         
         while self.running:
-            while self.running:
-            
+        
             if self.first_trial:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
@@ -319,7 +318,7 @@ class SpoutSamplingTask:
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
              
             self.detect_licks()
-            
+        
             
     def save_data(self):
         """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
