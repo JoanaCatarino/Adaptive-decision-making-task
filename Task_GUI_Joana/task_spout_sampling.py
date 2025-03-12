@@ -62,7 +62,6 @@ class SpoutSamplingTask:
         self.tlick = None # time of 1st lick within response window
         self.tend = None # end of trial
         self.trial_duration = None # trial duration
-        self.RW_start = None # start of response window
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -150,12 +149,13 @@ class SpoutSamplingTask:
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
             
+            self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
+            self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
+            
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
         
-            # Start response window
-            self.RW_start = self.t
     
     def led_indicator(self, RW):
         
@@ -187,7 +187,7 @@ class SpoutSamplingTask:
             if latest_value1 > self.threshold_left:
                 with self.lock:
                     self.tlick_l = self.t # Update last left lick time
-                    elapsed_left = self.tlick_l - self.RW_start
+                    elapsed_left = self.tlick_l - self.ttrial
                     print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
@@ -208,7 +208,7 @@ class SpoutSamplingTask:
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         
-                        else:
+                        elif correct spouts is not 'left':
                             print ('Lick left but reward is right')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
@@ -249,7 +249,7 @@ class SpoutSamplingTask:
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                             
         
-                    else:
+                    elif correct_spout is not 'right':
                         print('Lick right but reward is left')
                         self.incorrect_trials +=1
                         self.gui_controls.update_incorrect_trials(self.incorrect_trials)
