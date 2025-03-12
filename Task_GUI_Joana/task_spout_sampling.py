@@ -56,6 +56,7 @@ class SpoutSamplingTask:
         self.running = False
         self.first_trial = True
         self.next_trial_eligible = False
+        self.is_rewarded = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -153,6 +154,7 @@ class SpoutSamplingTask:
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
+            self.is_rewarded = False
             
             self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
@@ -230,6 +232,8 @@ class SpoutSamplingTask:
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
+                            self.is_rewarded = True
+                            
                             
                         else:
                             print ('Lick left but reward is right')
@@ -273,6 +277,8 @@ class SpoutSamplingTask:
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
+                            
+                            self.is_rewarded = True
                             
                         else:
                             print('Lick right but reward is left')
@@ -346,20 +352,6 @@ class SpoutSamplingTask:
     def save_data(self):
         """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
     
-        # Determine if a reward was given
-        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
-                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
-    
-        # Determine if punishment was given
-        was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
-    
-        # Determine if omission happened
-        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
-    
-        # Ensure punishment and omission never happen together
-        if was_punished:
-            was_omission = 0
-    
         # Define trial data, using hasattr() to check for missing variables
         trial_data = [
             np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
@@ -376,8 +368,8 @@ class SpoutSamplingTask:
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
             np.nan if not hasattr(self, 'tlick') else (self.tlick if self.first_lick else np.nan),  # lick_time
-            np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
-            np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
+            np.nan if not hasattr(self, 'first_lick') else (1 if is_rewarded else 0),  # reward
+            np.nan if not hasattr(self, 'is_punished') else (1 if is_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
