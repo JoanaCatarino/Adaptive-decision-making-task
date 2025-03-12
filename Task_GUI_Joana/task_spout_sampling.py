@@ -46,6 +46,8 @@ class SpoutSamplingTask:
         self.total_licks = 0
         self.licks_left = 0
         self.licks_right = 0
+        self.correct_trials = 0
+        self.incorrect_trials = 0
         
         # Booleans
         self.trialstarted = False
@@ -58,6 +60,8 @@ class SpoutSamplingTask:
         self.tlick_l = None # last lick left spout
         self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
+        self.tend = None
+        self.trial_duration = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -208,6 +212,7 @@ class SpoutSamplingTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
+                        self.trialstarted = False
                         self.tend = self.t
                         self.trial_duration = (self.tend-self.ttrial)
                         # Save trial data
@@ -247,6 +252,7 @@ class SpoutSamplingTask:
                         self.incorrect_trials +=1
                         self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                     
+                    self.trialstarted = False
                     self.tend = self.t
                     self.trial_duration = (self.tend-self.ttrial)
                     # Save trial data
