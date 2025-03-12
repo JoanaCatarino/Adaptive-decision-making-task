@@ -140,7 +140,7 @@ class SpoutSamplingTask:
         
         with self.lock:
             self.trialstarted = True
-            self.total_trials +1
+            self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = self.t # Update trial start time
             self.first_lick = None # Reset first lick at the start of each trial
@@ -195,16 +195,22 @@ class SpoutSamplingTask:
         
                             self.total_licks += 1
                             self.licks_left += 1
+                            self.correct_trials +=1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
+                            self.gui_controls.update_correct_trials(self.correct_trials)
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
                         
                         else:
                             print ('Lick left but reward is right')
+                            self.incorrect_trials +=1
+                            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.trialstarted = False
+                        self.tend = self.t
+                        self.trial_duration = (self.tend-self.ttrial)
                         # Save trial data
                         self.save_data()
     
@@ -228,8 +234,10 @@ class SpoutSamplingTask:
                             
                             self.total_licks += 1
                             self.licks_right += 1
+                            self.correct_trials +=1
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
+                            self.gui_controls.update_correct_trials(self.correct_trials)
                             
                             # Update live stair plot
                             self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
@@ -237,8 +245,12 @@ class SpoutSamplingTask:
         
                     else:
                         print('Lick right but reward is left')
+                        self.incorrect_trials +=1
+                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                     
                     self.trialstarted = False
+                    self.tend = self.t
+                    self.trial_duration = (self.tend-self.ttrial)
                     # Save trial data
                     self.save_data()
         
