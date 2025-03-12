@@ -204,7 +204,7 @@ class SpoutSamplingTask:
                         else:
                             print ('Lick left but reward is right')
                             
-                        
+                        self.trialstarted = False
                         # Save trial data
                         self.save_data()
     
@@ -237,7 +237,8 @@ class SpoutSamplingTask:
         
                     else:
                         print('Lick right but reward is left')
-                        
+                    
+                    self.trialstarted = False
                     # Save trial data
                     self.save_data()
         
