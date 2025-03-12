@@ -159,6 +159,10 @@ class SpoutSamplingTask:
             
             print(f'Trial: {self.total_trials}')
             
+            self.RW_start = time.time()  # Start response window
+            
+            # Wait for response window to finish if no lick happens
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
         
     
     def led_indicator(self, RW):
@@ -168,6 +172,24 @@ class SpoutSamplingTask:
         led_white_l.on()
         time.sleep(self.RW) # This should actually be changed to the duration of the full trial
         led_white_l.off()
+        
+        
+    def wait_for_response(self):
+        self.timer_3 = threading.Timer(self.RW, self.noresponse_callback)
+        self.timer_3.start()
+        
+    
+    def noresponse_callback(self):
+        print('No licks detected - aborting trial')
+        self.trialstarted = False
+        self.tend = time.time()
+        self.trial_duration = (self.tend-self.ttrial)
+        self.gui_controls.update_trial_duration(self.trial_duration)
+        self.next_trial_eligible = True
+        # Update live stair plot
+        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        # Save trial data
+        self.save_data()
         
         
     def detect_licks(self):
@@ -214,7 +236,7 @@ class SpoutSamplingTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
-                            
+                        self.timer_3.cancel()    
                         self.trialstarted = False
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
@@ -257,6 +279,7 @@ class SpoutSamplingTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                     
+                        self.timer_3.cancel()    
                         self.trialstarted = False
                         self.tend = time.time()
                         self.trial_duration = (self.tend-self.ttrial)
