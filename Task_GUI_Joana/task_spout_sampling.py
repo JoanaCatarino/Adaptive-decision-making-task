@@ -156,9 +156,7 @@ class SpoutSamplingTask:
             self.gui_controls.ui.box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Current rewarded spout: {self.current_reward_spout}")
             
-            # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {self.total_trials})")
+            print(f"(Trial: {self.total_trials})")
         
     
     def led_indicator(self, RW):
