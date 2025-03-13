@@ -95,6 +95,11 @@ class TwoChoiceAuditoryTask:
         
         self.first_lick = None
         
+        # Debiasing variables 
+        self.decision_history = [] # Stores last N trial outcomes
+        self.min_trials_debias = 15 # Number of trials for debiasing
+        self.decision_SD = 0.5 # standart deviation for Gaussian sampling
+        
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -149,6 +154,23 @@ class TwoChoiceAuditoryTask:
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
         return False 
     
+    def debias(self):
+        """ Adjusts trial assignment based on incorrect and omission trials. """
+        
+        recent_trials = [t for t in self.decision_history[-self.min_trials_debias:] if t in ["I", "O"]]
+       
+        if not recent_trials:
+            return random.choice(["left", "right"])  
+ 
+        fraction_right_errors = recent_trials.count("I") / len(recent_trials) if recent_trials.count("I") > 0 else 0
+        fraction_right_omissions = recent_trials.count("O") / len(recent_trials) if recent_trials.count("O") > 0 else 0
+ 
+        fraction_right = (fraction_right_errors + fraction_right_omissions) / 2  
+ 
+        debias_val = random.gauss(fraction_right, self.decision_SD)  
+ 
+        return "right" if debias_val >= 0.5 else "left
+    
     
     def check_animal_quiet(self):
         
@@ -195,9 +217,10 @@ class TwoChoiceAuditoryTask:
             self.sound_played = False # For saving data
             self.omission_counted = False # For saving data
             
-            # Randomly select the a cue sound for this trial (either 5KHz or 10KHz) and retrieve correct spout
-            self.current_tone = random.choice(['5KHz', '10KHz'])
-            self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+            # Randomly select the a cue sound  and apply debiasing when needed
+            self.correct_spout = self.debias()  # Apply debiasing
+
+            self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
             
@@ -359,6 +382,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
+                            self.decision_history.append("C")  # Store but ignore in debiasing
                                 
                                 
                         else:
@@ -369,8 +393,10 @@ class TwoChoiceAuditoryTask:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.decision_history.append("I") # Track incorrect trials for debiasing
                             
-                            
+                        
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -409,6 +435,7 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
+                            self.decision_history.append("C")  # Store but ignore in debiasing
                             
                         else:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
@@ -418,8 +445,10 @@ class TwoChoiceAuditoryTask:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.decision_history.append("I") # Track incorrect trials for debiasing
                             
-                            
+                        
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -444,6 +473,8 @@ class TwoChoiceAuditoryTask:
         self.omissions += 1
         self.omission_counted = True
         self.gui_controls.update_omissions(self.omissions)
+        self.decision_history.append("O")  # Track omission trial for debiasing
+        self.decision_history = self.decision_history[-self.min_trials_debias:]  # Keep last 10 trials
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
@@ -495,8 +526,18 @@ class TwoChoiceAuditoryTask:
             
     
     def save_data(self):
-        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
-    
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure.
+            Updated debiasing history
+        """
+        
+        if hasattr(self, 'first_lick'):
+           if self.first_lick != self.correct_spout:  # Incorrect choice
+               self.decision_history.append("I")
+           elif self.omission_counted:  # Omission (no response)
+               self.decision_history.append("O")
+
+       self.decision_history = self.decision_history[-self.min_trials_debias:] 
+        
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
                         self.gui_controls.ui.chk_AutomaticRewards.isChecked())
@@ -552,9 +593,3 @@ class TwoChoiceAuditoryTask:
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(trial_data)
-
-    
-
-        
-        
-    
