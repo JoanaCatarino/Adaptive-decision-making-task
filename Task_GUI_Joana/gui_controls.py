@@ -536,6 +536,9 @@ class GuiControls:
         
     def update_catch_trials(self, catch_trials):
         self.ui.box_CatchTrials.setText(f'{catch_trials}')
+        
+    #def update_bias(self, bias_value):
+    #self.ui.box_Bias.setText(f'{bias_value}')
 
     
     def update_task_params(self):

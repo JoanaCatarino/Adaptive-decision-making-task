@@ -68,7 +68,6 @@ class TwoChoiceAuditoryTask:
         self.autom_rewards = 0
         self.catch_trials = 0
         
-        
         # Booleans
         self.trialstarted = False
         self.running = False
@@ -160,16 +159,23 @@ class TwoChoiceAuditoryTask:
         recent_trials = [t for t in self.decision_history[-self.min_trials_debias:] if t in ["I", "O"]]
        
         if not recent_trials:
-            return random.choice(["left", "right"])  
+            bias_value = 'N/A'
+            selected_side = random.choice(["left", "right"])  
+            
+        else:
  
-        fraction_right_errors = recent_trials.count("I") / len(recent_trials) if recent_trials.count("I") > 0 else 0
-        fraction_right_omissions = recent_trials.count("O") / len(recent_trials) if recent_trials.count("O") > 0 else 0
- 
-        fraction_right = (fraction_right_errors + fraction_right_omissions) / 2  
- 
-        debias_val = random.gauss(fraction_right, self.decision_SD)  
- 
-        return "right" if debias_val >= 0.5 else "left"
+            fraction_right_errors = recent_trials.count("I") / len(recent_trials) if recent_trials.count("I") > 0 else 0
+            fraction_right_omissions = recent_trials.count("O") / len(recent_trials) if recent_trials.count("O") > 0 else 0
+     
+            fraction_right = (fraction_right_errors + fraction_right_omissions) / 2  
+     
+            debias_val = random.gauss(fraction_right, self.decision_SD)  
+     
+            selected_side = "right" if debias_val >= 0.5 else "left"
+            bias_value = f"{debias_val:.1f}" # Format to 1 decimal place
+            
+        # Update bias value in the GUI
+        self.gui_controls.ui.box_Bias.setText(bias_value)
     
     
     def check_animal_quiet(self):
