@@ -176,6 +176,8 @@ class TwoChoiceAuditoryTask:
             
         # Update bias value in the GUI
         self.gui_controls.ui.box_Bias.setText(bias_value)
+        
+        return selected_side
     
     
     def check_animal_quiet(self):
