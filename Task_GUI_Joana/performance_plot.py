@@ -62,6 +62,8 @@ class PlotLicks(QWidget):
         
         # Ensure trial numbers are actual trial count
         trial_numbers = np.array(self.trial_numbers, dtype=int)
+        # Convert lists to NumPy arrays
+        total_trials_arr = np.array(self.total_trials)
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
