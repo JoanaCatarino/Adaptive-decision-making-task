@@ -153,6 +153,38 @@ class TwoChoiceAuditoryTask:
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
         return False 
     
+    
+    
+    def calculate_animal_bias(self):
+        """ Calculates the actual behavioral bias of the animal based on recent trials. """
+    
+        recent_trials = self.decision_history[-self.MIN_TRIAL_DEBIAS:]  # Last N trials
+        if not recent_trials:
+            return "N/A"  # No data yet
+    
+        # Count how many incorrect and omission trials happened when the correct side was left/right
+        incorrect_right = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "I" and self.correct_spout == "left")
+        incorrect_left = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "I" and self.correct_spout == "right")
+        omission_right = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "O" and self.correct_spout == "left")
+        omission_left = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "O" and self.correct_spout == "right")
+    
+        total_incorrect_omission_trials = incorrect_right + incorrect_left + omission_right + omission_left
+    
+        if total_incorrect_omission_trials == 0:
+            return "N/A"  # Avoid division by zero
+    
+        # Calculate bias (proportion of rightward incorrect/omission trials)
+        bias_value = (incorrect_right + omission_right) / total_incorrect_omission_trials
+    
+        return bias_value
+    
+    
+    
+    
+    
+    
+    
+    
     def debias(self):
         """ Adjusts trial assignment based on incorrect and omission trials. """
         
@@ -173,9 +205,6 @@ class TwoChoiceAuditoryTask:
      
             selected_side = "right" if debias_val >= 0.5 else "left"
             bias_value = f"{debias_val:.1f}" # Format to 1 decimal place
-            
-        # Update bias value in the GUI
-        self.gui_controls.ui.box_Bias.setText(bias_value)
         
         return selected_side
     
@@ -230,7 +259,12 @@ class TwoChoiceAuditoryTask:
 
             self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
             print(
-                f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
+                f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{selected_side}')
+            
+            # Show Bias of the animal in the Gui
+            bias_value = self.calculate_animal_bias(previous_correct_spout)
+            self.gui_controls.ui.box_Bias.setText(f"{bias_value:.2f}" if bias_value != "N/A" else "N/A")
+            
             
             # Update gui with trial type
             self.gui_controls.ui.box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
