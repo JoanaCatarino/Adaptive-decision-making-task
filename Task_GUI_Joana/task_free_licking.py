@@ -156,8 +156,6 @@ class FreeLickingTask:
             # Start LED in a separate thread
             threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
             
-            print(f"LED ON at t: {self.t:.2f} sec (Trial: {trial_number})")
-            
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
             
