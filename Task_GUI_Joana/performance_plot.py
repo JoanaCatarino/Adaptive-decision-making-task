@@ -22,7 +22,7 @@ class PlotLicks(QWidget):
         self.ax = self.figure.add_subplot(111)
 
         # Initialize Data Lists
-        self.times = []
+        self.trial_numbers = []
         self.total_licks = []
         self.licks_left = []
         self.licks_right = []
@@ -45,20 +45,29 @@ class PlotLicks(QWidget):
         # Apply tight layout to ensure everything fits 
         self.figure.tight_layout(pad=2.9)  
 
-    def update_plot(self, time, total_licks, licks_left, licks_right):
+    def update_plot(self, total_trials, total_licks, licks_left, licks_right):
         """Update stair plot with new lick data."""
-
+        
+        # Increment trial number (should match total number of trials, including omissions)
+        trial_number = len(self.trial_numbers) + 1  # Use independent counter
+        self.trial_numbers.append(trial_number)
+        
+        # Always append total trials to keep trial history
+        self.total_trials.append(total_trials)
+        
         # Append Data
-        self.times.append(time)
         self.total_licks.append(total_licks)
         self.licks_left.append(licks_left)
         self.licks_right.append(licks_right)
+        
+        # Ensure trial numbers are actual trial count
+        trial_numbers = np.array(self.trial_numbers, dtype=int)
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
-        self.ax.step(self.times, self.total_licks, where='post', color='#FF864E', linewidth=2, label='Total licks')
-        self.ax.step(self.times, self.licks_left, where='post', color='#955C66', linewidth=2, linestyle= 'dashed', label='Licks left')
-        self.ax.step(self.times, self.licks_right, where='post', color='#4E8070', linewidth=2, linestyle= 'dashed', label='Licks right')
+        self.ax.step(trial_numbers, self.total_licks, where='post', color='#FF864E', linewidth=2, label='Total licks')
+        self.ax.step(trial_numbers, self.licks_left, where='post', color='#955C66', linewidth=2, linestyle= 'dashed', label='Licks left')
+        self.ax.step(trial_numbers, self.licks_right, where='post', color='#4E8070', linewidth=2, linestyle= 'dashed', label='Licks right')
         
         # Update Labels & Formatting
         self.ax.set_ylabel("Licks", labelpad=9)
@@ -83,7 +92,7 @@ class PlotLicks(QWidget):
         
     def reset_plot(self):
         """Clears the plot data and refreshes the figure."""
-        self.times.clear()
+        self.total_trials.clear()
         self.total_licks.clear()
         self.licks_left.clear()
         self.licks_right.clear()

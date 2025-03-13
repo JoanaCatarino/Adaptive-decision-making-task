@@ -189,7 +189,8 @@ class SpoutSamplingTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.next_trial_eligible = True
         # Update live stair plot
-        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+    
         # Save trial data
         self.save_data()
         
@@ -248,7 +249,7 @@ class SpoutSamplingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
                     
                         # Save trial data
                         self.save_data()
@@ -293,7 +294,7 @@ class SpoutSamplingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.tlick, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
                         
                         # Save trial data
                         self.save_data()

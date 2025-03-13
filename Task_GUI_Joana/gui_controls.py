@@ -153,12 +153,12 @@ class GuiControls:
         self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
 
     
-    def update_lick_plot(self, total_licks, licks_left, licks_right, time):
+    def update_lick_plot(self, total_licks, licks_left, licks_right, total_trials):
         if hasattr(self, 'lick_plot'):
-            self.lick_plot.update_plot(total_licks, licks_left, licks_right, time)
+            self.lick_plot.update_plot(total_licks, licks_left, licks_right, total_trials)
             
         if hasattr(self, 'lick_plot_ov'):
-            self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, time)
+            self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, total_trials)
             
     
     def setup_performance_plot(self):
