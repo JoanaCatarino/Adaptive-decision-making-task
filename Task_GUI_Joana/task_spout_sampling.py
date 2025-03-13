@@ -161,19 +161,8 @@ class SpoutSamplingTask:
             
             print(f'Trial: {self.total_trials}')
             
-            self.RW_start = time.time()  # Start response window
-            
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
-        
-    
-    def led_indicator(self, RW):
-        
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_white_l.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_white_l.off()
         
         
     def wait_for_response(self):

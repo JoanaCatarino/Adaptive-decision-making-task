@@ -656,9 +656,6 @@ class AdaptiveSensorimotorTaskDistractor:
     
     def reward(self, side):
         """Delivers a reward without blocking the main loop."""
-
-        # Ensure pump action executes properly with a short delay
-        time.sleep(0.01)
     
         if side == 'left':
             pump_l.off()
