@@ -81,6 +81,9 @@ class PlotLicks(QWidget):
         # Set y-axis tick labels to whole numbers
         self.ax.yaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{int(x)}'))
         
+        # Ensure x-axis labels are integers (no decimals)
+        self.ax.xaxis.set_major_locator(plt.MaxNLocator(integer=True))
+        
         # Add legend and set colors
         legend = self.ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.18), ncol=3, frameon=False, prop={'size':8.5})
         for text, color in zip(legend.get_texts(), ['#FF864E', '#955C66', '#4E8070']):
