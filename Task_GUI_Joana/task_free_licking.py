@@ -208,7 +208,6 @@ class FreeLickingTask:
                 with self.lock:
                     self.tlick_l = time.time()
                     elapsed_left = self.tlick_l - self.ttrial
-                    print('Threshold exceeded left')
     
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
@@ -244,9 +243,8 @@ class FreeLickingTask:
     
             if latest_value2 > self.threshold_right:
                 with self.lock:
-                    self.tlick_r = self.t
+                    self.tlick_r = time.time()
                     elapsed_right = self.tlick_r - self.ttrial
-                    print('Threshold exceeded right')
     
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
