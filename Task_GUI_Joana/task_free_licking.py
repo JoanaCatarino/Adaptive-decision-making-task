@@ -59,8 +59,8 @@ class FreeLickingTask:
         self.trialstarted = False
         self.running = False
         self.first_trial = True
-       self.next_trial_eligible = False
-       self.is_rewarded = False
+        self.next_trial_eligible = False
+        self.is_rewarded = False
         
         # Time variables
         self.tstart = None # start of the task
