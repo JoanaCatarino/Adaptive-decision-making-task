@@ -169,7 +169,7 @@ class TwoChoiceAuditoryTask:
  
         debias_val = random.gauss(fraction_right, self.decision_SD)  
  
-        return "right" if debias_val >= 0.5 else "left
+        return "right" if debias_val >= 0.5 else "left"
     
     
     def check_animal_quiet(self):
