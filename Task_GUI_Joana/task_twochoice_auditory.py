@@ -526,17 +526,7 @@ class TwoChoiceAuditoryTask:
             
     
     def save_data(self):
-        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure.
-            Updated debiasing history
-        """
-        
-        if hasattr(self, 'first_lick'):
-           if self.first_lick != self.correct_spout:  # Incorrect choice
-               self.decision_history.append("I")
-           elif self.omission_counted:  # Omission (no response)
-               self.decision_history.append("O")
-
-       self.decision_history = self.decision_history[-self.min_trials_debias:] 
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure."""
         
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
