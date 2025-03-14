@@ -188,15 +188,17 @@ class TwoChoiceAuditoryTask:
 
         # Calculate bias (proportion of incorrect/omission trials on right)
         self.bias_value = (incorrect_right + omission_right) / total_incorrect_omission_trials
+        print(self.bias_value)
 
         # Apply Gaussian sampling to introduce slight randomness
         self.debias_val = random.gauss(self.bias_value, self.decision_SD)
+        print(self.debias_val)
 
         # Assign trials to the **opposite** side to counteract bias
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
 
         # Update GUI with bias value
-        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
+        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.2f}")
 
         return self.selected_side
   
