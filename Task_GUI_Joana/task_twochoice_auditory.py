@@ -168,7 +168,7 @@ class TwoChoiceAuditoryTask:
             print("[Debiasing] No bias detected. Assigning trial randomly.")
             self.bias_value = "N/A"
             self.selected_side = random.choice(["left", "right"])  
-            self.gui_controls.ui.box_Bias.setText(f"{bias_value}")
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
             return self.selected_side
 
         # Count incorrect and omission trials for left and right
@@ -183,7 +183,7 @@ class TwoChoiceAuditoryTask:
             print("[Debiasing] No incorrect or omission trials found. Assigning trial randomly.")
             self.bias_value = "N/A"
             self.selected_side = random.choice(["left", "right"])  
-            self.gui_controls.ui.box_Bias.setText(f"{bias_value}")
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
             return self.selected_side  
 
         # Calculate bias (proportion of incorrect/omission trials on right)
@@ -196,7 +196,7 @@ class TwoChoiceAuditoryTask:
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
 
         # Update GUI with bias value
-        self.gui_controls.ui.box_Bias.setText(f"{bias_value:.1f}")
+        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
 
         return self.selected_side
   
@@ -252,7 +252,7 @@ class TwoChoiceAuditoryTask:
 
             self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
             print(
-                f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{selected_side}')
+                f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{self.correct_spout}')
          
             # Update gui with trial type
             self.gui_controls.ui.box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
