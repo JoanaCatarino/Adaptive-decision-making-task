@@ -165,11 +165,9 @@ class TwoChoiceAuditoryTask:
         recent_trials = self.decision_history[-self.min_trials_debias:]  # Last N trials
         
         if not recent_trials:
-            print("[Debiasing] No bias detected. Assigning trial randomly.")
-            self.bias_value = "N/A"
-            self.selected_side = random.choice(["left", "right"])  
+            self.bias_value = 0.5 
             self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
-            return self.selected_side
+            return random.choice(["left", "right"])  
 
         # Count incorrect and omission trials for left and right
         incorrect_right = sum(1 for t in recent_trials if t == "I" and self.correct_spout == "left")
@@ -180,14 +178,13 @@ class TwoChoiceAuditoryTask:
         total_incorrect_omission_trials = incorrect_right + incorrect_left + omission_right + omission_left
 
         if total_incorrect_omission_trials == 0:
-            print("[Debiasing] No incorrect or omission trials found. Assigning trial randomly.")
-            self.bias_value = "N/A"
+            self.bias_value = 0.5 # Keep it neutral
             self.selected_side = random.choice(["left", "right"])  
             self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
-            return self.selected_side  
+            return random.choice(["left", "right"])  
 
         # Calculate bias (proportion of incorrect/omission trials on right)
-        self.bias_value = (incorrect_right + omission_right) / total_incorrect_omission_trials
+        self.bias_value = (incorrect_right + omission_right + 1) / (total_incorrect_omission_trials + 2)
         print(self.bias_value)
 
         # Apply Gaussian sampling to introduce slight randomness
@@ -198,7 +195,7 @@ class TwoChoiceAuditoryTask:
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
 
         # Update GUI with bias value
-        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.2f}")
+        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
 
         return self.selected_side
   
