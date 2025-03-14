@@ -98,7 +98,10 @@ class TwoChoiceAuditoryTask:
         self.decision_history = [] # Stores last N trial outcomes
         self.min_trials_debias = 15 # Number of trials for debiasing
         self.decision_SD = 0.5 # standart deviation for Gaussian sampling
-        
+        self.correct_spout = None 
+        self.selected_side = None
+        self.bias_value = None
+        self.debias_value = None
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -153,60 +156,50 @@ class TwoChoiceAuditoryTask:
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
         return False 
     
-    
-    
-    def calculate_animal_bias(self):
-        """ Calculates the actual behavioral bias of the animal based on recent trials. """
-    
-        recent_trials = self.decision_history[-self.MIN_TRIAL_DEBIAS:]  # Last N trials
-        if not recent_trials:
-            return "N/A"  # No data yet
-    
-        # Count how many incorrect and omission trials happened when the correct side was left/right
-        incorrect_right = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "I" and self.correct_spout == "left")
-        incorrect_left = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "I" and self.correct_spout == "right")
-        omission_right = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "O" and self.correct_spout == "left")
-        omission_left = sum(1 for i in range(len(recent_trials)) if recent_trials[i] == "O" and self.correct_spout == "right")
-    
-        total_incorrect_omission_trials = incorrect_right + incorrect_left + omission_right + omission_left
-    
-        if total_incorrect_omission_trials == 0:
-            return "N/A"  # Avoid division by zero
-    
-        # Calculate bias (proportion of rightward incorrect/omission trials)
-        bias_value = (incorrect_right + omission_right) / total_incorrect_omission_trials
-    
-        return bias_value
-    
-    
-    
-    
-    
-    
-    
-    
     def debias(self):
-        """ Adjusts trial assignment based on incorrect and omission trials. """
+        """ 
+        Calculates the animal's bias based on recent trials and assigns 
+        the next trial's side to counteract bias.
+        """
         
-        recent_trials = [t for t in self.decision_history[-self.min_trials_debias:] if t in ["I", "O"]]
-       
+        recent_trials = self.decision_history[-self.min_trials_debias:]  # Last N trials
+        
         if not recent_trials:
-            bias_value = 'N/A'
-            selected_side = random.choice(["left", "right"])  
-            
-        else:
- 
-            fraction_right_errors = recent_trials.count("I") / len(recent_trials) if recent_trials.count("I") > 0 else 0
-            fraction_right_omissions = recent_trials.count("O") / len(recent_trials) if recent_trials.count("O") > 0 else 0
-     
-            fraction_right = (fraction_right_errors + fraction_right_omissions) / 2  
-     
-            debias_val = random.gauss(fraction_right, self.decision_SD)  
-     
-            selected_side = "right" if debias_val >= 0.5 else "left"
-            bias_value = f"{debias_val:.1f}" # Format to 1 decimal place
-        
-        return selected_side
+            print("[Debiasing] No bias detected. Assigning trial randomly.")
+            self.bias_value = "N/A"
+            self.selected_side = random.choice(["left", "right"])  
+            self.gui_controls.ui.box_Bias.setText(f"{bias_value}")
+            return self.selected_side
+
+        # Count incorrect and omission trials for left and right
+        incorrect_right = sum(1 for t in recent_trials if t == "I" and self.correct_spout == "left")
+        incorrect_left = sum(1 for t in recent_trials if t == "I" and self.correct_spout == "right")
+        omission_right = sum(1 for t in recent_trials if t == "O" and self.correct_spout == "left")
+        omission_left = sum(1 for t in recent_trials if t == "O" and self.correct_spout == "right")
+
+        total_incorrect_omission_trials = incorrect_right + incorrect_left + omission_right + omission_left
+
+        if total_incorrect_omission_trials == 0:
+            print("[Debiasing] No incorrect or omission trials found. Assigning trial randomly.")
+            self.bias_value = "N/A"
+            self.selected_side = random.choice(["left", "right"])  
+            self.gui_controls.ui.box_Bias.setText(f"{bias_value}")
+            return self.selected_side  
+
+        # Calculate bias (proportion of incorrect/omission trials on right)
+        self.bias_value = (incorrect_right + omission_right) / total_incorrect_omission_trials
+
+        # Apply Gaussian sampling to introduce slight randomness
+        self.debias_val = random.gauss(self.bias_value, self.decision_SD)
+
+        # Assign trials to the **opposite** side to counteract bias
+        self.selected_side = "right" if self.debias_val < 0.5 else "left"  
+
+        # Update GUI with bias value
+        self.gui_controls.ui.box_Bias.setText(f"{bias_value:.1f}")
+
+        return self.selected_side
+  
     
     
     def check_animal_quiet(self):
@@ -260,12 +253,7 @@ class TwoChoiceAuditoryTask:
             self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
             print(
                 f' trial:{self.total_trials}  current_tone:{self.current_tone} - correct_spout:{selected_side}')
-            
-            # Show Bias of the animal in the Gui
-            bias_value = self.calculate_animal_bias(previous_correct_spout)
-            self.gui_controls.ui.box_Bias.setText(f"{bias_value:.2f}" if bias_value != "N/A" else "N/A")
-            
-            
+         
             # Update gui with trial type
             self.gui_controls.ui.box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
             self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
