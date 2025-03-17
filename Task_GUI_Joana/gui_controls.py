@@ -140,21 +140,29 @@ class GuiControls:
     def setup_task_plot(self):
         """Initialize and update the correct performance plot based on the selected task."""
         selected_task = self.ui.ddm_Task.currentText()  # Get the currently selected task
-
+    
+        # Remove the existing plot if it exists
+        if self.current_plot is not None:
+            self.current_plot.setParent(None)  # Detach the old widget
+            self.current_plot.deleteLater()  # Ensure it is deleted from memory
+            self.current_plot = None  # Reset reference
+    
         # Choose the appropriate plot based on the task
         if selected_task in ["Free Licking", "Spout Sampling"]:  
             self.current_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
         else:  
             self.current_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
-
-        # Set up layout for the plot
-        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
-        plt_layout.setContentsMargins(0, 0, 0, 0)
-        plt_layout.setSpacing(0)
+    
+        # Add the new plot widget directly into the existing GUI container
         self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        plt_layout.addWidget(self.current_plot)
-        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+        self.ui.plt_AnimalPerformance.layout().addWidget(self.current_plot)  # Use the existing layout
+    
+        # Force a repaint to ensure visibility
+        self.current_plot.show()
+        self.current_plot.repaint()
+        self.current_plot.canvas.draw()
 
+       
     def update_plot(self, *args):
         """Update the active plot based on the task type."""
         if isinstance(self.current_plot, PlotLicks):
