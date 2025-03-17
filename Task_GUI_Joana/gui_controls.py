@@ -101,9 +101,15 @@ class GuiControls:
         #self.setup_lick_plot()
         #self.setup_performance_plot()
         
-        # Setup dynamic performance plot based on selected task
+        # Connect dropdown menu selection
         self.ui.ddm_Task.currentIndexChanged.connect(self.setup_dynamic_performance_plot)
-        self.setup_dynamic_performance_plot()  # Initialize the correct plot at startup
+
+        # Ensure layout exists before setting up the plot
+        if not self.ui.plt_AnimalPerformance.layout():
+            self.ui.plt_AnimalPerformance.setLayout(QVBoxLayout())
+
+        # Initialize the correct plot at startup
+        self.setup_dynamic_performance_plot()
 
 
     #Piezo functions
