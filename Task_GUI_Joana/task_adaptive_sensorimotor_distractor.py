@@ -122,6 +122,15 @@ class AdaptiveSensorimotorTaskDistractor:
         self.distractor_led = None # Stores which LED is used (left or right)
         self.distractor_duration = 0.2 # 200ms - same duration as the sound
         
+        # Debiasing variables 
+        self.decision_history = [] # Stores last N trial outcomes
+        self.min_trials_debias = 15 # Number of trials for debiasing
+        self.decision_SD = 0.5 # standart deviation for Gaussian sampling
+        self.correct_spout = None 
+        self.selected_side = None
+        self.bias_value = None
+        self.debias_value = None
+        
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -209,6 +218,46 @@ class AdaptiveSensorimotorTaskDistractor:
                     
             else:
                 print('Waiting for enough data to check quiet window')
+         
+                
+    def debias(self):
+        """ 
+        Adjusts trial assignment based on recent lick history to reinforce the weaker spout.
+        """
+        
+        recent_trials = self.decision_history[-self.min_trials_debias:]  # Last N trials
+        
+        if not recent_trials:
+            self.bias_value = 0.5 
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
+            return random.choice(["left", "right"])  
+
+        # Count left and right licks
+        left_licks = sum(1 for t in recent_trials if t == "L")
+        right_licks = sum(1 for t in recent_trials if t == "R")
+        total_licks = left_licks + right_licks
+
+        if total_licks == 0:
+            self.bias_value = 0.5 # Keep it neutral
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
+            return random.choice(["left", "right"])  
+
+        # Compute bias based on lick history (proportion of right licks)
+        self.bias_value = right_licks / total_licks
+        print(self.bias_value)
+
+        # Apply Gaussian sampling to introduce slight randomness
+        self.debias_val = random.gauss(self.bias_value, self.decision_SD)
+        print(self.debias_val)
+
+        # Assign trials to reinforce the underrepresented spout
+        self.selected_side = "right" if self.debias_val < 0.5 else "left"  
+
+        # Update GUI with bias value
+        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
+
+        return self.selected_side            
+                
              
     def should_switch_block(self):
         """Check if the last 5 valid trials meet the 85% correct threshold."""
@@ -282,7 +331,11 @@ class AdaptiveSensorimotorTaskDistractor:
             else:
                 self.is_distractor_trial = False
                 self.distractor_led = None
-            
+                
+            # If a new "sound" block starts, reset licking history (execpt if it is the 1st sound block of the session)
+            if self.current_block == "sound" and self.trials_in_block == 1:
+                self.decision_history = []  # Clear past trial history    
+                
             # Determine trial type
             if self.is_catch_trial:
                 print(f'Trial {self.total_trials} - Catch trial | Distractor: {self.is_distractor_trial} ({self.distractor_led})')
@@ -295,8 +348,10 @@ class AdaptiveSensorimotorTaskDistractor:
                 self.gui_controls.ui.OV_box_CurrentTrial.setText(f'Catch Trial | Distractor:{self.is_distractor_trial}({self.distractor_led})')
             else:
                 if self.current_block == "sound":
-                    self.current_tone = random.choice(["5KHz", "10KHz"])
-                    self.correct_spout = self.spout_5KHz if self.current_tone == "5KHz" else self.spout_10KHz
+                    # Randomly select the a cue sound  and apply debiasing when needed
+                    self.correct_spout = self.debias()  # Apply debiasing
+                    self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
+                    
                 elif self.current_block == "action-left":
                     self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "left"  # Always reward left, punish right
@@ -466,6 +521,8 @@ class AdaptiveSensorimotorTaskDistractor:
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l  
+                        self.decision_history.append("L")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                         print(f"Catch trial: Lick detected on LEFT spout")
                         
                         self.total_licks += 1
@@ -499,6 +556,8 @@ class AdaptiveSensorimotorTaskDistractor:
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r  
+                        self.decision_history.append("R")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                         print(f"Catch trial: Lick detected on RIGHT spout at {self.tlick_r}, but no reward/punishment given.")
     
                         self.total_licks += 1
@@ -536,6 +595,8 @@ class AdaptiveSensorimotorTaskDistractor:
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
+                        self.decision_history.append("L")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                             
                         if self.correct_spout == self.first_lick:
         
@@ -583,6 +644,8 @@ class AdaptiveSensorimotorTaskDistractor:
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
+                        self.decision_history.append("R")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                             
                         if self.correct_spout == self.first_lick:
         
