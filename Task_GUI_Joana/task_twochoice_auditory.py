@@ -169,8 +169,8 @@ class TwoChoiceAuditoryTask:
             return random.choice(["left", "right"])  
 
         # Count left and right licks
-        left_licks = sum(1 for t in recent_licks if t == "L")
-        right_licks = sum(1 for t in recent_licks if t == "R")
+        left_licks = sum(1 for t in recent_trials if t == "L")
+        right_licks = sum(1 for t in recent_trials if t == "R")
         total_licks = left_licks + right_licks
 
         if total_licks == 0:
