@@ -153,10 +153,6 @@ class GuiControls:
         else:  
             self.current_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
     
-        # Add the new plot widget directly into the existing GUI container
-        self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.ui.plt_AnimalPerformance.layout().addWidget(self.current_plot)  # Use the existing layout
-    
         # Force a repaint to ensure visibility
         self.current_plot.show()
         self.current_plot.repaint()
