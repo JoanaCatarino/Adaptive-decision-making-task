@@ -316,6 +316,10 @@ class AdaptiveSensorimotorTask:
             
             self.is_catch_trial = random.random() < self.catch_trials_fraction
             
+            # If a new "sound" block starts, reset licking history (execpt if it is the 1st sound block of the session)
+            if self.current_block == "sound" and self.trials_in_block == 1:
+                self.decision_history = []  # Clear past trial history
+            
             # Determine trial type
             if self.is_catch_trial:
                 print(f'Trial {self.total_trials} - Catch trial')
