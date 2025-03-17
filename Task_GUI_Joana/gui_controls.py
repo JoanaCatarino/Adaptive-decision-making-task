@@ -256,7 +256,7 @@ class GuiControls:
                 self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)
     
             # 🔥 Ensure the layout doesn't distort
-            self.performance_plot.figure.tight_layout()
+            self.performance_plot.figure.tight_layout(pad=2.9)
             self.performance_plot.canvas.draw_idle()
             self.ui.plt_AnimalPerformance.update()       
     
