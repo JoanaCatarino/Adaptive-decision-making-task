@@ -87,7 +87,7 @@ class FreeLickingTask:
         pump_l.on()
         pump_r.on()
         
-        #self.gui_controls.lick_plot.reset_plot() # Plot main tab
+        self.gui_controls.current_plot.reset_plot() # Plot main tab
         #self.gui_controls.lick_plot_ov.reset_plot() # Plot overview tab
         
         self.running = True

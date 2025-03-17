@@ -157,14 +157,14 @@ class GuiControls:
 
     def update_plot(self, *args):
         """Update the active plot based on the task type."""
-        if isinstance(self, current_plot, PlotLicks):
+        if isinstance(self.current_plot, PlotLicks):
             if len(args) == 4:
                 total_trials, total_licks, licks_left, licks_right = args
                 self.current_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
             else:
                 print("Warning: Incorrect number of arguments for PlotLicks.update_plot")
     
-        elif isinstance(self, current_plot, PlotPerformance):
+        elif isinstance(self.current_plot, PlotPerformance):
             if len(args) == 3:
                 total_trials, correct_trials, incorrect_trials = args
                 self.current_plot.update_plot(total_trials, correct_trials, incorrect_trials)
