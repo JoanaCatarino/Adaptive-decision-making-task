@@ -100,6 +100,7 @@ class PlotLicks(QWidget):
         
     def reset_plot(self):
         """Clears the plot data and refreshes the figure."""
+        self.trial_numbers.clear()
         self.total_trials.clear()
         self.total_licks.clear()
         self.licks_left.clear()
@@ -108,6 +109,13 @@ class PlotLicks(QWidget):
         self.ax.clear()  # Clear the existing plot
         self.ax.set_ylabel("Licks")
         self.ax.grid(True)
+        
+        # Keep a placeholder data point to avoid dimension mismatches
+        self.trial_numbers.append(0)
+        self.total_trials.append(0)
+        self.total_licks.append(0)
+        self.licks_left.append(0)
+        self.licks_right.append(0)
     
         # Redraw the canvas
         self.canvas.draw()

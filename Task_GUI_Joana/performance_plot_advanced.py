@@ -140,6 +140,7 @@ class PlotPerformance(QWidget):
         
     def reset_plot(self):
         """Clears the plot data and refreshes the figure."""
+        self.trial_numbers.clear()
         self.total_trials.clear()
         self.correct_trials.clear()
         self.incorrect_trials.clear()
@@ -158,6 +159,12 @@ class PlotPerformance(QWidget):
         self.ax2.set_ylabel("d'", color='#9DB4C0')
         self.ax2.set_ylim(-2, 2)  # Reset range for d'
         self.ax2.tick_params(axis='y', labelcolor='#27605F')
+        
+        # Ensure that lists remain the same size when the next trial starts
+        self.trial_numbers.append(0)
+        self.total_trials.append(0)
+        self.correct_trials.append(0)
+        self.incorrect_trials.append(0)
 
         # Redraw the canvas
         self.canvas.draw()

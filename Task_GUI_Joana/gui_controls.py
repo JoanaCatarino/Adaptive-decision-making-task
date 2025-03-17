@@ -140,7 +140,7 @@ class GuiControls:
         """Show the correct performance plot based on the selected task."""
         selected_task = self.ui.ddm_Task.currentText()  # Get the selected task
     
-        # 🔹 Remove the previous widget from the layout to prevent resizing issues
+        # Remove the previous widget from the layout to prevent resizing issues
         layout = self.ui.plt_AnimalPerformance.layout()
         while layout.count():
             item = layout.takeAt(0)
@@ -148,14 +148,14 @@ class GuiControls:
             if widget:
                 widget.setParent(None)  # Detach widget from layout
     
-        # 🔹 Reattach the correct plot
+        # Reattach the correct plot
         if selected_task in ["Free Licking", "Spout Sampling"]:
             layout.addWidget(self.lick_plot)
             layout.update()
             self.lick_plot.show()
             self.performance_plot.hide()
     
-            # 🔥 Ensure it redraws properly
+            # Ensure it redraws properly
             self.lick_plot.figure.tight_layout()
             self.lick_plot.canvas.draw_idle()
         
@@ -165,11 +165,11 @@ class GuiControls:
             self.performance_plot.show()
             self.lick_plot.hide()
     
-            # 🔥 Ensure it redraws properly
+            # Ensure it redraws properly
             self.performance_plot.figure.tight_layout()
             self.performance_plot.canvas.draw_idle()
         
-        # 🔥 Refresh the GUI container
+        # Refresh the GUI container
         self.ui.plt_AnimalPerformance.update()
             
     
@@ -244,7 +244,7 @@ class GuiControls:
                 self.lick_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
                 self.lick_plot_ov.update_plot(total_trials, total_licks, licks_left, licks_right)
     
-            # 🔥 Ensure the layout doesn't distort
+            # Ensure the layout doesn't distort
             self.lick_plot.figure.tight_layout()
             self.lick_plot.canvas.draw_idle()
             self.ui.plt_AnimalPerformance.update()
@@ -255,7 +255,7 @@ class GuiControls:
                 self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
                 self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)
     
-            # 🔥 Ensure the layout doesn't distort
+            # Ensure the layout doesn't distort
             self.performance_plot.figure.tight_layout()
             self.performance_plot.canvas.draw()
             self.ui.plt_AnimalPerformance.update()       
