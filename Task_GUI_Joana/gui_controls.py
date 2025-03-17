@@ -140,29 +140,37 @@ class GuiControls:
         """Show the correct performance plot based on the selected task."""
         selected_task = self.ui.ddm_Task.currentText()  # Get the selected task
     
+        # 🔹 Remove the previous widget from the layout to prevent resizing issues
+        layout = self.ui.plt_AnimalPerformance.layout()
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.setParent(None)  # Detach widget from layout
+    
+        # 🔹 Reattach the correct plot
         if selected_task in ["Free Licking", "Spout Sampling"]:
+            layout.addWidget(self.lick_plot)
+            layout.update()
             self.lick_plot.show()
             self.performance_plot.hide()
-            self.lick_plot_ov.show()
-            self.performance_plot_ov.hide()
     
-            # 🔥 Force redraw after showing
+            # 🔥 Ensure it redraws properly
+            self.lick_plot.figure.tight_layout()
             self.lick_plot.canvas.draw_idle()
-            self.lick_plot_ov.canvas.draw_idle()
-    
+        
         else:
-            self.lick_plot.hide()
+            layout.addWidget(self.performance_plot)
+            layout.update()
             self.performance_plot.show()
-            self.lick_plot_ov.hide()
-            self.performance_plot_ov.show()
+            self.lick_plot.hide()
     
-            # 🔥 Force redraw after showing
+            # 🔥 Ensure it redraws properly
+            self.performance_plot.figure.tight_layout()
             self.performance_plot.canvas.draw_idle()
-            self.performance_plot_ov.canvas.draw_idle()
-    
-        # 🔥 Ensure layout updates properly
+        
+        # 🔥 Refresh the GUI container
         self.ui.plt_AnimalPerformance.update()
-        self.ui.OV_plt_AnimalPerformance.update()
             
     
     def setup_lick_plot(self):
@@ -226,7 +234,31 @@ class GuiControls:
             self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             
         if hasattr(self, 'performance_plot_ov'):
-            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)  
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials) 
+            
+    def update_plot(self, *args):
+        """Update the active plot based on the task type."""
+        if self.lick_plot.isVisible():
+            if len(args) == 4:
+                total_trials, total_licks, licks_left, licks_right = args
+                self.lick_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
+                self.lick_plot_ov.update_plot(total_trials, total_licks, licks_left, licks_right)
+    
+            # 🔥 Ensure the layout doesn't distort
+            self.lick_plot.figure.tight_layout()
+            self.lick_plot.canvas.draw_idle()
+            self.ui.plt_AnimalPerformance.update()
+    
+        elif self.performance_plot.isVisible():
+            if len(args) == 3:
+                total_trials, correct_trials, incorrect_trials = args
+                self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
+                self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)
+    
+            # 🔥 Ensure the layout doesn't distort
+            self.performance_plot.figure.tight_layout()
+            self.performance_plot.canvas.draw_idle()
+            self.ui.plt_AnimalPerformance.update()       
     
     
     def populate_ddm_animalID(self):
