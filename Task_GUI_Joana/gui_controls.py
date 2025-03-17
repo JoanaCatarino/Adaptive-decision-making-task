@@ -99,7 +99,11 @@ class GuiControls:
         
         # Initialize functions for the performance plot
         #self.setup_lick_plot()
-        self.setup_performance_plot()
+        #self.setup_performance_plot()
+        
+        # Setup dynamic performance plot based on selected task
+        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_dynamic_performance_plot)
+        self.setup_dynamic_performance_plot()  # Initialize the correct plot at startup
 
 
     #Piezo functions
@@ -128,6 +132,43 @@ class GuiControls:
         # Update each piezo plot with new data
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
+        
+    def setup_dynamic_performance_plot(self):
+        """ Dynamically sets up the correct performance plot based on the selected task. """
+        # Remove existing plot if it exists
+        if self.performance_plot:
+            self.performance_plot.deleteLater()
+
+        # Get selected task
+        selected_task = self.ui.ddm_Task.currentText()
+
+        # Choose the correct plot class
+        if selected_task in ["FreeLickingTask", "SpoutSamplingTask"]:  
+            self.performance_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
+        else:
+            self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
+
+        # Set policy and add to layout
+        self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout.setContentsMargins(0, 0, 0, 0)
+        plt_layout.setSpacing(0)
+        plt_layout.addWidget(self.performance_plot)
+        self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+
+    '''
+    def update_performance_plot(self, *args):
+        """ Updates the currently active plot with the relevant data. """
+        if isinstance(self.performance_plot, PlotLicks):
+            self.performance_plot.update_plot(*args)
+        elif isinstance(self.performance_plot, PlotPerformance):
+            self.performance_plot.update_plot(*args)
+
+    def reset_performance_plot(self):
+        """ Resets the currently active plot. """
+        if self.performance_plot:
+            self.performance_plot.reset_plot()    
+        
         
     def setup_lick_plot(self):
         # Licks plot in the main tab
@@ -190,7 +231,8 @@ class GuiControls:
             self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             
         if hasattr(self, 'performance_plot_ov'):
-            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)        
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)  
+    '''
     
 
     def populate_ddm_animalID(self):

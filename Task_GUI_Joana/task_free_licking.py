@@ -87,8 +87,8 @@ class FreeLickingTask:
         pump_l.on()
         pump_r.on()
         
-        self.gui_controls.lick_plot.reset_plot() # Plot main tab
-        self.gui_controls.lick_plot_ov.reset_plot() # Plot overview tab
+        #self.gui_controls.lick_plot.reset_plot() # Plot main tab
+        #self.gui_controls.lick_plot_ov.reset_plot() # Plot overview tab
         
         self.running = True
         self.tstart = time.time() # record the start time
@@ -174,7 +174,7 @@ class FreeLickingTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.next_trial_eligible = True
         # Update live stair plot
-        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+        self.gui_controls.update_performance_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
         # Save trial data
         self.save_data() 
@@ -231,7 +231,7 @@ class FreeLickingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_performance_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
                         # Save trial data
                         self.save_data()
@@ -268,7 +268,7 @@ class FreeLickingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_performance_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
                         # Save trial data
                         self.save_data()
