@@ -101,11 +101,6 @@ class GuiControls:
         self.setup_lick_plot()
         self.setup_performance_plot()
         
-        # Connect dropdown menu selection
-        self.setup_task_plot()
-        
-        # Connect task selection to dynamically update the plot
-        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_task_plot)
 
 
     #Piezo functions
