@@ -136,55 +136,6 @@ class GuiControls:
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
     
-    def setup_task_plot(self):
-        """Show the correct performance plot based on the selected task."""
-        selected_task = self.ui.ddm_Task.currentText()  # Get the selected task
-    
-        # Remove all widgets from both layouts
-        layout_main = self.ui.plt_AnimalPerformance.layout()
-        layout_overview = self.ui.OV_plt_AnimalPerformance.layout()
-    
-        for layout in [layout_main, layout_overview]:
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
-                if widget:
-                    widget.setParent(None)  # Detach from layout
-    
-        # Reattach the correct plots
-        if selected_task in ["Free Licking", "Spout Sampling"]:
-            layout_main.addWidget(self.lick_plot)
-            layout_overview.addWidget(self.lick_plot_ov)
-            self.lick_plot.show()
-            self.lick_plot_ov.show()
-            self.performance_plot.hide()
-            self.performance_plot_ov.hide()
-    
-            # 🔥 Ensure it redraws properly
-            self.lick_plot.figure.tight_layout()
-            self.lick_plot.canvas.draw()
-            self.lick_plot_ov.figure.tight_layout()
-            self.lick_plot_ov.canvas.draw()
-    
-        else:
-            layout_main.addWidget(self.performance_plot)
-            layout_overview.addWidget(self.performance_plot_ov)
-            self.performance_plot.show()
-            self.performance_plot_ov.show()
-            self.lick_plot.hide()
-            self.lick_plot_ov.hide()
-    
-            # 🔥 Ensure it redraws properly
-            self.performance_plot.figure.tight_layout()
-            self.performance_plot.canvas.draw()
-            self.performance_plot_ov.figure.tight_layout()
-            self.performance_plot_ov.canvas.draw()
-    
-        # 🔥 Refresh the GUI containers
-        self.ui.plt_AnimalPerformance.update()
-        self.ui.OV_plt_AnimalPerformance.update()
-            
-    
     def setup_lick_plot(self):
         # Licks plot in the main tab
         plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
@@ -207,6 +158,14 @@ class GuiControls:
         
         plt_layout2.addWidget(self.lick_plot_ov)
         self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
+
+    
+    def update_lick_plot(self, total_licks, licks_left, licks_right, total_trials):
+        if hasattr(self, 'lick_plot'):
+            self.lick_plot.update_plot(total_licks, licks_left, licks_right, total_trials)
+            
+        if hasattr(self, 'lick_plot_ov'):
+            self.lick_plot_ov.update_plot(total_licks, licks_left, licks_right, total_trials)
             
     
     def setup_performance_plot(self):
@@ -232,49 +191,13 @@ class GuiControls:
         plt_layout2.addWidget(self.performance_plot_ov)
         self.ui.OV_plt_AnimalPerformance.setLayout(plt_layout2)
 
-
+    
+    def update_performance_plot(self, total_trials, correct_trials, incorrect_trials):
+        if hasattr(self, 'performance_plot'):
+            self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             
-    def update_plot(self, *args):
-        """Update the active plot based on the task type."""
-        if self.lick_plot.isVisible():
-            if len(args) == 4:
-                total_trials, total_licks, licks_left, licks_right = args
-                self.lick_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
-                self.lick_plot_ov.update_plot(total_trials, total_licks, licks_left, licks_right)
-    
-            # 🔥 Ensure the layout doesn't distort
-            self.lick_plot.figure.tight_layout()
-            self.lick_plot.canvas.draw()
-            self.lick_plot_ov.figure.tight_layout()
-            self.lick_plot_ov.canvas.draw()
-    
-            # 🔥 Force reattachment to prevent disappearing
-            if self.lick_plot.parent() is None:
-                self.ui.plt_AnimalPerformance.layout().addWidget(self.lick_plot)
-            if self.lick_plot_ov.parent() is None:
-                self.ui.OV_plt_AnimalPerformance.layout().addWidget(self.lick_plot_ov)
-    
-        elif self.performance_plot.isVisible():
-            if len(args) == 3:
-                total_trials, correct_trials, incorrect_trials = args
-                self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
-                self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)
-    
-            # 🔥 Ensure the layout doesn't distort
-            self.performance_plot.figure.tight_layout()
-            self.performance_plot.canvas.draw()
-            self.performance_plot_ov.figure.tight_layout()
-            self.performance_plot_ov.canvas.draw()
-    
-            # 🔥 Force reattachment to prevent disappearing
-            if self.performance_plot.parent() is None:
-                self.ui.plt_AnimalPerformance.layout().addWidget(self.performance_plot)
-            if self.performance_plot_ov.parent() is None:
-                self.ui.OV_plt_AnimalPerformance.layout().addWidget(self.performance_plot_ov)
-    
-        # 🔥 Refresh the GUI containers
-        self.ui.plt_AnimalPerformance.update()
-        self.ui.OV_plt_AnimalPerformance.update()     
+        if hasattr(self, 'performance_plot_ov'):
+            self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)  
     
     
     def populate_ddm_animalID(self):
@@ -504,6 +427,46 @@ class GuiControls:
         # Create file with data unless the selected task is 'Test rig'
         if selected_task != 'Test rig':
              csv_file_path, _ = create_data_file(self.ui.txt_Date, self.ui.ddm_Animal_ID, self.ui.ddm_Task, self.ui.ddm_Box)
+
+        # === Dynamically Update Plots Based on Task ===
+    
+        # Remove existing plots from main tab
+        layout_main = self.ui.plt_AnimalPerformance.layout()
+        if layout_main is not None:
+            while layout_main.count():
+                item = layout_main.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+    
+        # Remove existing plots from overview tab
+        layout_ov = self.ui.OV_plt_AnimalPerformance.layout()
+        if layout_ov is not None:
+            while layout_ov.count():
+                item = layout_ov.takeAt(0)
+                widget = item.widget()
+                if widget is not None:
+                    widget.deleteLater()
+    
+        # Select plot based on the task
+        if selected_task in ['Two-Choice Auditory Task', 'Adaptive Sensorimotor Task', 'Adaptive Sensorimotor Task w/ Distractor']:
+            # Use performance plot for decision-based tasks
+            self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
+            layout_main.addWidget(self.performance_plot)
+    
+            self.performance_plot_ov = PlotPerformance(parent=self.ui.OV_plt_AnimalPerformance)
+            layout_ov.addWidget(self.performance_plot_ov)
+        
+        else:
+            # Use licks plot for other tasks
+            self.lick_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
+            layout_main.addWidget(self.lick_plot)
+    
+            self.lick_plot_ov = PlotLicks(parent=self.ui.OV_plt_AnimalPerformance)
+            layout_ov.addWidget(self.lick_plot_ov)
+    
+        self.ui.plt_AnimalPerformance.setLayout(layout_main)
+        self.ui.OV_plt_AnimalPerformance.setLayout(layout_ov)
 
 
         if selected_task == 'Test rig':
