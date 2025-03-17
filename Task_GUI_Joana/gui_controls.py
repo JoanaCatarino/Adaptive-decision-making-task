@@ -151,7 +151,7 @@ class GuiControls:
         selected_task = self.ui.ddm_Task.currentText()
 
         # Choose the correct plot class
-        if selected_task in ["FreeLickingTask", "SpoutSamplingTask"]:  
+        if selected_task in ["Free Licking", "Spout Sampling"]:  
             self.performance_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
         else:
             self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
@@ -170,8 +170,9 @@ class GuiControls:
    
     def update_performance_plot(self, total_trials, *args):
         """ Updates the currently active plot with the relevant data. """
+       
         if isinstance(self.performance_plot, PlotLicks):
-            # Pass all four arguments for PlotLicks
+            # Pass all four arguments for PlotLicks (total_trials, total_licks, licks_left, licks_right)
             if len(args) == 3:
                 total_licks, licks_left, licks_right = args
                 self.performance_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
@@ -179,7 +180,7 @@ class GuiControls:
                 print("[ERROR] Incorrect number of arguments for PlotLicks update!")
     
         elif isinstance(self.performance_plot, PlotPerformance):
-            # Pass only three arguments for PlotPerformance
+            # Pass only three arguments for PlotPerformance(total_trials, correct_trials, incorrect_trials)
             if len(args) == 2:
                 correct_trials, incorrect_trials = args
                 self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
