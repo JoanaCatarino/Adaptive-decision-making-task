@@ -53,7 +53,6 @@ class GuiControls:
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value
-        self.current_plot = None  # Store current plot widget
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -99,8 +98,8 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
         # Initialize functions for the performance plot
-        #self.setup_lick_plot()
-        #self.setup_performance_plot()
+        self.setup_lick_plot()
+        self.setup_performance_plot()
         
         # Connect dropdown menu selection
         self.setup_task_plot()
@@ -136,46 +135,23 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
- 
+    
     def setup_task_plot(self):
-        """Initialize and update the correct performance plot based on the selected task."""
-        selected_task = self.ui.ddm_Task.currentText()  # Get the currently selected task
-    
-        # Remove the existing plot if it exists
-        if self.current_plot is not None:
-            self.current_plot.setParent(None)  # Detach the old widget
-            self.current_plot.deleteLater()  # Ensure it is deleted from memory
-            self.current_plot = None  # Reset reference
-    
-        # Choose the appropriate plot based on the task
-        if selected_task in ["Free Licking", "Spout Sampling"]:  
-            self.current_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
-        else:  
-            self.current_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
-    
-        # Force a repaint to ensure visibility
-        self.current_plot.show()
-        self.current_plot.repaint()
-        self.current_plot.canvas.draw()
+        """Show the correct performance plot based on the selected task."""
+        selected_task = self.ui.ddm_Task.currentText()  # Get the selected task
 
-       
-    def update_plot(self, *args):
-        """Update the active plot based on the task type."""
-        if isinstance(self.current_plot, PlotLicks):
-            if len(args) == 4:
-                total_trials, total_licks, licks_left, licks_right = args
-                self.current_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
-            else:
-                print("Warning: Incorrect number of arguments for PlotLicks.update_plot")
+        if selected_task in ["Free Licking", "Spout Sampling"]:
+            self.lick_plot.show()
+            self.performance_plot.hide()
+            self.lick_plot_ov.show()
+            self.performance_plot_ov.hide()
+        else:
+            self.lick_plot.hide()
+            self.performance_plot.show()
+            self.lick_plot_ov.hide()
+            self.performance_plot_ov.show()
+        
     
-        elif isinstance(self.current_plot, PlotPerformance):
-            if len(args) == 3:
-                total_trials, correct_trials, incorrect_trials = args
-                self.current_plot.update_plot(total_trials, correct_trials, incorrect_trials)
-            else:
-                print("Warning: Incorrect number of arguments for PlotPerformance.update_plot")
-            
-    '''    
     def setup_lick_plot(self):
         # Licks plot in the main tab
         plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
@@ -238,9 +214,8 @@ class GuiControls:
             
         if hasattr(self, 'performance_plot_ov'):
             self.performance_plot_ov.update_plot(total_trials, correct_trials, incorrect_trials)  
-    '''
     
-
+    
     def populate_ddm_animalID(self):
         # Populate the dropdown menu for Animal_ID
         font_size = 8
