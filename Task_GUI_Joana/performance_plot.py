@@ -52,7 +52,7 @@ class PlotLicks(QWidget):
         """Update stair plot with new lick data."""
         
         # Increment trial number (should match total number of trials, including omissions)
-        trial_number = len(self.trial_numbers) + 1  # Use independent counter
+        trial_number = len(self.trial_numbers)   # Use independent counter
         self.trial_numbers.append(trial_number)
         
         # Always append total trials to keep trial history
