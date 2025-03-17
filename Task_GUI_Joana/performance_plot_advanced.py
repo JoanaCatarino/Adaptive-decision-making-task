@@ -138,6 +138,10 @@ class PlotPerformance(QWidget):
         self.figure.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)
 
         # Redraw Canvas
+        self.ax.relim() 
+        self.ax.autoscale_view()
+        self.ax2.relim()
+        self.ax2.autoscale_view()
         self.canvas.draw()
         
     def reset_plot(self):
