@@ -37,12 +37,14 @@ class PlotPerformance(QWidget):
         self.ax.set_ylim(0, 1)  # Ensure HR/FA stays within 0-1
         self.ax.grid(True)
 
+        '''        
         # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         layout.setContentsMargins(0,0,0,0) 
         layout.setSpacing(0) 
         self.setLayout(layout)
+        '''
         
         #  new!! test to see if it improves layout of the plots
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
