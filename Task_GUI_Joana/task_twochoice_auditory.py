@@ -158,40 +158,35 @@ class TwoChoiceAuditoryTask:
     
     def debias(self):
         """ 
-        Calculates the animal's bias based on recent trials and assigns 
-        the next trial's side to counteract bias.
+        Adjusts trial assignment based on recent lick history to reinforce the weaker spout.
         """
         
         recent_trials = self.decision_history[-self.min_trials_debias:]  # Last N trials
         
         if not recent_trials:
             self.bias_value = 0.5 
-            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
             return random.choice(["left", "right"])  
 
-        # Count incorrect and omission trials for left and right
-        incorrect_right = sum(1 for t in recent_trials if t == "I" and self.correct_spout == "left")
-        incorrect_left = sum(1 for t in recent_trials if t == "I" and self.correct_spout == "right")
-        omission_right = sum(1 for t in recent_trials if t == "O" and self.correct_spout == "left")
-        omission_left = sum(1 for t in recent_trials if t == "O" and self.correct_spout == "right")
+        # Count left and right licks
+        left_licks = recent_licks.count("L")
+        right_licks = recent_licks.count("R")
+        total_licks = left_licks + right_licks
 
-        total_incorrect_omission_trials = incorrect_right + incorrect_left + omission_right + omission_left
-
-        if total_incorrect_omission_trials == 0:
+        if total_licks == 0:
             self.bias_value = 0.5 # Keep it neutral
-            self.selected_side = random.choice(["left", "right"])  
-            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value}")
+            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
             return random.choice(["left", "right"])  
 
-        # Calculate bias (proportion of incorrect/omission trials on right)
-        self.bias_value = (incorrect_right + omission_right + 1) / (total_incorrect_omission_trials + 2)
+        # Compute bias based on lick history (proportion of right licks)
+        self.bias_value = right_licks / total_licks
         print(self.bias_value)
 
         # Apply Gaussian sampling to introduce slight randomness
         self.debias_val = random.gauss(self.bias_value, self.decision_SD)
         print(self.debias_val)
 
-        # Assign trials to the **opposite** side to counteract bias
+        # Assign trials to reinforce the underrepresented spout
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
 
         # Update GUI with bias value
@@ -399,6 +394,8 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_left < self.RW):
                         self.first_lick = 'left'
                         self.tlick = self.tlick_l
+                        self.decision_history.append("L")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                             
                         if self.correct_spout == self.first_lick:
         
@@ -411,7 +408,6 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
-                            self.decision_history.append("C")  # Store but ignore in debiasing
                                 
                                 
                         else:
@@ -422,10 +418,8 @@ class TwoChoiceAuditoryTask:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.decision_history.append("I") # Track incorrect trials for debiasing
                             
-                        
-                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
+                            
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -452,6 +446,8 @@ class TwoChoiceAuditoryTask:
                     if self.first_lick is None and (0 < elapsed_right < self.RW):
                         self.first_lick = 'right'
                         self.tlick = self.tlick_r
+                        self.decision_history.append("R")  # Store in history
+                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                             
                         if self.correct_spout == self.first_lick:
         
@@ -464,7 +460,6 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_total_licks(self.total_licks)
                             self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
-                            self.decision_history.append("C")  # Store but ignore in debiasing
                             
                         else:
                             if not self.gui_controls.ui.chk_NoPunishment.isChecked():
@@ -474,10 +469,8 @@ class TwoChoiceAuditoryTask:
                                 print('wrong spout - punishment skipped')
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.decision_history.append("I") # Track incorrect trials for debiasing
                             
                         
-                        self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -502,8 +495,6 @@ class TwoChoiceAuditoryTask:
         self.omissions += 1
         self.omission_counted = True
         self.gui_controls.update_omissions(self.omissions)
-        self.decision_history.append("O")  # Track omission trial for debiasing
-        self.decision_history = self.decision_history[-self.min_trials_debias:]  # Keep last 10 trials
         self.next_trial_eligible = True
         # Update live stair plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
