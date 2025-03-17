@@ -53,7 +53,7 @@ class GuiControls:
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value
-        self.performance_plot = None
+        self.current_plot = None  # Store current plot widget
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -103,14 +103,10 @@ class GuiControls:
         #self.setup_performance_plot()
         
         # Connect dropdown menu selection
-        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_dynamic_performance_plot)
-
-        # Ensure layout exists before setting up the plot
-        if not self.ui.plt_AnimalPerformance.layout():
-            self.ui.plt_AnimalPerformance.setLayout(QVBoxLayout())
-
-        # Initialize the correct plot at startup
-        self.setup_dynamic_performance_plot()
+        self.setup_task_plot()
+        
+        # Connect task selection to dynamically update the plot
+        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_task_plot)
 
 
     #Piezo functions
@@ -140,58 +136,47 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
-    def setup_dynamic_performance_plot(self):
-        """ Dynamically sets up the correct performance plot based on the selected task. """
-        # Remove existing plot if it exists
-        if self.performance_plot:
-            self.performance_plot.deleteLater()
-            self.performance_plot = None  # Ensure clean state
+ 
+    def setup_task_plot(self):
+        """Initialize and update the correct performance plot based on the selected task."""
+        selected_task = self.ui.ddm_Task.currentText()  # Get the currently selected task
 
-        # Get selected task
-        selected_task = self.ui.ddm_Task.currentText()
+        # Remove the existing plot if any
+        if self.current_plot is not None:
+            self.current_plot.setParent(None)
+            self.current_plot.deleteLater()
+            del self.current_plot
 
-        # Choose the correct plot class
+        # Choose the appropriate plot based on the task
         if selected_task in ["Free Licking", "Spout Sampling"]:  
-            self.performance_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
-        else:
-            self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
+            self.current_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
+        else:  
+            self.current_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
 
-        # Set layout and add the plot
-        self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        plt_layout = QVBoxLayout()
+        # Set up layout for the plot
+        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
         plt_layout.setContentsMargins(0, 0, 0, 0)
         plt_layout.setSpacing(0)
-        plt_layout.addWidget(self.performance_plot)
-        
-        # Apply layout
+        self.current_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        plt_layout.addWidget(self.current_plot)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
-        self.ui.plt_AnimalPerformance.update()
 
-   
-    def update_performance_plot(self, total_trials, *args):
-        """ Updates the currently active plot with the relevant data. """
-       
-        if isinstance(self.performance_plot, PlotLicks):
-            # Pass all four arguments for PlotLicks (total_trials, total_licks, licks_left, licks_right)
-            if len(args) == 3:
-                total_licks, licks_left, licks_right = args
-                self.performance_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
+    def update_plot(self, *args):
+        """Update the active plot based on the task type."""
+        if isinstance(self.current_plot, PlotLicks):
+            if len(args) == 4:
+                total_trials, total_licks, licks_left, licks_right = args
+                self.current_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
             else:
-                print("[ERROR] Incorrect number of arguments for PlotLicks update!")
+                print("Warning: Incorrect number of arguments for PlotLicks.update_plot")
     
-        elif isinstance(self.performance_plot, PlotPerformance):
-            # Pass only three arguments for PlotPerformance(total_trials, correct_trials, incorrect_trials)
-            if len(args) == 2:
-                correct_trials, incorrect_trials = args
-                self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
+        elif isinstance(self.current_plot, PlotPerformance):
+            if len(args) == 3:
+                total_trials, correct_trials, incorrect_trials = args
+                self.current_plot.update_plot(total_trials, correct_trials, incorrect_trials)
             else:
-                print("[ERROR] Incorrect number of arguments for PlotPerformance update!")
-
-    def reset_performance_plot(self):
-        """ Resets the currently active plot. """
-        if self.performance_plot:
-            self.performance_plot.reset_plot()    
-        
+                print("Warning: Incorrect number of arguments for PlotPerformance.update_plot")
+            
     '''    
     def setup_lick_plot(self):
         # Licks plot in the main tab
