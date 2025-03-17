@@ -156,7 +156,7 @@ class GuiControls:
         plt_layout.addWidget(self.performance_plot)
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
 
-    '''
+   
     def update_performance_plot(self, *args):
         """ Updates the currently active plot with the relevant data. """
         if isinstance(self.performance_plot, PlotLicks):
@@ -169,7 +169,7 @@ class GuiControls:
         if self.performance_plot:
             self.performance_plot.reset_plot()    
         
-        
+    '''    
     def setup_lick_plot(self):
         # Licks plot in the main tab
         plt_layout1 = QVBoxLayout(self.ui.plt_AnimalPerformance)
