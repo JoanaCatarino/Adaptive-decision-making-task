@@ -36,21 +36,22 @@ class PlotPerformance(QWidget):
         self.ax2.set_ylabel("d'", color='#9DB4C0')
         self.ax.set_ylim(0, 1)  # Ensure HR/FA stays within 0-1
         self.ax.grid(True)
-
-        '''        
+       
         # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.canvas)
         layout.setContentsMargins(0,0,0,0) 
         layout.setSpacing(0) 
         self.setLayout(layout)
-        '''
         
         #  new!! test to see if it improves layout of the plots
         self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding) 
         
         # Apply tight layout to ensure everything fits 
         self.figure.tight_layout(pad=2.9)
+        
+        # Fix layout to prevent legend from being cut off
+        self.figure.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)
         
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
@@ -132,12 +133,11 @@ class PlotPerformance(QWidget):
             
         # Adjust layout to increase padding at the top
         self.figure.subplots_adjust(top=0.85)  
+        
+        # Adjust layout to fit elements properly
+        self.figure.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)
 
         # Redraw Canvas
-        self.ax.relim() 
-        self.ax.autoscale_view()
-        self.ax2.relim()
-        self.ax2.autoscale_view()
         self.canvas.draw()
         
     def reset_plot(self):
