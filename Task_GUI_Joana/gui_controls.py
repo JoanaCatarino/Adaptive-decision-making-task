@@ -98,14 +98,14 @@ class GuiControls:
         self.piezo_timer.setInterval(20)  # Refresh every 20 ms
         
         # Initialize functions for the performance plot
-        self.setup_lick_plot()
+        #self.setup_lick_plot()
         self.setup_performance_plot()
         
         # Connect dropdown menu selection
-        self.setup_task_plot()
+        #self.setup_task_plot()
         
         # Connect task selection to dynamically update the plot
-        self.ui.ddm_Task.currentIndexChanged.connect(self.setup_task_plot)
+        #self.ui.ddm_Task.currentIndexChanged.connect(self.setup_task_plot)
 
 
     #Piezo functions
@@ -135,7 +135,7 @@ class GuiControls:
         self.live_plot1.update_plot(self.piezo_reader.piezo_adder1)  # Update Left Piezo Plot
         self.live_plot2.update_plot(self.piezo_reader.piezo_adder2)  # Update Right Piezo Plot
         
-    
+    '''
     def setup_task_plot(self):
         """Show the correct performance plot based on the selected task."""
         selected_task = self.ui.ddm_Task.currentText()  # Get the selected task
@@ -150,7 +150,7 @@ class GuiControls:
             self.performance_plot.show()
             self.lick_plot_ov.hide()
             self.performance_plot_ov.show()
-        
+    '''        
     
     def setup_lick_plot(self):
         # Licks plot in the main tab

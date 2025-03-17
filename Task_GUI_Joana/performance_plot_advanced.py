@@ -50,9 +50,6 @@ class PlotPerformance(QWidget):
         # Apply tight layout to ensure everything fits 
         self.figure.tight_layout(pad=2.9)
         
-        # Fix layout to prevent legend from being cut off
-        self.figure.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)
-        
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
 
@@ -133,9 +130,6 @@ class PlotPerformance(QWidget):
             
         # Adjust layout to increase padding at the top
         self.figure.subplots_adjust(top=0.85)  
-        
-        # Adjust layout to fit elements properly
-        self.figure.subplots_adjust(left=0.15, right=0.85, top=0.85, bottom=0.15)
 
         # Redraw Canvas
         self.ax.relim() 
