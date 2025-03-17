@@ -145,6 +145,7 @@ class GuiControls:
         # Remove existing plot if it exists
         if self.performance_plot:
             self.performance_plot.deleteLater()
+            self.performance_plot = None  # Ensure clean state
 
         # Get selected task
         selected_task = self.ui.ddm_Task.currentText()
@@ -155,21 +156,35 @@ class GuiControls:
         else:
             self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
 
-        # Set policy and add to layout
+        # Set layout and add the plot
         self.performance_plot.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        plt_layout = QVBoxLayout(self.ui.plt_AnimalPerformance)
+        plt_layout = QVBoxLayout()
         plt_layout.setContentsMargins(0, 0, 0, 0)
         plt_layout.setSpacing(0)
         plt_layout.addWidget(self.performance_plot)
+        
+        # Apply layout
         self.ui.plt_AnimalPerformance.setLayout(plt_layout)
+        self.ui.plt_AnimalPerformance.update()
 
    
-    def update_performance_plot(self, *args):
+    def update_performance_plot(self, total_trials, *args):
         """ Updates the currently active plot with the relevant data. """
         if isinstance(self.performance_plot, PlotLicks):
-            self.performance_plot.update_plot(*args)
+            # Pass all four arguments for PlotLicks
+            if len(args) == 3:
+                total_licks, licks_left, licks_right = args
+                self.performance_plot.update_plot(total_trials, total_licks, licks_left, licks_right)
+            else:
+                print("[ERROR] Incorrect number of arguments for PlotLicks update!")
+    
         elif isinstance(self.performance_plot, PlotPerformance):
-            self.performance_plot.update_plot(*args)
+            # Pass only three arguments for PlotPerformance
+            if len(args) == 2:
+                correct_trials, incorrect_trials = args
+                self.performance_plot.update_plot(total_trials, correct_trials, incorrect_trials)
+            else:
+                print("[ERROR] Incorrect number of arguments for PlotPerformance update!")
 
     def reset_performance_plot(self):
         """ Resets the currently active plot. """
