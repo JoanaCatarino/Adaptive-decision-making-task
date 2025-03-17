@@ -174,7 +174,7 @@ class FreeLickingTask:
         self.gui_controls.update_trial_duration(self.trial_duration)
         self.next_trial_eligible = True
         # Update live stair plot
-        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+        self.gui_controls.update_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
         # Save trial data
         self.save_data() 
@@ -231,7 +231,7 @@ class FreeLickingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
                         # Save trial data
                         self.save_data()
@@ -268,7 +268,7 @@ class FreeLickingTask:
                         self.next_trial_eligible = True
                         
                         # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+                        self.gui_controls.update_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
                         # Save trial data
                         self.save_data()
