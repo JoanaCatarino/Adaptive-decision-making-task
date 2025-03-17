@@ -141,12 +141,6 @@ class GuiControls:
         """Initialize and update the correct performance plot based on the selected task."""
         selected_task = self.ui.ddm_Task.currentText()  # Get the currently selected task
 
-        # Remove the existing plot if any
-        if self.current_plot is not None:
-            self.current_plot.setParent(None)
-            self.current_plot.deleteLater()
-            del self.current_plot
-
         # Choose the appropriate plot based on the task
         if selected_task in ["Free Licking", "Spout Sampling"]:  
             self.current_plot = PlotLicks(parent=self.ui.plt_AnimalPerformance)
