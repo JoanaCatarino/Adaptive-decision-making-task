@@ -832,12 +832,14 @@ class AdaptiveSensorimotorTask:
             if lbl_block:
                 lbl_block.setText(trial["block_type"])
     
+            '''
             # **Omission Case: Only update the correct spout in gray**
             if trial["outcome"] == "omission":
                 correct_spout = getattr(self, 'correct_spout', None)  # Get correct spout
                 lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(correct_spout, '')}{col}", None)
                 if lbl_correct:
                     self.update_color(lbl_correct, trial, correct_spout)
+            '''
     
             # **Normal Trial Case: Only update the spout that was chosen**
             else:
