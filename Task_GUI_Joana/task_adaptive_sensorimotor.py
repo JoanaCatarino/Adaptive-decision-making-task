@@ -857,6 +857,11 @@ class AdaptiveSensorimotorTask:
             elif trial["outcome"] == "incorrect":
                 color = QColor(Qt.red)
     
+        # Apply the color to the label
         palette = label.palette()
         palette.setColor(QPalette.Window, color)
         label.setPalette(palette)
+        label.setAutoFillBackground(True)  # <-- Ensure background color updates
+    
+        # Force a UI update
+        label.update()
