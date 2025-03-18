@@ -11,7 +11,9 @@ import time
 import csv
 import os
 import random
+from collections import deque
 from PyQt5.QtCore import QTimer
+from PyQt5.QtGui import Qcolor, QPalette
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
@@ -124,6 +126,9 @@ class AdaptiveSensorimotorTask:
         self.selected_side = None
         self.bias_value = None
         self.debias_value = None
+        
+        # Trial monitor
+        self.monitor_history
         
 
     def start (self):
@@ -783,3 +788,70 @@ class AdaptiveSensorimotorTask:
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(trial_data)
+            
+            
+        # **Convert block type for display**
+        block_type_display = {
+            "sound": "S",
+            "action-left": "AL",
+            "action-right": "AR"
+        }.get(self.current_block, "")  # If undefined, show empty string ""
+    
+        # **Extract Trial History Info & Update GUI**
+        chosen_spout = "left" if trial_data[11] == 1 else "right" if trial_data[12] == 1 else ""  # Determine which spout was used
+        trial_outcome = "correct" if trial_data[14] == 1 else "incorrect" if trial_data[15] == 1 else "omission"
+    
+        trial_data_gui = {
+            "block_type": block_type_display,  # Use converted block type (empty if undefined)
+            "spout": chosen_spout,  # Left, Right, or None
+            "outcome": trial_outcome,  # Correct, Incorrect, Omission
+            "trial_number": self.total_trials  # Trial ID
+        }
+        
+        self.monitor_history.append(trial_data_gui)
+    
+        # **Update the GUI**
+        self.update_trial_history()
+        
+        
+    def update_trial_history(self):
+        """ Updates the GUI labels for trial history """
+    
+        for i, trial in enumerate(self.monitor_history):
+            col = i  # Column index for the trial
+    
+            # **Update Block Type (S, AL, AR, or Empty)**
+            lbl_block = self.gui_controls.ui.findChild(QLabel, f"lbl_B{col+1}")
+            if lbl_block:
+                lbl_block.setText(trial["block_type"])
+    
+            # **Update Left Spout Outcome (Color Coding)**
+            lbl_L = self.gui_controls.ui.findChild(QLabel, f"lbl_L{col+1}")
+            if lbl_L:
+                self.update_color(lbl_L, trial, "L")
+    
+            # **Update Right Spout Outcome (Color Coding)**
+            lbl_R = self.gui_controls.ui.findChild(QLabel, f"lbl_R{col+1}")
+            if lbl_R:
+                self.update_color(lbl_R, trial, "R")
+    
+            # **Update Trial Number**
+            lbl_T = self.gui_controls.ui.findChild(QLabel, f"lbl_T{col+1}")
+            if lbl_T:
+                lbl_T.setText(str(trial["trial_number"]))
+                
+    
+    def update_color(self, label, trial, spout_side):
+        """ Sets QLabel background color based on trial outcome """
+    
+        color = QColor(Qt.lightGray)  # Default = omission (gray)
+    
+        if trial["spout"] == spout_side:
+            if trial["outcome"] == "correct":
+                color = QColor(Qt.green)
+            elif trial["outcome"] == "incorrect":
+                color = QColor(Qt.red)
+    
+        palette = label.palette()
+        palette.setColor(QPalette.Window, color)
+        label.setPalette(palette)
