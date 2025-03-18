@@ -13,7 +13,7 @@ import os
 import random
 from collections import deque
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import Qcolor, QPalette
+from PyQt5.QtGui import QColor, QPalette
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
