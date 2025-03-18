@@ -847,21 +847,27 @@ class AdaptiveSensorimotorTask:
                 
     
     def update_color(self, label, trial, spout_side):
-        """ Sets QLabel background color based on trial outcome """
-
-        # Debugging output
-        print(f"Updating color for {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']}")
-
-        # Default color: omission (gray)
-        color = QColor(Qt.lightGray)
-
-        if trial["outcome"] == "correct":
+        """ Sets QLabel background color based on trial outcome, ensuring only the correct spout is colored """
+    
+        print(f"Updating {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']} | Chosen Spout: {trial['spout']}")
+    
+        color = None  # Default: No color applied
+    
+        # **Case 1: Omission (Gray only on correct spout)**
+        if trial["outcome"] == "omission":
+            if getattr(self, 'correct_spout', None) == spout_side:  # Only paint correct spout
+                color = QColor(Qt.lightGray)
+    
+        # **Case 2: Correct trial (Green only on chosen spout)**
+        elif trial["outcome"] == "correct" and trial["spout"] == spout_side:
             color = QColor(Qt.green)
-        elif trial["outcome"] == "incorrect":
+    
+        # **Case 3: Incorrect trial (Red only on chosen spout)**
+        elif trial["outcome"] == "incorrect" and trial["spout"] == spout_side:
             color = QColor(Qt.red)
+    
+        # Apply color only if a valid color was determined
+        if color:
+            label.setStyleSheet(f"background-color: {color.name()};")
         else:
-            color = QColor(Qt.lightGray)
-
-        # Apply the color using setStyleSheet (more reliable)
-        label.setStyleSheet(f"background-color: {color.name()};")
-        label.repaint()  # Ensure immediate UI update
+            label.setStyleSheet("")  # Reset background if no color should be applied
