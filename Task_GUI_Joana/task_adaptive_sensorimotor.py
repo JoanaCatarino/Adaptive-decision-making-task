@@ -821,8 +821,6 @@ class AdaptiveSensorimotorTask:
         
     def update_trial_history(self):
         """ Updates the GUI labels for trial history """
-        
-        spout_label_map = {"left": "L", "right": "R"}  # Map spout names to QLabel prefixes
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_B1 to lbl_B15, so index starts at 1
@@ -832,33 +830,21 @@ class AdaptiveSensorimotorTask:
             if lbl_block:
                 lbl_block.setText(trial["block_type"])
     
-            
-            # **Omission Case: Only update the correct spout in gray for this trial only**
-            if trial["outcome"] == "omission":
-                correct_spout = getattr(self, 'correct_spout', None)  # Get the correct spout
-                if correct_spout in spout_label_map:
-                    lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map[correct_spout]}{col}", None)
-                    lbl_wrong = getattr(self.gui_controls.ui, f"lbl_{spout_label_map['right' if correct_spout == 'left' else 'left']}{col}", None)
-            
-                    # **Reset both spouts first**
-                    if lbl_wrong:
-                        lbl_wrong.setStyleSheet("")  # Clear the wrong spout
-                    if lbl_correct:
-                        lbl_correct.setStyleSheet("background-color: lightgray;")  # Paint only the correct spout
+            # **Update Left Spout Outcome (Color Coding)**
+            lbl_L = getattr(self.gui_controls.ui, f"lbl_L{col}", None)
+            if lbl_L:
+                self.update_color(lbl_L, trial, "L")
     
-            # **Normal Trial Case: Only update the spout that was chosen**
-            else:
-                chosen_spout = trial["spout"]
-                if chosen_spout:
-                    lbl_chosen = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(chosen_spout, '')}{col}", None)
-                    if lbl_chosen:
-                        self.update_color(lbl_chosen, trial, chosen_spout)
+            # **Update Right Spout Outcome (Color Coding)**
+            lbl_R = getattr(self.gui_controls.ui, f"lbl_R{col}", None)
+            if lbl_R:
+                self.update_color(lbl_R, trial, "R")
     
             # **Update Trial Number**
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
                 lbl_T.setText(str(trial["trial_number"]))
-                    
+                
     
     def update_color(self, label, trial, spout_side):
         """ Sets QLabel background color based on trial outcome """
@@ -870,7 +856,9 @@ class AdaptiveSensorimotorTask:
             color = QColor(Qt.green)
         elif trial["outcome"] == "incorrect":
             color = QColor(Qt.red)
+        else:
+            color = QColor(Qt.lightGray)
 
         # Apply the color using setStyleSheet (more reliable)
         label.setStyleSheet(f"background-color: {color.name()};")
-        #label.repaint()  # Ensure immediate UI update
+        label.repaint()  # Ensure immediate UI update
