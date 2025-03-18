@@ -847,16 +847,17 @@ class AdaptiveSensorimotorTask:
                 
     
     def update_color(self, label, trial, spout_side):
-        """ Sets QLabel background color based on trial outcome, ensuring only the correct spout is colored """
+        """ Sets QLabel background color based on trial outcome, ensuring only the chosen spout is updated. """
     
-        print(f"Updating {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']} | Chosen Spout: {trial['spout']}")
+        # Debugging print statements to track updates
+        print(f"Updating {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']} | "
+              f"Chosen Spout: {trial['spout']} | Correct Spout: {getattr(self, 'correct_spout', None)}")
     
         color = None  # Default: No color applied
     
         # **Case 1: Omission (Gray only on correct spout)**
-        if trial["outcome"] == "omission":
-            if getattr(self, 'correct_spout', None) == spout_side:  # Only paint correct spout
-                color = QColor(Qt.lightGray)
+        if trial["outcome"] == "omission" and getattr(self, 'correct_spout', None) == spout_side:
+            color = QColor(Qt.lightGray)  # Paint only correct spout in gray
     
         # **Case 2: Correct trial (Green only on chosen spout)**
         elif trial["outcome"] == "correct" and trial["spout"] == spout_side:
@@ -866,8 +867,11 @@ class AdaptiveSensorimotorTask:
         elif trial["outcome"] == "incorrect" and trial["spout"] == spout_side:
             color = QColor(Qt.red)
     
-        # Apply color only if a valid color was determined
+        # **Apply color if valid, otherwise reset**
         if color:
             label.setStyleSheet(f"background-color: {color.name()};")
         else:
-            label.setStyleSheet("")  # Reset background if no color should be applied
+            label.setStyleSheet("")  # Reset to default if no color should be applied
+    
+        # Force UI update to apply the new background color
+        label.repaint()
