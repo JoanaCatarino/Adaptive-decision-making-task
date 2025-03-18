@@ -819,7 +819,7 @@ class AdaptiveSensorimotorTask:
         self.update_trial_history()
         
         
-    def update_trial_history(self):
+    def update_trial_history(self, label):
         """ Updates the GUI labels for trial history """
         
         spout_label_map = {"left": "L", "right": "R"}  # Map spout names to QLabel prefixes
