@@ -128,7 +128,7 @@ class AdaptiveSensorimotorTask:
         self.debias_value = None
         
         # Trial monitor
-        self.monitor_history
+        self.monitor_history = deque(maxlen=15)
         
 
     def start (self):

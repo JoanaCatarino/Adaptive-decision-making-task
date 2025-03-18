@@ -42,8 +42,8 @@ class FreeLickingTask:
 
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
-        self.ITI_min = 2 # default ITI min
-        self.ITI_max = 2 # default ITI max
+        self.ITI_min = 0.1 # default ITI min
+        self.ITI_max = 0.1 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 2 # Response window in seconds
         self.threshold_left = 20
