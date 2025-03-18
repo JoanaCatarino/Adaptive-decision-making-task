@@ -832,7 +832,6 @@ class AdaptiveSensorimotorTask:
             if lbl_block:
                 lbl_block.setText(trial["block_type"])
     
-            
             # **Omission Case: Only update the correct spout in gray**
             if trial["outcome"] == "omission":
                 pass
@@ -854,9 +853,6 @@ class AdaptiveSensorimotorTask:
     def update_color(self, label, trial, spout_side):
         """ Sets QLabel background color based on trial outcome """
 
-        # Debugging output
-        print(f"Updating color for {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']}")
-
         if trial["outcome"] == "correct":
             color = QColor(Qt.green)
         elif trial["outcome"] == "incorrect":
@@ -864,4 +860,4 @@ class AdaptiveSensorimotorTask:
 
         # Apply the color using setStyleSheet (more reliable)
         label.setStyleSheet(f"background-color: {color.name()};")
-        label.repaint()  # Ensure immediate UI update
+        
