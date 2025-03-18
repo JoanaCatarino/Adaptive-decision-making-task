@@ -808,7 +808,12 @@ class AdaptiveSensorimotorTask:
             "trial_number": self.total_trials  # Trial ID
         }
         
-        self.monitor_history.append(trial_data_gui)
+        if isinstance(trial_data_gui, dict):  # Ensure only valid dictionaries are stored
+            self.monitor_history.append(trial_data_gui)
+            print(self.monitor_history)
+            
+        else:
+            print("Warning: Invalid trial data format detected:", trial_data_gui)
     
         # **Update the GUI**
         self.update_trial_history()
