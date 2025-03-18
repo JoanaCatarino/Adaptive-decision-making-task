@@ -12,7 +12,7 @@ import csv
 import os
 import random
 from collections import deque
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QColor, QPalette
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
