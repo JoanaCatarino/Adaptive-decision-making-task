@@ -819,7 +819,7 @@ class AdaptiveSensorimotorTask:
         self.update_trial_history()
         
         
-    def update_trial_history(self, label):
+    def update_trial_history(self):
         """ Updates the GUI labels for trial history """
         
         spout_label_map = {"left": "L", "right": "R"}  # Map spout names to QLabel prefixes
@@ -839,7 +839,7 @@ class AdaptiveSensorimotorTask:
                 lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(correct_spout, '')}{col}", None)
                 if lbl_correct:
                     color = QColor(Qt.lightGray)
-                    label.setStyleSheet(f"background-color: {color.name()};")
+                    lbl_correct.setStyleSheet(f"background-color: {color.name()};")
                     #label.repaint()
     
             # **Normal Trial Case: Only update the spout that was chosen**
