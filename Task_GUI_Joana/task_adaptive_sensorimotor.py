@@ -817,26 +817,26 @@ class AdaptiveSensorimotorTask:
     def update_trial_history(self):
         """ Updates the GUI labels for trial history """
     
-        for i, trial in enumerate(self.monitor_history):
-            col = i  # Column index for the trial
+        for i, trial in enumerate(self.trial_history):
+            col = i + 1  # QLabel names are lbl_B1 to lbl_B15, so index starts at 1
     
             # **Update Block Type (S, AL, AR, or Empty)**
-            lbl_block = self.gui_controls.ui.findChild(QLabel, f"lbl_B{col+1}")
+            lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
             if lbl_block:
                 lbl_block.setText(trial["block_type"])
     
             # **Update Left Spout Outcome (Color Coding)**
-            lbl_L = self.gui_controls.ui.findChild(QLabel, f"lbl_L{col+1}")
+            lbl_L = getattr(self.gui_controls.ui, f"lbl_L{col}", None)
             if lbl_L:
                 self.update_color(lbl_L, trial, "L")
     
             # **Update Right Spout Outcome (Color Coding)**
-            lbl_R = self.gui_controls.ui.findChild(QLabel, f"lbl_R{col+1}")
+            lbl_R = getattr(self.gui_controls.ui, f"lbl_R{col}", None)
             if lbl_R:
                 self.update_color(lbl_R, trial, "R")
     
             # **Update Trial Number**
-            lbl_T = self.gui_controls.ui.findChild(QLabel, f"lbl_T{col+1}")
+            lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
                 lbl_T.setText(str(trial["trial_number"]))
                 
