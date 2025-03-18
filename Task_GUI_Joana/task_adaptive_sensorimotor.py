@@ -817,7 +817,7 @@ class AdaptiveSensorimotorTask:
     def update_trial_history(self):
         """ Updates the GUI labels for trial history """
     
-        for i, trial in enumerate(self.trial_history):
+        for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_B1 to lbl_B15, so index starts at 1
     
             # **Update Block Type (S, AL, AR, or Empty)**
