@@ -838,7 +838,9 @@ class AdaptiveSensorimotorTask:
                 correct_spout = getattr(self, 'correct_spout', None)  # Get correct spout
                 lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(correct_spout, '')}{col}", None)
                 if lbl_correct:
-                    self.update_color(lbl_correct, trial, correct_spout)
+                    color = QColor(Qt.lightGray)
+                    label.setStyleSheet(f"background-color: {color.name()};")
+                    #label.repaint()
     
             # **Normal Trial Case: Only update the spout that was chosen**
             else:
@@ -864,9 +866,7 @@ class AdaptiveSensorimotorTask:
             color = QColor(Qt.green)
         elif trial["outcome"] == "incorrect":
             color = QColor(Qt.red)
-        else:
-            color = QColor(Qt.lightGray)
 
         # Apply the color using setStyleSheet (more reliable)
         label.setStyleSheet(f"background-color: {color.name()};")
-        label.repaint()  # Ensure immediate UI update
+        #label.repaint()  # Ensure immediate UI update
