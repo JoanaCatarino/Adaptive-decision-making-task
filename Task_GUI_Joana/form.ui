@@ -1241,14 +1241,14 @@ color: rgb(73, 192, 203);</string>
          <number>16</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_58">
+         <widget class="QLabel" name="lbl_B1">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1256,14 +1256,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_59">
+         <widget class="QLabel" name="lbl_B2">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1271,14 +1271,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_60">
+         <widget class="QLabel" name="lbl_B3">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1286,14 +1286,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_91">
+         <widget class="QLabel" name="lbl_B4">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1301,14 +1301,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_92">
+         <widget class="QLabel" name="lbl_B5">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1316,14 +1316,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_93">
+         <widget class="QLabel" name="lbl_B6">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1331,14 +1331,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_94">
+         <widget class="QLabel" name="lbl_B7">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1346,14 +1346,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_95">
+         <widget class="QLabel" name="lbl_B8">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1361,14 +1361,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_96">
+         <widget class="QLabel" name="lbl_B9">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1376,14 +1376,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_97">
+         <widget class="QLabel" name="lbl_B10">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1391,14 +1391,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_98">
+         <widget class="QLabel" name="lbl_B11">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1406,14 +1406,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_99">
+         <widget class="QLabel" name="lbl_B12">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1421,14 +1421,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_100">
+         <widget class="QLabel" name="lbl_B13">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1436,14 +1436,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_101">
+         <widget class="QLabel" name="lbl_B14">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1451,14 +1451,14 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_102">
+         <widget class="QLabel" name="lbl_B15">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>S</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -1497,7 +1497,7 @@ color: rgb(73, 192, 203);</string>
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QLabel" name="label_76">
+         <widget class="QLabel" name="lbl_L1">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1507,7 +1507,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_77">
+         <widget class="QLabel" name="lbl_L2">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1517,7 +1517,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_78">
+         <widget class="QLabel" name="lbl_L3">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1527,7 +1527,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_79">
+         <widget class="QLabel" name="lbl_L4">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1537,7 +1537,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_80">
+         <widget class="QLabel" name="lbl_L5">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1547,7 +1547,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_81">
+         <widget class="QLabel" name="lbl_L6">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1557,7 +1557,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_82">
+         <widget class="QLabel" name="lbl_L7">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1567,7 +1567,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_83">
+         <widget class="QLabel" name="lbl_L8">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1577,7 +1577,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_84">
+         <widget class="QLabel" name="lbl_L9">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1587,7 +1587,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_85">
+         <widget class="QLabel" name="lbl_L10">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1597,7 +1597,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_86">
+         <widget class="QLabel" name="lbl_L11">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1607,7 +1607,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_87">
+         <widget class="QLabel" name="lbl_L12">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1617,7 +1617,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_88">
+         <widget class="QLabel" name="lbl_L13">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1627,7 +1627,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_89">
+         <widget class="QLabel" name="lbl_L14">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1637,7 +1637,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_90">
+         <widget class="QLabel" name="lbl_L15">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1678,7 +1678,7 @@ color: rgb(73, 192, 203);</string>
          <enum>QLayout::SetNoConstraint</enum>
         </property>
         <item>
-         <widget class="QLabel" name="label_61">
+         <widget class="QLabel" name="lbl_R1">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1688,7 +1688,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_62">
+         <widget class="QLabel" name="lbl_R2">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1698,7 +1698,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_63">
+         <widget class="QLabel" name="lbl_R3">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1708,7 +1708,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_64">
+         <widget class="QLabel" name="lbl_R4">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1718,7 +1718,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_65">
+         <widget class="QLabel" name="lbl_R5">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1728,7 +1728,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_66">
+         <widget class="QLabel" name="lbl_R6">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1738,7 +1738,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_67">
+         <widget class="QLabel" name="lbl_R7">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1748,7 +1748,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_68">
+         <widget class="QLabel" name="lbl_R8">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1758,7 +1758,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_69">
+         <widget class="QLabel" name="lbl_R9">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1768,7 +1768,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_70">
+         <widget class="QLabel" name="lbl_R10">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1778,7 +1778,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_71">
+         <widget class="QLabel" name="lbl_R11">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1788,7 +1788,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_72">
+         <widget class="QLabel" name="lbl_R12">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1798,7 +1798,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_73">
+         <widget class="QLabel" name="lbl_R13">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1808,7 +1808,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_74">
+         <widget class="QLabel" name="lbl_R14">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1818,7 +1818,7 @@ color: rgb(73, 192, 203);</string>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_75">
+         <widget class="QLabel" name="lbl_R15">
           <property name="frameShape">
            <enum>QFrame::Box</enum>
           </property>
@@ -1842,246 +1842,6 @@ color: rgb(73, 192, 203);</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(235, 235, 235);</string>
       </property>
-      <widget class="QWidget" name="layoutWidget_3">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>8</y>
-         <width>451</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="Layout_B1_Trials">
-        <property name="spacing">
-         <number>17</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label_103">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>1</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_104">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>2</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_105">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>3</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_106">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>4</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_107">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>5</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_108">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>6</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_109">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>7</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_110">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>8</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_111">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>9</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_112">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>10</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_113">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>11</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_114">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>12</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_115">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>13</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_116">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>14</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_117">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>15</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
       <widget class="Line" name="line_3">
        <property name="geometry">
         <rect>
@@ -2455,6 +2215,153 @@ color: rgb(73, 192, 203);</string>
        </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T1">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T2">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T3">
+       <property name="geometry">
+        <rect>
+         <x>68</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T4">
+       <property name="geometry">
+        <rect>
+         <x>99</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T5">
+       <property name="geometry">
+        <rect>
+         <x>131</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T6">
+       <property name="geometry">
+        <rect>
+         <x>162</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_T12">
+       <property name="geometry">
+        <rect>
+         <x>348</x>
+         <y>10</y>
+         <width>20</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </widget>
@@ -3597,6 +3504,174 @@ color: rgb(112, 112, 112);</string>
        <string>&gt;0.5 Right </string>
       </property>
      </widget>
+     <widget class="QLabel" name="lbl_T7">
+      <property name="geometry">
+       <rect>
+        <x>767</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T8">
+      <property name="geometry">
+       <rect>
+        <x>799</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T9">
+      <property name="geometry">
+       <rect>
+        <x>830</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T10">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T11">
+      <property name="geometry">
+       <rect>
+        <x>891</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T13">
+      <property name="geometry">
+       <rect>
+        <x>953</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T14">
+      <property name="geometry">
+       <rect>
+        <x>985</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_T15">
+      <property name="geometry">
+       <rect>
+        <x>1016</x>
+        <y>527</y>
+        <width>20</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
@@ -3664,6 +3739,14 @@ color: rgb(112, 112, 112);</string>
      <zorder>box_Bias</zorder>
      <zorder>label</zorder>
      <zorder>label_2</zorder>
+     <zorder>lbl_T7</zorder>
+     <zorder>lbl_T8</zorder>
+     <zorder>lbl_T9</zorder>
+     <zorder>lbl_T10</zorder>
+     <zorder>lbl_T11</zorder>
+     <zorder>lbl_T13</zorder>
+     <zorder>lbl_T14</zorder>
+     <zorder>lbl_T15</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
