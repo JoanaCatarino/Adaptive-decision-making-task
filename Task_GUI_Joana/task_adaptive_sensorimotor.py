@@ -833,14 +833,18 @@ class AdaptiveSensorimotorTask:
                 lbl_block.setText(trial["block_type"])
     
             
-            # **Omission Case: Only update the correct spout in gray**
+            # **Omission Case: Only update the correct spout in gray for this trial only**
             if trial["outcome"] == "omission":
-                correct_spout = getattr(self, 'correct_spout', None)  # Get correct spout
-                lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(correct_spout, '')}{col}", None)
-                if lbl_correct:
-                    color = QColor(Qt.lightGray)
-                    lbl_correct.setStyleSheet(f"background-color: {color.name()};")
-                    #label.repaint()
+                correct_spout = getattr(self, 'correct_spout', None)  # Get the correct spout
+                if correct_spout in spout_label_map:
+                    lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map[correct_spout]}{col}", None)
+                    lbl_wrong = getattr(self.gui_controls.ui, f"lbl_{spout_label_map['right' if correct_spout == 'left' else 'left']}{col}", None)
+            
+                    # **Reset both spouts first**
+                    if lbl_wrong:
+                        lbl_wrong.setStyleSheet("")  # Clear the wrong spout
+                    if lbl_correct:
+                        lbl_correct.setStyleSheet("background-color: lightgray;")  # Paint only the correct spout
     
             # **Normal Trial Case: Only update the spout that was chosen**
             else:
