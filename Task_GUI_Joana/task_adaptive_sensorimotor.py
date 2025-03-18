@@ -798,12 +798,10 @@ class AdaptiveSensorimotorTask:
         }.get(self.current_block, "")  # If undefined, show empty string ""
     
         # **Extract Trial History Info & Update GUI**
-        chosen_spout = "left" if trial_data[11] == 1 else "right" if trial_data[12] == 1 else ""  # Determine which spout was used
         trial_outcome = "correct" if trial_data[14] == 1 else "incorrect" if trial_data[15] == 1 else "omission"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
-            "spout": chosen_spout,  # Left, Right, or None
             "outcome": trial_outcome,  # Correct, Incorrect, Omission
             "trial_number": self.total_trials  # Trial ID
         }
