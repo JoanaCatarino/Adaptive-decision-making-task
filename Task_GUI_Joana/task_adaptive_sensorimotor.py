@@ -821,45 +821,52 @@ class AdaptiveSensorimotorTask:
         
     def update_trial_history(self):
         """ Updates the GUI labels for trial history """
-    
+        
         spout_label_map = {"left": "L", "right": "R"}  # Map spout names to QLabel prefixes
     
         for i, trial in enumerate(self.monitor_history):
-            col = i + 1  # QLabel names are lbl_L1 to lbl_L15, lbl_R1 to lbl_R15
+            col = i + 1  # QLabel names are lbl_B1 to lbl_B15, so index starts at 1
     
             # **Update Block Type (S, AL, AR, or Empty)**
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
             if lbl_block:
                 lbl_block.setText(trial["block_type"])
     
-            # **Reset both spout labels before assigning colors**
-            lbl_L = getattr(self.gui_controls.ui, f"lbl_L{col}", None)
-            lbl_R = getattr(self.gui_controls.ui, f"lbl_R{col}", None)
-            if lbl_L:
-                lbl_L.setStyleSheet("")  # Reset left spout
-            if lbl_R:
-                lbl_R.setStyleSheet("")  # Reset right spout
-    
-            # **Omission Case: Paint only the correct spout gray**
+            
+            # **Omission Case: Only update the correct spout in gray**
             if trial["outcome"] == "omission":
-                correct_spout = getattr(self, 'correct_spout', None)
-                if correct_spout in spout_label_map:
-                    lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map[correct_spout]}{col}", None)
-                    if lbl_correct:
-                        lbl_correct.setStyleSheet("background-color: lightgray;")
+                correct_spout = getattr(self, 'correct_spout', None)  # Get correct spout
+                lbl_correct = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(correct_spout, '')}{col}", None)
+                if lbl_correct:
+                    self.update_color(lbl_correct, trial, correct_spout)
     
-            # **Correct/Incorrect Trial: Only update the chosen spout**
+            # **Normal Trial Case: Only update the spout that was chosen**
             else:
                 chosen_spout = trial["spout"]
-                if chosen_spout in spout_label_map:
-                    lbl_chosen = getattr(self.gui_controls.ui, f"lbl_{spout_label_map[chosen_spout]}{col}", None)
+                if chosen_spout:
+                    lbl_chosen = getattr(self.gui_controls.ui, f"lbl_{spout_label_map.get(chosen_spout, '')}{col}", None)
                     if lbl_chosen:
-                        if trial["outcome"] == "correct":
-                            lbl_chosen.setStyleSheet("background-color: green;")
-                        elif trial["outcome"] == "incorrect":
-                            lbl_chosen.setStyleSheet("background-color: red;")
+                        self.update_color(lbl_chosen, trial, chosen_spout)
     
             # **Update Trial Number**
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
                 lbl_T.setText(str(trial["trial_number"]))
+                    
+    
+    def update_color(self, label, trial, spout_side):
+        """ Sets QLabel background color based on trial outcome """
+
+        # Debugging output
+        print(f"Updating color for {label.objectName()} | Spout: {spout_side} | Outcome: {trial['outcome']}")
+
+        if trial["outcome"] == "correct":
+            color = QColor(Qt.green)
+        elif trial["outcome"] == "incorrect":
+            color = QColor(Qt.red)
+        else:
+            color = QColor(Qt.lightGray)
+
+        # Apply the color using setStyleSheet (more reliable)
+        label.setStyleSheet(f"background-color: {color.name()};")
+        label.repaint()  # Ensure immediate UI update
