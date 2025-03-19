@@ -579,12 +579,8 @@ class AdaptiveSensorimotorTask:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start() 
 
-                            self.total_licks += 1
-                            self.licks_left += 1
                             self.correct_trials += 1
                             self.trial_history.append(1)  
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
                         else:
@@ -593,12 +589,12 @@ class AdaptiveSensorimotorTask:
                             self.incorrect_trials +=1
                             self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.total_licks += 1
-                            self.licks_left += 1
-                            # Update GUI values
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_left(self.licks_left)
+                        
                             
+                        self.total_licks += 1
+                        self.licks_left += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -631,12 +627,9 @@ class AdaptiveSensorimotorTask:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
                            
-                            self.total_licks += 1
-                            self.licks_right += 1
+                            
                             self.correct_trials += 1
                             self.trial_history.append(1)  
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
                         else:
@@ -645,12 +638,11 @@ class AdaptiveSensorimotorTask:
                             self.incorrect_trials +=1
                             self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                            self.total_licks += 1
-                            self.licks_lright += 1
-                            # Update GUI values
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_right(self.licks_right)
                             
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
