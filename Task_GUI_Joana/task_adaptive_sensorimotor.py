@@ -683,7 +683,7 @@ class AdaptiveSensorimotorTask:
         self.omission_counted = True
         self.trial_duration = (self.tend-self.ttrial)
         self.gui_controls.update_trial_duration(self.trial_duration)
-        self.gui_controls.update_omissions(self.omissions)
+        #self.gui_controls.update_omissions(self.omissions)
         self.is_catch_trial = False
         self.next_trial_eligible = True
         # Update live stair plot
@@ -749,7 +749,9 @@ class AdaptiveSensorimotorTask:
         
         # Update plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
-            
+          
+        self.gui_controls.update_omissions(self.omissions)
+        
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
                         self.gui_controls.ui.chk_AutomaticRewards.isChecked())
@@ -857,7 +859,7 @@ class AdaptiveSensorimotorTask:
     
                 # **Assign color based on outcome**
                 if trial["outcome"] == "correct":
-                    lbl_outcome.setStyleSheet("background-color: #0DBA0D;")
+                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")
                 elif trial["outcome"] == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
                 else:
