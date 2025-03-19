@@ -596,6 +596,11 @@ class AdaptiveSensorimotorTask:
                             self.incorrect_trials +=1
                             self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.total_licks += 1
+                            self.licks_left += 1
+                            # Update GUI values
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_left(self.licks_left)
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
@@ -643,6 +648,11 @@ class AdaptiveSensorimotorTask:
                             self.incorrect_trials +=1
                             self.trial_history.append(0)  
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+                            self.total_licks += 1
+                            self.licks_lright += 1
+                            # Update GUI values
+                            self.gui_controls.update_total_licks(self.total_licks)
+                            self.gui_controls.update_licks_left(self.licks_right)
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
@@ -832,9 +842,6 @@ class AdaptiveSensorimotorTask:
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
-            
-            # Ensure we're not skipping lbl_O9
-            print(f"Updating lbl_O{col}: Outcome = {trial['outcome']}")  # Debug print
     
             # **Update Block Type (S, AL, AR, or Empty)**
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
