@@ -628,7 +628,7 @@ class GuiControls:
                 if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor)):
                     # Update quiet window
                     if new_quiet_window is not None:
-                        self.current_task.QW = new_quiet_window
+                        self.current_task.QW = int(new_quiet_window)
                         print(f"Quiet window: {new_quiet_window} s")
                         self.ui.btn_Update.setEnabled(False)
                     
