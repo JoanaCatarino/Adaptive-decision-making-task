@@ -96,6 +96,7 @@ class AdaptiveSensorimotorTask:
         self.sound_played = False
         self.omission_counted = False
         self.catch_trial_counted = False
+        self.data_saved = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -318,6 +319,7 @@ class AdaptiveSensorimotorTask:
             self.sound_played = False # For saving data
             self.omission_counted = False # For saving data
             self.catch_trial_counted = False
+            self.data_saved = False
             
             self.is_catch_trial = random.random() < self.catch_trials_fraction
             
@@ -732,6 +734,12 @@ class AdaptiveSensorimotorTask:
    
     def save_data(self):
         """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
+        
+        # Prevent duplicate calls
+        if hasattr(self, 'data_saved') and self.data_saved:
+            print("Skipping duplicate save_data() call")
+            return
+        self.data_saved = True  # Mark data as saved to avoid duplicate calls
     
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
@@ -841,7 +849,7 @@ class AdaptiveSensorimotorTask:
                 elif trial["outcome"] == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
                 elif trial["outcome"] == "omission":
-                    lbl_outcome.setStyleSheet("background-color: lightgray;")
+                    lbl_outcome.setStyleSheet("background-color: gray;")
     
             # **Update Trial Number**
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
