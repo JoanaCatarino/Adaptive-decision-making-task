@@ -97,6 +97,7 @@ class AdaptiveSensorimotorTask:
         self.omission_counted = False
         self.catch_trial_counted = False
         self.data_saved = False
+        self.plot_updated = False
         
         # Time variables
         self.tstart = None # start of the task
@@ -309,6 +310,10 @@ class AdaptiveSensorimotorTask:
         """ Initiates a trial, runs LED in paralledl, and logs trial start"""
         
         with self.lock:
+            
+            if self.trialstarted:
+                return
+            
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)

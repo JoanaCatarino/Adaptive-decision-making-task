@@ -53,8 +53,15 @@ class PlotPerformance(QWidget):
     def update_plot(self, total_trials, correct_trials, incorrect_trials):
         """Update stair plot with new lick data."""
 
+        # Prevent duplicate updates using a flag
+        if hasattr(self, 'plot_updated') and self.plot_updated:
+            print(f"Skipping duplicate plot update for trial {total_trials}")
+            return  # Exit early if the plot was already updated
+        
+        self.plot_updated = True  # Set flag to prevent multiple updates
+
         # Increment trial number (should match total number of trials, including omissions)
-        trial_number = len(self.trial_numbers)   # Use independent counter
+        #trial_number = len(self.trial_numbers)   # Use independent counter
         self.trial_numbers.append(trial_number)
         
         # Always append total trials to keep trial history
@@ -67,6 +74,14 @@ class PlotPerformance(QWidget):
         else:
             last_correct = 0
             last_incorrect = 0
+            
+        # Use the exact number of completed trials for the x-axis
+        trial_numbers = list(range(1, total_trials + 1))
+        self.total_trials = trial_numbers
+    
+        # Ensure y-values are correctly assigned
+        self.correct_trials.append(correct_trials)
+        self.incorrect_trials.append(incorrect_trials)
     
         # Keep previous values if no new correct/incorrect trial data is received
         self.correct_trials.append(correct_trials if correct_trials is not None else last_correct)
