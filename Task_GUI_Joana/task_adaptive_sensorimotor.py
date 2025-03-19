@@ -245,6 +245,7 @@ class AdaptiveSensorimotorTask:
 
         # Compute bias based on lick history (proportion of right licks)
         self.bias_value = right_licks / total_licks
+        
         # Apply Gaussian sampling to introduce slight randomness
         self.debias_val = random.gauss(self.bias_value, self.decision_SD)
 
