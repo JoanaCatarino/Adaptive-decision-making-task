@@ -59,21 +59,6 @@ class PlotPerformance(QWidget):
             return  # Exit early if the plot was already updated
         
         self.plot_updated = True  # Set flag to prevent multiple updates
-
-        # Increment trial number (should match total number of trials, including omissions)
-        #trial_number = len(self.trial_numbers)   # Use independent counter
-        self.trial_numbers.append(trial_number)
-        
-        # Always append total trials to keep trial history
-        self.total_trials.append(total_trials)
-    
-        # If this is the first trial, initialize previous values
-        if len(self.correct_trials) > 0:
-            last_correct = self.correct_trials[-1]
-            last_incorrect = self.incorrect_trials[-1]
-        else:
-            last_correct = 0
-            last_incorrect = 0
             
         # Use the exact number of completed trials for the x-axis
         trial_numbers = list(range(1, total_trials + 1))
