@@ -21,7 +21,6 @@ from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
-from gpiozero import Device
 
 # Import different functions/classes
 from animal_id_generator import animal_id
@@ -544,19 +543,6 @@ class GuiControls:
 
         # Update start/stop button states
         self.update_button_states()
-        
-        # Close all GPIO devices
-        try:
-            led_white_r.close()
-            led_white_l.close()
-            led_blue.close()
-            pump_l.close()
-            pump_r.close()
-            laser.close()
-            btn_l.close()
-            btn_r.close()
-        except Exception as e:
-            print(f"Error closing GPIO devices: {e}")
 
 
     def update_total_licks(self, total_licks):
