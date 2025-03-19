@@ -515,11 +515,11 @@ class Ui_TaskGui(object):
 
         self.Layout_B1_RightSpout.addWidget(self.lbl_O8)
 
-        self.lbl_R9 = QLabel(self.layoutWidget)
-        self.lbl_R9.setObjectName(u"lbl_R9")
-        self.lbl_R9.setFrameShape(QFrame.Box)
+        self.lbl_O9 = QLabel(self.layoutWidget)
+        self.lbl_O9.setObjectName(u"lbl_O9")
+        self.lbl_O9.setFrameShape(QFrame.Box)
 
-        self.Layout_B1_RightSpout.addWidget(self.lbl_R9)
+        self.Layout_B1_RightSpout.addWidget(self.lbl_O9)
 
         self.lbl_O10 = QLabel(self.layoutWidget)
         self.lbl_O10.setObjectName(u"lbl_O10")
@@ -1336,7 +1336,7 @@ class Ui_TaskGui(object):
         self.lbl_O6.setText("")
         self.lbl_O7.setText("")
         self.lbl_O8.setText("")
-        self.lbl_R9.setText("")
+        self.lbl_O9.setText("")
         self.lbl_O10.setText("")
         self.lbl_O11.setText("")
         self.lbl_O12.setText("")
