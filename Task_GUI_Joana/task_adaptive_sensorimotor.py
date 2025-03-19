@@ -245,11 +245,8 @@ class AdaptiveSensorimotorTask:
 
         # Compute bias based on lick history (proportion of right licks)
         self.bias_value = right_licks / total_licks
-        print(self.bias_value)
-
         # Apply Gaussian sampling to introduce slight randomness
         self.debias_val = random.gauss(self.bias_value, self.decision_SD)
-        print(self.debias_val)
 
         # Assign trials to reinforce the underrepresented spout
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
@@ -652,7 +649,7 @@ class AdaptiveSensorimotorTask:
                             self.licks_lright += 1
                             # Update GUI values
                             self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_left(self.licks_right)
+                            self.gui_controls.update_licks_right(self.licks_right)
                             
                         self.timer_3.cancel()
                         self.trialstarted = False
@@ -746,7 +743,6 @@ class AdaptiveSensorimotorTask:
         
         # Prevent duplicate calls
         if hasattr(self, 'data_saved') and self.data_saved:
-            print("Skipping duplicate save_data() call")
             return
         self.data_saved = True  # Mark data as saved to avoid duplicate calls
         
@@ -827,9 +823,7 @@ class AdaptiveSensorimotorTask:
         }
         
         if isinstance(trial_data_gui, dict):  # Ensure only valid dictionaries are stored
-            self.monitor_history.append(trial_data_gui)
-            print(self.monitor_history)
-            
+            self.monitor_history.append(trial_data_gui) 
         else:
             print("Warning: Invalid trial data format detected:", trial_data_gui)
     
@@ -842,7 +836,7 @@ class AdaptiveSensorimotorTask:
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
-    
+            
             # **Update Block Type (S, AL, AR, or Empty)**
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
             if lbl_block:
