@@ -376,8 +376,8 @@ class GuiControls:
             self.stop_task()
 
         # Ensure the camera is stopped and restarted
-        #self.stop_camera()
-        #self.start_camera()
+        self.stop_camera()
+        self.start_camera()
 
         # Ensure piezo are stopped and Start the piezo update timer
         self.piezo_timer.stop()
@@ -532,7 +532,7 @@ class GuiControls:
         self.OV_box_Chronometer.stop() # stop overview chronometer for Box1
 
         # Stop the camera
-        #self.stop_camera()
+        self.stop_camera()
 
         # Stop the piezo update timer
         if self.piezo_timer.isActive():
@@ -599,8 +599,6 @@ class GuiControls:
     def update_catch_trials(self, catch_trials):
         self.ui.box_CatchTrials.setText(f'{catch_trials}')
         
-    #def update_bias(self, bias_value):
-    #self.ui.box_Bias.setText(f'{bias_value}')
 
     
     def update_task_params(self):
