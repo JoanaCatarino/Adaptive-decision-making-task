@@ -11,7 +11,9 @@ import time
 import csv
 import os
 import random
-from PyQt5.QtCore import QTimer
+from collections import deque
+from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtGui import QColor, QPalette
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
@@ -102,6 +104,9 @@ class TwoChoiceAuditoryTask:
         self.selected_side = None
         self.bias_value = None
         self.debias_value = None
+        
+        # Trial monitor
+        self.monitor_history = deque(maxlen=15)
 
     def start (self):
         print ('Spout Sampling task starting')
@@ -180,11 +185,9 @@ class TwoChoiceAuditoryTask:
 
         # Compute bias based on lick history (proportion of right licks)
         self.bias_value = right_licks / total_licks
-        print(self.bias_value)
 
         # Apply Gaussian sampling to introduce slight randomness
         self.debias_val = random.gauss(self.bias_value, self.decision_SD)
-        print(self.debias_val)
 
         # Assign trials to reinforce the underrepresented spout
         self.selected_side = "right" if self.debias_val < 0.5 else "left"  
@@ -232,6 +235,10 @@ class TwoChoiceAuditoryTask:
         """ Initiates a trial, runs LED in paralledl, and logs trial start"""
         
         with self.lock:
+            
+            if self.trialstarted:
+                return
+            
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -240,6 +247,8 @@ class TwoChoiceAuditoryTask:
             self.early_lick_counted = False # For saving data
             self.sound_played = False # For saving data
             self.omission_counted = False # For saving data
+            self.data_saved = False
+            self.plot_updated = False
             
             # Randomly select the a cue sound  and apply debiasing when needed
             self.correct_spout = self.debias()  # Apply debiasing
@@ -275,8 +284,6 @@ class TwoChoiceAuditoryTask:
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
-                # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
                 self.save_data()
                 return  # Exit trial 
@@ -298,8 +305,6 @@ class TwoChoiceAuditoryTask:
                 self.trial_duration = (self.tend-self.ttrial)
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
-                # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
                 self.save_data()
                 
@@ -402,11 +407,7 @@ class TwoChoiceAuditoryTask:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('left',)).start() 
             
-                            self.total_licks += 1
-                            self.licks_left += 1
                             self.correct_trials += 1
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_left(self.licks_left)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
                                 
@@ -419,7 +420,11 @@ class TwoChoiceAuditoryTask:
                             self.incorrect_trials +=1
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
-                            
+                        
+                        self.total_licks += 1
+                        self.licks_left += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_left(self.licks_left)
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -427,8 +432,6 @@ class TwoChoiceAuditoryTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
-                        # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
                         self.save_data()
                         return
@@ -454,11 +457,7 @@ class TwoChoiceAuditoryTask:
                             # Deliver reward in a separate thread
                             threading.Thread(target=self.reward, args=('right',)).start()
             
-                            self.total_licks += 1
-                            self.licks_right += 1
                             self.correct_trials += 1
-                            self.gui_controls.update_total_licks(self.total_licks)
-                            self.gui_controls.update_licks_right(self.licks_right)
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
                         else:
@@ -471,6 +470,10 @@ class TwoChoiceAuditoryTask:
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         
+                        self.total_licks += 1
+                        self.licks_right += 1
+                        self.gui_controls.update_total_licks(self.total_licks)
+                        self.gui_controls.update_licks_right(self.licks_right)
                         self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -478,8 +481,6 @@ class TwoChoiceAuditoryTask:
                         self.trial_duration = (self.tend-self.ttrial)
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
-                        # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
                         self.save_data()
                         return
@@ -496,8 +497,6 @@ class TwoChoiceAuditoryTask:
         self.omission_counted = True
         self.gui_controls.update_omissions(self.omissions)
         self.next_trial_eligible = True
-        # Update live stair plot
-        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
         # Save trial data
         self.save_data()
       
@@ -547,6 +546,14 @@ class TwoChoiceAuditoryTask:
     
     def save_data(self):
         """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure."""
+        
+        # Prevent duplicate calls
+        if hasattr(self, 'data_saved') and self.data_saved:
+            return
+        self.data_saved = True  # Mark data as saved to avoid duplicate calls
+        
+        # Update plot
+        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
         
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
@@ -603,3 +610,59 @@ class TwoChoiceAuditoryTask:
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(trial_data)
+            
+        # **Convert block type for display**
+        block_type_display = {
+            "sound": "S",
+            "action-left": "AL",
+            "action-right": "AR"
+        }.get(self.current_block, "")  # If undefined, show empty string ""
+    
+        # **Extract Trial History Info & Update GUI**
+        trial_outcome = "correct" if trial_data[14] == 1 else "incorrect" if trial_data[15] == 1 else "omission"
+    
+        trial_data_gui = {
+            "block_type": block_type_display,  # Use converted block type (empty if undefined)
+            "outcome": trial_outcome,  # Correct, Incorrect, Omission
+            "trial_number": self.total_trials  # Trial ID
+        }
+        
+        if isinstance(trial_data_gui, dict):  # Ensure only valid dictionaries are stored
+            self.monitor_history.append(trial_data_gui) 
+        else:
+            print("Warning: Invalid trial data format detected:", trial_data_gui)
+    
+        # **Update the GUI**
+        self.update_trial_history()
+        
+        
+    def update_trial_history(self):
+        """ Updates the GUI labels for trial history using a single outcome label per trial """
+    
+        for i, trial in enumerate(self.monitor_history):
+            col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
+            
+            # **Update Block Type (S, AL, AR, or Empty)**
+            lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
+            if lbl_block:
+                lbl_block.setText(trial["block_type"])
+    
+            # **Find the Outcome Label**
+            lbl_outcome = getattr(self.gui_controls.ui, f"lbl_O{col}", None)
+    
+            # **Reset previous color**
+            if lbl_outcome:
+                lbl_outcome.setStyleSheet("")  # Clear previous color
+    
+                # **Assign color based on outcome**
+                if trial["outcome"] == "correct":
+                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")
+                elif trial["outcome"] == "incorrect":
+                    lbl_outcome.setStyleSheet("background-color: red;")
+                else:
+                    lbl_outcome.setStyleSheet("background-color: gray;")
+                    
+            # **Update Trial Number**
+            lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
+            if lbl_T:
+                lbl_T.setText(str(trial["trial_number"])) 
