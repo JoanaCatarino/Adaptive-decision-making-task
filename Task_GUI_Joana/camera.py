@@ -10,7 +10,7 @@ def start_camera(cap, timer, update_frame_slot):
         return
     # Start the timer to capture frames
     timer.timeout.connect(update_frame_slot)
-    timer.start(15)  # Capture a frame every 30ms (~33fps)
+    timer.start(10)  # Capture a frame every 30ms (~33fps)
 
 def stop_camera(cap, label, ov_label):
     # Check if the camera is opened and release it
