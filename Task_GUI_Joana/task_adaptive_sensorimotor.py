@@ -382,7 +382,7 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                #self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
                 self.save_data()
                 return  # Exit trial 
@@ -404,7 +404,7 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Update live stair plot
-                self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                #self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 # Save trial data
                 self.save_data()
                 
@@ -609,7 +609,7 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        #self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
                         self.save_data()
                         return
@@ -658,7 +658,7 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Update live stair plot
-                        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+                        #self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                         # Save trial data
                         self.save_data()
                         return
@@ -687,7 +687,7 @@ class AdaptiveSensorimotorTask:
         self.is_catch_trial = False
         self.next_trial_eligible = True
         # Update live stair plot
-        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+        #self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
         # Save trial data
         self.save_data()
         
@@ -747,14 +747,9 @@ class AdaptiveSensorimotorTask:
             return
         self.data_saved = True  # Mark data as saved to avoid duplicate calls
         
-        # Update GUI performance plot only once per trial
-        if not hasattr(self, 'plot_updated') or not self.plot_updated:
-            self.gui_controls.update_performance_plot(
-                self.total_trials, self.correct_trials, self.incorrect_trials
-            )
-            self.plot_updated = True  # Prevent multiple updates for the same trial
+        # Update plot
+        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
             
-    
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
                         self.gui_controls.ui.chk_AutomaticRewards.isChecked())
