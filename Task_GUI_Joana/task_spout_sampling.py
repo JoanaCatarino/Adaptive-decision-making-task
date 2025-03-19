@@ -146,7 +146,7 @@ class SpoutSamplingTask:
      
     def start_trial(self):
         
-        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        """ Initiates a trial, and logs trial start"""
         
         with self.lock:
             self.trialstarted = True

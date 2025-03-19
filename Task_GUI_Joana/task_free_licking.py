@@ -155,9 +155,6 @@ class FreeLickingTask:
             
             print(f'Trial: {self.total_trials}')
             
-            # Start LED in a separate thread
-            threading.Thread(target=self.led_indicator, args=(self.RW,)).start() # to be deleted in the real task
-            
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
             
@@ -178,15 +175,6 @@ class FreeLickingTask:
     
         # Save trial data
         self.save_data() 
-        
-    
-    def led_indicator(self, RW):
-        
-        """ Turn on LED during trial duration without blocking main loop"""
-        
-        led_white_l.on()
-        time.sleep(self.RW) # This should actually be changed to the duration of the full trial
-        led_white_l.off()
         
         
     def detect_licks(self):
