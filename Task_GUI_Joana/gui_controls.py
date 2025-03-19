@@ -545,7 +545,18 @@ class GuiControls:
         # Update start/stop button states
         self.update_button_states()
         
-        Device.close()
+        # Close all GPIO devices
+        try:
+            led_white_r.close()
+            led_white_l.close()
+            led_blue.close()
+            pump_l.close()
+            pump_r.close()
+            laser.close()
+            btn_l.close()
+            btn_r.close()
+        except Exception as e:
+            print(f"Error closing GPIO devices: {e}")
 
 
     def update_total_licks(self, total_licks):
