@@ -60,22 +60,27 @@ class PlotPerformance(QWidget):
         
         self.plot_updated = True  # Set flag to prevent multiple updates
             
-        # Use the exact number of completed trials for the x-axis
+        # Ensure the trial_numbers list is updated correctly
+        self.total_trials.append(total_trials)
+    
+        # Always maintain trial numbers, including omission trials
         trial_numbers = list(range(1, total_trials + 1))
-        self.total_trials = trial_numbers
     
-        # Ensure y-values are correctly assigned
-        self.correct_trials.append(correct_trials)
-        self.incorrect_trials.append(incorrect_trials)
+        # Ensure correct and incorrect trials lists match the total trials count
+        while len(self.correct_trials) < total_trials:
+            self.correct_trials.append(self.correct_trials[-1] if self.correct_trials else 0)  # Maintain previous count
     
-        # Keep previous values if no new correct/incorrect trial data is received
-        self.correct_trials.append(correct_trials if correct_trials is not None else last_correct)
-        self.incorrect_trials.append(incorrect_trials if incorrect_trials is not None else last_incorrect)
+        while len(self.incorrect_trials) < total_trials:
+            self.incorrect_trials.append(self.incorrect_trials[-1] if self.incorrect_trials else 0)  # Maintain previous count
     
         # Convert lists to NumPy arrays
-        total_trials_arr = np.array(self.total_trials)
+        total_trials_arr = np.array(trial_numbers)
         correct_trials_arr = np.array(self.correct_trials)
         incorrect_trials_arr = np.array(self.incorrect_trials)
+        
+        # Ensure y-axis lists are the same length as the x-axis
+        assert len(total_trials_arr) == len(correct_trials_arr), "Mismatch in total_trials and correct_trials"
+        assert len(total_trials_arr) == len(incorrect_trials_arr), "Mismatch in total_trials and incorrect_trials"
     
         # Calculate Hit Rate (HR) and False Alarm Rate (FA)
         HR = (correct_trials_arr + 0.5) / (total_trials_arr + 1) #Hit rate
@@ -89,7 +94,9 @@ class PlotPerformance(QWidget):
         d_prime = norm.ppf(HR) - norm.ppf(FA)
 
         # Ensure trial numbers are actual trial count
-        trial_numbers = np.array(self.trial_numbers, dtype=int)
+        assert len(trial_numbers) == len(HR), "Mismatch between x-axis and HR"
+        assert len(trial_numbers) == len(FA), "Mismatch between x-axis and FA"
+        assert len(trial_numbers) == len(d_prime), "Mismatch between x-axis and d_prime"
 
         # Clear and Redraw Stair Plot
         self.ax.clear()
