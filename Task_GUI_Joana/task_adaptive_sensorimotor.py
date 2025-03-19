@@ -830,6 +830,9 @@ class AdaptiveSensorimotorTask:
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
+            
+            # Ensure we're not skipping lbl_O9
+            print(f"Updating lbl_O{col}: Outcome = {trial['outcome']}")  # Debug print
     
             # **Update Block Type (S, AL, AR, or Empty)**
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
@@ -848,9 +851,9 @@ class AdaptiveSensorimotorTask:
                     lbl_outcome.setStyleSheet("background-color: green;")
                 elif trial["outcome"] == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
-                elif trial["outcome"] == "omission":
+                else:
                     lbl_outcome.setStyleSheet("background-color: gray;")
-    
+                    
             # **Update Trial Number**
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
