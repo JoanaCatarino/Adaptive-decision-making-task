@@ -857,7 +857,7 @@ class AdaptiveSensorimotorTask:
     
                 # **Assign color based on outcome**
                 if trial["outcome"] == "correct":
-                    lbl_outcome.setStyleSheet("background-color: green;")
+                    lbl_outcome.setStyleSheet("background-color: #0DBA0D;")
                 elif trial["outcome"] == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
                 else:
