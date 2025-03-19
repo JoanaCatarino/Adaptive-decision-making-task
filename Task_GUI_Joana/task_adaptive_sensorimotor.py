@@ -325,6 +325,7 @@ class AdaptiveSensorimotorTask:
             self.omission_counted = False # For saving data
             self.catch_trial_counted = False
             self.data_saved = False
+            self.plot_updated = False
             
             self.is_catch_trial = random.random() < self.catch_trials_fraction
             
@@ -745,6 +746,14 @@ class AdaptiveSensorimotorTask:
             print("Skipping duplicate save_data() call")
             return
         self.data_saved = True  # Mark data as saved to avoid duplicate calls
+        
+        # Update GUI performance plot only once per trial
+        if not hasattr(self, 'plot_updated') or not self.plot_updated:
+            self.gui_controls.update_performance_plot(
+                self.total_trials, self.correct_trials, self.incorrect_trials
+            )
+            self.plot_updated = True  # Prevent multiple updates for the same trial
+            
     
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
