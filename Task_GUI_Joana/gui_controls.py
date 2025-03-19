@@ -422,21 +422,21 @@ class GuiControls:
         #Reset labels for trial monitor
         for col in range(1, 16):  # Assuming 15 trials are displayed
 
-        # **Reset Outcome Labels (`lbl_Ox`)**
-        lbl_outcome = getattr(self.ui, f"lbl_O{col}", None)
-        if lbl_outcome:
-            lbl_outcome.setStyleSheet("")  # Clear color
-            lbl_outcome.setText("")  # Remove text
-
-        # **Reset Block Labels (`lbl_Bx`)**
-        lbl_block = getattr(self.ui, f"lbl_B{col}", None)
-        if lbl_block:
-            lbl_block.setText("")  # Remove block type
-
-        # **Reset Trial Number Labels (`lbl_Tx`)**
-        lbl_T = getattr(self.ui, f"lbl_T{col}", None)
-        if lbl_T:
-            lbl_T.setText("")  # Remove trial number
+            # **Reset Outcome Labels (`lbl_Ox`)**
+            lbl_outcome = getattr(self.ui, f"lbl_O{col}", None)
+            if lbl_outcome:
+                lbl_outcome.setStyleSheet("")  # Clear color
+                lbl_outcome.setText("")  # Remove text
+    
+            # **Reset Block Labels (`lbl_Bx`)**
+            lbl_block = getattr(self.ui, f"lbl_B{col}", None)
+            if lbl_block:
+                lbl_block.setText("")  # Remove block type
+    
+            # **Reset Trial Number Labels (`lbl_Tx`)**
+            lbl_T = getattr(self.ui, f"lbl_T{col}", None)
+            if lbl_T:
+                lbl_T.setText("")  # Remove trial number
 
 
         # Create file with data unless the selected task is 'Test rig'
