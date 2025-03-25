@@ -12,8 +12,10 @@ from collections import deque
 
 class TrialMonitor(QWidget):
     
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, gui_controls):
+        
+        # Connection to GUI
+        self.gui_controls = gui_controls
 
         self.trial_history = deque(maxlen=15)  # Store last 15 trials
 
