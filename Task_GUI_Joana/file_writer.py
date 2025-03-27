@@ -13,7 +13,7 @@ import csv
 import json
 from PyQt5.QtCore import QTimer, QDate, QTime
 
-home = 0s.getenv('HOME')
+home = os.getenv('HOME')
 
 # Define the save directory path directly here
 SAVE_DIRECTORY = os.path.join(home,"save_dir")
