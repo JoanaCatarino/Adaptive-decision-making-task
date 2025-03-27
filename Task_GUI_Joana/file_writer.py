@@ -13,8 +13,10 @@ import csv
 import json
 from PyQt5.QtCore import QTimer, QDate, QTime
 
+home = 0s.getenv('HOME')
+
 # Define the save directory path directly here
-SAVE_DIRECTORY = "~/save_data"
+SAVE_DIRECTORY = os.path.join(home,"save_dir")
 
 TASK_NICKNAME = {
     'Free Licking': 'FreeLick',
