@@ -14,7 +14,7 @@ import json
 from PyQt5.QtCore import QTimer, QDate, QTime
 
 # Define the save directory path directly here
-SAVE_DIRECTORY = "/home/rasppi-ephys/test_dir"
+SAVE_DIRECTORY = "~/test_dir"
 
 TASK_NICKNAME = {
     'Free Licking': 'FreeLick',

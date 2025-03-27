@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['..\\..\\voxel_injections\\str_parcellation.py', '..\\..\\voxel_injections\\injection_analysis.py', 'gpio_map.py']
+recent_files = ['gpio_map.py']
 
 [main]
 version = 0.2.0
