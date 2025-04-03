@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['gpio_map.py']
+recent_files = ['gpio_map.py', 'file_writer.py', 'animal_id_generator.py', 'Read_Me.txt']
 
 [main]
 version = 0.2.0
