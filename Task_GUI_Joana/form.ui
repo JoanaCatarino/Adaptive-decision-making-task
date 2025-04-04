@@ -1065,6 +1065,19 @@ border-color: rgb(227, 153, 100);</string>
         <string>max</string>
        </property>
       </widget>
+      <widget class="QPushButton" name="btn_FlushWater">
+       <property name="geometry">
+        <rect>
+         <x>400</x>
+         <y>750</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Flush Water</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QLabel" name="lbl_TaskSettings">
       <property name="geometry">
