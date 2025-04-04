@@ -12,6 +12,7 @@ import cv2
 import threading
 import serial
 import time
+import random
 
 import asyncio
 
@@ -262,7 +263,15 @@ class GuiControls:
 
     def update_frame(self):
         update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
-
+        
+    
+    def flush_water(self):
+        """Randomly activates one of the pumps for a short duration to flush water."""
+        flush_duration = 0.2  # seconds - Change according to calibration
+        selected_pump = random.choice([pump_l, pump_r])
+        selected_pump.off()
+        time.sleep(flush_duration)
+        selected_pump.on()    
 
     def check_start_button_state(self):
         # Check if all dropdown menus have a selected value
@@ -280,6 +289,7 @@ class GuiControls:
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         #self.ui.btn_Update.clicked.connect(self.print_variables)
         self.ui.btn_Update.clicked.connect(self.update_task_params)
+        self.ui.btn_FlushWater.clicked.connect(self.flush_water)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
