@@ -31,7 +31,8 @@ from date_updater import DateUpdater
 from chronometer_generator import Chronometer
 from file_writer import create_data_file
 from stylesheet import stylesheet
-from camera import start_camera, stop_camera, update_frame
+#from camera import start_camera, stop_camera, update_frame
+from camera_thread import CameraThread
 from piezo_plot import LivePlotWidget
 from performance_plot import PlotLicks
 from performance_plot_advanced import PlotPerformance
@@ -54,6 +55,7 @@ class GuiControls:
 
         style = stylesheet(self.ui) # to call the function with buttons' stylesheet
         self.current_task = None # set the initial task value
+        self.camera_thread = None
 
         # initialize components defined by functions:
         self.populate_ddm_animalID() # dropdown menu with animal IDs
@@ -254,7 +256,7 @@ class GuiControls:
         self.OV_box_Chronometer = Chronometer() # Chronometer Overview tab
         self.OV_box_Chronometer.timeChanged.connect(self.updateTime_slot)
 
-
+    '''
     def start_camera(self):
         start_camera(self.cap, self.camera_timer, self.update_frame)
 
@@ -263,6 +265,26 @@ class GuiControls:
 
     def update_frame(self):
         update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
+    '''
+    
+    def start_camera(self):
+        if self.camera_thread is None:
+            self.camera_thread = CameraThread()
+            self.camera_thread.frame_ready.connect(self.update_frame)
+            self.camera_thread.start()
+
+    def stop_camera(self):
+        if self.camera_thread is not None:
+            self.camera_thread.stop()
+            self.camera_thread = None
+        self.ui.plt_Camera.clear()
+        self.ui.OV_plt_Camera.clear()
+
+    def update_frame(self, pixmap):
+        self.ui.plt_Camera.setPixmap(pixmap.scaled(
+            self.ui.plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
+        self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(
+            self.ui.OV_plt_Camera.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
         
     
     def flush_water(self):
