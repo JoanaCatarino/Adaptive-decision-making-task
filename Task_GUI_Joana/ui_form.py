@@ -301,6 +301,7 @@ class Ui_TaskGui(object):
         self.btn_FlushWater = QPushButton(self.TaskSettings)
         self.btn_FlushWater.setObjectName(u"btn_FlushWater")
         self.btn_FlushWater.setGeometry(QRect(400, 750, 81, 31))
+        self.btn_FlushWater.setFont(font2)
         self.lbl_TaskSettings = QLabel(self.Box)
         self.lbl_TaskSettings.setObjectName(u"lbl_TaskSettings")
         self.lbl_TaskSettings.setGeometry(QRect(20, 6, 111, 20))
