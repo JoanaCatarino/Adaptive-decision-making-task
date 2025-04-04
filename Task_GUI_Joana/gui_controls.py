@@ -274,7 +274,7 @@ class GuiControls:
             self.camera_thread.start()
 
     def stop_camera(self):
-        if self.camera_thread is not None:
+        if self.camera_thread:
             self.camera_thread.stop()
             self.camera_thread = None
         self.ui.plt_Camera.clear()

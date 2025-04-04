@@ -5,9 +5,9 @@ Created on Fri Apr  4 14:46:19 2025
 @author: JoanaCatarino
 """
 
-from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtGui import QImage, QPixmap
 import cv2
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtGui import QImage, QPixmap
 
 class CameraThread(QThread):
     frame_ready = pyqtSignal(QPixmap)
@@ -31,10 +31,11 @@ class CameraThread(QThread):
                 qimg = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(qimg)
                 self.frame_ready.emit(pixmap)
-            self.msleep(30)  # around 30 FPS
+            self.msleep(30)
 
     def stop(self):
         self.running = False
         self.wait()
         if self.cap.isOpened():
             self.cap.release()
+
