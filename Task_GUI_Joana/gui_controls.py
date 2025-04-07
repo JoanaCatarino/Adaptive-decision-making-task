@@ -267,13 +267,13 @@ class GuiControls:
     '''
     
     def start_camera(self):
-        self.cap = cv2.VideoCapture()
+        self.cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
         self.cap.open(0)
+    
         if not self.cap.isOpened():
             print("Error: Camera not accessible")
             return
     
-        # Optional resolution settings
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
     
