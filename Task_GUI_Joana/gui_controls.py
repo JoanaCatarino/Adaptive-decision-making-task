@@ -288,9 +288,18 @@ class GuiControls:
         image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
         pixmap = QPixmap.fromImage(image)
     
-        # Update both camera display widgets
-        self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), Qt.KeepAspectRatio))
-        self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio))
+        # Resize to match the QLabel size in the layout
+        if self.ui.plt_Camera.width() > 0 and self.ui.plt_Camera.height() > 0:
+            pixmap_resized = pixmap.scaled(
+                self.ui.plt_Camera.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+            self.ui.plt_Camera.setPixmap(pixmap_resized)
+    
+        if self.ui.OV_plt_Camera.width() > 0 and self.ui.OV_plt_Camera.height() > 0:
+            pixmap_resized_ov = pixmap.scaled(
+                self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+            self.ui.OV_plt_Camera.setPixmap(pixmap_resized_ov)
 
             
     def flush_water(self):
