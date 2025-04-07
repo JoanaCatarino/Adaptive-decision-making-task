@@ -292,13 +292,19 @@ class GuiControls:
         self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio))
 
             
-    def flush_water(self):
-        """Randomly activates one of the pumps for a short duration to flush water."""
+    def flush_water_left(self):
+        """Flush water in the left spout."""
         flush_duration = 0.2  # seconds - Change according to calibration
-        selected_pump = random.choice([pump_l, pump_r])
-        selected_pump.off()
+        pump_l.off()
         time.sleep(flush_duration)
-        selected_pump.on()    
+        pump_l.on()   
+        
+    def flush_water_right(self):
+        """Flush water in the right spout."""
+        flush_duration = 0.2  # seconds - Change according to calibration
+        pump_r.off()
+        time.sleep(flush_duration)
+        pump_r.on()   
 
     def check_start_button_state(self):
         # Check if all dropdown menus have a selected value
@@ -308,7 +314,6 @@ class GuiControls:
 
         # Enable the Start button only if all dropdown menus have something selected
         self.ui.btn_Start.setEnabled(animal_selected and task_selected and box_selected)
-
 
     def connect_buttons(self):
         # Connect Start and Stop buttons + update button

@@ -1065,7 +1065,7 @@ border-color: rgb(227, 153, 100);</string>
         <string>max</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="btn_FlushWater">
+      <widget class="QPushButton" name="btn_FlushWater_left">
        <property name="geometry">
         <rect>
          <x>402</x>
