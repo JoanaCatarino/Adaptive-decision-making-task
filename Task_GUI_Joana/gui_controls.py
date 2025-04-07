@@ -361,7 +361,7 @@ class GuiControls:
         self.ui.bar_Exposure.valueChanged.connect(self.update_camera_exposure)
         self.ui.bar_Brightness.valueChanged.connect(self.update_camera_brightness)
         self.ui.bar_Contrast.valueChanged.connect(self.update_camera_contrast)
-        self.ui.btn_cam_reset.ckicked.connect(self.reset_camera_settings)
+        self.ui.btn_cam_reset.clicked.connect(self.reset_camera_settings)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
