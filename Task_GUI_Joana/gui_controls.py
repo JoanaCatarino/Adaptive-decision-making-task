@@ -267,7 +267,7 @@ class GuiControls:
     '''
     
     def start_camera(self):
-    start_camera(self.cap, self.camera_timer, self.update_frame)
+        start_camera(self.cap, self.camera_timer, self.update_frame)
 
     def stop_camera(self):
         stop_camera(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
