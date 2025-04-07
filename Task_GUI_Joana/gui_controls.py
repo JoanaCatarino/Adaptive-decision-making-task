@@ -103,6 +103,16 @@ class GuiControls:
         self.setup_lick_plot()
         self.setup_performance_plot()
         
+        # Set correct ranges for sliders based on your camera's capabilities
+        self.ui.bar_Exposure.setMinimum(10)
+        self.ui.bar_Exposure.setMaximum(626)
+        
+        self.ui.bar_Brightness.setMinimum(-64)
+        self.ui.bar_Brightness.setMaximum(64)
+        
+        self.ui.bar_Contrast.setMinimum(0)
+        self.ui.bar_Contrast.setMaximum(95)
+            
 
     #Piezo functions
     def setup_piezo_plots(self):
@@ -292,16 +302,17 @@ class GuiControls:
         self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio))
         
     def update_camera_exposure(self, value):
-        if self.camera_thread and self.camera_thread.cap.isOpened():
-            self.camera_thread.cap.set(cv2.CAP_PROP_EXPOSURE, float(value))
+        # Disable auto exposure first
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", "auto_exposure=1"])
     
+        # Then set manual exposure value
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", f"exposure_time_absolute={value}"])
+
     def update_camera_brightness(self, value):
-        if self.camera_thread and self.camera_thread.cap.isOpened():
-            self.camera_thread.cap.set(cv2.CAP_PROP_BRIGHTNESS, float(value))
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", f"brightness={value}"])
     
     def update_camera_contrast(self, value):
-        if self.camera_thread and self.camera_thread.cap.isOpened():
-            self.camera_thread.cap.set(cv2.CAP_PROP_CONTRAST, float(value))
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", f"contrast={value}"])
 
             
     def flush_water_left(self):
