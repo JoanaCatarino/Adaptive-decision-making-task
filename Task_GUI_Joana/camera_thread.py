@@ -4,34 +4,27 @@ Created on Fri Apr  4 14:46:19 2025
 
 @author: JoanaCatarino
 """
+from PyQt5.QtCore import QThread, pyqtSignal
 import cv2
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtCore import Qt, QTimer
 
-def start_camera(cap, timer, update_frame_slot):
-    cap.open(0)
-    if not cap.isOpened():
-        print("Error: Camera not accessible")
-        return
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+class CameraThread(QThread):
+    frameCaptured = pyqtSignal(object)
 
-    timer.timeout.connect(update_frame_slot)
-    timer.start(30)
+    def __init__(self, camera_index=0):
+        super().__init__()
+        self.camera_index = camera_index
+        self._run_flag = True
 
-def stop_camera(cap, label, ov_label):
-    if cap.isOpened():
-        cap.release()
-    label.clear()
-    ov_label.clear()
+    def run(self):
+        self.cap = cv2.VideoCapture(self.camera_index)
+        while self._run_flag and self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if ret:
+                self.frameCaptured.emit(frame)
 
-def update_frame(cap, label, ov_label):
-    ret, frame = cap.read()
-    if ret:
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = frame_rgb.shape
-        bytes_per_line = 3 * w
-        qimg = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimg)
-        label.setPixmap(pixmap.scaled(label.size(), Qt.IgnoreAspectRatio))
-        ov_label.setPixmap(pixmap.scaled(ov_label.size(), Qt.IgnoreAspectRatio))
+        self.cap.release()
+
+    def stop(self):
+        self._run_flag = False
+        self.wait()
+

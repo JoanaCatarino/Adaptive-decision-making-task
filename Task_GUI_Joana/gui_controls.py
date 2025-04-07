@@ -32,8 +32,7 @@ from chronometer_generator import Chronometer
 from file_writer import create_data_file
 from stylesheet import stylesheet
 #from camera import start_camera, stop_camera, update_frame
-from camera_thread import start_camera, stop_camera, update_frame
-#from camera_thread import CameraThread
+from camera_thread import CameraThread
 from piezo_plot import LivePlotWidget
 from performance_plot import PlotLicks
 from performance_plot_advanced import PlotPerformance
@@ -268,14 +267,30 @@ class GuiControls:
     '''
     
     def start_camera(self):
-        start_camera(self.cap, self.camera_timer, self.update_frame)
-
-    def stop_camera(self):
-        stop_camera(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
+        from camera_thread import CameraThread  # Ensure the import is here
+        self.camera_thread = CameraThread()
+        self.camera_thread.frameCaptured.connect(self.update_frame)
+        self.camera_thread.start()
     
-    def update_frame(self):
-        update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
-
+    def stop_camera(self):
+        if self.camera_thread:
+            self.camera_thread.stop()
+            self.camera_thread = None
+    
+        # Clear camera display in GUI widgets
+        self.ui.plt_Camera.clear()
+        self.ui.OV_plt_Camera.clear()
+    
+    def update_frame(self, frame):
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = frame.shape
+        bytes_per_line = ch * w
+        image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+        pixmap = QPixmap.fromImage(image)
+    
+        # Update both camera display widgets
+        self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), Qt.KeepAspectRatio))
+        self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio))
 
             
     def flush_water(self):
