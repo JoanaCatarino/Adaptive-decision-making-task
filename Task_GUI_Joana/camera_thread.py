@@ -17,6 +17,9 @@ class CameraThread(QThread):
 
     def run(self):
         self.cap = cv2.VideoCapture(self.camera_index)
+        
+        self.cap.get(cv2.CAP_PROP_FPS, 30) #set camera to 30 frames per second
+        
         while self._run_flag and self.cap.isOpened():
             ret, frame = self.cap.read()
             if ret:
