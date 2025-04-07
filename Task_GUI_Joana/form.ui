@@ -3540,6 +3540,15 @@ color: rgb(112, 112, 112);</string>
         <height>16</height>
        </rect>
       </property>
+      <property name="minimum">
+       <number>100</number>
+      </property>
+      <property name="maximum">
+       <number>1000</number>
+      </property>
+      <property name="sliderPosition">
+       <number>500</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -3553,6 +3562,15 @@ color: rgb(112, 112, 112);</string>
         <height>16</height>
        </rect>
       </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="singleStep">
+       <number>5</number>
+      </property>
+      <property name="sliderPosition">
+       <number>128</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -3565,6 +3583,15 @@ color: rgb(112, 112, 112);</string>
         <width>71</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="maximum">
+       <number>255</number>
+      </property>
+      <property name="singleStep">
+       <number>5</number>
+      </property>
+      <property name="sliderPosition">
+       <number>128</number>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
