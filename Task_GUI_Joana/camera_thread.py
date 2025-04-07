@@ -18,10 +18,6 @@ class CameraThread(QThread):
     def run(self):
         self.cap = cv2.VideoCapture(self.camera_index)
         
-        # Set resolution (optional but can help achieve 30 FPS)
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        
         self.cap.set(cv2.CAP_PROP_FPS, 30) #set camera to 30 frames per second
         
         while self._run_flag and self.cap.isOpened():
