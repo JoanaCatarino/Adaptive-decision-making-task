@@ -32,7 +32,8 @@ from chronometer_generator import Chronometer
 from file_writer import create_data_file
 from stylesheet import stylesheet
 #from camera import start_camera, stop_camera, update_frame
-from camera_thread import CameraThread
+from camera_thread import start_camera, stop_camera, update_frame
+#from camera_thread import CameraThread
 from piezo_plot import LivePlotWidget
 from performance_plot import PlotLicks
 from performance_plot_advanced import PlotPerformance
