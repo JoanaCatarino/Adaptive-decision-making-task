@@ -267,17 +267,10 @@ class GuiControls:
     '''
     
     def start_camera(self):
-        self.cap = cv2.VideoCapture(0)
-        if not self.cap.isOpened():
-            print("Error: Camera not accessible")
-            return
-    
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
-    
-        self.camera_thread = CameraThread(self.cap)
-        self.camera_thread.frame_ready.connect(self.update_frame)  # connect the signal
+        self.camera_thread = CameraThread()
+        self.camera_thread.frame_ready.connect(self.update_frame)
         self.camera_thread.start()
+
         
     def update_frame(self, pixmap):
         self.ui.plt_Camera.setPixmap(pixmap.scaled(
@@ -290,13 +283,10 @@ class GuiControls:
             self.camera_thread.stop()
             self.camera_thread = None
     
-        if self.cap.isOpened():
-            self.cap.release()
-    
         self.ui.plt_Camera.clear()
         self.ui.OV_plt_Camera.clear()
+
             
-    
     def flush_water(self):
         """Randomly activates one of the pumps for a short duration to flush water."""
         flush_duration = 0.2  # seconds - Change according to calibration
