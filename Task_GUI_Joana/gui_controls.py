@@ -314,6 +314,17 @@ class GuiControls:
     
     def update_camera_contrast(self, value):
         subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", f"contrast={value}"])
+        
+    def reset_camera_settings(self):
+        # Reset all to default values
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", "auto_exposure=3"])
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", "exposure_time_absolute=156"])
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", "brightness=0"])
+        subprocess.run(["v4l2-ctl", "-d", "/dev/video0", "--set-ctrl", "contrast=12"])
+    
+        self.ui.bar_Exposure.setValue(156)
+        self.ui.bar_Brightness.setValue(0)
+        self.ui.bar_Contrast.setValue(12)
 
             
     def flush_water_left(self):
@@ -350,6 +361,7 @@ class GuiControls:
         self.ui.bar_Exposure.valueChanged.connect(self.update_camera_exposure)
         self.ui.bar_Brightness.valueChanged.connect(self.update_camera_brightness)
         self.ui.bar_Contrast.valueChanged.connect(self.update_camera_contrast)
+        self.ui.btn_cam_reset.ckicked.connect(self.reset_camera_settings)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
