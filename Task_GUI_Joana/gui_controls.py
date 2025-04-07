@@ -321,7 +321,8 @@ class GuiControls:
         self.ui.btn_Stop.clicked.connect(self.stop_task)
         #self.ui.btn_Update.clicked.connect(self.print_variables)
         self.ui.btn_Update.clicked.connect(self.update_task_params)
-        self.ui.btn_FlushWater.clicked.connect(self.flush_water)
+        self.ui.btn_FlushWater_left.clicked.connect(self.flush_water_left)
+        self.ui.btn_FlushWater_right.clicked.connect(self.flush_water_right)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
