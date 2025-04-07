@@ -267,24 +267,14 @@ class GuiControls:
     '''
     
     def start_camera(self):
-        self.camera_thread = CameraThread()
-        self.camera_thread.frame_ready.connect(self.update_frame)
-        self.camera_thread.start()
-
-        
-    def update_frame(self, pixmap):
-        self.ui.plt_Camera.setPixmap(pixmap.scaled(
-            self.ui.plt_Camera.size(), Qt.IgnoreAspectRatio))
-        self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(
-            self.ui.OV_plt_Camera.size(), Qt.IgnoreAspectRatio))
+    start_camera(self.cap, self.camera_timer, self.update_frame)
 
     def stop_camera(self):
-        if hasattr(self, "camera_thread") and self.camera_thread:
-            self.camera_thread.stop()
-            self.camera_thread = None
+        stop_camera(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
     
-        self.ui.plt_Camera.clear()
-        self.ui.OV_plt_Camera.clear()
+    def update_frame(self):
+        update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
+
 
             
     def flush_water(self):
