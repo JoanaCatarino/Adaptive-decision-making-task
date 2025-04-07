@@ -3680,7 +3680,7 @@ color: rgb(112, 112, 112);</string>
        <string>Contrast</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="btn_FlushWater_left_2">
+     <widget class="QPushButton" name="btn_cam_reset">
       <property name="geometry">
        <rect>
         <x>997</x>
@@ -3781,7 +3781,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Exposure</zorder>
      <zorder>lbl_Brightness</zorder>
      <zorder>lbl_Contrast</zorder>
-     <zorder>btn_FlushWater_left_2</zorder>
+     <zorder>btn_cam_reset</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
