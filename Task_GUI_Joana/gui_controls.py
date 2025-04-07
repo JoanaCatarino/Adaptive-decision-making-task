@@ -290,6 +290,18 @@ class GuiControls:
         # Update both camera display widgets
         self.ui.plt_Camera.setPixmap(pixmap.scaled(self.ui.plt_Camera.size(), Qt.KeepAspectRatio))
         self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(self.ui.OV_plt_Camera.size(), Qt.KeepAspectRatio))
+        
+    def update_camera_exposure(self, value):
+        if self.camera_thread and self.camera_thread.cap.isOpened():
+            self.camera_thread.cap.set(cv2.CAP_PROP_EXPOSURE, float(value))
+    
+    def update_camera_brightness(self, value):
+        if self.camera_thread and self.camera_thread.cap.isOpened():
+            self.camera_thread.cap.set(cv2.CAP_PROP_BRIGHTNESS, float(value))
+    
+    def update_camera_contrast(self, value):
+        if self.camera_thread and self.camera_thread.cap.isOpened():
+            self.camera_thread.cap.set(cv2.CAP_PROP_CONTRAST, float(value))
 
             
     def flush_water_left(self):
@@ -323,6 +335,9 @@ class GuiControls:
         self.ui.btn_Update.clicked.connect(self.update_task_params)
         self.ui.btn_FlushWater_left.clicked.connect(self.flush_water_left)
         self.ui.btn_FlushWater_right.clicked.connect(self.flush_water_right)
+        self.ui.bar_Exposure.valueChanged.connect(self.update_camera_exposure)
+        self.ui.bar_Brightness.valueChanged.connect(self.update_camera_brightness)
+        self.ui.bar_Contrast.valueChanged.connect(self.update_camera_contrast)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
