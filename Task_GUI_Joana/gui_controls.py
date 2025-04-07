@@ -267,9 +267,7 @@ class GuiControls:
     '''
     
     def start_camera(self):
-        self.cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
-        self.cap.open(0)
-    
+        self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
             print("Error: Camera not accessible")
             return
@@ -277,10 +275,15 @@ class GuiControls:
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
     
-        self.camera_thread = CameraThread(
-            self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera
-        )
+        self.camera_thread = CameraThread(self.cap)
+        self.camera_thread.frame_ready.connect(self.update_frame)  # connect the signal
         self.camera_thread.start()
+        
+    def update_frame(self, pixmap):
+        self.ui.plt_Camera.setPixmap(pixmap.scaled(
+            self.ui.plt_Camera.size(), Qt.IgnoreAspectRatio))
+        self.ui.OV_plt_Camera.setPixmap(pixmap.scaled(
+            self.ui.OV_plt_Camera.size(), Qt.IgnoreAspectRatio))
 
     def stop_camera(self):
         if hasattr(self, "camera_thread") and self.camera_thread:
@@ -292,7 +295,7 @@ class GuiControls:
     
         self.ui.plt_Camera.clear()
         self.ui.OV_plt_Camera.clear()
-        
+            
     
     def flush_water(self):
         """Randomly activates one of the pumps for a short duration to flush water."""
