@@ -7,8 +7,21 @@ Created on Fri Apr  4 14:46:19 2025
 
 # camera_thread.py
 
-from PyQt5.QtCore import QThread
+import sys
+import cv2
+import threading
+import serial
 import time
+import random
+
+import asyncio
+
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
+from PyQt5.QtGui import QFont, QImage, QPixmap
+from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt, QThread
+from PyQt5.QtGui import QIntValidator, QDoubleValidator
+from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
+from form_updt import Ui_TaskGui
 
 class CameraThread(QThread):
     def __init__(self, cap, label, ov_label, interval_ms=30):
@@ -20,10 +33,20 @@ class CameraThread(QThread):
         self.running = True
 
     def run(self):
-        from camera_utils import update_frame
         while self.running and self.cap.isOpened():
-            update_frame(self.cap, self.label, self.ov_label)
+            self.update_frame()
             time.sleep(self.interval)
+
+    def update_frame(self):
+        ret, frame = self.cap.read()
+        if ret:
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            h, w, ch = frame_rgb.shape
+            bytes_per_line = 3 * w
+            qimg = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
+            pixmap = QPixmap.fromImage(qimg)
+            self.label.setPixmap(pixmap.scaled(self.label.size(), Qt.IgnoreAspectRatio))
+            self.ov_label.setPixmap(pixmap.scaled(self.ov_label.size(), Qt.IgnoreAspectRatio))
 
     def stop(self):
         self.running = False

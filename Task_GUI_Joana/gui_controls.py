@@ -18,7 +18,7 @@ import asyncio
 
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QMainWindow, QSizePolicy
 from PyQt5.QtGui import QFont, QImage, QPixmap
-from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt
+from PyQt5.QtCore import pyqtSlot, QTimer, QDate, Qt, QThread
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 from qasync import QEventLoop, asyncSlot  # Import qasync for async integration
 from form_updt import Ui_TaskGui
@@ -104,7 +104,6 @@ class GuiControls:
         self.setup_lick_plot()
         self.setup_performance_plot()
         
-
 
     #Piezo functions
     def setup_piezo_plots(self):
@@ -274,7 +273,7 @@ class GuiControls:
             print("Error: Camera not accessible")
             return
     
-        # Optional: set resolution
+        # Optional resolution settings
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
     
@@ -282,36 +281,18 @@ class GuiControls:
             self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera
         )
         self.camera_thread.start()
-    
+
     def stop_camera(self):
-        from camera_utils import stop_camera
         if hasattr(self, "camera_thread") and self.camera_thread:
             self.camera_thread.stop()
             self.camera_thread = None
     
-        stop_camera(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
+        if self.cap.isOpened():
+            self.cap.release()
     
-    
-    
-    # camera_utils.py (or wherever you keep it)
-    
-    def stop_camera(cap, label, ov_label):
-        if cap.isOpened():
-            cap.release()
-        label.clear()
-        ov_label.clear()
-    
-    def update_frame(cap, label, ov_label):
-        ret, frame = cap.read()
-        if ret:
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = frame_rgb.shape
-            bytes_per_line = 3 * w
-            qimg = QImage(frame_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
-            pixmap = QPixmap.fromImage(qimg)
-            label.setPixmap(pixmap.scaled(label.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
-            ov_label.setPixmap(pixmap.scaled(ov_label.size(), aspectRatioMode=Qt.IgnoreAspectRatio))
-
+        self.ui.plt_Camera.clear()
+        self.ui.OV_plt_Camera.clear()
+        
     
     def flush_water(self):
         """Randomly activates one of the pumps for a short duration to flush water."""
