@@ -281,10 +281,10 @@ class GuiControls:
         self.ui.OV_plt_Camera.clear()
     
     def update_frame(self, frame):
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = frame.shape
-        bytes_per_line = ch * w
-        image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        h, w = frame.shape
+        bytes_per_line = w
+        image = QImage(frame.data, w, h, bytes_per_line, QImage.Format_Grayscale8)
         pixmap = QPixmap.fromImage(image)
     
         # Update both camera display widgets
