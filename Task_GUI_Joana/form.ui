@@ -3701,6 +3701,84 @@ color: rgb(112, 112, 112);</string>
        <string>Reset</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lbl_ArduinoStatus">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>5</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_Date_2">
+      <property name="geometry">
+       <rect>
+        <x>184</x>
+        <y>4</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Arduino:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_Date_3">
+      <property name="geometry">
+       <rect>
+        <x>336</x>
+        <y>4</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Camera</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_CameraStatus">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>5</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
@@ -3782,6 +3860,10 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Brightness</zorder>
      <zorder>lbl_Contrast</zorder>
      <zorder>btn_cam_reset</zorder>
+     <zorder>lbl_ArduinoStatus</zorder>
+     <zorder>lbl_Date_2</zorder>
+     <zorder>lbl_Date_3</zorder>
+     <zorder>lbl_CameraStatus</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">
