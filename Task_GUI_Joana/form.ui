@@ -3704,7 +3704,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_ArduinoStatus">
       <property name="geometry">
        <rect>
-        <x>230</x>
+        <x>221</x>
         <y>5</y>
         <width>91</width>
         <height>16</height>
@@ -3725,7 +3725,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_Date_2">
       <property name="geometry">
        <rect>
-        <x>184</x>
+        <x>175</x>
         <y>4</y>
         <width>41</width>
         <height>16</height>
@@ -3743,7 +3743,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_Date_3">
       <property name="geometry">
        <rect>
-        <x>336</x>
+        <x>327</x>
         <y>4</y>
         <width>41</width>
         <height>16</height>
@@ -3761,7 +3761,7 @@ color: rgb(112, 112, 112);</string>
      <widget class="QLabel" name="lbl_CameraStatus">
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>371</x>
         <y>5</y>
         <width>91</width>
         <height>16</height>
@@ -3777,6 +3777,27 @@ color: rgb(112, 112, 112);</string>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_CheckHardware">
+      <property name="geometry">
+       <rect>
+        <x>481</x>
+        <y>4</y>
+        <width>41</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(221, 241, 255);</string>
+      </property>
+      <property name="text">
+       <string>Check</string>
       </property>
      </widget>
      <zorder>bkg_Trials</zorder>
@@ -3864,6 +3885,7 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Date_2</zorder>
      <zorder>lbl_Date_3</zorder>
      <zorder>lbl_CameraStatus</zorder>
+     <zorder>btn_CheckHardware</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">

@@ -276,12 +276,20 @@ class GuiControls:
         update_frame(self.cap, self.ui.plt_Camera, self.ui.OV_plt_Camera)
     '''
     
-    def start_camera(self):
-        from camera_thread import CameraThread  # Ensure the import is here
+    def start_camera(self): 
         self.camera_thread = CameraThread()
         self.camera_thread.frameCaptured.connect(self.update_frame)
+        self.camera_thread.cameraStatus.connect(self.update_camera_status)
         self.camera_thread.start()
-    
+        
+    def update_camera_status(self, status):
+        if status:
+            self.ui.lbl_CameraStatus.setText("Camera connected")
+            self.ui.lbl_CameraStatus.setStyleSheet("color: green;")
+        else:
+            self.ui.lbl_CameraStatus.setText("Camera not connected")
+            self.ui.lbl_CameraStatus.setStyleSheet("color: red;")
+        
     def stop_camera(self):
         if self.camera_thread:
             self.camera_thread.stop()
@@ -339,7 +347,15 @@ class GuiControls:
         flush_duration = 0.2  # seconds - Change according to calibration
         pump_r.off()
         time.sleep(flush_duration)
-        pump_r.on()   
+        pump_r.on() 
+        
+    def check_arduino_connection(self):
+        if self.piezo_reader.ser and self.piezo_reader.ser.is_open:
+            self.ui.lbl_ArduinoStatus.setText("Arduino connected")
+            self.ui.lbl_ArduinoStatus.setStyleSheet("color: green;")
+        else:
+            self.ui.lbl_ArduinoStatus.setText("Arduino not connected")
+            self.ui.lbl_ArduinoStatus.setStyleSheet("color: red;")
 
     def check_start_button_state(self):
         # Check if all dropdown menus have a selected value
