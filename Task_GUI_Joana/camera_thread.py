@@ -9,6 +9,7 @@ import cv2
 
 class CameraThread(QThread):
     frameCaptured = pyqtSignal(object)
+    cameraStatus = pyqtSignal(bool)  # New signal
 
     def __init__(self, camera_index=0):
         super().__init__()
@@ -17,6 +18,7 @@ class CameraThread(QThread):
 
     def run(self):
         self.cap = cv2.VideoCapture(self.camera_index)
+        self.cameraStatus.emit(self.cap.isOpened())  # Emit status once opened
         
         while self._run_flag and self.cap.isOpened():
             ret, frame = self.cap.read()

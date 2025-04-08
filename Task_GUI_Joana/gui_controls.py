@@ -356,6 +356,10 @@ class GuiControls:
         else:
             self.ui.lbl_ArduinoStatus.setText("Arduino not connected")
             self.ui.lbl_ArduinoStatus.setStyleSheet("color: red;")
+            
+    def check_hardware_connections(self):
+        self.check_arduino_connection()
+        self.start_camera()  # Will trigger update_camera_status
 
     def check_start_button_state(self):
         # Check if all dropdown menus have a selected value
@@ -378,6 +382,7 @@ class GuiControls:
         self.ui.bar_Brightness.valueChanged.connect(self.update_camera_brightness)
         self.ui.bar_Contrast.valueChanged.connect(self.update_camera_contrast)
         self.ui.btn_cam_reset.clicked.connect(self.reset_camera_settings)
+        self.ui.btn_CheckHardware.clicked.connect(self.check_hardware_connections)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
