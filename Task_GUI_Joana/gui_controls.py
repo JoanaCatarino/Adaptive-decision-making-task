@@ -284,10 +284,10 @@ class GuiControls:
         
     def update_camera_status(self, status):
         if status:
-            self.ui.lbl_CameraStatus.setText("Camera connected")
+            self.ui.lbl_CameraStatus.setText("Connected")
             self.ui.lbl_CameraStatus.setStyleSheet("color: green;")
         else:
-            self.ui.lbl_CameraStatus.setText("Camera not connected")
+            self.ui.lbl_CameraStatus.setText("Not connected")
             self.ui.lbl_CameraStatus.setStyleSheet("color: red;")
         
     def stop_camera(self):
@@ -351,10 +351,10 @@ class GuiControls:
         
     def check_arduino_connection(self):
         if self.piezo_reader.ser and self.piezo_reader.ser.is_open:
-            self.ui.lbl_ArduinoStatus.setText("Arduino connected")
+            self.ui.lbl_ArduinoStatus.setText("Connected")
             self.ui.lbl_ArduinoStatus.setStyleSheet("color: green;")
         else:
-            self.ui.lbl_ArduinoStatus.setText("Arduino not connected")
+            self.ui.lbl_ArduinoStatus.setText("Not connected")
             self.ui.lbl_ArduinoStatus.setStyleSheet("color: red;")
             
     def check_hardware_connections(self):
