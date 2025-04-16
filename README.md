@@ -13,6 +13,8 @@ This Github repository describes the hardware and software code we are currently
 
 Start by assembling all the structural setup components (breadboard, mouse holder, head bar holder, spout holders, and LED holder).
 
+![](https://github.com/JoanaCatarino/Adaptive-decision-making-task/edit/main/Images/1.png)
+
 ### Liquid Feed Pump
 
 - Pump model: Campden Instruments Model 80204A Precision \- Liquid Feed Pump
