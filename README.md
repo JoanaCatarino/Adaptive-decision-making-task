@@ -13,7 +13,7 @@ This Github repository describes the hardware and software code we are currently
 
 Start by assembling all the structural setup components (breadboard, mouse holder, head bar holder, spout holders, and LED holder).
 
-![](https://github.com/JoanaCatarino/Adaptive-decision-making-task/Images/1.png?raw=true)
+![image1](/Images/1.png?raw=true)
 
 
 ### Liquid Feed Pump
