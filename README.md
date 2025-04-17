@@ -13,14 +13,11 @@ This Github repository describes the hardware and software code we are currently
 
 Start by assembling all the structural setup components (breadboard, mouse holder, head bar holder, spout holders, and LED holder).
 
-![image1](/Images/1.png)
-![image2](/Images/2.png)
-![image3](/Images/3.png)
 
 <p align="center">
-    <img width="460" height="300" src="/Images/1.png" hspace="10" >
-    <img width="460" height="300" src="/Images/2.png" hspace="10" >
-    <img width="460" height="300" src="/Images/3.png" hspace="10" >
+    <img width="240" height="320" src="/Images/1.png" hspace="10" >
+    <img width="240" height="320" src="/Images/2.png" hspace="10" >
+    <img width="240" height="320" src="/Images/3.png" hspace="10" >
 </p>
 
 ### Liquid Feed Pump
