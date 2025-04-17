@@ -137,8 +137,8 @@ The overall configuration should look similar to this:
 
 Start connecting all the different components to the pins in the Raspberry Pi. The schematic below represents everything that we will need to connect.
 
-<p align="center">
-    <img src="/Images/20.png" hspace="10" background-color: rgb(300, 300, 300)>
+<p align="center"; background-color: rgb(300, 300, 300);>
+    <img src="/Images/20.png" hspace="10" >
 </p>
 
 Schematic of the GPIO pins we will be using to assemble the different components of the setup. In green we have the pins that can be used for different devices, and in orange we have the pins that should be avoided because are already occupied by the Hifiberry or have other functions that do not serve our purpose.
