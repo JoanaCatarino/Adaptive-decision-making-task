@@ -17,6 +17,11 @@ Start by assembling all the structural setup components (breadboard, mouse holde
 ![image2](/Images/2.png)
 ![image3](/Images/3.png)
 
+<p>
+    <img src="/Images/1.png" hspace="10" >
+    <img src="/Images/1.png" hspace="10" >
+</p>
+
 ### Liquid Feed Pump
 
 - Pump model: Campden Instruments Model 80204A Precision \- Liquid Feed Pump
