@@ -1,6 +1,6 @@
 # Adaptive decision-making task
 
-This Github repository describes the hardware and software code we are currently developing in the DMC lab to train mice in adaptive decision-making task (inspired by [this study](https://www.nature.com/articles/nn.4342)). Our work is inspired by previously published work such as the [International Brain Laboratory task](https://github.com/int-brain-lab/iblrig) and the [DMC-Behavior Platform](https://github.com/hejDMC/dmc-behavior).
+This Github repository describes the hardware and software code we are currently developing in the DMC lab to train mice in adaptive decision-making task (inspired by [Siniscalchi et al., 2016](https://www.nature.com/articles/nn.4342)). Our work is inspired by previously published work such as the [International Brain Laboratory task](https://github.com/int-brain-lab/iblrig) and the [DMC-Behavior Platform](https://github.com/hejDMC/dmc-behavior).
 
 ## Behavior setup
 
