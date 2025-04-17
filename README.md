@@ -61,16 +61,11 @@ The resistor we will be using is the 1M ohm \- color order: golden, green, black
 
 When connecting the piezos to the Arduino, the red wire should be connected to the Analog slot, and the black wire should be connected to the ground slot (GND).
 
-![image8](/Images/8.png)
-![image9](/Images/9.png)
-![image10](/Images/10.png)
-![image11](/Images/11.png)
-![image12](/Images/12.png)
 
 <p align="center">
     <img width="240" height="240" src="/Images/8.png" hspace="10" >
-    <img width="200" height="240" src="/Images/9.png" hspace="10" >
-    <img width="140" height="240" src="/Images/10.png" hspace="10" >
+    <img width="140" height="240" src="/Images/9.png" hspace="10" >
+    <img width="194" height="240" src="/Images/10.png" hspace="10" >
     <img width="192" height="240" src="/Images/11.png" hspace="10" >
     <img width="185" height="240" src="/Images/12.png" hspace="10" >
 </p>
