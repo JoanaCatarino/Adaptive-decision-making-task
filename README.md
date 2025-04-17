@@ -17,7 +17,7 @@ Start by assembling all the structural setup components (breadboard, mouse holde
 <p align="center">
     <img width="240" height="320" src="/Images/1.png" hspace="10" >
     <img width="240" height="320" src="/Images/2.png" hspace="10" >
-    <img width="240" height="320" src="/Images/3.png" hspace="10" >
+    <img width="320" height="320" src="/Images/3.png" hspace="10" >
 </p>
 
 ### Liquid Feed Pump
