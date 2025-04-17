@@ -34,8 +34,8 @@ Steps to connect the pump:
 - Solder a female dupont wire to the blue wire in the pump cable \- this is the wire we will later connect to the Rbpi. 
 
 <p align="center">
-    <img width="300" height="250" src="/Images/1.png" hspace="10" >
-    <img width="300" height="250" src="/Images/2.png" hspace="10" >
+    <img width="300" height="250" src="/Images/4.png" hspace="10" >
+    <img width="300" height="250" src="/Images/5.png" hspace="10" >
 </p>
 
 - Connect the red and green wires to the adaptors that will then connect to the power supply. We should have a adaptor only for the red wires and another one only for the green wires. \+ from the cable will connect to the red wire and the \- from the cable will connect to the green wire.
