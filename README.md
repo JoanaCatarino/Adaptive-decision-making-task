@@ -63,11 +63,11 @@ When connecting the piezos to the Arduino, the red wire should be connected to t
 
 
 <p align="center">
-    <img width="240" height="240" src="/Images/8.png" hspace="10" >
-    <img width="140" height="240" src="/Images/9.png" hspace="10" >
-    <img width="194" height="240" src="/Images/10.png" hspace="10" >
-    <img width="192" height="240" src="/Images/11.png" hspace="10" >
-    <img width="185" height="240" src="/Images/12.png" hspace="10" >
+    <img width="240" height="240" src="/Images/8.png" hspace="5" >
+    <img width="140" height="240" src="/Images/9.png" hspace="5" >
+    <img width="194" height="240" src="/Images/10.png" hspace="5" >
+    <img width="192" height="240" src="/Images/11.png" hspace="5" >
+    <img width="185" height="240" src="/Images/12.png" hspace="5" >
 </p>
 
 
@@ -85,9 +85,11 @@ Next, attach the pipette tips to the tubing at the end of the piezo case (lickin
 
 The rest of the tubing should then be placed inside the pump and into the water container. Flush some water to check that everything is working properly.
 
-![image13](/Images/13.png)
-![image14](/Images/14.png)
-![image15](/Images/15.png)
+<p align="center">
+    <img width="240" height="290" src="/Images/13.png" hspace="10" >
+    <img width="250" height="290" src="/Images/14.png" hspace="10" >
+    <img width="270" height="290" src="/Images/15.png" hspace="10" >
+</p>
 
 ### **Speakers**
 
@@ -100,9 +102,11 @@ After that, the connection between the speaker and the Hifiberry can be made. Fo
 
 When everything is in place in the setup, we can glue the speakers to each side of the animal holder in a diagonal position using the glue gun. 
 
-![image16](/Images/16.png)
-![image17](/Images/17.png)
-![image18](/Images/18.png)
+<p align="center">
+    <img width="240" height="320" src="/Images/16.png" hspace="10" >
+    <img width="250" height="320" src="/Images/17.png" hspace="10" >
+    <img width="245" height="320" src="/Images/18.png" hspace="10" >
+</p>
 
 > To add:  
 > 
