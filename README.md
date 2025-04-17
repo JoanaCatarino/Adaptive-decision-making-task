@@ -63,11 +63,11 @@ When connecting the piezos to the Arduino, the red wire should be connected to t
 
 
 <p align="center">
-    <img width="240" height="240" src="/Images/8.png" hspace="5" >
-    <img width="140" height="240" src="/Images/9.png" hspace="5" >
-    <img width="194" height="240" src="/Images/10.png" hspace="5" >
-    <img width="192" height="240" src="/Images/11.png" hspace="5" >
-    <img width="185" height="240" src="/Images/12.png" hspace="5" >
+    <img width="240" height="240" src="/Images/8.png" hspace="2" >
+    <img width="140" height="240" src="/Images/9.png" hspace="2" >
+    <img width="194" height="240" src="/Images/10.png" hspace="2" >
+    <img width="192" height="240" src="/Images/11.png" hspace="2" >
+    <img width="185" height="240" src="/Images/12.png" hspace="2" >
 </p>
 
 
@@ -131,15 +131,21 @@ The Hifiberry is assembled on top of the Rbpi. The Hifiberry and the Rbpi will b
 
 The overall configuration should look similar to this:
 
-![image19](/Images/19.png)
+<p align="center">
+    <img src="/Images/19.png" hspace="10" >
+</p>
 
 Start connecting all the different components to the pins in the Raspberry Pi. The schematic below represents everything that we will need to connect.
 
-![image20](/Images/20.png)
+<p align="center">
+    <img src="/Images/20.png" hspace="10" >
+</p>
 
 Schematic of the GPIO pins we will be using to assemble the different components of the setup. In green we have the pins that can be used for different devices, and in orange we have the pins that should be avoided because are already occupied by the Hifiberry or have other functions that do not serve our purpose.
 
-![image21](/Images/21.png)
+<p align="center">
+    <img src="/Images/21.png" hspace="10" >
+</p>
 
 This the map for the pins used to connect the different devices to the Raspberry Pi: (Re-check this part)
 
@@ -153,7 +159,9 @@ This the map for the pins used to connect the different devices to the Raspberry
 
 Currently, the ground is connected to a breadboard, and all the LEDs use the same one.
 
-![image22](/Images/22.png)
+<p align="center">
+    <img src="/Images/22.png" hspace="10" >
+</p>
 
 ## Software setup
 
