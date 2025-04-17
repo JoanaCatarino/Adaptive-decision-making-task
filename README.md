@@ -40,8 +40,10 @@ Steps to connect the pump:
 
 - Connect the red and green wires to the adaptors that will then connect to the power supply. We should have a adaptor only for the red wires and another one only for the green wires. \+ from the cable will connect to the red wire and the \- from the cable will connect to the green wire.
 
-![image6](/Images/6.png)
-![image7](/Images/7.png)
+<p align="center">
+    <img width="300" height="310" src="/Images/6.png" hspace="10" >
+    <img width="326" height="310" src="/Images/7.png" hspace="10" >
+</p>
 
 ### Piezo sensor
 
@@ -65,6 +67,13 @@ When connecting the piezos to the Arduino, the red wire should be connected to t
 ![image11](/Images/11.png)
 ![image12](/Images/12.png)
 
+<p align="center">
+    <img width="240" height="240" src="/Images/8.png" hspace="10" >
+    <img width="200" height="240" src="/Images/9.png" hspace="10" >
+    <img width="140" height="240" src="/Images/10.png" hspace="10" >
+    <img width="192" height="240" src="/Images/11.png" hspace="10" >
+    <img width="185" height="240" src="/Images/12.png" hspace="10" >
+</p>
 
 
 Left piezo is connected to Arduino in A0(red) and the second GND slot (before 5V \- black). Right piezo is connected to Arduino in A1(red) and first GND slot (after Vin black). Both black wires are connected on the power side of the arduino and the red wires in the Analog in.
