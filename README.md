@@ -137,7 +137,7 @@ The overall configuration should look similar to this:
 
 Start connecting all the different components to the pins in the Raspberry Pi. The schematic below represents everything that we will need to connect.
 
-<p align="center"; background-color: rgb(300, 300, 300);>
+<p align="center">
     <img src="/Images/20.png" hspace="10" >
 </p>
 
