@@ -13,7 +13,7 @@ This Github repository describes the hardware and software code we are currently
 
 Start by assembling all the structural setup components (breadboard, mouse holder, head bar holder, spout holders, and LED holder).
 
-![image1](/Images/1.png)
+![image1](/Images/1.png){: .center-image, height="300px", width="150px"}
 ![image2](/Images/2.png)
 ![image3](/Images/3.png)
 
