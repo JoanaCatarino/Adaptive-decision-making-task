@@ -9,7 +9,7 @@ import numpy as np
 import pyaudio
 
 
-def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.0005): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
     wave = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave
