@@ -3,6 +3,8 @@
 Created on Tue Oct 29 16:21:34 2024
 
 @author: JoanaCatarino
+
+Populates the box drop down menu in the GUI with the identification of each box 
 """
 
 import sys

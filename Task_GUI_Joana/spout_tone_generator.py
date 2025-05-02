@@ -4,6 +4,10 @@ Created on Sat Aug 10 17:20:02 2024
 
 @author: JoanaCatarino
 
+Generates a spout-tone map in the form of a .csv file that should be present in all the boxes - some tasks need this file to run properly
+    - Defines which tone is associated to each spout and the combination remains locked for all the training sessions
+    - Atributes the pairs in a random way but taking into acount how many tone-spout pairs of each type exist so that in the end we have the same number of each
+    - The generated file is read in the beginning of each task that relies on sounds
 """
 import csv
 import os
@@ -18,7 +22,7 @@ tones = ['5KHz', '10KHz']
 animals = ['524345', '536455', '126846', '122364', '344656']
 
 # Directory and filename for csv with assignments
-directory = 'C:/Users/JoanaCatarino/Joana/test_directory'
+directory = 'Z:/dmclab/Joana/Behavior/Spout-tone map'
 filename = 'spout_tone_generator.csv'
 
 # Generate all possible pairs of spouts and tones, which are:

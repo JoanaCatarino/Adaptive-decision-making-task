@@ -3,6 +3,8 @@
 Created on Sat Jul 13 18:38:00 2024
 
 @author: JoanaCatarino
+
+Generates the 5 and 10KHz pure tones and white noise. How loud the sound is can be regulated with the amplitude variable.
 """
 
 import numpy as np
@@ -53,16 +55,5 @@ def white_noise():
     play_sound(sound, sample_rate)
 
 
-
-'''
-# Use this to test the sounds with this script
-if __name__ == '__main__':
-
-    tone_10KHz()
-
-    #tone_5KHz()
-
-    #white_noise()
-'''
 
 

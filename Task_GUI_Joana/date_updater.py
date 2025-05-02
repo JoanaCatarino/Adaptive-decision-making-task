@@ -3,6 +3,8 @@
 Created on Mon Jul 22 16:27:08 2024
 
 @author: JoanaCatarino
+
+Configuration of the date in the GUI - date is updated in the GUI every day according to the current date. Date in the GUI will then be used when saving files.
 """
 
 from PyQt5.QtCore import QTimer, QDate

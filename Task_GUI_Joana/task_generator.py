@@ -3,6 +3,8 @@
 Created on Sun Aug  4 16:15:34 2024
 
 @author: JoanaCatarino
+
+Populates the task dropdown menu in the GUI with the different tasks used in this project
 """
 
 import sys

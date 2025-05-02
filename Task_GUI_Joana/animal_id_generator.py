@@ -3,6 +3,8 @@
 Created on Sat Jul 13 17:44:52 2024
 
 @author: JoanaCatarino
+
+Populates the animal_id drop down menu in the GUI with the animals added here in items
 """
 
 import sys

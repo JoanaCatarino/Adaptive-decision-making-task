@@ -4,9 +4,9 @@ Created on Mon Jul 22 16:52:36 2024
 
 @author: JoanaCatarino
 
-- This script is currently creating a .csv file for data and .json file that contains info about the session(animal_id,
-date, time, task)
-
+- Creates a .csv file for data and .json file that contains info about the session(animal_id, date, time, task, box)
+- Defines the name format for the files when saving data, as well as the location in which the files are being saved
+- Defines data structure for saved files, which remains the same across tasks
 """
 import os
 import csv
@@ -18,6 +18,7 @@ home = os.getenv('HOME')
 # Define the save directory path directly here
 SAVE_DIRECTORY = os.path.join(home,"save_dir")
 
+# Create a dictionary for the different tasks with the identifier that is used in the data file name
 TASK_NICKNAME = {
     'Free Licking': 'FreeLick',
     'Spout Sampling': 'SpoutSamp',
@@ -25,6 +26,7 @@ TASK_NICKNAME = {
     'Adaptive Sensorimotor Task': 'AdaptSensorimotor',
     'Adaptive Sensorimotor Task w/ Distractor': 'AdaptSensorimotor_distractor'}
 
+# Save data
 if not os.path.exists(SAVE_DIRECTORY):
     os.makedirs(SAVE_DIRECTORY)
 
@@ -79,7 +81,7 @@ def create_data_file(date_label, animal_id_combobox, task_combobox, box_combobox
         json_file_path = os.path.join(animal_directory, base_file_name + '.json')
         counter += 1
         
-    # Define common csv headers for all tasks
+    # Define common csv headers for all tasks - this order and info remains the same across tasks
     headers = ["trial_number", "trial_start", "trial_end", "trial_duration", "ITI", "block", "early_lick",
                "stim", "5KHz", "10KHz", "lick", "left_spout", "right_spout", "lick_time", "reward",
                "punishment", "omission", "RW", "QW", "WW", "valve_opening", "ITImin", "ITImax",

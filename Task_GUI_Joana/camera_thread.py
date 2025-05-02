@@ -3,6 +3,8 @@
 Created on Fri Apr  4 14:46:19 2025
 
 @author: JoanaCatarino
+
+Configuration of the camera in the GUI - only works for cameras connected to the Rbpi directly via USB (slot 0)
 """
 from PyQt5.QtCore import QThread, pyqtSignal
 import cv2

@@ -3,6 +3,8 @@
 Created on Tue Jul 16 11:24:48 2024
 
 @author: JoanaCatarino
+
+Configuration of the chronometer in the GUI
 """
 
 from PyQt5.QtCore import QTimer, pyqtSignal, QObject

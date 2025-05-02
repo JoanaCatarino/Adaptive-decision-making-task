@@ -3,6 +3,9 @@
 Created on Fri Jan 31 13:06:27 2025
 
 @author: JoanaCatarino
+
+Sets the real-time plots in the GUI for the free licking and spout sampling tasks
+     - This plots have the number of licks over trials and in which spout the licks happened
 """
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates

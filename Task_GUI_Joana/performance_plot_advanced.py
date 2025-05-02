@@ -3,6 +3,9 @@
 Created on Tue Mar  4 10:50:44 2025
 
 @author: JoanaCatarino
+
+Sets the real-time plots in the GUI for the Two-choice auditory, Adaptive sensorimotor and Adaptive sensorimotor with distractor tasks
+     - This plots have the hit rate / false alarm rations ans the d´
 """
 
 import matplotlib.pyplot as plt

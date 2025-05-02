@@ -4,13 +4,14 @@ Created on Sat Jul 27 18:41:05 2024
 
 @author: JoanaCatarino
 
-- Gpio map (pin numbers should be reproduced across boxes) - Pin numbers should be changed when the rig is being built
+- Gpio map (pin numbers should be reproduced across boxes):
+    - defines which devices are connect to the different pins in the raspberry pi
+    - the following GPIO map is used throughout all the task scripts to send and receive information and to make the different task elements possible
+    
 - The following pins are reserved for the HiFiBerry Amp2 and cannot be reassigned:
-
-- GPIO18, GPIO19, GPIO21 (I²S audio communication).
-- 5V pins (Pins 2 and 4) and ground pins used for power (Pin 6).
-- GPIO2 and GPIO3 if the Amp2 uses I²C for additional functions like EEPROM or configuration.
-
+    - GPIO18, GPIO19, GPIO21 (I²S audio communication).
+    - 5V pins (Pins 2 and 4) and ground pins used for power (Pin 6).
+    - GPIO2 and GPIO3 if the Amp2 uses I²C for additional functions like EEPROM or configuration.
 """
 
 from gpiozero import LED, Button, OutputDevice, Device
@@ -26,6 +27,7 @@ laser = OutputDevice(24) #no GND and only ephys
 btn_l = Button(1) #GND 30
 btn_r = Button(16) #GND 34
 
+# needs to be updated with the different pin numbers for the Grounds that are being used
 
 # Updated all
 __all__= ['led_white_l', 'led_white_r', 'led_blue', 'pump_l', 'pump_r', 'laser', 'btn_l', 'btn_r']
