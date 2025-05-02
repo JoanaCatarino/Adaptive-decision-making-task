@@ -41,7 +41,7 @@ class FreeLickingTask:
         self.piezo_reader = gui_controls.piezo_reader  
 
         # Experiment parameters
-        self.QW = 3 # Quiet window in seconds
+        self.QW = 0 # Quiet window in seconds
         self.ITI_min = 0.1 # default ITI min
         self.ITI_max = 0.1 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
