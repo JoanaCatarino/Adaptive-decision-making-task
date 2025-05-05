@@ -143,7 +143,7 @@ class FreeLickingTask:
      
     def start_trial(self):
         
-        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        """ Initiates a trial, runs LED in parallel, and logs trial start"""
         
         with self.lock:
             self.trialstarted = True
