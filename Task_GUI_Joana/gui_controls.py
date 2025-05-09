@@ -337,14 +337,14 @@ class GuiControls:
             
     def flush_water_left(self):
         """Flush water in the left spout."""
-        flush_duration = 0.5 # seconds - Change according to calibration
+        flush_duration = 0.05 # seconds - Change according to calibration
         pump_l.off()
         time.sleep(flush_duration)
         pump_l.on()   
         
     def flush_water_right(self):
         """Flush water in the right spout."""
-        flush_duration = 0.5  # seconds - Change according to calibration
+        flush_duration = 0.05  # seconds - Change according to calibration
         pump_r.off()
         time.sleep(flush_duration)
         pump_r.on() 

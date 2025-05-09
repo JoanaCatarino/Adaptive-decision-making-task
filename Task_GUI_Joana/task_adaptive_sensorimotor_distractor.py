@@ -52,7 +52,7 @@ class AdaptiveSensorimotorTaskDistractor:
         self.RW = 3 # Response window in seconds
         self.threshold_left = 20
         self.threshold_right = 20
-        self.valve_opening = 0.2  # Reward duration   
+        self.valve_opening = 0.05  # Reward duration   
         self.WW = 1 # waiting window
         
         # Block parameters
