@@ -39,8 +39,8 @@ class SpoutSamplingTask:
         self.ITI_max = 0.1 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 2 # Response window in seconds
-        self.threshold_left = 20
-        self.threshold_right = 20
+        self.threshold_left = 1
+        self.threshold_right = 1
         self.valve_opening = 0.05  # Reward duration   
         
         # Counters
