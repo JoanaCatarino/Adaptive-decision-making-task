@@ -14,11 +14,11 @@ from pathlib import Path
 
 # ========== USER INPUT ==========
 
-date_str = "20250509"  # Format: YYYYMMDD
+date_str = "20250512"  # Format: YYYYMMDD
 protocol_name = "Free_Licking"
-task_name = 'Headfixation habit. 15min + Free Licking'
+task_name = 'Free Licking'
 base_dir = r"Z:\dmclab\Joana\Behavior\Data"
-QW = '0' # input which quiet window was used in that session
+QW = '3' # input which quiet window was used in that session
 
 # ================================
 
