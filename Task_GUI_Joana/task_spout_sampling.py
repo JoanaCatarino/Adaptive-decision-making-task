@@ -73,6 +73,7 @@ class SpoutSamplingTask:
         self.lock = threading.Lock()
         
         self.first_lick = None
+        self.trial_saved = False # Added this 14/05/2025
         
         # Alternating reward spout rule
         self.trial_counter = 0
@@ -108,6 +109,15 @@ class SpoutSamplingTask:
         
         if self.print_thread.is_alive():
             self.print_thread.join()
+            
+        if self.trialstarted and not self.trial_saved:  #Added all this part 14/05/2025
+            self.tend = time.time()
+            self.trial_duration = self.tend - self.ttrial
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.save_data()
+            self.trial_saved = True
+            print("Saved trial during manual stop.")
+            
         pump_l.on() 
         
         
@@ -149,6 +159,7 @@ class SpoutSamplingTask:
         """ Initiates a trial, and logs trial start"""
         
         with self.lock:
+            self.trial_saved = False # Added this 14/05/2025
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -171,17 +182,23 @@ class SpoutSamplingTask:
         
     
     def noresponse_callback(self):
-        print('No licks detected - aborting trial')
-        self.trialstarted = False
-        self.tend = time.time()
-        self.trial_duration = (self.tend-self.ttrial)
-        self.gui_controls.update_trial_duration(self.trial_duration)
-        self.next_trial_eligible = True
-        # Update live stair plot
-        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
-    
-        # Save trial data
-        self.save_data()
+        with self.lock:
+            if not self.trialstarted or self.first_lick is not None: # Added this 14/05/2025
+            return
+        
+            print('No licks detected - aborting trial')
+            self.trialstarted = False
+            self.tend = time.time()
+            self.trial_duration = (self.tend-self.ttrial)
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.next_trial_eligible = True
+            # Update live stair plot
+            self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+        
+            # Save trial data
+            if not self.trial_saved: # Added this 14/05/2025
+                self.save_data()
+                self.trial_saved=True
         
         
     def detect_licks(self):
@@ -241,7 +258,9 @@ class SpoutSamplingTask:
                         self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
                     
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added this 14/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
     
         # Right piezo        
@@ -286,7 +305,9 @@ class SpoutSamplingTask:
                         self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
                         
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added this 14/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
         
     
@@ -323,6 +344,7 @@ class SpoutSamplingTask:
             if self.first_trial:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
+                    self.trial_saved = False # Added this 14/05/2025
                     self.start_trial()
                     self.first_trial = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
@@ -332,6 +354,7 @@ class SpoutSamplingTask:
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
+                    self.trial_saved = False # Added this 14/05/2025
                     self.start_trial()
                     self.next_trial_eligible = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
