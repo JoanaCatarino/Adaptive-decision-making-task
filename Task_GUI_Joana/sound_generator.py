@@ -13,13 +13,13 @@ import pyaudio
 # For 5KHz tone
 def generate_sine_wave_5(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
-    wave = amplitude * np.sin(2 * np.pi * frequency * t)
+    wave_5 = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave_5
 
 # For 10KHz tone
 def generate_sine_wave_10(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
-    wave = amplitude * np.sin(2 * np.pi * frequency * t)
+    wave_10 = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave_10
 
 # For White Noise
