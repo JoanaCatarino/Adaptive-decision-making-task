@@ -10,12 +10,19 @@ Generates the 5 and 10KHz pure tones and white noise. How loud the sound is can 
 import numpy as np
 import pyaudio
 
-
-def generate_sine_wave(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+# For 5KHz tone
+def generate_sine_wave_5(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
     wave = amplitude * np.sin(2 * np.pi * frequency * t)
-    return wave
+    return wave_5
 
+# For 10KHz tone
+def generate_sine_wave_10(frequency, duration, sample_rate=44100, amplitude=0.0003): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+    t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
+    wave = amplitude * np.sin(2 * np.pi * frequency * t)
+    return wave_10
+
+# For White Noise
 def generate_white_noise(duration, sample_rate=44100, amplitude=0.0001): # before amplitude was 0.01
     return np.random.normal(0, amplitude, int(sample_rate*duration))
 
@@ -38,14 +45,14 @@ def tone_10KHz():
     frequency = 10000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
-    sound = generate_sine_wave(frequency, duration, sample_rate)
+    sound = generate_sine_wave_10(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
 def tone_5KHz():
     frequency = 5000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
-    sound = generate_sine_wave(frequency, duration, sample_rate)
+    sound = generate_sine_wave_5(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
 def white_noise():
