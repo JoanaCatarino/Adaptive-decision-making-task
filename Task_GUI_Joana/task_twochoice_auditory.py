@@ -96,6 +96,7 @@ class TwoChoiceAuditoryTask:
         self.lock = threading.Lock()
         
         self.first_lick = None
+        self.trial_saved = False # added 15/05/2025
         
         # Debiasing variables 
         self.decision_history = [] # Stores last N trial outcomes
@@ -135,6 +136,15 @@ class TwoChoiceAuditoryTask:
         
         if self.print_thread.is_alive():
             self.print_thread.join()
+            
+        if self.trialstarted and not self.trial_saved:  #Added all this part 15/05/2025
+            self.tend = time.time()
+            self.trial_duration = self.tend - self.ttrial
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.save_data()
+            self.trial_saved = True
+            print("Saved trial during manual stop.")
+            
         pump_l.on()
         led_blue.off()
         
@@ -240,6 +250,7 @@ class TwoChoiceAuditoryTask:
             if self.trialstarted:
                 return
             
+            self.trial_saved = False # Added 15/05/2025
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -286,7 +297,9 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                self.save_data()
+                if not self.trial_saved: # Added 15/05/2025
+                    self.save_data()
+                    self.trial_saved = True
                 return  # Exit trial 
            
             # Play sound  
@@ -307,7 +320,9 @@ class TwoChoiceAuditoryTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                self.save_data()
+                if not self.trial_saved: # Added 15/05/2025
+                    self.save_data()
+                    self.trial_saved = True
                 
             if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -434,7 +449,9 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
                 
         
@@ -483,23 +500,32 @@ class TwoChoiceAuditoryTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
                    
 
     def omission_callback(self):
-        print('No licks detected - aborting trial')
-        self.trialstarted = False
-        threading.Thread(target=self.blue_led_off, daemon=True).start()
-        self.tend = time.time()
-        self.trial_duration = (self.tend-self.ttrial)
-        self.gui_controls.update_trial_duration(self.trial_duration)
-        self.omissions += 1
-        self.omission_counted = True
-        self.gui_controls.update_omissions(self.omissions)
-        self.next_trial_eligible = True
-        # Save trial data
-        self.save_data()
+        with self.lock:
+            if not self.trialstarted or self.first_lick is not None: # Added this 15/05/2025
+                return
+        
+            print('No licks detected - aborting trial')
+            self.trialstarted = False
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            self.tend = time.time()
+            self.trial_duration = (self.tend-self.ttrial)
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.omissions += 1
+            self.omission_counted = True
+            self.gui_controls.update_omissions(self.omissions)
+            self.next_trial_eligible = True
+            
+            # Save trial data
+            if not self.trial_saved: # Added this 15/05/2025
+                self.save_data()
+                self.trial_saved=True
       
     
     def wait_for_response(self):
@@ -529,6 +555,7 @@ class TwoChoiceAuditoryTask:
             if self.first_trial:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
+                    self.trial_saved = False # Added this 15/05/2025
                     self.start_trial()
                     self.first_trial = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
@@ -538,6 +565,7 @@ class TwoChoiceAuditoryTask:
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
+                    self.trial_saved = False # Added this 15/05/2025
                     self.start_trial()
                     self.next_trial_eligible = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
