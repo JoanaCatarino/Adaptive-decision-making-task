@@ -184,7 +184,7 @@ class SpoutSamplingTask:
     def noresponse_callback(self):
         with self.lock:
             if not self.trialstarted or self.first_lick is not None: # Added this 14/05/2025
-            return
+                return
         
             print('No licks detected - aborting trial')
             self.trialstarted = False
