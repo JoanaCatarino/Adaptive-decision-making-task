@@ -19,7 +19,7 @@ spouts = ['left', 'right']
 tones = ['5KHz', '10KHz']
 
 # List of animals that need assigment of pairs
-animals = ['524345', '536455', '126846', '122364', '344656']
+animals = ['925145', '925146', '928012', '928013']
 
 # Directory and filename for csv with assignments
 directory = 'Z:/dmclab/Joana/Behavior/Spout-tone map'
