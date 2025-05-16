@@ -380,7 +380,8 @@ class TwoChoiceAuditoryTask:
         print("Next trial is now allowed after ITI.")
     
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
-    
+        print(self.ITI) #Troubleshoot
+        
         # Start the next trial after ITI delay
         threading.Timer(self.ITI, self.check_and_start_next_trial).start()
         
@@ -388,9 +389,9 @@ class TwoChoiceAuditoryTask:
     def check_and_start_next_trial(self):
         """ Starts the next trial if conditions allow it """
         if self.next_trial_ready and not self.trialstarted:
-            print("Starting next trial automatically.")
-            self.check_animal_quiet() # troubleshoot
-            self.start_trial()
+            if self.check_animal_quiet(): # troubleshoot
+                print("Starting next trial")    
+                self.start_trial()
     
 
     def detect_licks(self):
