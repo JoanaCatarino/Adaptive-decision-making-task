@@ -389,6 +389,7 @@ class TwoChoiceAuditoryTask:
         """ Starts the next trial if conditions allow it """
         if self.next_trial_ready and not self.trialstarted:
             print("Starting next trial automatically.")
+            self.check_animal_quiet() # troubleshoot
             self.start_trial()
     
 
