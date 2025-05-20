@@ -91,6 +91,7 @@ class TwoChoiceAuditoryTask:
         self.current_time = None
         self.tend = None # end of the trial
         self.next_trial_eligible = False
+        self.timer_3 = None # Troubleshoot 20/05
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -443,7 +444,8 @@ class TwoChoiceAuditoryTask:
                         self.licks_left += 1
                         self.gui_controls.update_total_licks(self.total_licks)
                         self.gui_controls.update_licks_left(self.licks_left)
-                        self.timer_3.cancel()
+                        if self.timer_3 and self.timer_3.is_alive(): #troubleshoot 20/05
+                            self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
@@ -494,7 +496,8 @@ class TwoChoiceAuditoryTask:
                         self.licks_right += 1
                         self.gui_controls.update_total_licks(self.total_licks)
                         self.gui_controls.update_licks_right(self.licks_right)
-                        self.timer_3.cancel()
+                        if self.timer_3 and self.timer_3.is_alive(): #troubleshoot 20/05
+                            self.timer_3.cancel()
                         self.trialstarted = False
                         threading.Thread(target=self.blue_led_off, daemon=True).start()
                         self.tend = time.time()
