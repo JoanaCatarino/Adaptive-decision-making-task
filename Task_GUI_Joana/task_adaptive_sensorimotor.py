@@ -47,18 +47,18 @@ class AdaptiveSensorimotorTask:
         # Experiment parameters
         self.QW = 3 # Quiet window in seconds
         self.ITI_min = 3 # default ITI min
-        self.ITI_max = 9 # default ITI max
+        self.ITI_max = 6 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
         self.RW = 3 # Response window in seconds
-        self.threshold_left = 20
-        self.threshold_right = 20
+        self.threshold_left = 1
+        self.threshold_right = 1
         self.valve_opening = 0.05  # Reward duration   
         self.WW = 1 # waiting window
         
         # Block parameters
         self.current_block = 'sound'  # Always start with sound block
         self.trials_in_block = 0
-        self.trial_limit = random.randint(10, 15)  # Random trial count per block - should be 40-60
+        self.trial_limit = random.randint(40, 60)  # Random trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
         self.trial_history = []  # Stores last 5 trial results
         
@@ -115,6 +115,7 @@ class AdaptiveSensorimotorTask:
         self.lock = threading.Lock()
         
         self.first_lick = None
+        self.trial_saved = False # added 15/05/2025
         
         # Catch trials
         self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
@@ -163,6 +164,15 @@ class AdaptiveSensorimotorTask:
         
         if self.print_thread.is_alive():
             self.print_thread.join()
+            
+        if self.trialstarted and not self.trial_saved:  #Added all this part 15/05/2025
+            self.tend = time.time()
+            self.trial_duration = self.tend - self.ttrial
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.save_data()
+            self.trial_saved = True
+            print("Saved trial during manual stop.")
+        
         pump_l.on()
         led_blue.off()
         
@@ -259,10 +269,10 @@ class AdaptiveSensorimotorTask:
     
              
     def should_switch_block(self):
-        """Check if the last 5 valid trials meet the 85% correct threshold."""
+        """Check if the last 20 valid trials meet the 85% correct threshold."""
         valid_trials = [trial for trial in self.trial_history if trial is not None]
     
-        if len(valid_trials) < 5:
+        if len(valid_trials) < 20:
             return False  # Not enough valid trials to evaluate
     
         recent_trials = valid_trials[-5:]  # Get last 5 valid trials
@@ -283,7 +293,7 @@ class AdaptiveSensorimotorTask:
         else:
             self.current_block = "sound"
         
-        self.trial_limit = random.randint(10, 15)  # Random number of trials for new block - should be 40-60
+        self.trial_limit = random.randint(40, 60)  # Random number of trials for new block - should be 40-60
         self.trials_in_block = 0  # Reset trial count for new block
         
         # Update block counters only once per block switch
@@ -312,6 +322,7 @@ class AdaptiveSensorimotorTask:
             if self.trialstarted:
                 return
             
+            self.trial_saved = False # Added 15/05/2025
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -380,7 +391,9 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                self.save_data()
+                if not self.trial_saved: # Added 15/05/2025
+                    self.save_data()
+                    self.trial_saved = True
                 return  # Exit trial 
            
             # Play sound  
@@ -400,7 +413,9 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                self.save_data()
+                if not self.trial_saved: # Added 15/05/2025
+                    self.save_data()
+                    self.trial_saved = True
                 
             if not autom_rewards:   # **If Automatic Reward is NOT checked, proceed with standard response window**
                 self.RW_start = time.time()  # Start response window
@@ -518,9 +533,10 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.is_catch_trial = False
                         self.next_trial_eligible = True
-                
-                        # Save data
-                        self.save_data()
+                        # Save trial data
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return  # Exit function to prevent normal trial execution
                         
                         
@@ -553,9 +569,10 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.is_catch_trial = False
                         self.next_trial_eligible = True
-                
-                        # Save data
-                        self.save_data()
+                        # Save trial data
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return  # Exit function to prevent normal trial execution
                     
         
@@ -604,7 +621,9 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
                     
                 
@@ -652,7 +671,9 @@ class AdaptiveSensorimotorTask:
                         self.gui_controls.update_trial_duration(self.trial_duration)
                         self.next_trial_eligible = True
                         # Save trial data
-                        self.save_data()
+                        if not self.trial_saved: # Added 15/05/2025
+                            self.save_data()
+                            self.trial_saved=True
                         return
                     
         # Only add if it's a valid trial (correct or incorrect, not None)
@@ -682,7 +703,9 @@ class AdaptiveSensorimotorTask:
         self.is_catch_trial = False
         self.next_trial_eligible = True
         # Save trial data
-        self.save_data()
+        if not self.trial_saved: # Added this 15/05/2025
+            self.save_data()
+            self.trial_saved=True
         
         # Check for block switch
         if self.trials_in_block >= self.trial_limit:
@@ -715,6 +738,7 @@ class AdaptiveSensorimotorTask:
             if self.first_trial:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
+                    self.trial_saved = False # Added this 15/05/2025
                     self.start_trial()
                     self.first_trial = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
