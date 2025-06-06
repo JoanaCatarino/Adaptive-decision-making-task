@@ -18,6 +18,7 @@ from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
 from sound_generator import tone_10KHz, tone_5KHz, white_noise
+from pathlib import Path
 
 
 class AdaptiveSensorimotorTask:
@@ -39,7 +40,7 @@ class AdaptiveSensorimotorTask:
         self.animal_id = str(self.gui_controls.ui.ddm_Animal_ID.currentText()).strip()
         
         # Load the animal-specific spout-tone mapping
-        self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
+        self.assignment_file = Path.home() / 'spout_tone' / 'spout_tone_generator.csv'
         self.spout_5KHz = None
         self.spout_10KHz = None
         self.load_spout_tone_mapping()
