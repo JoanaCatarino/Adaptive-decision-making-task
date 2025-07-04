@@ -65,7 +65,7 @@ class GuiControls:
         self.OV_box() # txt with box number in the overview tab
         self.OV_task() # txt with task protocol name in the overview tab
         self.populate_ddm_task() # dropdown menu with different task names
-        self.calibration() # button to run the protocol to calibate the pumps
+        #self.calibration() # button to run the protocol to calibate the pumps
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start, Stop and Update buttons
