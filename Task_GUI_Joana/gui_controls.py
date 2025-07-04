@@ -499,8 +499,8 @@ class GuiControls:
         self.early_licks = 0
         self.omissions = 0
         self.trial_duration = 0
-        self.sound_5KHz = 0
-        self.sound_10KHz = 0
+        self.sound_8KHz = 0
+        self.sound_16KHz = 0
         self.autom_rewards = 0
         self.action_left_block_count = 0
         self.action_right_block_count = 0
@@ -515,8 +515,8 @@ class GuiControls:
         self.update_early_licks(0)
         self.update_omissions(0)
         self.update_trial_duration(0)
-        self.update_sound_5KHz(0)
-        self.update_sound_10KHz(0)
+        self.update_sound_8KHz(0)
+        self.update_sound_16KHz(0)
         self.update_autom_rewards(0)
         self.update_action_l_blocks(0)
         self.update_action_r_blocks(0)
@@ -681,11 +681,11 @@ class GuiControls:
     def update_trial_duration(self, trial_duration):
         self.ui.box_TrialDuration.setText(f'{trial_duration:.2f}')
         
-    def update_sound_5KHz(self, sound_5KHz):
-        self.ui.box_5KHzTrials.setText(f'{sound_5KHz}')
+    def update_sound_8KHz(self, sound_8KHz):
+        self.ui.box_8KHzTrials.setText(f'{sound_8KHz}')
         
-    def update_sound_10KHz(self, sound_10KHz):
-        self.ui.box_10KHzTrials.setText(f'{sound_10KHz}')
+    def update_sound_16KHz(self, sound_16KHz):
+        self.ui.box_16KHzTrials.setText(f'{sound_16KHz}')
         
     def update_autom_rewards(self, autom_rewards):
         self.ui.box_AutomRewards.setText(f'{autom_rewards}')

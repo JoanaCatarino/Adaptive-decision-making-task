@@ -4,23 +4,23 @@ Created on Sat Jul 13 18:38:00 2024
 
 @author: JoanaCatarino
 
-Generates the 5 and 10KHz pure tones and white noise. How loud the sound is can be regulated with the amplitude variable.
+Generates the 8 and 16KHz pure tones and white noise. How loud the sound is can be regulated with the amplitude variable.
 """
 
 import numpy as np
 import pyaudio
 
-# For 5KHz tone
-def generate_sine_wave_5(frequency, duration, sample_rate=44100, amplitude=0.0015): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+# For 8KHz tone
+def generate_sine_wave_8(frequency, duration, sample_rate=44100, amplitude=0.0015): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
-    wave_5 = amplitude * np.sin(2 * np.pi * frequency * t)
-    return wave_5
+    wave_8 = amplitude * np.sin(2 * np.pi * frequency * t)
+    return wave_8
 
-# For 10KHz tone
-def generate_sine_wave_10(frequency, duration, sample_rate=44100, amplitude=0.0045): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+# For 16KHz tone
+def generate_sine_wave_16(frequency, duration, sample_rate=44100, amplitude=0.0045): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
-    wave_10 = amplitude * np.sin(2 * np.pi * frequency * t)
-    return wave_10
+    wave_16 = amplitude * np.sin(2 * np.pi * frequency * t)
+    return wave_16
 
 # For White Noise
 def generate_white_noise(duration, sample_rate=44100, amplitude=0.0015): # before amplitude was 0.01
@@ -41,18 +41,18 @@ def play_sound_blocking(sound, sample_rate=44100):
 def play_sound(sound, sample_rate=44100):
     play_sound_blocking(sound, sample_rate)
 
-def tone_10KHz():
-    frequency = 10000  # frequency in Hz
+def tone_16KHz():
+    frequency = 16000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
-    sound = generate_sine_wave_10(frequency, duration, sample_rate)
+    sound = generate_sine_wave_16(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
-def tone_5KHz():
-    frequency = 5000  # frequency in Hz
+def tone_8KHz():
+    frequency = 8000  # frequency in Hz
     duration = 0.2  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
-    sound = generate_sine_wave_5(frequency, duration, sample_rate)
+    sound = generate_sine_wave_8(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
 def white_noise():

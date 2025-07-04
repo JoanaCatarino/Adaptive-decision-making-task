@@ -16,7 +16,7 @@ import threading
 from gpio_map import *
 from gpiozero import LED
 from time import sleep
-from sound_generator import tone_10KHz, tone_5KHz, white_noise
+from sound_generator import tone_16KHz, tone_8KHz, white_noise
 from form_updt import Ui_TaskGui
 
 class TestRig:
@@ -34,8 +34,8 @@ class TestRig:
         self.disconnect_signals()
 
         # Connect buttons with threaded function calls
-        self.ui.chk_10Tone.clicked.connect(self.play_10KHz)
-        self.ui.chk_5Tone.clicked.connect(self.play_5KHz)
+        self.ui.chk_16Tone.clicked.connect(self.play_16KHz)
+        self.ui.chk_8Tone.clicked.connect(self.play_8KHz)
         self.ui.chk_Punishment.clicked.connect(self.play_white_noise)
         self.ui.chk_BlueLED.clicked.connect(self.toggle_blue_led)
         self.ui.chk_WhiteLED_Left.clicked.connect(self.toggle_white_led_left)
@@ -46,8 +46,8 @@ class TestRig:
     def disconnect_signals(self):
         """ Ensures no duplicate signal connections """
         try:
-            self.ui.chk_10Tone.clicked.disconnect()
-            self.ui.chk_5Tone.clicked.disconnect()
+            self.ui.chk_16Tone.clicked.disconnect()
+            self.ui.chk_8Tone.clicked.disconnect()
             self.ui.chk_Punishment.clicked.disconnect()
             self.ui.chk_BlueLED.clicked.disconnect()
             self.ui.chk_WhiteLED_Left.clicked.disconnect()
@@ -58,13 +58,13 @@ class TestRig:
             pass  # If already disconnected, ignore
 
     ## --- Sound Functions (Threaded) ---
-    def play_10KHz(self):
-        print("Playing 10KHz Tone")
-        threading.Thread(target=tone_10KHz, daemon=True).start()
+    def play_16KHz(self):
+        print("Playing 16KHz Tone")
+        threading.Thread(target=tone_16KHz, daemon=True).start()
 
-    def play_5KHz(self):
-        print("Playing 5KHz Tone")
-        threading.Thread(target=tone_5KHz, daemon=True).start()
+    def play_8KHz(self):
+        print("Playing 8KHz Tone")
+        threading.Thread(target=tone_8KHz, daemon=True).start()
 
     def play_white_noise(self):
         print("Playing White Noise")
@@ -163,8 +163,8 @@ class TestRig:
         pump_r.on()
         
         print('Test rig starting')
-        self.ui.chk_10Tone.clicked.connect(tone_10KHz)
-        self.ui.chk_5Tone.clicked.connect(tone_5KHz)
+        self.ui.chk_16Tone.clicked.connect(tone_16KHz)
+        self.ui.chk_8Tone.clicked.connect(tone_8KHz)
         self.ui.chk_Punishment.clicked.connect(white_noise)
         self.ui.chk_BlueLED.clicked.connect(blueLED)
         self.ui.chk_WhiteLED_Left.clicked.connect(whiteLLED)
@@ -177,8 +177,8 @@ class TestRig:
             
             print('Test rig stopping')
             
-            self.ui.chk_10Tone.clicked.disconnect(tone_10KHz)
-            self.ui.chk_5Tone.clicked.disconnect(tone_5KHz)
+            self.ui.chk_16Tone.clicked.disconnect(tone_16KHz)
+            self.ui.chk_8Tone.clicked.disconnect(tone_8KHz)
             self.ui.chk_Punishment.clicked.disconnect(white_noise)
             self.ui.chk_BlueLED.clicked.disconnect(blueLED)            
             self.ui.chk_WhiteLED_Left.clicked.disconnect(whiteLLED)

@@ -17,7 +17,7 @@ from PyQt5.QtGui import QColor, QPalette
 from piezo_reader import PiezoReader
 from file_writer import create_data_file
 from gpio_map import *
-from sound_generator import tone_10KHz, tone_5KHz, white_noise
+from sound_generator import tone_10KHz, tone_8KHz, white_noise
 
 
 class AdaptiveSensorimotorTaskDistractor:
@@ -40,7 +40,7 @@ class AdaptiveSensorimotorTaskDistractor:
         
         # Load the animal-specific spout-tone mapping
         self.assignment_file = '/home/rasppi-ephys/spout_tone/spout_tone_generator.csv'
-        self.spout_5KHz = None
+        self.spout_8KHz = None
         self.spout_10KHz = None
         self.load_spout_tone_mapping()
 
@@ -82,7 +82,7 @@ class AdaptiveSensorimotorTaskDistractor:
         self.early_licks = 0
         self.omissions = 0
         self.trial_duration = 0
-        self.sound_5KHz = 0
+        self.sound_8KHz = 0
         self.sound_10KHz = 0
         self.autom_rewards = 0
         self.catch_trials = 0
@@ -187,10 +187,10 @@ class AdaptiveSensorimotorTaskDistractor:
                 row = {key.strip(): value.strip() for key, value in row.items()}  # Clean all spaces
                 
                 if row['Animal'] == self.animal_id:  
-                    self.spout_5KHz = row['5KHz']
+                    self.spout_8KHz = row['8KHz']
                     self.spout_10KHz = row['10KHz']
     
-                    print(f"Loaded mapping: 5KHz -> {self.spout_5KHz}, 10KHz -> {self.spout_10KHz}")
+                    print(f"Loaded mapping: 8KHz -> {self.spout_8KHz}, 10KHz -> {self.spout_10KHz}")
                     return True  
     
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
@@ -361,22 +361,22 @@ class AdaptiveSensorimotorTaskDistractor:
                 if self.current_block == "sound":
                     # Randomly select the a cue sound  and apply debiasing when needed
                     self.correct_spout = self.debias()  # Apply debiasing
-                    self.current_tone = "5KHz" if self.correct_spout == self.spout_5KHz else "10KHz"
+                    self.current_tone = "8KHz" if self.correct_spout == self.spout_8KHz else "10KHz"
                     
                 elif self.current_block == "action-left":
-                    self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                    self.current_tone = random.choice(["8KHz", "10KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "left"  # Always reward left, punish right
                 elif self.current_block == "action-right":
-                    self.current_tone = random.choice(["5KHz", "10KHz"])  # Play sound, but it's ignored
+                    self.current_tone = random.choice(["8KHz", "10KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "right"  # Always reward right, punish left
                 print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout} | Distractor: {self.is_distractor_trial} ({self.distractor_led})")
                 self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} | Distractor:{self.is_distractor_trial}({self.distractor_led})")
                 self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout} | Distractor:{self.is_distractor_trial}({self.distractor_led})")
         
             # Update Sound Counters
-            if self.current_tone == '5KHz':
-                self.sound_5KHz +=1
-                self.gui_controls.update_sound_5KHz(self.sound_5KHz)
+            if self.current_tone == '8KHz':
+                self.sound_8KHz +=1
+                self.gui_controls.update_sound_8KHz(self.sound_8KHz)
             elif self.current_tone == '10KHz':
                 self.sound_10KHz +=1
                 self.gui_controls.update_sound_10KHz(self.sound_10KHz)
@@ -438,8 +438,8 @@ class AdaptiveSensorimotorTaskDistractor:
         if self.is_distractor_trial:
             threading.Thread(target=self.distractor, daemon=True).start()
         
-        if frequency == "5KHz":
-            tone_5KHz() 
+        if frequency == "8KHz":
+            tone_8KHz() 
             self.sound_played = True
         elif frequency == "10KHz":
             tone_10KHz()
@@ -798,7 +798,7 @@ class AdaptiveSensorimotorTaskDistractor:
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
-            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '5KHz' else 0),  # 5KHz
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '10KHz' else 0),  # 10KHz
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
