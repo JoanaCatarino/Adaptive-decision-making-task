@@ -44,11 +44,11 @@ class FreeLickingTask:
         self.QW = 0 # Quiet window in seconds
         self.ITI_min = 0.1 # default ITI min
         self.ITI_max = 0.1 # default ITI max
-        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-9 sec with ms precision
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) # in this case the ITI is always 0.1, to create more opportunities for the mouse to lick
         self.RW = 2 # Response window in seconds
         self.threshold_left = 1
         self.threshold_right = 1
-        self.valve_opening = 0.05  # Reward duration   
+        self.valve_opening = 0.08 # Reward duration   
         
         # Counters
         self.total_trials = 0
