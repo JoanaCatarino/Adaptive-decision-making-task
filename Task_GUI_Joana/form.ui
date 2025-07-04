@@ -3145,7 +3145,7 @@ color: rgb(112, 112, 112);</string>
        <string>[s]</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_5KHzTrials">
+     <widget class="QLabel" name="box_8KHzTrials">
       <property name="geometry">
        <rect>
         <x>835</x>
@@ -3188,7 +3188,7 @@ color: rgb(112, 112, 112);</string>
        <string>16KHz Trials:</string>
       </property>
      </widget>
-     <widget class="QLabel" name="box_10KHzTrials">
+     <widget class="QLabel" name="box_16KHzTrials">
       <property name="geometry">
        <rect>
         <x>1014</x>
@@ -3875,9 +3875,9 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_TrialDuration</zorder>
      <zorder>box_TrialDuration</zorder>
      <zorder>lbl_VO_ms_2</zorder>
-     <zorder>box_5KHzTrials</zorder>
+     <zorder>box_8KHzTrials</zorder>
      <zorder>lbl_16KHzTrials</zorder>
-     <zorder>box_10KHzTrials</zorder>
+     <zorder>box_16KHzTrials</zorder>
      <zorder>lbl_8KHzTrials</zorder>
      <zorder>lbl_TotalTrials</zorder>
      <zorder>box_TotalTrials</zorder>
