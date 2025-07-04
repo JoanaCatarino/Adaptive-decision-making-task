@@ -96,14 +96,14 @@ def stylesheet(ui):
                                                                 width: 14px;
                                                                 height: 14px;}''')
                                     
-    ui.chk_10Tone.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+    ui.chk_16Tone.setStyleSheet('''QRadioButton:disabled {color: gray;} 
                                    QRadioButton::indicator:disabled {border: 1px solid gray;
                                                                 background-color: transparent;
                                                                 border-radius: 7px;
                                                                 width: 14px;
                                                                 height: 14px;}''')                                    
 
-    ui.chk_5Tone.setStyleSheet('''QRadioButton:disabled {color: gray;} 
+    ui.chk_8Tone.setStyleSheet('''QRadioButton:disabled {color: gray;} 
                                   QRadioButton::indicator:disabled {border: 1px solid gray;
                                                                 background-color: transparent;
                                                                 border-radius: 7px;
