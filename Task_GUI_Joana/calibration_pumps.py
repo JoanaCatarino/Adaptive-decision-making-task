@@ -9,7 +9,7 @@ from gpio_map import *
 from sound_generator import tone_8KHz
 import time
 
-def calibration_pumps:
+def calibration_pumps():
     quant=100
     flush_duration = 0.08
     
