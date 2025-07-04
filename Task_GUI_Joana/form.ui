@@ -255,7 +255,7 @@ background-color: rgb(255, 203, 198);</string>
         <string>White LED - Left</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="chk_10Tone">
+      <widget class="QRadioButton" name="chk_16Tone">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -270,10 +270,10 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>10KHz Tone</string>
+        <string>16KHz Tone</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="chk_5Tone">
+      <widget class="QRadioButton" name="chk_8Tone">
        <property name="geometry">
         <rect>
          <x>179</x>
@@ -288,7 +288,7 @@ background-color: rgb(255, 203, 198);</string>
         </font>
        </property>
        <property name="text">
-        <string>5KHz Tone</string>
+        <string>8KHz Tone</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="chk_Reward_right">
@@ -1069,7 +1069,7 @@ border-color: rgb(227, 153, 100);</string>
        <property name="geometry">
         <rect>
          <x>402</x>
-         <y>750</y>
+         <y>720</y>
          <width>61</width>
          <height>31</height>
         </rect>
@@ -1090,7 +1090,7 @@ border-color: rgb(227, 153, 100);</string>
        <property name="geometry">
         <rect>
          <x>402</x>
-         <y>710</y>
+         <y>680</y>
          <width>61</width>
          <height>31</height>
         </rect>
@@ -1111,7 +1111,7 @@ border-color: rgb(227, 153, 100);</string>
        <property name="geometry">
         <rect>
          <x>399</x>
-         <y>685</y>
+         <y>655</y>
          <width>71</width>
          <height>19</height>
         </rect>
@@ -1125,6 +1125,27 @@ border-color: rgb(227, 153, 100);</string>
        </property>
        <property name="text">
         <string>Flush Water</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_Calibration">
+       <property name="geometry">
+        <rect>
+         <x>375</x>
+         <y>770</y>
+         <width>110</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(221, 241, 255);</string>
+       </property>
+       <property name="text">
+        <string>Calibration Pumps</string>
        </property>
       </widget>
      </widget>
@@ -3149,7 +3170,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_10KHzTrials">
+     <widget class="QLabel" name="lbl_16KHzTrials">
       <property name="geometry">
        <rect>
         <x>931</x>
@@ -3164,7 +3185,7 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="text">
-       <string>10KHz Trials:</string>
+       <string>16KHz Trials:</string>
       </property>
      </widget>
      <widget class="QLabel" name="box_10KHzTrials">
@@ -3192,7 +3213,7 @@ color: rgb(112, 112, 112);</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_5KHzTrials">
+     <widget class="QLabel" name="lbl_8KHzTrials">
       <property name="geometry">
        <rect>
         <x>755</x>
@@ -3207,7 +3228,7 @@ color: rgb(112, 112, 112);</string>
        </font>
       </property>
       <property name="text">
-       <string>5KHz Trials: </string>
+       <string>8KHz Trials: </string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_TotalTrials">
@@ -3855,9 +3876,9 @@ color: rgb(112, 112, 112);</string>
      <zorder>box_TrialDuration</zorder>
      <zorder>lbl_VO_ms_2</zorder>
      <zorder>box_5KHzTrials</zorder>
-     <zorder>lbl_10KHzTrials</zorder>
+     <zorder>lbl_16KHzTrials</zorder>
      <zorder>box_10KHzTrials</zorder>
-     <zorder>lbl_5KHzTrials</zorder>
+     <zorder>lbl_8KHzTrials</zorder>
      <zorder>lbl_TotalTrials</zorder>
      <zorder>box_TotalTrials</zorder>
      <zorder>box_CurrentTrial</zorder>
