@@ -11,7 +11,7 @@ import time
 
 def calibration_pumps():
     quant=100
-    flush_duration = 0.079
+    flush_duration = 0.08
     
     for i in range(quant):
         
