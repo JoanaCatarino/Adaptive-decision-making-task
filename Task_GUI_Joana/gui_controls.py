@@ -37,6 +37,7 @@ from piezo_plot import LivePlotWidget
 from performance_plot import PlotLicks
 from performance_plot_advanced import PlotPerformance
 from piezo_reader import PiezoReader
+from calibration_pumps import calibration_pumps
 from gpio_map import *
 
 # Import task classes
@@ -64,6 +65,7 @@ class GuiControls:
         self.OV_box() # txt with box number in the overview tab
         self.OV_task() # txt with task protocol name in the overview tab
         self.populate_ddm_task() # dropdown menu with different task names
+        self.calibration() # button to run the protocol to calibate the pumps
         self.setup_date() # Date
         self.setup_chronometer() # Chronometer
         self.connect_buttons() # Start, Stop and Update buttons
@@ -264,7 +266,17 @@ class GuiControls:
 
         self.OV_box_Chronometer = Chronometer() # Chronometer Overview tab
         self.OV_box_Chronometer.timeChanged.connect(self.updateTime_slot)
-
+        
+    
+    def calibration(self):
+        try:
+            print('Starting calibration of pumps')
+            calibration_pumps()
+        except Exception as e:
+            print(f'Calibration failed:{e}')
+            
+            
+            
     '''
     def start_camera(self):
         start_camera(self.cap, self.camera_timer, self.update_frame)
@@ -383,6 +395,7 @@ class GuiControls:
         self.ui.bar_Contrast.valueChanged.connect(self.update_camera_contrast)
         self.ui.btn_cam_reset.clicked.connect(self.reset_camera_settings)
         self.ui.btn_CheckHardware.clicked.connect(self.check_hardware_connections)
+        self.ui.btn_Calibration.clicked.connect(self.calibration)
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
