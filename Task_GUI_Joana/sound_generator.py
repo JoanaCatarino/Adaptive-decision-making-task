@@ -11,19 +11,19 @@ import numpy as np
 import pyaudio
 
 # For 8KHz tone
-def generate_sine_wave_8(frequency, duration, sample_rate=44100, amplitude=0.0015): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+def generate_sine_wave_8(frequency, duration, sample_rate=44100, amplitude=0.005): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
     wave_8 = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave_8
 
 # For 16KHz tone
-def generate_sine_wave_16(frequency, duration, sample_rate=44100, amplitude=0.0045): # before amplitude was 0.05 (for speaker with digital gain of 58%)
+def generate_sine_wave_16(frequency, duration, sample_rate=44100, amplitude=0.053): # before amplitude was 0.05 (for speaker with digital gain of 58%)
     t = np.linspace(0, duration, int(sample_rate*duration), endpoint=False)
     wave_16 = amplitude * np.sin(2 * np.pi * frequency * t)
     return wave_16
 
 # For White Noise
-def generate_white_noise(duration, sample_rate=44100, amplitude=0.0015): # before amplitude was 0.01
+def generate_white_noise(duration, sample_rate=44100, amplitude=0.0014): # before amplitude was 0.01
     return np.random.normal(0, amplitude, int(sample_rate*duration))
 
 def play_sound_blocking(sound, sample_rate=44100):
