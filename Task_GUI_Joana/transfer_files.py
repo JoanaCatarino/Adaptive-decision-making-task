@@ -24,7 +24,7 @@ today = date.today()
 
 # Recursively check all files in the base_folder
 for file_path in base_folder.rglob("*"):
-    if file_path.is_file():
+    if file_path.is_file() and to_transfer_folder not in file_path.parents:
         # Get creation time and convert to date
         created_time = datetime.fromtimestamp(file_path.stat().st_ctime).date()
         if created_time == today:
