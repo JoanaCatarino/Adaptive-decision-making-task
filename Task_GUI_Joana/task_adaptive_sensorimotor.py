@@ -69,7 +69,7 @@ class AdaptiveSensorimotorTask:
         self.action_right_block_count = 0
         self.last_block = None  # Track last block to prevent duplicate counting
         
-        # Sliding window for block switching (last 5 trials) # Should be last 20 trials
+        # Sliding window for block switching (last 20 trials) # Should be last 20 trials
         self.recent_correct_trials = 0
         self.recent_total_trials = 0
         
@@ -276,7 +276,7 @@ class AdaptiveSensorimotorTask:
         if len(valid_trials) < 20:
             return False  # Not enough valid trials to evaluate
     
-        recent_trials = valid_trials[-5:]  # Get last 5 valid trials
+        recent_trials = valid_trials[-20:]  # Get last 5 valid trials
         correct_trials = sum(recent_trials)  # Count correct ones
         accuracy = (correct_trials / len(recent_trials)) * 100  # Calculate accuracy dynamically
     
@@ -284,7 +284,9 @@ class AdaptiveSensorimotorTask:
 
 
     def switch_block(self):
-        # Switch between sound and action blocks only if criteroa is met (85% correct)
+        # Switch between sound and action blocks only if criteria is met (85% correct)
+        # Block type selection should have a set structure. Session always starts with Sounds and after that Action-right or left are randomly
+            #picked. From that moment on, the structure is fixed: either S-AR-S-AL-S-AR-S-AL or S-AL-S-AR-S-AL-S-AR
         # if not self.should_switch_block():
             #print("Block switch criteria not met. Staying in the current block.")
             #return  # Stay in the current block if criteria not met

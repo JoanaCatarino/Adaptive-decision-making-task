@@ -16,26 +16,26 @@ from collections import Counter
 
 # Define the spouts and tones
 spouts = ['left', 'right']
-tones = ['5KHz', '10KHz']
+tones = ['8KHz', '16KHz']
 
 # List of animals that need assigment of pairs
-animals = ['925145', '925146', '928012', '928013']
+animals = ["950764", "950765", "950766", "950767", "956628", "956627", "942915", "942914"]
 
 # Directory and filename for csv with assignments
-directory = 'Z:/dmclab/Joana/Behavior/Spout-tone map'
+directory = 'L:/dmclab/Joana/Behavior/Spout-tone map'
 filename = 'spout_tone_generator.csv'
 
 # Generate all possible pairs of spouts and tones, which are:
-    # left - 5KHz; left - 10KHz; right - 5KHz; right - 10KHz
+    # left - 8KHz; left - 16KHz; right - 8KHz; right - 16KHz
 pairs = [(spout, tone) for spout in spouts for tone in tones]
 
 # Create complementary pair for each assignment
-# Example: If an animal is assigned (Left, 5KHz), the complementary pair for Right will be (Right, 10KHz)
+# Example: If an animal is assigned (Left, 8KHz), the complementary pair for Right will be (Right, 16KHz)
 def complementary_pair(pair):
     spout, tone = pair
     # Find the complementary spout and tone
     complementary_spout = 'right' if spout == 'left' else 'left'
-    complementary_tone = '10KHz' if tone == '5KHz' else '5KHz'
+    complementary_tone = '16KHz' if tone == '8KHz' else '8KHz'
     return (complementary_spout, complementary_tone)
 
 
@@ -60,10 +60,10 @@ def read_existing_assignments(filename):
         header = next(reader)  # Skip header
         for row in reader:
             existing_animals.append(row[0])
-            spout_5khz = (row[1], '5KHz')
-            spout_10khz = (row[2], '10KHz')
-            pair_counts[spout_5khz] += 1
-            pair_counts[spout_10khz] += 1
+            spout_8khz = (row[1], '8KHz')
+            spout_16khz = (row[2], '16KHz')
+            pair_counts[spout_8khz] += 1
+            pair_counts[spout_16khz] += 1
 
     return pair_counts, existing_animals   
 
@@ -115,18 +115,18 @@ def save_assignments(assignments, directory, filename):
         
         # Write headers if the file does not exist
         if not file_exists:
-            writer.writerow(['Animal', '5KHz', '10KHz'])
+            writer.writerow(['Animal', '8KHz', '16KHz'])
         
         # Write the animal assignments
         for animal, (pair, comp_pair) in assignments.items():
             row = [animal]
-            # Determine which spout is assigned to 5KHz and 10KHz
-            if pair[1] == '5KHz':
-                row.append(pair[0])  # 'L' or 'R' for 5KHz
-                row.append(comp_pair[0])  # 'L' or 'R' for 10KHz
+            # Determine which spout is assigned to 8KHz and 16KHz
+            if pair[1] == '8KHz':
+                row.append(pair[0])  # 'L' or 'R' for 8KHz
+                row.append(comp_pair[0])  # 'L' or 'R' for 16KHz
             else:
-                row.append(comp_pair[0])  # 'L' or 'R' for 5KHz
-                row.append(pair[0])  # 'L' or 'R' for 10KHz
+                row.append(comp_pair[0])  # 'L' or 'R' for 8KHz
+                row.append(pair[0])  # 'L' or 'R' for 16KHz
             writer.writerow(row) 
 
 

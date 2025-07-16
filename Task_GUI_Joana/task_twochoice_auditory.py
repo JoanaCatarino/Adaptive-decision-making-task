@@ -50,7 +50,7 @@ class TwoChoiceAuditoryTask:
         self.ITI_min = 3 # default ITI min
         self.ITI_max = 6 # default ITI
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-6 sec with ms precision
-        self.RW = 2 # Response window in seconds
+        self.RW = 3 # Response window in seconds
         self.threshold_left = 1
         self.threshold_right = 1
         self.valve_opening = 0.08  # Reward duration   
