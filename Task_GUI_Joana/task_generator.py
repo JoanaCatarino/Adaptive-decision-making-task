@@ -18,7 +18,10 @@ def task (combobox, font_size=8):
              'Spout Sampling',
              'Two-Choice Auditory Task',
              'Adaptive Sensorimotor Task',
-             'Adaptive Sensorimotor Task w/ Distractor']
+             'Adaptive Sensorimotor Task w/ Distractor',
+             'Free Pressing',
+             'Press Sampling',
+             'Two-Choice Levers Task']
     
     # Create a font with the specified size
     font = QFont()

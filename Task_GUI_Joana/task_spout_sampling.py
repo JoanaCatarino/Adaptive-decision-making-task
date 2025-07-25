@@ -4,8 +4,6 @@ Created on Sat Jul 20 17:49:53 2024
 
 @author: JoanaCatarino
 
-Working on this file like it is the free licking script but to be moved to the correct file in the future
-
 """
 import threading
 import numpy as np
@@ -38,7 +36,7 @@ class SpoutSamplingTask:
         self.ITI_min = 0.1 # default ITI min
         self.ITI_max = 0.1 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Fixed ITI of 0.1s
-        self.RW = 2 # Response window in seconds
+        self.RW = 3 # Response window in seconds
         self.threshold_left = 1
         self.threshold_right = 1
         self.valve_opening = 0.08  # Reward duration   

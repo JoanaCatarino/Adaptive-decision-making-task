@@ -49,6 +49,12 @@ from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
 from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistractor
 
 
+# Import test tasks
+from task_free_pressing import FreePressingTask
+from task_press_sampling import PressSamplingTask
+from task_twochoice_levers import TwoChoiceLeversTask
+
+
 class GuiControls:
     def __init__(self, ui, updateTime_slot):
         self.ui = ui
@@ -619,7 +625,17 @@ class GuiControls:
 
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor(self, csv_file_path)
-
+            
+        elif selected_task == 'Free pressing':
+            self.current_task = FreePressingTask(self, csv_file_path)
+            
+        elif selected_task == 'Press Sampling':
+            self.current_task = PressSamplingTask(self, csv_file_path)
+            
+        elif selected_task == 'Two-Choice Levers Task':
+            self.current_task = TwoChoiceLeversTask(self, csv_file_path)
+            
+        
         if self.current_task:
             self.current_task.start()
             self.txt_Chronometer.start()
