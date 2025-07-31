@@ -626,7 +626,7 @@ class GuiControls:
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor(self, csv_file_path)
             
-        elif selected_task == 'Free pressing':
+        elif selected_task == 'Free Pressing':
             self.current_task = FreePressingTask(self, csv_file_path)
             
         elif selected_task == 'Press Sampling':
