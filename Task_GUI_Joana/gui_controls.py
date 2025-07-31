@@ -53,6 +53,7 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 from task_free_pressing import FreePressingTask
 from task_press_sampling import PressSamplingTask
 from task_twochoice_levers import TwoChoiceLeversTask
+from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
 
 
 class GuiControls:
@@ -585,7 +586,7 @@ class GuiControls:
                     widget.deleteLater()
     
         # Select plot based on the task
-        if selected_task in ['Two-Choice Auditory Task', 'Adaptive Sensorimotor Task', 'Adaptive Sensorimotor Task w/ Distractor']:
+        if selected_task in ['Two-Choice Auditory Task', 'Adaptive Sensorimotor Task', 'Adaptive Sensorimotor Task w/ Distractor','Two-Choice Levers Task', 'Two-Choice Auditory Task Blocks']:
             # Use performance plot for decision-based tasks
             self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
             layout_main.addWidget(self.performance_plot)
@@ -633,6 +634,9 @@ class GuiControls:
             self.current_task = PressSamplingTask(self, csv_file_path)
             
         elif selected_task == 'Two-Choice Levers Task':
+            self.current_task = TwoChoiceLeversTask(self, csv_file_path)
+            
+        elif selected_task == 'Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceLeversTask(self, csv_file_path)
             
         

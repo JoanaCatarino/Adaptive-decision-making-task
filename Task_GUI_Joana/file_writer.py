@@ -27,7 +27,8 @@ TASK_NICKNAME = {
     'Adaptive Sensorimotor Task w/ Distractor': 'AdaptSensorimotor_distractor',
     'Free Pressing': 'FreePress',
     'Press Sampling': 'PressSamp',
-    'Two-Choice Lever Task': '2ChoiceLever'}
+    'Two-Choice Lever Task': '2ChoiceLever',
+    'Two-Choice Auditory Task Blocks': '2ChoiceBlocks'}
 
 # Save data
 if not os.path.exists(SAVE_DIRECTORY):
