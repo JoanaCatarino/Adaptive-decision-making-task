@@ -754,7 +754,7 @@ class GuiControls:
                 new_threshold_right = float(threshold_right) if threshold_right else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)

@@ -81,7 +81,7 @@ class FreeLickingTask:
         
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Free Licking task starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -99,7 +99,7 @@ class FreeLickingTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Free Licking Task...")
         
         self.running = False
         

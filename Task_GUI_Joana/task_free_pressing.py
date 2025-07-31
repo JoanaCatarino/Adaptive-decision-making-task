@@ -82,7 +82,7 @@ class FreePressingTask:
         
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Free Pressing task starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -99,7 +99,7 @@ class FreePressingTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Free Pressing Task...")
         
         self.running = False
         

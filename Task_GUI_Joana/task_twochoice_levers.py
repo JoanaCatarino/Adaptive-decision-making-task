@@ -537,7 +537,7 @@ class TwoChoiceLeversTask:
         self.timer_3.start()
         
     
-    def reward(self, side):
+    def reward(self):
         """Delivers a reward without blocking the main loop."""
     
         pump_l.off()

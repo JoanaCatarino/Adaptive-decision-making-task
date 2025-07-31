@@ -79,7 +79,7 @@ class PressSamplingTask:
         
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Press Sampling task starting')
         
         # Print which side is starting
         print(f"Starting session with reward on **{self.current_reward_spout.upper()}** spout.")
@@ -100,7 +100,7 @@ class PressSamplingTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Press Sampling Task...")
         
         self.running = False
         
@@ -308,7 +308,7 @@ class PressSamplingTask:
                         return
         
     
-    def reward(self, side):
+    def reward(self):
         
         """Delivers a reward without blocking the main loop."""
      
