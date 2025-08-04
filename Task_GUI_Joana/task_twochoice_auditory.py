@@ -369,10 +369,12 @@ class TwoChoiceAuditoryTask:
             
             # Check if a lick is detected
             if not ignore_licks:
-                if p1 and p1[-1] > self.threshold_left:
+                #if p1 and p1[-1] > self.threshold_left:
+                if p1.size and p1[-1] > self.threshold_left:
                     return True  # Abort trial
-        
-                if p2 and p2[-1] > self.threshold_right:
+                
+                #if p2 and p2[-1] > self.threshold_right:
+                if p2.size and p2[-1] > self.threshold_right:
                     return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
@@ -414,7 +416,9 @@ class TwoChoiceAuditoryTask:
         time.sleep(0.001)
         
         # Left piezo
-        if p1:
+        #if p1:
+        if p1.size > 0:
+            
             latest_value1 = p1[-1]
         
             if latest_value1 > self.threshold_left:
@@ -467,7 +471,8 @@ class TwoChoiceAuditoryTask:
                 
         
         # Right piezo        
-        if p2:
+        #if p2:
+        if p2.size > 0:
             latest_value2 = p2[-1]
         
             if latest_value2 > self.threshold_right:
