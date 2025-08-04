@@ -54,6 +54,7 @@ from task_free_pressing import FreePressingTask
 from task_press_sampling import PressSamplingTask
 from task_twochoice_levers import TwoChoiceLeversTask
 from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
+from task_twochoice_levers_blocks import TwoChoiceLeversTask_Blocks
 
 
 class GuiControls:
@@ -590,7 +591,7 @@ class GuiControls:
                     widget.deleteLater()
     
         # Select plot based on the task
-        if selected_task in ['Two-Choice Auditory Task', 'Adaptive Sensorimotor Task', 'Adaptive Sensorimotor Task w/ Distractor','Two-Choice Levers Task', 'Two-Choice Auditory Task Blocks']:
+        if selected_task in ['Two-Choice Auditory Task', 'Adaptive Sensorimotor Task', 'Adaptive Sensorimotor Task w/ Distractor','Two-Choice Levers Task', 'Two-Choice Auditory Task Blocks', 'Two-Choice Levers Task Blocks']:
             # Use performance plot for decision-based tasks
             self.performance_plot = PlotPerformance(parent=self.ui.plt_AnimalPerformance)
             layout_main.addWidget(self.performance_plot)
@@ -642,6 +643,9 @@ class GuiControls:
             
         elif selected_task == 'Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks(self, csv_file_path)
+            
+        elif selected_task == 'Two-Choice Levers Task Blocks':
+            self.current_task = TwoChoiceLeversTask_Blocks(self, csv_file_path)
             
         
         if self.current_task:
@@ -764,7 +768,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask, TwoChoiceAuditoryTask_Blocks)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask, TwoChoiceAuditoryTask_Blocks, TwoChoiceLeversTask_Blocks)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)
