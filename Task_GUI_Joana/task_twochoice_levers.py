@@ -359,8 +359,8 @@ class TwoChoiceLeversTask:
         ignore_licks = self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() # Check if Ignore Licks during WW option is checked in the gui
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+            p1 = list(self.piezo_reader.piezo_adder1, dtype=np.uint16)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2, dtype=np.uint16)  # Right spout
             
             # Check if a lick is detected
             if not ignore_licks:
@@ -399,8 +399,8 @@ class TwoChoiceLeversTask:
         """Checks for licks and delivers rewards in parallel."""
 
         # Ensure piezo data is updated before checking
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        p1 = list(self.piezo_reader.piezo_adder1, dtype=np.uint16)
+        p2 = list(self.piezo_reader.piezo_adder2, dtype=np.uint16)
     
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)

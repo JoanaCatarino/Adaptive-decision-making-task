@@ -113,12 +113,11 @@ class TwoChoiceAuditoryTask_Blocks:
         self.current_block_side = None # added for blocks
         self.correct_in_block = 0 # added for blocks
         
-        
         # Trial monitor
         self.monitor_history = deque(maxlen=15)
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Two-Choice Auditory task with Blocks starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -153,6 +152,7 @@ class TwoChoiceAuditoryTask_Blocks:
             print("Saved trial during manual stop.")
             
         pump_l.on()
+        pump_r.on()
         led_blue.off()
         
     
@@ -190,7 +190,7 @@ class TwoChoiceAuditoryTask_Blocks:
             print(f"[BLOCK INIT] Starting block: {self.current_block_side}")
 
         
-        if self.correct_in_block>= self.block_size:
+        if self.correct_in_block >= self.block_size:
             
             self.current_block_side = "right" if self.current_block_side == "left" else "left"
             self.correct_in_block = 0
@@ -201,46 +201,6 @@ class TwoChoiceAuditoryTask_Blocks:
         return self.current_block_side
         
         
-
-
-    def debias_unused(self):
-        """ 
-        Adjusts trial assignment based on recent lick history to reinforce the weaker spout.
-        """
-        
-        recent_trials = self.decision_history[-self.min_trials_debias:]  # Last N trials
-        
-        if not recent_trials:
-            self.bias_value = 0.5 
-            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
-            return random.choice(["left", "right"])  
-
-        # Count left and right licks
-        left_licks = sum(1 for t in recent_trials if t == "L")
-        right_licks = sum(1 for t in recent_trials if t == "R")
-        total_licks = left_licks + right_licks
-
-        if total_licks == 0:
-            self.bias_value = 0.5 # Keep it neutral
-            self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
-            return random.choice(["left", "right"])  
-
-        # Compute bias based on lick history (proportion of right licks)
-        self.bias_value = right_licks / total_licks
-
-        # Apply Gaussian sampling to introduce slight randomness
-        self.debias_val = random.gauss(self.bias_value, self.decision_SD)
-
-        # Assign trials to reinforce the underrepresented spout
-        self.selected_side = "right" if self.debias_val < 0.5 else "left"  
-        
-        
-        # Update GUI with bias value
-        self.gui_controls.ui.box_Bias.setText(f"{self.bias_value:.1f}")
-
-        return self.selected_side
-  
-    
     
     def check_animal_quiet(self):
         
@@ -391,8 +351,8 @@ class TwoChoiceAuditoryTask_Blocks:
         ignore_licks = self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() # Check if Ignore Licks during WW option is checked in the gui
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
-            p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
+            p1 = list(self.piezo_reader.piezo_adder1, dtype=np.uint16)  # Left spout
+            p2 = list(self.piezo_reader.piezo_adder2, dtype=np.uint16)  # Right spout
             
             # Check if a lick is detected
             if not ignore_licks:
@@ -431,8 +391,8 @@ class TwoChoiceAuditoryTask_Blocks:
         """Checks for licks and delivers rewards in parallel."""
 
         # Ensure piezo data is updated before checking
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        p1 = list(self.piezo_reader.piezo_adder1, dtype=np.uint16)
+        p2 = list(self.piezo_reader.piezo_adder2, dtype=np.uint16)
     
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
