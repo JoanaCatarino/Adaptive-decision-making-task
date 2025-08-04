@@ -412,6 +412,7 @@ class GuiControls:
         self.ui.txt_ValveOpening.textChanged.connect(self.check_update_state)
         self.ui.txt_ThresholdLeft.textChanged.connect(self.check_update_state)
         self.ui.txt_ThresholdRight.textChanged.connect(self.check_update_state)
+        self.ui.txt_Blocks.textChanged.connect(self.check_update_state)
 
     def update_button_states(self):
         # Update the enabled/disabled state of the Start and Stop buttons
@@ -436,6 +437,7 @@ class GuiControls:
         self.ui.txt_ValveOpening.setValidator(self.float_validator)
         self.ui.txt_ThresholdLeft.setValidator(self.float_validator)
         self.ui.txt_ThresholdRight.setValidator(self.float_validator)
+        self.ui.txt_Blocks.setValidator(self.float_validator)
 
 
     def check_update_state(self):
@@ -449,6 +451,7 @@ class GuiControls:
             or self.ui.txt_ValveOpening.text().strip()
             or self.ui.txt_ThresholdLeft.text().strip()
             or self.ui.txt_ThresholdRight.text().strip()
+            or self.ui.txt_Blocks.text().strip()
             ):
             
             self.ui.btn_Update.setEnabled(True)
@@ -468,6 +471,7 @@ class GuiControls:
         self.ui.chk_AutomaticRewards.setEnabled(enable)
         self.ui.chk_NoPunishment.setEnabled(enable)
         self.ui.chk_IgnoreLicksWW.setEnabled(enable)
+        self.ui.txt_Blocks.setEnabled(enable)
 
     # set enable and disable functions for the test rig controls
     def enable_controls(self):
@@ -747,6 +751,7 @@ class GuiControls:
                 valve_opening = self.ui.txt_ValveOpening.text()  # For led_on_duration/pump
                 threshold_left = self.ui.txt_ThresholdLeft.text()  # For left piezo threshold
                 threshold_right = self.ui.txt_ThresholdRight.text()  # For right piezo threshold
+                block_size = self.ui.txt_Blocks.text()
         
                 # Validate and convert inputs to floats
                 new_quiet_window = float(quiet_window) if quiet_window else None
@@ -756,6 +761,7 @@ class GuiControls:
                 new_valve_opening = float(valve_opening) if valve_opening else None
                 new_threshold_left = float(threshold_left) if threshold_left else None
                 new_threshold_right = float(threshold_right) if threshold_right else None
+                new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
                 if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask)):
@@ -800,6 +806,13 @@ class GuiControls:
                         self.current_task.threshold_right = new_threshold_right
                         print(f"Threshold right piezo: {new_threshold_right}")
                         self.ui.btn_Update.setEnabled(False)
+                        
+                    # Update Block_size
+                    if new_block_size is not None:
+                        self.current_task.block_size = new_block_size
+                        print(f'Block size: {new_block_size}')
+                        self.ui.btn_Update.setEnabled(False)
+                    
                 else:
                     print("No active Task or invalid task type.")
             except ValueError:

@@ -196,7 +196,7 @@ class TwoChoiceAuditoryTask_Blocks:
             self.correct_in_block = 0
             print(f"[BLOCK SWITCH] Switched to: {self.current_block_side}")
             
-        print(f"[BLOCK STATUS] Trial {self.total_trials+1} → Block: {self.current_block_side} | CorrectInBlock: {self.correct_in_block}")
+        print(f"[BLOCK STATUS] Trial {self.total_trials+1} - Block: {self.current_block_side} | CorrectInBlock: {self.correct_in_block}")
         
         return self.current_block_side
         
@@ -459,7 +459,7 @@ class TwoChoiceAuditoryTask_Blocks:
             
                             self.correct_trials += 1
                             self.correct_in_block +=1 # added for blocks
-                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block → now: {self.correct_in_block + 1}")
+                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block - now: {self.correct_in_block + 1}")
                             
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
@@ -515,7 +515,7 @@ class TwoChoiceAuditoryTask_Blocks:
             
                             self.correct_trials += 1
                             self.correct_in_block +=1 # added for blocks
-                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block → now: {self.correct_in_block + 1}")
+                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block - now: {self.correct_in_block + 1}")
                             
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
