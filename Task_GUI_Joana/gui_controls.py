@@ -764,7 +764,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask, TwoChoiceAuditoryTask_Blocks)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)
