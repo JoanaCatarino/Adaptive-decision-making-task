@@ -135,7 +135,7 @@ class TwoChoiceAuditoryTask_Blocks:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Two-Choice Auditory task with Blocks...")
         
         self.running = False
         self.trialstarted = False

@@ -112,7 +112,7 @@ class TwoChoiceAuditoryTask:
         self.monitor_history = deque(maxlen=15)
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Two-Choice Auditory task starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -130,7 +130,7 @@ class TwoChoiceAuditoryTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Two-Choice Auditory task...")
         
         self.running = False
         self.trialstarted = False

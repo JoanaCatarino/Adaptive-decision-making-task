@@ -117,7 +117,7 @@ class TwoChoiceLeversTask_Blocks:
         self.monitor_history = deque(maxlen=15)
 
     def start (self):
-        print ('Two-Choice Auditory task with Blocks starting')
+        print ('Two-Choice Levers task with Blocks starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -134,7 +134,7 @@ class TwoChoiceLeversTask_Blocks:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Two-Choice Levers task with Blocks...")
         
         self.running = False
         self.trialstarted = False

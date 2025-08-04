@@ -140,7 +140,7 @@ class AdaptiveSensorimotorTaskDistractor:
         
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Adaptive Sensorimotor Task with Distractor starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -162,7 +162,7 @@ class AdaptiveSensorimotorTaskDistractor:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Adaptive Sensorimotor Task with Distractor...")
         
         self.running = False
         self.trialstarted = False

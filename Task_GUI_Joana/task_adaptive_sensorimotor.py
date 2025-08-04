@@ -136,7 +136,7 @@ class AdaptiveSensorimotorTask:
         
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Adaptive Sensorimotor Task starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -158,7 +158,7 @@ class AdaptiveSensorimotorTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Adaptive Sensorimotor Task...")
         
         self.running = False
         self.trialstarted = False

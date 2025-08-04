@@ -112,7 +112,7 @@ class TwoChoiceLeversTask:
         self.monitor_history = deque(maxlen=15)
 
     def start (self):
-        print ('Spout Sampling task starting')
+        print ('Two-Choice Levers task starting')
         
         # Turn the LEDS ON initially
         pump_l.on()
@@ -129,7 +129,7 @@ class TwoChoiceLeversTask:
         
         
     def stop(self):
-        print("Stopping Spout Sampling Task...")
+        print("Stopping Two-Choice Levers task...")
         
         self.running = False
         self.trialstarted = False
