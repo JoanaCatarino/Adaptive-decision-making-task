@@ -109,8 +109,8 @@ class TwoChoiceAuditoryTask_Blocks:
         self.debias_value = None
         
         # Block variables
-        self.block_size = 5 # added for blocks
-        self.current_block_side = random.choice(["left", "right"]) # added for blocks
+        self.block_size = 10 # added for blocks
+        self.current_block_side = None # added for blocks
         self.correct_in_block = 0 # added for blocks
         
         
@@ -181,13 +181,23 @@ class TwoChoiceAuditoryTask_Blocks:
     
     def choose_next_trial_blockwise(self): # added for blocks
         """ 
-        Selects next trial using blocks or n correct trials (n= self.block_size)
+        Selects next trial using blocks of n correct trials (n= self.block_size)
 
         """
+        if self.current_block_side is None:
+            self.current_block_side= random.choice(["left", "right"]) # added for blocks
+            self.correct_in_block = 0
+            print(f"[BLOCK INIT] Starting block: {self.current_block_side}")
+
+        
         if self.correct_in_block>= self.block_size:
+            
             self.current_block_side = "right" if self.current_block_side == "left" else "left"
             self.correct_in_block = 0
-
+            print(f"[BLOCK SWITCH] Switched to: {self.current_block_side}")
+            
+        print(f"[BLOCK STATUS] Trial {self.total_trials+1} → Block: {self.current_block_side} | CorrectInBlock: {self.correct_in_block}")
+        
         return self.current_block_side
         
         
@@ -284,7 +294,7 @@ class TwoChoiceAuditoryTask_Blocks:
             self.data_saved = False
             self.plot_updated = False
             
-            # Randomly select the a cue sound  and apply debiasing when needed
+            # Select Cue according to block
             self.correct_spout = self.choose_next_trial_blockwise()   # added for blocks
 
             self.current_tone = "8KHz" if self.correct_spout == self.spout_8KHz else "16KHz"
@@ -449,6 +459,7 @@ class TwoChoiceAuditoryTask_Blocks:
             
                             self.correct_trials += 1
                             self.correct_in_block +=1 # added for blocks
+                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block → now: {self.correct_in_block + 1}")
                             
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
@@ -504,6 +515,7 @@ class TwoChoiceAuditoryTask_Blocks:
             
                             self.correct_trials += 1
                             self.correct_in_block +=1 # added for blocks
+                            print(f"[CORRECT TRIAL] Adding 1 to correct_in_block → now: {self.correct_in_block + 1}")
                             
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
