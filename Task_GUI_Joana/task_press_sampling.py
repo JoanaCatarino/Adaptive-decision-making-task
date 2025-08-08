@@ -132,8 +132,8 @@ class PressSamplingTask:
             if not self.running:
                 return False
             
-            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
-            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
+            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.int16)
+            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.int16)
         
         
             if len(p1) >= required_samples and len(p2) >= required_samples:
