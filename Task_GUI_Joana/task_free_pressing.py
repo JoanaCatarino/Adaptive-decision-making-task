@@ -186,7 +186,7 @@ class FreePressingTask:
         p2 = list(self.piezo_reader.piezo_adder2)
     
         # Small delay to prevent CPU overload and stabilize readings
-        #time.sleep(0.001)
+        time.sleep(0.001)
     
         # Left piezo
         if p1:
