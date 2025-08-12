@@ -2,6 +2,58 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 
 import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
+from PyQt5.QtCore import QTimer
+from piezo_reader import PiezoReader  # your fixed reader above
+
+class LiveViewer(QMainWindow):
+    def __init__(self, edge_k=3, max_points=600):
+        super().__init__()
+        self.setWindowTitle("Piezo Live Viewer (adder frames @ 60 Hz)")
+
+        # Reader
+        self.reader = PiezoReader()  # auto-starts internal thread
+
+        # Two plots
+        central = QWidget()
+        layout = QHBoxLayout(central)
+        self.left_plot  = LivePlotWidget(max_data_points=max_points, edge_k=edge_k, color='tab:blue',  ylabel='Left adder')
+        self.right_plot = LivePlotWidget(max_data_points=max_points, edge_k=edge_k, color='tab:orange', ylabel='Right adder')
+        layout.addWidget(self.left_plot)
+        layout.addWidget(self.right_plot)
+        self.setCentralWidget(central)
+
+        # Update timer ~60 Hz (16 ms)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.refresh)
+        self.timer.start(16)
+
+    def refresh(self):
+        # Slice the last max_points for each plot
+        a1 = list(self.reader.piezo_adder1)[-self.left_plot.max_data_points:]
+        a2 = list(self.reader.piezo_adder2)[-self.right_plot.max_data_points:]
+
+        self.left_plot.update_plot(a1)
+        self.right_plot.update_plot(a2)
+
+        # Example: if you change edge_k in your task, reflect it here:
+        # self.left_plot.set_edge_threshold(new_edge_k)
+        # self.right_plot.set_edge_threshold(new_edge_k)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    win = LiveViewer(edge_k=3, max_points=600)  # 10 s window (600 frames @ 60 Hz)
+    win.resize(1000, 400)
+    win.show()
+    sys.exit(app.exec_())
+
+
+
+'''
+import matplotlib
+matplotlib.use('Qt5Agg')
+
+import sys
 import serial
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QPushButton, QSizePolicy
 from PyQt5.QtCore import QTimer
