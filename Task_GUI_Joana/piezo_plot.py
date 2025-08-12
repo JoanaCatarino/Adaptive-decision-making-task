@@ -1,51 +1,82 @@
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout
-from PyQt5.QtCore import QTimer
-from piezo_reader import PiezoReader  # your fixed reader above
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSizePolicy
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-class LiveViewer(QMainWindow):
-    def __init__(self, edge_k=3, max_points=600):
-        super().__init__()
-        self.setWindowTitle("Piezo Live Viewer (adder frames @ 60 Hz)")
+class LivePlotWidget(QWidget):
+    def __init__(self, max_data_points, edge_k=3, color='blue', parent=None, ylabel=''):
+        super().__init__(parent)
 
-        # Reader
-        self.reader = PiezoReader()  # auto-starts internal thread
+        self.max_data_points = max_data_points   # number of frames to keep
+        self.edge_k = edge_k                     # adder frame threshold (0..19)
 
-        # Two plots
-        central = QWidget()
-        layout = QHBoxLayout(central)
-        self.left_plot  = LivePlotWidget(max_data_points=max_points, edge_k=edge_k, color='tab:blue',  ylabel='Left adder')
-        self.right_plot = LivePlotWidget(max_data_points=max_points, edge_k=edge_k, color='tab:orange', ylabel='Right adder')
-        layout.addWidget(self.left_plot)
-        layout.addWidget(self.right_plot)
-        self.setCentralWidget(central)
+        # Figure & canvas
+        self.figure, self.ax = plt.subplots()
+        self.canvas = FigureCanvas(self.figure)
 
-        # Update timer ~60 Hz (16 ms)
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.refresh)
-        self.timer.start(16)
+        # Axes setup
+        self.ax.set_xlim(0, self.max_data_points / 60.0)  # seconds (60 Hz frames)
+        self.ax.set_ylim(0, 19)                            # adder is 0..19
+        self.ax.set_xlabel("Time (s)", labelpad=10)
+        self.ax.set_ylabel(ylabel, labelpad=10)
 
-    def refresh(self):
-        # Slice the last max_points for each plot
-        a1 = list(self.reader.piezo_adder1)[-self.left_plot.max_data_points:]
-        a2 = list(self.reader.piezo_adder2)[-self.right_plot.max_data_points:]
+        # Main line
+        (self.line,) = self.ax.plot([], [], lw=2, color=color)
 
-        self.left_plot.update_plot(a1)
-        self.right_plot.update_plot(a2)
+        # Threshold line (dashed)
+        self.th_line = self.ax.axhline(self.edge_k, linestyle='--', linewidth=1)
 
-        # Example: if you change edge_k in your task, reflect it here:
-        # self.left_plot.set_edge_threshold(new_edge_k)
-        # self.right_plot.set_edge_threshold(new_edge_k)
+        # Layout
+        layout = QVBoxLayout()
+        layout.addWidget(self.canvas)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        self.setLayout(layout)
+        self.canvas.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.figure.tight_layout(pad=2.0)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    win = LiveViewer(edge_k=3, max_points=600)  # 10 s window (600 frames @ 60 Hz)
-    win.resize(1000, 400)
-    win.show()
-    sys.exit(app.exec_())
+        # Data buffers used for plotting
+        self.x_data = []
+        self.y_data = []
+
+    def set_edge_threshold(self, edge_k: int):
+        """Update the visual threshold line and cached value."""
+        self.edge_k = int(edge_k)
+        self.th_line.set_ydata([self.edge_k, self.edge_k])
+        self.canvas.draw_idle()
+
+    def update_plot(self, y_data):
+        """
+        y_data: sequence/array of adder counts (0..19) for the last N frames.
+        """
+        if not y_data:
+            return
+
+        n = len(y_data)
+        # X in seconds; last n frames over 60 Hz
+        self.x_data = [i / 60.0 for i in range(n)]
+        self.y_data = y_data
+
+        self.line.set_data(self.x_data, self.y_data)
+
+        # Keep fixed limits to avoid bouncing; only autoscale X if buffer grew
+        # (xmax is fixed by max_data_points; no need for relim each frame)
+        self.canvas.draw_idle()
+
+    def get_last_active_time(self, threshold=None):
+        """
+        Returns the last time (seconds) the piezo was 'active', i.e., last frame with adder >= threshold.
+        If threshold is None, uses self.edge_k.
+        """
+        thr = self.edge_k if threshold is None else threshold
+        last_active_time = None
+        for i in range(len(self.y_data) - 1, -1, -1):
+            if self.y_data[i] >= thr:
+                last_active_time = self.x_data[i]
+                break
+        return last_active_time
 
 
 
