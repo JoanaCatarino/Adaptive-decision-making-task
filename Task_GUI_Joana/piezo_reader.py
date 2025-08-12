@@ -7,95 +7,7 @@ Created on Mon Jan 13 16:46:04 2025
 piezo reader  - new file just to test the printing of the piezo info
 """
 
-# piezo_reader.py
-import serial, threading
 
-class PiezoReader:
-    """
-    Reads 6-byte frames @ ~60 Hz from Arduino.
-    Packet: 0:0x7F, 1:adder1(0..19), 2:first_idx1(0..18 or 255),
-            3:adder2(0..19), 4:first_idx2(0..18 or 255), 5:0x80
-    """
-
-    def __init__(self, port='/dev/ttyACM0', baudrate=115200, timeout=0):
-        self.port = port
-        self.baudrate = baudrate
-        self.timeout = timeout
-        self.packet_size = 6
-
-        self.ser = None
-        self.buffer = bytearray()
-
-        self.adder1 = []
-        self.adder2 = []
-        self.idx1   = []
-        self.idx2   = []
-        self.max_points = 600  # ~10 s history @ 60 Hz
-
-        self._running = False
-        self._thread  = None
-
-        self.setup_serial_connection()
-
-    def setup_serial_connection(self):
-        try:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=self.timeout)
-            print(f"[PiezoReader] Serial connected on {self.port}")
-        except serial.SerialException as e:
-            self.ser = None
-            print(f"[PiezoReader] Failed to connect: {e}")
-
-    def _append(self, a1, i1, a2, i2):
-        self.adder1.append(int(a1)); self.adder2.append(int(a2))
-        self.idx1.append(int(i1));   self.idx2.append(int(i2))
-        if len(self.adder1) > self.max_points:
-            self.adder1.pop(0); self.idx1.pop(0)
-        if len(self.adder2) > self.max_points:
-            self.adder2.pop(0); self.idx2.pop(0)
-
-    def _read_once(self):
-        if not self.ser or not self.ser.is_open:
-            return
-        # read a few packets worth
-        want = self.packet_size * 8
-        self.buffer.extend(self.ser.read(want))
-
-        while len(self.buffer) >= self.packet_size:
-            if self.buffer[0] == 0x7F and self.buffer[5] == 0x80:
-                a1 = self.buffer[1]
-                i1 = self.buffer[2]
-                a2 = self.buffer[3]
-                i2 = self.buffer[4]
-                self._append(a1, i1, a2, i2)
-                del self.buffer[:self.packet_size]
-            else:
-                # resync
-                self.buffer.pop(0)
-
-    def _pump(self):
-        while self._running:
-            try:
-                self._read_once()
-            except serial.SerialException as e:
-                print(f"[PiezoReader] Serial error: {e}")
-                break
-            # no sleep -> keep up with 60 Hz easily
-
-    def start(self):
-        if self._running: return
-        self._running = True
-        self._thread = threading.Thread(target=self._pump, daemon=True)
-        self._thread.start()
-
-    def stop(self):
-        self._running = False
-        if self._thread and self._thread.is_alive():
-            self._thread.join(timeout=0.5)
-        if self.ser and self.ser.is_open:
-            self.ser.close()
-            print("[PiezoReader] Serial closed.")
-
-'''
 import serial
 
 class PiezoReader:
@@ -155,4 +67,4 @@ class PiezoReader:
         if self.ser and self.ser.is_open:
             self.ser.close()
             print("Serial connection closed.")
-'''
+
