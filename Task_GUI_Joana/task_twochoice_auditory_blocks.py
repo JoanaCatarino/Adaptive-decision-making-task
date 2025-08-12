@@ -5,6 +5,552 @@ Created on Sat Jul 20 17:51:07 2024
 @author: JoanaCatarino
 """
 
+# two_choice_auditory_blocks.py
+import threading
+import numpy as np
+import time
+import csv
+import os
+import random
+from collections import deque
+from PyQt5.QtCore import Qt
+from piezo_reader import PiezoReader
+from file_writer import create_data_file
+from gpio_map import *
+from sound_generator import tone_16KHz, tone_8KHz, white_noise
+from pathlib import Path
+
+class TwoChoiceAuditoryTask_Blocks:
+    def __init__(self, gui_controls, csv_file_path):
+        # ---- file / gui ----
+        self.csv_file_path = csv_file_path
+        self.save_dir = os.path.dirname(csv_file_path)
+        os.makedirs(self.save_dir, exist_ok=True)
+        self.file_path = csv_file_path
+        self.trials = []
+
+        self.gui_controls = gui_controls
+        self.piezo_reader: PiezoReader = gui_controls.piezo_reader  # MUST call start() elsewhere
+
+        self.animal_id = str(self.gui_controls.ui.ddm_Animal_ID.currentText()).strip()
+        self.assignment_file = Path.home() / 'spout_tone' / 'spout_tone_generator.csv'
+        self.spout_8KHz = None
+        self.spout_16KHz = None
+        self.load_spout_tone_mapping()
+
+        # ---- task params ----
+        self.QW = 3
+        self.ITI_min = 3
+        self.ITI_max = 6
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max), 1)
+        self.RW = 3.0
+        self.valve_opening = 0.08
+        self.WW = 1.0
+
+        # Edge detection (frame-based: adder 0..19 at 60 Hz)
+        self.edge_k = 3            # ≥ this adder → “active frame” (tune 2–5)
+        self.refactory_s = 0.05    # per spout
+        self._prev_l = 0
+        self._prev_r = 0
+        self._last_l = 0.0
+        self._last_r = 0.0
+        self._last_winner = "right"   # for alternating tie-break
+
+        # ---- counters ----
+        self.total_trials = 0
+        self.total_licks = 0
+        self.licks_left = 0
+        self.licks_right = 0
+        self.correct_trials = 0
+        self.incorrect_trials = 0
+        self.early_licks = 0
+        self.omissions = 0
+        self.trial_duration = 0
+        self.sound_8KHz = 0
+        self.sound_16KHz = 0
+        self.autom_rewards = 0
+        self.catch_trials = 0
+
+        # ---- state ----
+        self.trialstarted = False
+        self.running = False
+        self.first_trial = True
+        self.next_trial_ready = False
+        self.early_lick_counted = False
+        self.sound_played = False
+        self.omission_counted = False
+
+        # ---- time ----
+        self.tstart = None
+        self.ttrial = None
+        self.t = None
+        self.tlick_l = None
+        self.tlick_r = None
+        self.tlick = None
+        self.RW_start = None
+        self.current_time = None
+        self.tend = None
+        self.next_trial_eligible = False
+        self.timer_3 = None
+
+        self.lock = threading.Lock()
+        self.first_lick = None
+        self.trial_saved = False
+
+        # ---- debias / blocks (kept as-is) ----
+        self.decision_history = []
+        self.min_trials_debias = 15
+        self.decision_SD = 0.5
+        self.correct_spout = None
+        self.selected_side = None
+        self.bias_value = None
+        self.debias_value = None
+
+        self.block_size = 10
+        self.current_block_side = None
+        self.correct_in_block = 0
+
+        self.monitor_history = deque(maxlen=15)
+
+    # ---------------- lifecycle ----------------
+    def start(self):
+        print('Two-Choice Auditory task with Blocks starting')
+        pump_l.on(); pump_r.on()
+
+        self.gui_controls.performance_plot.reset_plot()
+        self.gui_controls.performance_plot_ov.reset_plot()
+
+        self.running = True
+        self.tstart = time.time()
+
+        self.print_thread = threading.Thread(target=self.main, daemon=True)
+        self.print_thread.start()
+
+    def stop(self):
+        print("Stopping Two-Choice Auditory task with Blocks...")
+        self.running = False
+        self.trialstarted = False
+        if hasattr(self, 'print_thread') and self.print_thread.is_alive():
+            self.print_thread.join()
+
+        if self.trialstarted and not self.trial_saved:
+            self.tend = time.time()
+            self.trial_duration = self.tend - self.ttrial
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.save_data()
+            self.trial_saved = True
+            print("Saved trial during manual stop.")
+
+        pump_l.on(); pump_r.on(); led_blue.off()
+
+    # ---------------- mapping ----------------
+    def load_spout_tone_mapping(self):
+        if not os.path.isfile(self.assignment_file):
+            print(f"Error: Assignment file not found at {self.assignment_file}")
+            return False
+        with open(self.assignment_file, mode='r', newline='') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                row = {k.strip(): v.strip() for k, v in row.items()}
+                if row['Animal'] == self.animal_id:
+                    self.spout_8KHz = row['8KHz']
+                    self.spout_16KHz = row['16KHz']
+                    print(f"Loaded mapping: 8KHz -> {self.spout_8KHz}, 16KHz -> {self.spout_16KHz}")
+                    return True
+        print(f"Warning: No mapping found for Animal {self.animal_id}.")
+        return False
+
+    # ---------------- blocks ----------------
+    def choose_next_trial_blockwise(self):
+        if self.current_block_side is None:
+            self.current_block_side = random.choice(["left", "right"])
+            self.correct_in_block = 0
+            print(f"[BLOCK INIT] Starting block: {self.current_block_side}")
+
+        if self.correct_in_block >= self.block_size:
+            self.current_block_side = "right" if self.current_block_side == "left" else "left"
+            self.correct_in_block = 0
+            print(f"[BLOCK SWITCH] Switched to: {self.current_block_side}")
+
+        print(f"[BLOCK STATUS] Trial {self.total_trials+1} - Block: {self.current_block_side} | CorrectInBlock: {self.correct_in_block}")
+        return self.current_block_side
+
+    # ---------------- quiet window ----------------
+    def check_animal_quiet(self):
+        if self.QW == 0:
+            return True
+        frames_needed = int(self.QW * 60)  # Arduino frames are 60 Hz
+        while True:
+            if not self.running:
+                return False
+            p1 = np.array(self.piezo_reader.adder1, dtype=np.int16)
+            p2 = np.array(self.piezo_reader.adder2, dtype=np.int16)
+            if p1.size >= frames_needed and p2.size >= frames_needed:
+                quiet_left  = np.max(p1[-frames_needed:])  < self.edge_k
+                quiet_right = np.max(p2[-frames_needed:])  < self.edge_k
+                if quiet_left and quiet_right:
+                    return True
+                else:
+                    print('Licks detected during Quiet Window')
+            else:
+                # not enough data yet
+                pass
+            time.sleep(0.005)
+
+    # ---------------- trial ----------------
+    def start_trial(self):
+        with self.lock:
+            if self.trialstarted:
+                return
+
+            self.trial_saved = False
+            self.trialstarted = True
+            self.total_trials += 1
+            self.gui_controls.update_total_trials(self.total_trials)
+            self.ttrial = time.time()
+            self.first_lick = None
+            self.early_lick_counted = False
+            self.sound_played = False
+            self.omission_counted = False
+            self.data_saved = False
+            self.plot_updated = False
+            self.RW_start = None  # RW closed until tone plays
+
+            self.correct_spout = self.choose_next_trial_blockwise()
+            self.current_tone = "8KHz" if self.correct_spout == self.spout_8KHz else "16KHz"
+            self.gui_controls.ui.box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
+            self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Tone: {self.current_tone}  |  Spout: {self.correct_spout}")
+
+            if self.current_tone == '8KHz':
+                self.sound_8KHz += 1; self.gui_controls.update_sound_8KHz(self.sound_8KHz)
+            else:
+                self.sound_16KHz += 1; self.gui_controls.update_sound_16KHz(self.sound_16KHz)
+
+            threading.Thread(target=self.blue_led_on, daemon=True).start()
+
+            if self.detect_licks_during_waiting_window():
+                print("Trial aborted due to early lick.")
+                self.early_licks += 1
+                self.early_lick_counted = True
+                self.gui_controls.update_early_licks(self.early_licks)
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend = time.time()
+                self.trial_duration = (self.tend - self.ttrial)
+                self.gui_controls.update_trial_duration(self.trial_duration)
+                self.schedule_next_trial()
+                if not self.trial_saved:
+                    self.save_data(); self.trial_saved = True
+                return
+
+            # play tone (200 ms in your generator) and open RW immediately after
+            self.play_sound(self.current_tone)
+            self.sound_played = True
+
+            autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
+            if autom_rewards:
+                print(f"Automatic reward given at {self.correct_spout}")
+                threading.Thread(target=self.reward, args=(self.correct_spout,), daemon=True).start()
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.autom_rewards += 1
+                self.gui_controls.update_autom_rewards(self.autom_rewards)
+                self.tend = time.time()
+                self.trial_duration = (self.tend - self.ttrial)
+                self.gui_controls.update_trial_duration(self.trial_duration)
+                self.schedule_next_trial()
+                if not self.trial_saved:
+                    self.save_data(); self.trial_saved = True
+            else:
+                self.RW_start = time.time()  # open RW
+                threading.Thread(target=self.wait_for_response, daemon=True).start()
+
+    def play_sound(self, frequency):
+        if frequency == "8KHz":
+            tone_8KHz()
+        elif frequency == "16KHz":
+            tone_16KHz()
+        elif frequency == "white_noise":
+            white_noise()
+
+    def blue_led_on(self):
+        led_blue.on()
+
+    def blue_led_off(self):
+        led_blue.off()
+
+    def detect_licks_during_waiting_window(self):
+        WW_start = time.time()
+        ignore_licks = self.gui_controls.ui.chk_IgnoreLicksWW.isChecked()
+
+        while time.time() - WW_start < self.WW:
+            if self.RW_start is not None or not self.trialstarted:
+                return False  # RW began early or trial aborted elsewhere
+            if not ignore_licks:
+                p1 = self.piezo_reader.adder1
+                p2 = self.piezo_reader.adder2
+                if p1 and p1[-1] >= self.edge_k: return True
+                if p2 and p2[-1] >= self.edge_k: return True
+            time.sleep(0.003)
+        return False
+
+    def schedule_next_trial(self):
+        self.next_trial_ready = True
+        self.ITI = round(random.uniform(self.ITI_min, self.ITI_max), 1)
+        threading.Timer(self.ITI, self.check_and_start_next_trial).start()
+
+    def check_and_start_next_trial(self):
+        if self.next_trial_ready and not self.trialstarted:
+            if self.check_animal_quiet():
+                self.start_trial()
+
+    # ---------------- lick detection (frame-based, unbiased) ----------------
+    def detect_licks(self):
+        if not self.trialstarted or self.first_lick is not None or self.RW_start is None:
+            return
+
+        a1 = np.array(self.piezo_reader.adder1, dtype=np.int16)
+        a2 = np.array(self.piezo_reader.adder2, dtype=np.int16)
+        i1 = np.array(self.piezo_reader.idx1, dtype=np.int16)
+        i2 = np.array(self.piezo_reader.idx2, dtype=np.int16)
+        if a1.size == 0 or a2.size == 0:
+            return
+
+        tnow = time.time()
+        cur_l = int(a1[-1] >= self.edge_k)
+        cur_r = int(a2[-1] >= self.edge_k)
+
+        l_rise = (self._prev_l == 0 and cur_l == 1 and (tnow - self._last_l) >= self.refactory_s)
+        r_rise = (self._prev_r == 0 and cur_r == 1 and (tnow - self._last_r) >= self.refactory_s)
+
+        # resolve simultaneous rises in the same frame
+        if l_rise and r_rise:
+            # prefer earliest first_idx (0..18), 255 = none
+            fi1 = int(i1[-1]) if i1.size else 255
+            fi2 = int(i2[-1]) if i2.size else 255
+            if fi1 != 255 and fi2 != 255 and fi1 != fi2:
+                if fi1 < fi2: r_rise = False
+                else:         l_rise = False
+            else:
+                # fall back to stronger adder; then alternate
+                if   a1[-1] > a2[-1]: r_rise = False
+                elif a2[-1] > a1[-1]: l_rise = False
+                else:
+                    if self._last_winner == "right":
+                        self._last_winner = "left"; r_rise = False
+                    else:
+                        self._last_winner = "right"; l_rise = False
+
+        # enforce RW and CLOSE IMMEDIATELY on first lick
+        if l_rise:
+            elapsed = tnow - self.RW_start
+            if 0 < elapsed < self.RW:
+                self._last_l = tnow
+                self._handle_lick('left', tnow)
+                self._prev_l, self._prev_r = cur_l, cur_r
+                return
+
+        if r_rise:
+            elapsed = tnow - self.RW_start
+            if 0 < elapsed < self.RW:
+                self._last_r = tnow
+                self._handle_lick('right', tnow)
+                self._prev_l, self._prev_r = cur_l, cur_r
+                return
+
+        self._prev_l, self._prev_r = cur_l, cur_r
+
+    # central handler: lock in first lick, close RW, feedback now
+    def _handle_lick(self, side: str, tlick: float):
+        if self.first_lick is not None or not self.trialstarted:
+            return
+
+        self.first_lick = side
+        self.tlick = tlick
+
+        # close RW immediately; end trial
+        self.RW_start = None
+        self.trialstarted = False
+
+        if self.timer_3 and self.timer_3.is_alive():
+            self.timer_3.cancel()
+
+        threading.Thread(target=self.blue_led_off, daemon=True).start()
+
+        correct = (self.correct_spout == side)
+        if correct:
+            threading.Thread(target=self.reward, args=(side,), daemon=True).start()
+            self.correct_trials += 1
+            self.correct_in_block += 1
+            self.gui_controls.update_correct_trials(self.correct_trials)
+        else:
+            if not self.gui_controls.ui.chk_NoPunishment.isChecked():
+                self.play_sound('white_noise')
+            self.incorrect_trials += 1
+            self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+
+        self.total_licks += 1
+        if side == 'left':
+            self.licks_left += 1;  self.gui_controls.update_licks_left(self.licks_left)
+        else:
+            self.licks_right += 1; self.gui_controls.update_licks_right(self.licks_right)
+        self.gui_controls.update_total_licks(self.total_licks)
+
+        self.tend = time.time()
+        self.trial_duration = self.tend - self.ttrial
+        self.gui_controls.update_trial_duration(self.trial_duration)
+
+        self.next_trial_eligible = True
+        if not self.trial_saved:
+            self.save_data(); self.trial_saved = True
+
+    # omission
+    def omission_callback(self):
+        with self.lock:
+            if not self.trialstarted or self.first_lick is not None:
+                return
+            print('No licks detected - aborting trial')
+            self.trialstarted = False
+            threading.Thread(target=self.blue_led_off, daemon=True).start()
+            self.tend = time.time()
+            self.trial_duration = (self.tend - self.ttrial)
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.omissions += 1
+            self.omission_counted = True
+            self.gui_controls.update_omissions(self.omissions)
+            self.next_trial_eligible = True
+            if not self.trial_saved:
+                self.save_data(); self.trial_saved = True
+
+    def wait_for_response(self):
+        self.timer_3 = threading.Timer(self.RW, self.omission_callback)
+        self.timer_3.start()
+
+    # reward actuator (unchanged)
+    def reward(self, side):
+        if side == 'left':
+            pump_l.off(); time.sleep(self.valve_opening); pump_l.on()
+            print('Reward delivered - left')
+        elif side == 'right':
+            pump_r.off(); time.sleep(self.valve_opening); pump_r.on()
+            print('Reward delivered - right')
+
+    # ---------------- main loop ----------------
+    def main(self):
+        while self.running:
+            if self.first_trial:
+                print(f"ITI duration: {self.ITI} s")
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.first_trial = False
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max), 1)
+            if self.next_trial_eligible and ((time.time() - self.tend) >= self.ITI) and not self.trialstarted:
+                print(f"ITI duration: {self.ITI} s")
+                if self.check_animal_quiet():
+                    self.start_trial()
+                    self.next_trial_eligible = False
+                    self.ITI = round(random.uniform(self.ITI_min, self.ITI_max), 1)
+
+            self.detect_licks()
+            # no sleep: ~60 Hz frame rate is light; add tiny sleep if you want
+            # time.sleep(0.001)
+
+    # ---------------- data ----------------
+    def save_data(self):
+        if hasattr(self, 'data_saved') and self.data_saved:
+            return
+        self.data_saved = True
+
+        self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
+
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
+                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+
+        was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
+
+        was_omission = getattr(self, 'omission_counted', False) and not getattr(self, 'first_lick', None)
+        if was_punished:
+            was_omission = 0
+
+        # also expose current_block for downstream consumers
+        self.current_block = self.current_block_side
+
+        trial_data = [
+            self.total_trials if hasattr(self, 'total_trials') else np.nan,
+            self.ttrial if hasattr(self, 'ttrial') else np.nan,
+            self.tend if hasattr(self, 'tend') else np.nan,
+            self.trial_duration if hasattr(self, 'trial_duration') else np.nan,
+            self.ITI if hasattr(self, 'ITI') else np.nan,
+            self.current_block if hasattr(self, 'current_block') else np.nan,
+            1 if self.early_lick_counted else 0 if hasattr(self, 'early_lick_counted') else np.nan,
+            1 if self.sound_played else 0 if hasattr(self, 'sound_played') else np.nan,
+            1 if getattr(self, 'current_tone', None) == '8KHz' else 0 if hasattr(self, 'current_tone') else np.nan,
+            1 if getattr(self, 'current_tone', None) == '16KHz' else 0 if hasattr(self, 'current_tone') else np.nan,
+            1 if self.first_lick else 0 if hasattr(self, 'first_lick') else np.nan,
+            1 if self.first_lick == 'left'  else 0 if hasattr(self, 'first_lick') else np.nan,
+            1 if self.first_lick == 'right' else 0 if hasattr(self, 'first_lick') else np.nan,
+            self.tlick if (hasattr(self, 'tlick') and self.first_lick) else np.nan,
+            1 if was_rewarded else 0 if hasattr(self, 'first_lick') else np.nan,
+            1 if was_punished else 0 if hasattr(self, 'first_lick') else np.nan,
+            1 if was_omission else 0 if hasattr(self, 'first_lick') else np.nan,
+            self.RW if hasattr(self, 'RW') else np.nan,
+            self.QW if hasattr(self, 'QW') else np.nan,
+            self.WW if hasattr(self, 'WW') else np.nan,
+            self.valve_opening if hasattr(self, 'valve_opening') else np.nan,
+            self.ITI_min if hasattr(self, 'ITI_min') else np.nan,
+            self.ITI_max if hasattr(self, 'ITI_max') else np.nan,
+            np.nan,  # threshold_left (deprecated by frame adder)
+            np.nan,  # threshold_right
+            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
+            1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
+            1 if getattr(self, 'catch_trial_counted', False) else 0 if hasattr(self, 'catch_trial_counted') else np.nan,
+            1 if getattr(self, 'is_distractor_trial', False) else 0 if hasattr(self, 'is_distractor_trial') else np.nan,
+            1 if getattr(self, 'distractor_led', "") == "left" else 0 if hasattr(self, 'distractor_led') else np.nan,
+            1 if getattr(self, 'distractor_led', "") == "right" else 0 if hasattr(self, 'distractor_led') else np.nan,
+            self.tstart if hasattr(self, 'tstart') else np.nan
+        ]
+
+        with open(self.csv_file_path, mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(trial_data)
+
+        # monitor history display (unchanged)
+        block_type_display = {
+            "sound": "S",
+            "action-left": "AL",
+            "action-right": "AR"
+        }.get(getattr(self, 'current_block', ""), "")
+
+        trial_outcome = "correct" if trial_data[14] == 1 else "incorrect" if trial_data[15] == 1 else "omission"
+        trial_data_gui = {"block_type": block_type_display, "outcome": trial_outcome, "trial_number": self.total_trials}
+        if isinstance(trial_data_gui, dict):
+            self.monitor_history.append(trial_data_gui)
+        self.update_trial_history()
+
+    def update_trial_history(self):
+        for i, trial in enumerate(self.monitor_history):
+            col = i + 1
+            lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
+            if lbl_block: lbl_block.setText(trial["block_type"])
+            lbl_outcome = getattr(self.gui_controls.ui, f"lbl_O{col}", None)
+            if lbl_outcome:
+                lbl_outcome.setStyleSheet("")
+                if trial["outcome"] == "correct":
+                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")
+                elif trial["outcome"] == "incorrect":
+                    lbl_outcome.setStyleSheet("background-color: red;")
+                else:
+                    lbl_outcome.setStyleSheet("background-color: gray;")
+            lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
+            if lbl_T: lbl_T.setText(str(trial["trial_number"]))
+
+
+
+
+
+
+'''
 import threading
 import numpy as np
 import time
@@ -709,3 +1255,4 @@ class TwoChoiceAuditoryTask_Blocks:
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
                 lbl_T.setText(str(trial["trial_number"])) 
+'''

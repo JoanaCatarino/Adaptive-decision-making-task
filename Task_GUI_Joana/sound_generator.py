@@ -43,14 +43,14 @@ def play_sound(sound, sample_rate=44100):
 
 def tone_16KHz():
     frequency = 16000  # frequency in Hz
-    duration = 0.2  # Duration in seconds
+    duration = 0.4  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave_16(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
 
 def tone_8KHz():
     frequency = 8000  # frequency in Hz
-    duration = 0.2  # Duration in seconds
+    duration = 0.4  # Duration in seconds
     sample_rate = 44100  # Sample rate in Hz
     sound = generate_sine_wave_8(frequency, duration, sample_rate)
     play_sound(sound, sample_rate)
