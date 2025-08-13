@@ -48,8 +48,8 @@ class PiezoReader:
 
             while len(self.buffer) >= self.packet_size:
                 if self.buffer[0] == 0x7F and self.buffer[5] == 0x80:
-                    self.piezo_adder1.append(self.buffer[1]* 500) # multiply by 10 to amplify signal
-                    self.piezo_adder2.append(self.buffer[3]* 500)
+                    self.piezo_adder1.append(self.buffer[1]* 10) # multiply by 10 to amplify signal
+                    self.piezo_adder2.append(self.buffer[3]* 10)
                     
                     if len(self.piezo_adder1) > self.max_data_points:
                         self.piezo_adder1.pop(0)
