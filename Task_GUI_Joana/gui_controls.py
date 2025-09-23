@@ -633,7 +633,7 @@ class GuiControls:
         elif selected_task == 'Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks(self, csv_file_path)
             
-        elif selected_task == ' test Two-Choice Auditory Task Blocks':
+        elif selected_task == 'test Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
             
         
