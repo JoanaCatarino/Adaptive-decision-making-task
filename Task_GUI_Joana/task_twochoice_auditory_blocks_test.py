@@ -405,7 +405,7 @@ class TwoChoiceAuditoryTask_Blocks_test:
     
         """Checks for licks and delivers rewards in parallel."""
         
-        while time.time() - RW_start < self.RW:  # Wait for WW duration
+        while time.time() - self.RW_start < self.RW:  # Wait for WW duration
             
             p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
             p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
