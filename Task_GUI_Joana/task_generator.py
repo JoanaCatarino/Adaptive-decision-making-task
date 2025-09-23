@@ -20,10 +20,7 @@ def task (combobox, font_size=8):
              'Two-Choice Auditory Task',
              'Adaptive Sensorimotor Task',
              'Adaptive Sensorimotor Task w/ Distractor',
-             #'Free Pressing',
-             #'Press Sampling',
-             #'Two-Choice Levers Task Blocks',
-             #'Two-Choice Levers Task'
+             'test Two-Choice Auditory Task Blocks'
              ]
     
     # Create a font with the specified size

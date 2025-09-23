@@ -50,11 +50,9 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 
 # Import test tasks
-from task_free_pressing import FreePressingTask
-from task_press_sampling import PressSamplingTask
-from task_twochoice_levers import TwoChoiceLeversTask
 from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
-from task_twochoice_levers_blocks import TwoChoiceLeversTask_Blocks
+from task_twochoice_auditory_blocks_test import TwoChoiceAuditoryTask_Blocks_test
+
 
 
 class GuiControls:
@@ -632,20 +630,11 @@ class GuiControls:
         elif selected_task == 'Adaptive Sensorimotor Task w/ Distractor':
             self.current_task = AdaptiveSensorimotorTaskDistractor(self, csv_file_path)
             
-        elif selected_task == 'Free Pressing':
-            self.current_task = FreePressingTask(self, csv_file_path)
-            
-        elif selected_task == 'Press Sampling':
-            self.current_task = PressSamplingTask(self, csv_file_path)
-            
-        elif selected_task == 'Two-Choice Levers Task':
-            self.current_task = TwoChoiceLeversTask(self, csv_file_path)
-            
         elif selected_task == 'Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks(self, csv_file_path)
             
-        elif selected_task == 'Two-Choice Levers Task Blocks':
-            self.current_task = TwoChoiceLeversTask_Blocks(self, csv_file_path)
+        elif selected_task == ' test Two-Choice Auditory Task Blocks':
+            self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
             
         
         if self.current_task:
@@ -768,7 +757,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, FreePressingTask, PressSamplingTask, TwoChoiceLeversTask, TwoChoiceAuditoryTask_Blocks, TwoChoiceLeversTask_Blocks)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)
