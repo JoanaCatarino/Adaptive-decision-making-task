@@ -50,7 +50,7 @@ class AdaptiveSensorimotorTask:
         self.ITI_min = 3 # default ITI min
         self.ITI_max = 6 # default ITI max
         self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1) #Random ITI between 3-6 sec with ms precision
-        self.RW = 2 # Response window in seconds
+        self.RW = 3 # Response window in seconds
         self.threshold_left = 1
         self.threshold_right = 1
         self.valve_opening = 0.08  # Reward duration   
@@ -59,9 +59,16 @@ class AdaptiveSensorimotorTask:
         # Block parameters
         self.current_block = 'sound'  # Always start with sound block
         self.trials_in_block = 0
-        self.trial_limit = random.randint(40, 60)  # Random trial count per block - should be 40-60
+        self.trial_limit = random.randint(40, 60)  # Random minimal trial count per block - should be 40-60
         print(f'First block, #trials = {self.trial_limit}')
-        self.trial_history = []  # Stores last 5 trial results
+        
+        # Alternation controller
+        # After the first sound block, choose action-left or action-right randomly.
+        # Then alternate that action side on every subsequent action block, always interleaved with sound.
+        self.next_action_side = random.choice(['left', 'right'])
+        
+        # History for accuracy check (only current block, only valid trials, last 20)
+        self.trial_history = deque(maxlen=20)
         
         # Block counters
         self.sound_block_count = 0
@@ -118,7 +125,7 @@ class AdaptiveSensorimotorTask:
         self.first_lick = None
         self.trial_saved = False # added 15/05/2025
         
-        # Catch trials
+        # Catch trials (blue light but no sound cue)
         self.catch_trials_fraction = 0.1 # 10% of the trials will be catch trials
         self.is_catch_trial = False
         
@@ -270,34 +277,54 @@ class AdaptiveSensorimotorTask:
     
              
     def should_switch_block(self):
-        """Check if the last 20 valid trials meet the 85% correct threshold."""
-        valid_trials = [trial for trial in self.trial_history if trial is not None]
-    
+       """
+        Return True if BOTH:
+          - we have at least 20 valid trials in the current block, and
+          - the last 20 valid trials are ≥ 85% correct.
+        Valid = lick-based trials (correct or incorrect). Catch & omissions excluded.
+        """        
+        valid_trials = [t for t in self.trial_history if t is not None]
         if len(valid_trials) < 20:
-            return False  # Not enough valid trials to evaluate
+            return False
+        accuracy = (sum(valid_trials[-20:]) / 20.0) * 100.0
+        return accuracy >= 85.0
     
-        recent_trials = valid_trials[-20:]  # Get last 5 valid trials
-        correct_trials = sum(recent_trials)  # Count correct ones
-        accuracy = (correct_trials / len(recent_trials)) * 100  # Calculate accuracy dynamically
-    
-        return accuracy >= 85
+    def eligible_to_switch(self):
+        """Return True only if minimum trial count reached AND accuracy rule holds."""
+        return (self.trials_in_block >= self.trial_limit) and self.should_switch_block()
+
+    def maybe_switch_block(self):
+        """Evaluate and switch block if eligibility is satisfied."""
+        if self.eligible_to_switch():
+            self.switch_block()
 
 
     def switch_block(self):
         # Switch between sound and action blocks only if criteria is met (85% correct)
         # Block type selection should have a set structure. Session always starts with Sounds and after that Action-right or left are randomly
             #picked. From that moment on, the structure is fixed: either S-AR-S-AL-S-AR-S-AL or S-AL-S-AR-S-AL-S-AR
-        # if not self.should_switch_block():
-            #print("Block switch criteria not met. Staying in the current block.")
-            #return  # Stay in the current block if criteria not met
-        """Switch between sound and action blocks and update block counters."""
+        # Clear accuracy window for the new block and set a new trial limit (40-60)
+
         if self.current_block == "sound":
-            self.current_block = random.choice(["action-left", "action-right"])
+            # Enter action block on the planned side
+            side = self.next_action_side
+            self.current_block = f"action-{side}"
+            # Toggle for the next time we leave sound
+            self.next_action_side = "right" if side == "left" else "left"
         else:
+            # From any action block, go back to sound
             self.current_block = "sound"
+            # When entering sound, later we'll go to the toggled action side
         
-        self.trial_limit = random.randint(40, 60)  # Random number of trials for new block - should be 40-60
-        self.trials_in_block = 0  # Reset trial count for new block
+        # Reset block-scoped state
+        self.trials_in_block = 0
+        self.trial_history.clear()  # reset valid-trial history for the new block
+        self.trial_limit = random.randint(40, 60)  # new minimum trials for the new block
+        print(f"New block '{self.current_block}' with min trials: {self.trial_limit}")
+        
+        # Reset debiasing history when a new sound block starts
+        if self.current_block == "sound":
+            self.decision_history = []
         
         # Update block counters only once per block switch
         if self.current_block != self.last_block:
@@ -312,7 +339,7 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_action_r_blocks(self.action_right_block_count)
             self.last_block = self.current_block  # Prevent duplicate counting
         
-        print(f"Switching to {self.current_block} block, trials: {self.trial_limit}")
+        print(f"Switching to {self.current_block} block")
         print(f"Block counts - Sound: {self.sound_block_count}, Action-Left: {self.action_left_block_count}, Action-Right: {self.action_right_block_count}")
 
     
@@ -321,7 +348,6 @@ class AdaptiveSensorimotorTask:
         """ Initiates a trial, runs LED in paralledl, and logs trial start"""
         
         with self.lock:
-            
             if self.trialstarted:
                 return
             
@@ -340,10 +366,6 @@ class AdaptiveSensorimotorTask:
             self.plot_updated = False
             
             self.is_catch_trial = random.random() < self.catch_trials_fraction
-            
-            # If a new "sound" block starts, reset licking history (execpt if it is the 1st sound block of the session)
-            if self.current_block == "sound" and self.trials_in_block == 1:
-                self.decision_history = []  # Clear past trial history
             
             # Determine trial type
             if self.is_catch_trial:
@@ -364,9 +386,11 @@ class AdaptiveSensorimotorTask:
                 elif self.current_block == "action-left":
                     self.current_tone = random.choice(["8KHz", "16KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "left"  # Always reward left, punish right
+                
                 elif self.current_block == "action-right":
                     self.current_tone = random.choice(["8KHz", "16KHz"])  # Play sound, but it's ignored
                     self.correct_spout = "right"  # Always reward right, punish left
+                
                 print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
                 self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
                 self.gui_controls.ui.OV_box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
@@ -397,34 +421,20 @@ class AdaptiveSensorimotorTask:
                 if not self.trial_saved: # Added 15/05/2025
                     self.save_data()
                     self.trial_saved = True
+                    
+                # Evaluate possible switch even after early-lick abort (eligibility might already be met)
+                self.maybe_switch_block()
                 return  # Exit trial 
+                
            
             # Play sound  
             self.play_sound(self.current_tone)
             
-            autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
-            
-            if autom_rewards:
-                print(f"Automatic reward given at {self.correct_spout}")
-                threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.autom_rewards += 1
-                self.gui_controls.update_autom_rewards(self.autom_rewards)
-                self.tend = time.time()
-                self.trial_duration = (self.tend-self.ttrial)
-                self.gui_controls.update_trial_duration(self.trial_duration)
-                self.schedule_next_trial()
-                # Save trial data
-                if not self.trial_saved: # Added 15/05/2025
-                    self.save_data()
-                    self.trial_saved = True
-                
-            if not autom_rewards:   # **If Automatic Reward is NOT checked, proceed with standard response window**
-                self.RW_start = time.time()  # Start response window
+            # Start response window
+            self.RW_start = time.time() 
              
-                # Wait for response window to finish if no lick happens
-                threading.Thread(target=self.wait_for_response, daemon=True).start()
+            # Wait for response window to finish if no lick happens
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
                 
             # Check for block switch
             if self.trials_in_block >= self.trial_limit:
@@ -540,6 +550,9 @@ class AdaptiveSensorimotorTask:
                         if not self.trial_saved: # Added 15/05/2025
                             self.save_data()
                             self.trial_saved=True
+                        
+                        # Catch doesn't affect accuracy; still can check switch eligibility
+                        self.maybe_switch_block()
                         return  # Exit function to prevent normal trial execution
                         
                         
@@ -576,6 +589,8 @@ class AdaptiveSensorimotorTask:
                         if not self.trial_saved: # Added 15/05/2025
                             self.save_data()
                             self.trial_saved=True
+                        # Catch doesn't affect accuracy; still can check switch eligibility
+                        self.maybe_switch_block()
                         return  # Exit function to prevent normal trial execution
                     
         
@@ -601,14 +616,14 @@ class AdaptiveSensorimotorTask:
                             threading.Thread(target=self.reward, args=('left',)).start() 
 
                             self.correct_trials += 1
-                            self.trial_history.append(1)  
+                            self.trial_history.append(1)  # Valid trial: correct
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
                         else:
                             self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
-                            self.trial_history.append(0)  
+                            self.trial_history.append(0)  #Valid trial: Incorrect
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                         
                             
@@ -627,6 +642,9 @@ class AdaptiveSensorimotorTask:
                         if not self.trial_saved: # Added 15/05/2025
                             self.save_data()
                             self.trial_saved=True
+                            
+                        # Evaluate block switch (needs both: min trials reached AND ≥85% on last 20 valid)
+                        self.maybe_switch_block()
                         return
                     
                 
@@ -652,14 +670,14 @@ class AdaptiveSensorimotorTask:
                            
                             
                             self.correct_trials += 1
-                            self.trial_history.append(1)  
+                            self.trial_history.append(1)  #Valid trial: Correct
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
                         else:
                             self.play_sound('white_noise')
                             print('wrong spout')
                             self.incorrect_trials +=1
-                            self.trial_history.append(0)  
+                            self.trial_history.append(0)  #Valid trial: Incorrect
                             self.gui_controls.update_incorrect_trials(self.incorrect_trials)
                             
                         self.total_licks += 1
@@ -677,17 +695,10 @@ class AdaptiveSensorimotorTask:
                         if not self.trial_saved: # Added 15/05/2025
                             self.save_data()
                             self.trial_saved=True
+                            
+                        # Evaluate block switch (needs both: min trials reached AND ≥85% on last 20 valid)
+                        self.maybe_switch_block()
                         return
-                    
-        # Only add if it's a valid trial (correct or incorrect, not None)
-        if trial_result is not None:
-            self.trial_history.append(trial_result)
-            if len(self.trial_history) > 5:
-                self.trial_history.pop(0)  # Keep only last 5 trials
-
-        # Check for block switch
-        if self.trials_in_block >= self.trial_limit:
-            self.switch_block()
                    
 
     def omission_callback(self):
@@ -709,11 +720,11 @@ class AdaptiveSensorimotorTask:
         if not self.trial_saved: # Added this 15/05/2025
             self.save_data()
             self.trial_saved=True
+            
+        # Omissions don't affect accuracy, but we can still be eligible already
+        self.maybe_switch_block()
         
-        # Check for block switch
-        if self.trials_in_block >= self.trial_limit:
-         self.switch_block()
-      
+       
     def wait_for_response(self):
         self.timer_3 = threading.Timer(self.RW, self.omission_callback)
         self.timer_3.start()
