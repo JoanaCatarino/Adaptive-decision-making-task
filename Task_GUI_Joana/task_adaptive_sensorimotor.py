@@ -277,13 +277,14 @@ class AdaptiveSensorimotorTask:
     
              
     def should_switch_block(self):
-       """
+        """
         Return True if BOTH:
           - we have at least 20 valid trials in the current block, and
           - the last 20 valid trials are ≥ 85% correct.
         Valid = lick-based trials (correct or incorrect). Catch & omissions excluded.
         """        
         valid_trials = [t for t in self.trial_history if t is not None]
+        
         if len(valid_trials) < 20:
             return False
         accuracy = (sum(valid_trials[-20:]) / 20.0) * 100.0
