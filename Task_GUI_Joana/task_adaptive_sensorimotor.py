@@ -519,6 +519,7 @@ class AdaptiveSensorimotorTask:
         # Catch trial: Record licks without giving reward or punishment
         if self.is_catch_trial:
             if p1 and p1[-1] > self.threshold_left:
+                
                 with self.lock:
                     self.tlick_l = time.time()
                     elapsed_left = self.tlick_l - self.RW_start
