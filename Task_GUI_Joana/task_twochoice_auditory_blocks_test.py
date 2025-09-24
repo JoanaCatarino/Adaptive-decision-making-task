@@ -20,7 +20,7 @@ from sound_generator import tone_16KHz, tone_8KHz, white_noise
 from pathlib import Path
 
 
-class TwoChoiceAuditoryTask:
+class TwoChoiceAuditoryTask_Blocks_test:
     
     def __init__(self, gui_controls, csv_file_path): 
     
