@@ -69,6 +69,7 @@ class AdaptiveSensorimotorTask:
         
         # History for accuracy check (only current block, only valid trials, last 20)
         self.trial_history = deque(maxlen=20)
+        self.block_valid_trials = 0
         
         # Block counters
         self.sound_block_count = 0
@@ -298,6 +299,8 @@ class AdaptiveSensorimotorTask:
         """Evaluate and switch block if eligibility is satisfied."""
         if self.eligible_to_switch():
             self.switch_block()
+            
+        print(f"[maybe_switch_block] block_valid_trials={self.block_valid_trials}")
 
 
     def switch_block(self):
@@ -319,6 +322,7 @@ class AdaptiveSensorimotorTask:
         
         # Reset block-scoped state
         self.trials_in_block = 0
+        self.block_valid_trials = 0
         self.trial_history.clear()  # reset valid-trial history for the new block
         self.trial_limit = random.randint(40, 60)  # new minimum trials for the new block
         print(f"New block '{self.current_block}' with min trials: {self.trial_limit}")
@@ -619,6 +623,7 @@ class AdaptiveSensorimotorTask:
 
                             self.correct_trials += 1
                             self.trial_history.append(1)  # Valid trial: correct
+                            self.block_valid_trials += 1
                             self.gui_controls.update_correct_trials(self.correct_trials)
                                 
                         else:
@@ -673,6 +678,7 @@ class AdaptiveSensorimotorTask:
                             
                             self.correct_trials += 1
                             self.trial_history.append(1)  #Valid trial: Correct
+                            self.block_valid_trials += 1
                             self.gui_controls.update_correct_trials(self.correct_trials)
                             
                         else:
