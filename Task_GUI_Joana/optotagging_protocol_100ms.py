@@ -6,6 +6,7 @@ Created on Thu Oct  2 09:25:26 2025
 """
 
 import threading
+import time
 import os
 os.environ.setdefault("GPIOZERO_PIN_FACTORY", "lgpio")  # Pi 5 friendly backend
 

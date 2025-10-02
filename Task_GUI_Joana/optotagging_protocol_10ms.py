@@ -8,6 +8,7 @@ Protocol for optotagging units after task
 """
 
 import threading
+import time
 import os
 os.environ.setdefault("GPIOZERO_PIN_FACTORY", "lgpio")  # Pi 5 friendly backend
 
