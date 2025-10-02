@@ -15,7 +15,7 @@ def calibration_opto_100ms():
     
     for i in range(quant):
         
-        print(f'pulse {i+1}/{n}')
+        print(f'pulse {i+1}/{quant}')
         laser.on()
         time.sleep(pulse_duration)
         laser.off()
