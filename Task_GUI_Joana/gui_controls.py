@@ -44,13 +44,16 @@ from gpio_map import *
 from task_test_rig import TestRig
 from task_free_licking import FreeLickingTask
 from task_spout_sampling import SpoutSamplingTask
+from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
 from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistractor
 
+# Import recording protocols as tasks
+from passive_protocol_sounds import PassiveSoundRecordings
+from optotagging_protocol import OptoProtocol
 
 # Import test tasks
-from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
 from task_twochoice_auditory_blocks_test import TwoChoiceAuditoryTask_Blocks_test
 
 
@@ -636,6 +639,12 @@ class GuiControls:
         elif selected_task == 'test Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
             
+        elif slected_task == 'Passive protocol sounds':
+            self.current_task = PassiveSoundRecordings(self)
+            
+        elif slected_task == 'Optotagging protocol':
+            self.current_task = OptoProtocol(self)
+            
         
         if self.current_task:
             self.current_task.start()
@@ -757,7 +766,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)

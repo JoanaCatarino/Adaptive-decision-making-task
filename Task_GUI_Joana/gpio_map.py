@@ -23,11 +23,9 @@ led_white_l = LED(23) #GND 25
 led_blue = LED(17) #GND 9
 pump_l = OutputDevice(22) #no GND
 pump_r = OutputDevice(27) #no GND
-laser = OutputDevice(24) #no GND and only ephys
-btn_l = Button(1) #GND 30
-btn_r = Button(16) #GND 34
+laser = OutputDevice(24) #no GND and only ephys (confirm this??) - red laser for optotagging
 
 # needs to be updated with the different pin numbers for the Grounds that are being used
 
 # Updated all
-__all__= ['led_white_l', 'led_white_r', 'led_blue', 'pump_l', 'pump_r', 'laser', 'btn_l', 'btn_r']
+__all__= ['led_white_l', 'led_white_r', 'led_blue', 'pump_l', 'pump_r', 'laser']

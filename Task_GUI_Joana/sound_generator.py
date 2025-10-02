@@ -60,6 +60,10 @@ def white_noise():
     duration = 2  # Duration in seconds
     sound = generate_white_noise(duration, sample_rate)
     play_sound(sound, sample_rate)
+    
+
+    
+
 
 
 
