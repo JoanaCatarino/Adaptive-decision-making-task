@@ -21,7 +21,7 @@ def task (combobox, font_size=8):
              'Adaptive Sensorimotor Task',
              'Adaptive Sensorimotor Task w/ Distractor',
              'test Two-Choice Auditory Task Blocks',
-             'Passive protocol sounds'
+             'Passive protocol sounds',
              'Optotagging 10ms protocol',
              'Optotagging 100ms protocol'
              ]
