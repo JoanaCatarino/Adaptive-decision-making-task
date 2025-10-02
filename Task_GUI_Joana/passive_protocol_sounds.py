@@ -15,6 +15,7 @@ interval of 10 sec between sounds
 
 """
 import threading
+import time
 from gpio_map import *
 from gpiozero import LED
 from time import sleep
