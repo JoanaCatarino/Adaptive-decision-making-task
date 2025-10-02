@@ -658,13 +658,13 @@ class GuiControls:
         elif selected_task == 'test Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
             
-        elif selected_task == 'Passive protocol sounds':
+        elif selected_task == 'Recording - Passive protocol sounds':
             self.current_task = PassiveSoundRecordings(self)
             
-        elif selected_task == 'Optotagging 10ms protocol':
+        elif selected_task == 'Recording - Optotagging 10ms protocol':
             self.current_task = OptoProtocol10ms(self)
             
-        elif selected_task == 'Optotagging 100ms protocol':
+        elif selected_task == 'Recording - Optotagging 100ms protocol':
             self.current_task = OptoProtocol100ms(self)
             
         
