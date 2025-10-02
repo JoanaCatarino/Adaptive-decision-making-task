@@ -16,7 +16,7 @@ from gpio_map import *
 from time import sleep
 from form_updt import Ui_TaskGui
 
-class OptoProtocol:
+class OptoProtocol10ms:
    
     def __init__(self, ui, gui_controls=None):
             self.ui = ui
@@ -29,7 +29,7 @@ class OptoProtocol:
             self.start()
     
         def start(self):
-            print('Passive Protocol with Laser (Optotagging) starting')
+            print('Optotagging protocol 10ms starting')
     
             # Turn the PUMPs ON initially (kept exactly like your example)
             pump_l.on()
@@ -44,7 +44,7 @@ class OptoProtocol:
             self.print_thread.start()
     
         def stop(self):
-            print("Stopping Passive Optotagging Protocol...")
+            print("Stopping Passive Optotagging Protocol 10ms...")
             self.running = False
             # Follow your pattern: pumps ON in stop as well
             pump_l.on()
@@ -60,6 +60,7 @@ class OptoProtocol:
                 raise ValueError("Invalid timing: ensure 0 <= width_s <= period_s and period_s > 0.")
     
             off_s = period_s - width_s
+            
             for i in range(n):
                 if not self.running:
                     break
@@ -82,24 +83,20 @@ class OptoProtocol:
             # Leave LOW after block
             device.off()
     
-        def run_sequence(self):
-            # Block 1: 100 pulses, 10 ms ON @ 1 Hz
+        def run_sequence_10ms(self):
+            # 100 pulses, 10 ms ON @ 1 Hz
             self._pulse_train(laser, width_s=0.010, n=100, period_s=1.0, label="10 ms block")
     
             if not self.running:
                 return
-    
-            # Block 2: 100 pulses, 100 ms ON @ 1 Hz
-            self._pulse_train(laser, width_s=0.100, n=100, period_s=1.0, label="100 ms block")
-    
+            
             print("Sequence of laser pulses is finished!")
+           
             # Stop protocol once all pulses were played (mirrors your example)
             self.stop()
     
         def main(self):
             while self.running:
                 self.run_sequence()
-            duration_2 = 
-            
             
             

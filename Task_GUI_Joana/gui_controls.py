@@ -38,6 +38,8 @@ from performance_plot import PlotLicks
 from performance_plot_advanced import PlotPerformance
 from piezo_reader import PiezoReader
 from calibration_pumps import calibration_pumps
+from calibration_opto_10ms import calibration_opto_10ms
+from calibration_opto_100ms import calibration_opto_100ms
 from gpio_map import *
 
 # Import task classes
@@ -51,7 +53,8 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 # Import recording protocols as tasks
 from passive_protocol_sounds import PassiveSoundRecordings
-from optotagging_protocol import OptoProtocol
+from optotagging_protocol_10ms import OptoProtocol10ms
+from optotagging_protocol_100ms import OptoProtocol100ms
 
 # Import test tasks
 from task_twochoice_auditory_blocks_test import TwoChoiceAuditoryTask_Blocks_test
@@ -283,6 +286,16 @@ class GuiControls:
         except Exception as e:
             print(f'Calibration failed:{e}')
             
+    def test_opto_10ms(self):
+        try:
+            print('Starting test for 10ms opto')
+            calibration_opto_10ms()
+            
+    def test_opto_100ms(self):
+        try:
+            print('Starting test for 100ms opto')
+            calibration_opto_100ms()
+            
             
             
     '''
@@ -404,6 +417,8 @@ class GuiControls:
         self.ui.btn_cam_reset.clicked.connect(self.reset_camera_settings)
         self.ui.btn_CheckHardware.clicked.connect(self.check_hardware_connections)
         self.ui.btn_Calibration.clicked.connect(self.calibration)
+        self.ui.btn_Opto10.clicked.connect(self.test_opto_10ms) #10ms opto test
+        self.ui.btn_Opto100.clicked.connect(self.test_opto_100ms) #100ms opto test
 
     def connect_text_changes(self):
         # Check for inputs received in the QLineEdits
@@ -639,11 +654,14 @@ class GuiControls:
         elif selected_task == 'test Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
             
-        elif slected_task == 'Passive protocol sounds':
+        elif selected_task == 'Passive protocol sounds':
             self.current_task = PassiveSoundRecordings(self)
             
-        elif slected_task == 'Optotagging protocol':
-            self.current_task = OptoProtocol(self)
+        elif selected_task == 'Optotagging 10ms protocol':
+            self.current_task = OptoProtocol10ms(self)
+            
+        elif selected_task == 'Optotagging 100ms protocol':
+            self.current_task = OptoProtocol100ms(self)
             
         
         if self.current_task:
@@ -766,7 +784,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol10ms, OptoProtocol100ms)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)

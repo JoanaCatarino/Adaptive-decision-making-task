@@ -574,42 +574,6 @@ background-color: rgb(255, 203, 198);</string>
         <string>Optotagging Protocols :</string>
        </property>
       </widget>
-      <widget class="QCheckBox" name="chk_OptoShort">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>722</y>
-         <width>161</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Short pulses protocol</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="chk_OptoLong">
-       <property name="geometry">
-        <rect>
-         <x>21</x>
-         <y>752</y>
-         <width>161</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Long pulses protocol</string>
-       </property>
-      </widget>
       <widget class="QRadioButton" name="chk_WhiteLED_Right">
        <property name="geometry">
         <rect>
@@ -803,96 +767,10 @@ border-color: rgb(227, 153, 100);</string>
         <string>No Punishment</string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_AssociationTrials_2">
-       <property name="geometry">
-        <rect>
-         <x>278</x>
-         <y>496</y>
-         <width>40</width>
-         <height>19</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-         <bold>true</bold>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(171, 78, 15);</string>
-       </property>
-       <property name="text">
-        <string>Level 1</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_QuietWindow_2">
-       <property name="geometry">
-        <rect>
-         <x>248</x>
-         <y>518</y>
-         <width>101</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(171, 78, 15);</string>
-       </property>
-       <property name="text">
-        <string>Automatic Reward</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_QuietWindow_3">
-       <property name="geometry">
-        <rect>
-         <x>248</x>
-         <y>538</y>
-         <width>101</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(171, 78, 15);</string>
-       </property>
-       <property name="text">
-        <string>No punishment</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_QuietWindow_4">
-       <property name="geometry">
-        <rect>
-         <x>248</x>
-         <y>558</y>
-         <width>101</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(171, 78, 15);</string>
-       </property>
-       <property name="text">
-        <string>Ignore licks in WW</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="lbl_AssociationTrials_3">
        <property name="geometry">
         <rect>
-         <x>396</x>
+         <x>270</x>
          <y>495</y>
          <width>40</width>
          <height>19</height>
@@ -909,13 +787,13 @@ border-color: rgb(227, 153, 100);</string>
         <string notr="true">color: rgb(32, 95, 95);</string>
        </property>
        <property name="text">
-        <string>Level 2</string>
+        <string>Level 1</string>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_QuietWindow_5">
        <property name="geometry">
         <rect>
-         <x>374</x>
+         <x>248</x>
          <y>518</y>
          <width>101</width>
          <height>21</height>
@@ -936,7 +814,7 @@ border-color: rgb(227, 153, 100);</string>
       <widget class="QLabel" name="lbl_QuietWindow_7">
        <property name="geometry">
         <rect>
-         <x>374</x>
+         <x>248</x>
          <y>538</y>
          <width>101</width>
          <height>21</height>
@@ -1179,6 +1057,32 @@ border-color: rgb(227, 153, 100);</string>
         <font>
          <pointsize>9</pointsize>
         </font>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_Opto10">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>720</y>
+         <width>131</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Test 10ms Pulses</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_Opto100">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>750</y>
+         <width>131</width>
+         <height>24</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Test 100ms Pulses</string>
        </property>
       </widget>
      </widget>
