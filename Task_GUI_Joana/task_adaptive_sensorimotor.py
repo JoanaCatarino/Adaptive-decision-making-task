@@ -810,7 +810,7 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
-            np.nan if not hasattr(self, 'block_size') else self.trial_limit,  #Min number of trials per block
+            #np.nan if not hasattr(self, 'block_size') else self.trial_limit,  #Min number of trials per block
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
@@ -822,7 +822,7 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
             np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
-            np.nan if not hasattr(self, 'RW_start') else self.RW_start, # timestamp for response window start
+            #np.nan if not hasattr(self, 'RW_start') else self.RW_start, # timestamp for response window start
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
             np.nan if not hasattr(self, 'WW') else self.WW,
