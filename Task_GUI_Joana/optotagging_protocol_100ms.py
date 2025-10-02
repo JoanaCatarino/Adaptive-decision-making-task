@@ -95,7 +95,7 @@ class OptoProtocol100ms:
 
     def main(self):
         while self.running:
-            self.run_sequence()
+            self.run_sequence_100ms()
                 
                 
                 
