@@ -72,15 +72,15 @@ class PassiveSoundRecordings:
         print("Waiting 10 seconds before 16KHz sequence...")
         time.sleep(10)
     
-         # Play 16KHz 30 times, 5 sec apart
-         for i in range(30):
-             print(f"Playing 16KHz sound {i+1}/30")
-             self.play_sound("16KHz")
-             time.sleep(5)
+        # Play 16KHz 30 times, 5 sec apart
+        for i in range(30):
+            print(f"Playing 16KHz sound {i+1}/30")
+            self.play_sound("16KHz")
+            time.sleep(5)
+            
+        print("Sequence of sounds is finished!")
              
-         print("Sequence of sounds is finished!")
-             
-         self.stop() # Stop protocol once all the sequence of sounds was played
+        self.stop() # Stop protocol once all the sequence of sounds was played
               
          
          
