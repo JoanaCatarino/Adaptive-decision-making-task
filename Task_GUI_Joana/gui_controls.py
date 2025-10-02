@@ -290,11 +290,15 @@ class GuiControls:
         try:
             print('Starting test for 10ms opto')
             calibration_opto_10ms()
+        except Exception as e:
+            print(f'Test failed:{e}')
             
     def test_opto_100ms(self):
         try:
             print('Starting test for 100ms opto')
             calibration_opto_100ms()
+        except Exception as e:
+            print(f'Test failed:{e}')
             
             
             
