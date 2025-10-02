@@ -822,7 +822,7 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
             np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
-            #np.nan if not hasattr(self, 'RW_start') else self.RW_start, # timestamp for response window start
+            np.nan if not hasattr(self, 'RW_start') else self.RW_start, # timestamp for response window start
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
             np.nan if not hasattr(self, 'WW') else self.WW,
