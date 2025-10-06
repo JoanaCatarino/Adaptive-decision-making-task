@@ -55,6 +55,7 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 from passive_protocol_sounds import PassiveSoundRecordings
 from optotagging_protocol_10ms import OptoProtocol10ms
 from optotagging_protocol_100ms import OptoProtocol100ms
+from optotagging_protocol_2ms import OptoProtocol2ms
 
 # Import test tasks
 from task_twochoice_auditory_blocks_test import TwoChoiceAuditoryTask_Blocks_test

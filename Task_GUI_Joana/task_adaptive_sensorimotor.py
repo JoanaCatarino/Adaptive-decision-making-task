@@ -463,9 +463,11 @@ class AdaptiveSensorimotorTask:
 
     def blue_led_on(self):
         led_blue.on()
+        ttl_blue.on()
         
     def blue_led_off(self):
         led_blue.off()
+        ttl_blue.off()
         
     
     def detect_licks_during_waiting_window(self):
