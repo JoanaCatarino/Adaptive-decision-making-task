@@ -525,7 +525,7 @@ class AdaptiveSensorimotorTask:
         
         # Catch trial: Record licks without giving reward or punishment
         if self.is_catch_trial:
-            if p1 > 0:
+            if p1.size > 0:
                 
                 if max(p1) > self.threshold_left:
             
@@ -565,7 +565,7 @@ class AdaptiveSensorimotorTask:
                         return  # Exit function to prevent normal trial execution
                         
                         
-            if p2 > 0:
+            if p2.size > 0:
                 
                 if max(p2) > self.threshold_right:
                     
@@ -607,7 +607,7 @@ class AdaptiveSensorimotorTask:
         # For normal trials
         # Left piezo
         
-        if p1 > 0:
+        if p1.size > 0:
             
             if max(p1) > self.threshold_left:
     
@@ -662,7 +662,7 @@ class AdaptiveSensorimotorTask:
                 
         # Right piezo
 
-        if p2 > 0:
+        if p2.size > 0:
             
             if max(p2) > self.threshold_right:
     
