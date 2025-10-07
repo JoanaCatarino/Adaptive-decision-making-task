@@ -515,8 +515,8 @@ class AdaptiveSensorimotorTask:
         """Checks for licks and delivers rewards in parallel."""
 
         # Ensure piezo data is updated before checking
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint8)
+        p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint8)
     
         # Small delay to prevent CPU overload and stabilize readings
         time.sleep(0.001)
