@@ -664,7 +664,7 @@ class AdaptiveSensorimotorTask:
 
         if p2.size > 0:
             
-            if max(p2 > self.threshold_right:
+            if max(p2) > self.threshold_right:
     
                 first_index = np.argwhere(p2>=self.threshold_right)[0][0]
                 self.t_first_index = time.time() - 1/60 * (len(p1) - first_index)
