@@ -662,6 +662,9 @@ class GuiControls:
         elif selected_task == 'Recording - Passive protocol sounds':
             self.current_task = PassiveSoundRecordings(self)
             
+        elif selected_task == 'Recording - Optotagging 2ms protocol':
+            self.current_task = OptoProtocol2ms(self)
+            
         elif selected_task == 'Recording - Optotagging 10ms protocol':
             self.current_task = OptoProtocol10ms(self)
             
@@ -789,7 +792,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol10ms, OptoProtocol100ms)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol2ms, OptoProtocol10ms, OptoProtocol100ms)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)
