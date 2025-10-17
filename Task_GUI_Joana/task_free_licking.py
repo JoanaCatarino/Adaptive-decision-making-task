@@ -150,6 +150,7 @@ class FreeLickingTask:
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
+            self.RW_start = self.ttrial # Start of response window
             self.first_lick = None # Reset first lick at the start of each trial
             self.is_rewarded = False
             
@@ -315,6 +316,7 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz
+            np.nan if not hasattr(self, 'RW_start') else self.RW_start, # Response window start 
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
