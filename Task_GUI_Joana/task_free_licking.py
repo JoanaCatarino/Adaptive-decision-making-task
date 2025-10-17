@@ -112,38 +112,49 @@ class FreeLickingTask:
         
     
     def check_animal_quiet(self):
-        """Start counting QW only from the moment this is called.
-        Return True after QW seconds of continuous quiet; reset on any activity."""
+        """Count QW only from call time; if any lick happens during QW, restart the timer."""
         if self.QW == 0:
             return True
     
-        quiet_since = time.time()
-        last_state_active = None
+        SAMPLERATE = 60.0  # Hz
+        anchor = time.time()  # when we started counting quiet
     
         while self.running:
-            # Read latest samples
+            # Read buffers
             p1 = np.array(self.piezo_reader.piezo_adder1, dtype=np.uint16)
             p2 = np.array(self.piezo_reader.piezo_adder2, dtype=np.uint16)
     
-            # Consider only *current* activity; anything before this call is ignored
-            left_active  = (p1.size > 0) and (p1[-1] > self.threshold_left)
-            right_active = (p2.size > 0) and (p2[-1] > self.threshold_right)
-            active = left_active or right_active
+            # How many samples correspond to time since we started counting quiet?
+            elapsed = time.time() - anchor
+            samples_needed = int(elapsed * SAMPLERATE)
+            if samples_needed <= 0:
+                time.sleep(0.005)
+                continue
+    
+            # Look only at samples collected SINCE 'anchor'
+            n1 = min(samples_needed, p1.size)
+            n2 = min(samples_needed, p2.size)
+            win1 = p1[-n1:] if n1 > 0 else None
+            win2 = p2[-n2:] if n2 > 0 else None
+    
+            # Any activity in that window? (> threshold; change to >0 for amplitude-independent)
+            active_left  = (win1 is not None) and win1.size and (win1.max() > self.threshold_left)
+            active_right = (win2 is not None) and win2.size and (win2.max() > self.threshold_right)
+            active = active_left or active_right
     
             if active:
-                quiet_since = time.time()  # restart quiet timer
-                if last_state_active is not True:
-                    print('Licks detected during Quiet Window')
-                    last_state_active = True
-            else:
-                if (time.time() - quiet_since) >= self.QW:
-                    return True
-                if last_state_active is not False:
-                    last_state_active = False
+                # Restart quiet timing because a lick occurred during QW
+                anchor = time.time()
+                print('Licks detected during Quiet Window')
     
-            time.sleep(0.005)  # be gentle on CPU
+            elif elapsed >= self.QW:
+                # Achieved continuous quiet for QW seconds since 'anchor'
+                return True
+    
+            time.sleep(0.005)
     
         return False
+
 
     
      
