@@ -111,7 +111,7 @@ class FreeLickingTask:
         
         
     
-   def check_animal_quiet(self):
+    def check_animal_quiet(self):
         """Require QW seconds of quiet AFTER the previous trial ended."""
         if self.QW == 0:
             return True
@@ -120,7 +120,6 @@ class FreeLickingTask:
             return True
     
         required_samples = int(self.QW * 60)  # 60 Hz
-        
         while True:
             if not self.running:
                 return False
@@ -153,6 +152,7 @@ class FreeLickingTask:
                 pass
     
             time.sleep(0.01)
+
     
      
     def start_trial(self):
