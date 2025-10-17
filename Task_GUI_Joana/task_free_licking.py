@@ -111,36 +111,48 @@ class FreeLickingTask:
         
         
     
-    def check_animal_quiet(self):
-        
-        """ Continuously checks for a quiet period before starting a trial, unless QW = 0 """
-        
+   def check_animal_quiet(self):
+        """Require QW seconds of quiet AFTER the previous trial ended."""
         if self.QW == 0:
             return True
-        
-        required_samples = self.QW*60 # Serial runs in 60 Hz   
+        # Don't enforce QW before the first trial
+        if getattr(self, "tend", None) is None:
+            return True
+    
+        required_samples = int(self.QW * 60)  # 60 Hz
         
         while True:
             if not self.running:
                 return False
-            
-            p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
-            p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
-        
-        
-            if len(p1) >= required_samples and len(p2) >= required_samples:
-                quiet_left = max(p1[-required_samples:]) < self.threshold_left
-                quiet_right = max(p2[-required_samples:]) < self.threshold_right
-               
+    
+            p1 = np.array(self.piezo_reader.piezo_adder1, dtype=np.uint16)
+            p2 = np.array(self.piezo_reader.piezo_adder2, dtype=np.uint16)
+    
+            # How many samples have arrived since the last trial ended?
+            since_end_secs = max(0.0, time.time() - self.tend)
+            samples_since_end = int(since_end_secs * 60)
+            window = min(required_samples, samples_since_end)
+    
+            # If we haven't even accumulated QW seconds worth of new samples yet, keep waiting
+            if window < required_samples:
+                time.sleep(0.01)
+                continue
+    
+            # Slice only the samples that occurred AFTER trial end
+            # (ignore older samples that still include the previous lick)
+            if p1.size >= samples_since_end and p2.size >= samples_since_end:
+                quiet_left  = p1[-window:].max(initial=0) < self.threshold_left
+                quiet_right = p2[-window:].max(initial=0) < self.threshold_right
+    
                 if quiet_left and quiet_right:
-                    return True # Animal was quiet
+                    return True
                 else:
                     print('Licks detected during Quiet Window')
-                    
             else:
-                print('Waiting for enough data to check quiet window')
-            
-            time.sleep(0.1) # prevents excessive CPU usage
+                # Not enough buffer yet; wait a moment
+                pass
+    
+            time.sleep(0.01)
     
      
     def start_trial(self):
