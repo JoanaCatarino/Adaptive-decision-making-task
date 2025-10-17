@@ -150,7 +150,6 @@ class FreeLickingTask:
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
-            self.RW_start = self.ttrial # Start of response window
             self.first_lick = None # Reset first lick at the start of each trial
             self.is_rewarded = False
             
@@ -202,8 +201,8 @@ class FreeLickingTask:
         # Response window in FreeLickingTask is [ttrial, ttrial+RW)
         if self.ttrial is None:
             return
-        in_rw_left  = (t_left  is not None) and (self.ttrial < t_left  < self.RW_start + self.RW)
-        in_rw_right = (t_right is not None) and (self.ttrial < t_right < self.RW_start + self.RW)
+        in_rw_left  = (t_left  is not None) and (self.ttrial < t_left  < self.ttrial + self.RW)
+        in_rw_right = (t_right is not None) and (self.ttrial < t_right < self.ttrial + self.RW)
     
         # Nothing to do or we already handled the first lick
         if not (in_rw_left or in_rw_right) or self.first_lick is not None:
