@@ -178,89 +178,84 @@ class FreeLickingTask:
         
         
     def detect_licks(self):
+        """Detect any lick (amplitude-independent) during the response window and handle outcome."""
     
-        """Checks for licks and delivers rewards in parallel."""
-
-        # Ensure piezo data is updated before checking
-        p1 = list(self.piezo_reader.piezo_adder1)
-        p2 = list(self.piezo_reader.piezo_adder2)
+        # Grab current buffers (60 Hz stream; values assumed unsigned integers)
+        p1 = np.array(self.piezo_reader.piezo_adder1, dtype=np.uint16)  # left
+        p2 = np.array(self.piezo_reader.piezo_adder2, dtype=np.uint16)  # right
     
-        # Small delay to prevent CPU overload and stabilize readings
+        # Tiny sleep to reduce CPU churn
         time.sleep(0.001)
     
-        # Left piezo
-        if p1:
-            latest_value1 = p1[-1]
+        # Helper: timestamp of the first non-zero sample in a buffer; None if no lick
+        def first_nonzero_time(buf):
+            if buf.size == 0 or buf.max() == 0:
+                return None
+            first_idx = np.flatnonzero(buf > 0)[0]
+            # Reconstruct wall-clock time of that sample (buffer is latest at the end; 60 Hz)
+            return time.time() - (1/60.0) * (len(buf) - first_idx)
     
-            if latest_value1 > self.threshold_left:
-                with self.lock:
-                    self.tlick_l = time.time()
-                    elapsed_left = self.tlick_l - self.ttrial
+        t_left  = first_nonzero_time(p1)
+        t_right = first_nonzero_time(p2)
     
-                    if self.first_lick is None and (0 < elapsed_left < self.RW):
-                        self.first_lick = 'left'
-                        self.tlick = self.tlick_l
+        # Response window in FreeLickingTask is [ttrial, ttrial+RW)
+        if self.ttrial is None:
+            return
+        in_rw_left  = (t_left  is not None) and (self.ttrial < t_left  < self.ttrial + self.RW)
+        in_rw_right = (t_right is not None) and (self.ttrial < t_right < self.ttrial + self.RW)
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('left',)).start()
+        # Nothing to do or we already handled the first lick
+        if not (in_rw_left or in_rw_right) or self.first_lick is not None:
+            return
     
-                        self.total_licks += 1
-                        self.licks_left += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_left(self.licks_left)
-                        
-                        self.is_rewarded = True
-                        
-                        self.timer_3.cancel()    
-                        self.trialstarted = False
-                        self.tend = time.time()
-                        self.trial_duration = (self.tend-self.ttrial)
-                        self.gui_controls.update_trial_duration(self.trial_duration)
-                        self.next_trial_eligible = True
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+        # Pick the earliest lick if both occurred
+        if in_rw_left and in_rw_right:
+            side, tlick = (('left', t_left) if t_left <= t_right else ('right', t_right))
+        elif in_rw_left:
+            side, tlick = 'left', t_left
+        else:
+            side, tlick = 'right', t_right
     
-                        # Save trial data
-                        self.save_data()
-                        return
+        with self.lock:
+            # Double-check no one beat us to it
+            if self.first_lick is not None:
+                return
     
-        # Right piezo        
-        if p2:
-            latest_value2 = p2[-1]
+            self.first_lick = side
+            self.tlick = tlick
     
-            if latest_value2 > self.threshold_right:
-                with self.lock:
-                    self.tlick_r = time.time()
-                    elapsed_right = self.tlick_r - self.ttrial
+            # Reward (non-blocking)
+            threading.Thread(target=self.reward, args=(side,)).start()
+            self.is_rewarded = True
     
-                    if self.first_lick is None and (0 < elapsed_right < self.RW):
-                        self.first_lick = 'right'
-                        self.tlick = self.tlick_r
+            # Counters & GUI
+            self.total_licks += 1
+            if side == 'left':
+                self.licks_left += 1
+                self.gui_controls.update_licks_left(self.licks_left)
+            else:
+                self.licks_right += 1
+                self.gui_controls.update_licks_right(self.licks_right)
+            self.gui_controls.update_total_licks(self.total_licks)
     
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('right',)).start()
+            # End trial
+            if hasattr(self, 'timer_3') and self.timer_3:
+                try:
+                    self.timer_3.cancel()
+                except Exception:
+                    pass
+            self.trialstarted = False
+            self.tend = time.time()
+            self.trial_duration = (self.tend - self.ttrial)
+            self.gui_controls.update_trial_duration(self.trial_duration)
+            self.next_trial_eligible = True
     
-                        self.total_licks += 1
-                        self.licks_right += 1
-                        self.gui_controls.update_total_licks(self.total_licks)
-                        self.gui_controls.update_licks_right(self.licks_right)
-                        
-                        self.is_rewarded = True
-                        
-                        self.timer_3.cancel()    
-                        self.trialstarted = False
-                        self.tend = time.time()
-                        self.trial_duration = (self.tend-self.ttrial)
-                        self.gui_controls.update_trial_duration(self.trial_duration)
-                        self.next_trial_eligible = True
-                        
-                        # Update live stair plot
-                        self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+            # Live stair plot
+            self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
     
-                        # Save trial data
-                        self.save_data()
-                        return
+            # Persist once
+            self.save_data()
+
     
     def reward(self, side):
         
@@ -351,5 +346,94 @@ class FreeLickingTask:
             writer.writerow(trial_data)
             
     
+"""
 
+old code with threshold crossing
+
+
+def detect_licks(self):
+
+    Checks for licks and delivers rewards in parallel.
+
+    # Ensure piezo data is updated before checking
+    p1 = list(self.piezo_reader.piezo_adder1)
+    p2 = list(self.piezo_reader.piezo_adder2)
+
+    # Small delay to prevent CPU overload and stabilize readings
+    time.sleep(0.001)
+
+    # Left piezo
+    if p1:
+        latest_value1 = p1[-1]
+
+        if latest_value1 > self.threshold_left:
+            with self.lock:
+                self.tlick_l = time.time()
+                elapsed_left = self.tlick_l - self.ttrial
+
+                if self.first_lick is None and (0 < elapsed_left < self.RW):
+                    self.first_lick = 'left'
+                    self.tlick = self.tlick_l
+
+                    # Deliver reward in a separate thread
+                    threading.Thread(target=self.reward, args=('left',)).start()
+
+                    self.total_licks += 1
+                    self.licks_left += 1
+                    self.gui_controls.update_total_licks(self.total_licks)
+                    self.gui_controls.update_licks_left(self.licks_left)
+                    
+                    self.is_rewarded = True
+                    
+                    self.timer_3.cancel()    
+                    self.trialstarted = False
+                    self.tend = time.time()
+                    self.trial_duration = (self.tend-self.ttrial)
+                    self.gui_controls.update_trial_duration(self.trial_duration)
+                    self.next_trial_eligible = True
+                    
+                    # Update live stair plot
+                    self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+
+                    # Save trial data
+                    self.save_data()
+                    return
+
+    # Right piezo        
+    if p2:
+        latest_value2 = p2[-1]
+
+        if latest_value2 > self.threshold_right:
+            with self.lock:
+                self.tlick_r = time.time()
+                elapsed_right = self.tlick_r - self.ttrial
+
+                if self.first_lick is None and (0 < elapsed_right < self.RW):
+                    self.first_lick = 'right'
+                    self.tlick = self.tlick_r
+
+                    # Deliver reward in a separate thread
+                    threading.Thread(target=self.reward, args=('right',)).start()
+
+                    self.total_licks += 1
+                    self.licks_right += 1
+                    self.gui_controls.update_total_licks(self.total_licks)
+                    self.gui_controls.update_licks_right(self.licks_right)
+                    
+                    self.is_rewarded = True
+                    
+                    self.timer_3.cancel()    
+                    self.trialstarted = False
+                    self.tend = time.time()
+                    self.trial_duration = (self.tend-self.ttrial)
+                    self.gui_controls.update_trial_duration(self.trial_duration)
+                    self.next_trial_eligible = True
+                    
+                    # Update live stair plot
+                    self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
+
+                    # Save trial data
+                    self.save_data()
+                    return
        
+"""
