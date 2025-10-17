@@ -150,7 +150,7 @@ class FreeLickingTask:
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
-            self.RW_start = time.time() # Start of response window
+            self.RW_start = self.ttrial # Start of response window
             self.first_lick = None # Reset first lick at the start of each trial
             self.is_rewarded = False
             
