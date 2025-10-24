@@ -329,6 +329,7 @@ class FreeLickingTask:
         trial_data = [
             np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
             np.nan if not hasattr(self, 'ttrial') else self.ttrial,  # trial start
+            np.nan if not hasattr(self, 'RW_start') else self.RW_start, # Response window start
             np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
             np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
@@ -336,8 +337,7 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
-            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz
-            np.nan if not hasattr(self, 'RW_start') else self.RW_start, # Response window start 
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz             
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout

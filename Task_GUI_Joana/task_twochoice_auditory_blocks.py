@@ -625,7 +625,7 @@ class TwoChoiceAuditoryTask_Blocks:
         }.get(getattr(self, 'current_block', ""), "")  # If undefined, show empty string ""
     
         # **Extract Trial History Info & Update GUI**
-        trial_outcome = "correct" if trial_data[14] == 1 else "incorrect" if trial_data[15] == 1 else "omission"
+        trial_outcome = "correct" if trial_data[15] == 1 else "incorrect" if trial_data[16] == 1 else "omission"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
