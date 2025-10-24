@@ -113,7 +113,7 @@ class FreeLickingTask:
     
     def check_animal_quiet(self):
         """Count QW only from call time; if any lick happens during QW, restart the timer."""
-        if self.QW == 0:
+        if self.QW == 0:  
             return True
     
         SAMPLERATE = 60.0  # Hz
