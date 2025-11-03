@@ -452,7 +452,6 @@ class TwoChoiceAuditoryTask:
             if self.correct_spout == side:
                 threading.Thread(target=self.reward, args=(side,)).start()
                 self.correct_trials += 1
-                self.correct_in_block += 1  # block progress
                 self.gui_controls.update_correct_trials(self.correct_trials)
             else:
                 if not self.gui_controls.ui.chk_NoPunishment.isChecked():
