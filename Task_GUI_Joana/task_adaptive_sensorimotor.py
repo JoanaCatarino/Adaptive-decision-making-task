@@ -328,11 +328,9 @@ class AdaptiveSensorimotorTask:
     
     
     def on_valid_trial(self, is_correct: bool):
-        """
-        Call this once per VALID trial (non-catch with a lick).
-        Updates window, prints %, and evaluates switching.
-        """
         self.trial_history.append(1 if is_correct else 0)
+        # Debug: print the last 20 window contents
+        # print(f"[Window] {list(self.trial_history)}")
         self.update_recent_performance_terminal()
         if self.should_switch_block():
             self.switch_block()
@@ -581,17 +579,17 @@ class AdaptiveSensorimotorTask:
         if not (in_rw_left or in_rw_right) or self.first_lick is not None:
             return
     
-        # Choose earliest side if both present
+        # Earliest side if both present
         if in_rw_left and in_rw_right:
             side, tlick = (('left', t_left) if t_left <= t_right else ('right', t_right))
         elif in_rw_left:
             side, tlick = 'left', t_left
         else:
             side, tlick = 'right', t_right
-            
-        
-        # Catch trials
-       
+    
+        # -------------------------
+        # Catch trials: record lick
+        # -------------------------
         if self.is_catch_trial:
             with self.lock:
                 if self.first_lick is not None:
@@ -612,30 +610,32 @@ class AdaptiveSensorimotorTask:
                 else:
                     self.licks_right += 1
                     self.gui_controls.update_licks_right(self.licks_right)
-    
                 self.gui_controls.update_total_licks(self.total_licks)
     
-                # End trial
-                if self.timer_3 and self.timer_3.is_alive():
+                # Wrap up trial
+                if hasattr(self, "timer_3") and self.timer_3 and self.timer_3.is_alive():
                     self.timer_3.cancel()
                 self.trialstarted = False
                 threading.Thread(target=self.blue_led_off, daemon=True).start()
                 self.tend = time.time()
                 self.trial_duration = self.tend - self.ttrial
                 self.gui_controls.update_trial_duration(self.trial_duration)
-                self.is_catch_trial = False
                 self.next_trial_eligible = True
     
-                # Save trial data
+                # Save trial data once
                 if not self.trial_saved:
                     self.save_data()
                     self.trial_saved = True
     
-                # Omissions don't affect accuracy; just print the current %
+                # Keep terminal % up to date (window unchanged)
                 self.maybe_update_terminal_only()
-                return
-            
     
+                # 🔑 Do NOT fall through into normal handling
+                return
+    
+        # -------------------------
+        # Normal (non-catch) trials
+        # -------------------------
         with self.lock:
             if self.first_lick is not None:
                 return
@@ -660,7 +660,6 @@ class AdaptiveSensorimotorTask:
                 self.incorrect_trials += 1
                 self.gui_controls.update_incorrect_trials(self.incorrect_trials)
     
-    
             # Counters & UI
             self.total_licks += 1
             if side == 'left':
@@ -671,8 +670,8 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_licks_right(self.licks_right)
             self.gui_controls.update_total_licks(self.total_licks)
     
-            # Wrap up trial
-            if self.timer_3 and self.timer_3.is_alive():
+            # Wrap up
+            if hasattr(self, "timer_3") and self.timer_3 and self.timer_3.is_alive():
                 self.timer_3.cancel()
             self.trialstarted = False
             threading.Thread(target=self.blue_led_off, daemon=True).start()
@@ -685,8 +684,8 @@ class AdaptiveSensorimotorTask:
             if not self.trial_saved:
                 self.save_data()
                 self.trial_saved = True
-                        
-            # VALID trial for performance window iff NOT a catch trial
+    
+            # Add to the sliding window (deque(maxlen=20) guarantees sliding)
             self.on_valid_trial(is_correct=is_correct)
             return
            
