@@ -420,9 +420,9 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
                 
                 # Optional: print running catch fraction
-                print(f"[Catch] {self.catch_trials} of {self.total_trials} "
-                      f"({(self.catch_trials / self.total_trials)*100:.1f}%) so far; "
-                      f"target ≈ {self.catch_trials_fraction*100:.1f}%")
+                #print(f"[Catch] {self.catch_trials} of {self.total_trials} "
+                     # f"({(self.catch_trials / self.total_trials)*100:.1f}%) so far; "
+                      #f"target ≈ {self.catch_trials_fraction*100:.1f}%")
                 
                 
             else:
