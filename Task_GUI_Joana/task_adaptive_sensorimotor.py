@@ -328,9 +328,15 @@ class AdaptiveSensorimotorTask:
     
     
     def on_valid_trial(self, is_correct: bool):
+        """
+        Called once per VALID trial (non-catch with a lick).
+        Updates window, prints %, and evaluates switching.
+        """
         self.trial_history.append(1 if is_correct else 0)
-        # Debug: print the last 20 window contents
-        # print(f"[Window] {list(self.trial_history)}")
+    
+        # 🔎 Debug: see the sliding window explicitly
+        print(f"[Window] len={len(self.trial_history)} contents={list(self.trial_history)}")
+    
         self.update_recent_performance_terminal()
         if self.should_switch_block():
             self.switch_block()
