@@ -59,8 +59,7 @@ class AdaptiveSensorimotorTask:
         # Block parameters
         self.current_block = 'sound'  # Always start with sound block
         self.trials_in_block = 0
-        self.trial_limit = random.randint(40, 60)  # Random minimal trial count per block - should be 40-60
-        print(f'First block, #trials = {self.trial_limit}')
+        print('First block: Sound')
         
         # Alternation controller
         # After the first sound block, choose action-left or action-right randomly.
@@ -68,18 +67,14 @@ class AdaptiveSensorimotorTask:
         self.next_action_side = random.choice(['left', 'right'])
         
         # History for accuracy check (only current block, only valid trials, last 20)
+        # Valid = non-catch and lick happened (correct or incorrect). Omissions excluded
         self.trial_history = deque(maxlen=20)
-        self.block_valid_trials = 0
         
         # Block counters
         self.sound_block_count = 0
         self.action_left_block_count = 0
         self.action_right_block_count = 0
         self.last_block = None  # Track last block to prevent duplicate counting
-        
-        # Sliding window for block switching (last 20 trials) # Should be last 20 trials
-        self.recent_correct_trials = 0
-        self.recent_total_trials = 0
         
         # Counters
         self.total_trials = 0
@@ -95,7 +90,7 @@ class AdaptiveSensorimotorTask:
         self.sound_16KHz = 0
         self.autom_rewards = 0
         self.catch_trials = 0
-        
+         
         # Booleans
         self.trialstarted = False
         self.running = False
@@ -276,57 +271,98 @@ class AdaptiveSensorimotorTask:
 
         return self.selected_side
     
+    
+    # Session-wide 10% catch trials
+    def decide_session_catch(self):
+        """
+        Return True/False for whether the *current* trial should be a catch,
+        keeping the SESSION-wide fraction near self.catch_trials_fraction.
+        Uses p = clamp(f*T - C, 0, 1), where:
+          T = total trials including this one (already incremented)
+          C = catches so far (completed)
+          f = desired session fraction (e.g., 0.1)
+        """
+        T = max(1, self.total_trials)
+        C = self.catch_trials
+        f = float(self.catch_trials_fraction)
+        p = f * T - C
+        if p < 0.0:
+            p = 0.0
+        elif p > 1.0:
+            p = 1.0
+        return (random.random() < p)
+    
+    
+    
+    # Block Switching by performance
+    
+    def recent_performance_pct(self):
+        """Return % correct over the last up to-20 VALID trials (omissions & catch excluded)."""
+        valid = [t for t in self.trial_history if t is not None]
+        if len(valid) == 0:
+            return 0.0
+        return (sum(valid) / len(valid)) * 100.0
+    
+    
+    def update_recent_performance_terminal(self):
+        """Print recent performance % to terminal."""
+        valid = [t for t in self.trial_history if t is not None]
+        pct = self.recent_performance_pct()
+        print(f"[Perf] Last {len(valid):>2} valid: {pct:5.1f}%")
+    
              
     def should_switch_block(self):
         """
-        Return True if BOTH:
-          - we have at least 20 valid trials in the current block, and
-          - the last 20 valid trials are ≥ 85% correct.
-        Valid = lick-based trials (correct or incorrect). Catch & omissions excluded.
-        """        
+        Return True iff:
+          - we have at least 20 VALID trials in the current block, and
+          - the last 20 VALID trials are > 85% correct.
+        VALID = non-catch AND lick-based (correct or incorrect). Omissions & catch excluded.
+        """
         valid_trials = [t for t in self.trial_history if t is not None]
-        
         if len(valid_trials) < 20:
             return False
-        accuracy = (sum(valid_trials[-20:]) / 20.0) * 100.0
-        return accuracy >= 85.0
+        
+        window = valid_trials[-20:]  # deque is maxlen=20, but be explicit
+        accuracy = (sum(window) / 20.0) * 100.0
+        return accuracy > 85.0
     
-    def eligible_to_switch(self):
-        """Return True only if minimum trial count reached AND accuracy rule holds."""
-        return (self.trials_in_block >= self.trial_limit) and self.should_switch_block()
-
-    def maybe_switch_block(self):
-        """Evaluate and switch block if eligibility is satisfied."""
-        if self.eligible_to_switch():
+    
+    def on_valid_trial(self, is_correct: bool):
+        """
+        Call this once per VALID trial (non-catch with a lick).
+        Updates window, prints %, and evaluates switching.
+        """
+        self.trial_history.append(1 if is_correct else 0)
+        self.update_recent_performance_terminal()
+        if self.should_switch_block():
             self.switch_block()
+    
+    
+    def maybe_update_terminal_only(self):
+        """Call after omissions/catch so you still see the rolling % (unchanged)."""
+        self.update_recent_performance_terminal()
             
-        print(f"[maybe_switch_block] block_valid_trials={self.block_valid_trials}")
-
 
     def switch_block(self):
-        # Switch between sound and action blocks only if criteria is met (85% correct)
-        # Block type selection should have a set structure. Session always starts with Sounds and after that Action-right or left are randomly
-            #picked. From that moment on, the structure is fixed: either S-AR-S-AL-S-AR-S-AL or S-AL-S-AR-S-AL-S-AR
-        # Clear accuracy window for the new block and set a new trial limit (40-60)
+        # Switch between sound and action blocks when the >85% criterion is met.
+        # Session structure:
+        #   Start with Sound.
+        #   When leaving Sound -> enter Action on planned side (left/right); toggle the side for next time.
+        #   When leaving any Action -> go back to Sound.
+        # Reset the sliding window for the new block.
 
         if self.current_block == "sound":
-            # Enter action block on the planned side
             side = self.next_action_side
             self.current_block = f"action-{side}"
-            # Toggle for the next time we leave sound
             self.next_action_side = "right" if side == "left" else "left"
         else:
-            # From any action block, go back to sound
             self.current_block = "sound"
-            # When entering sound, later we'll go to the toggled action side
-        
+
         # Reset block-scoped state
         self.trials_in_block = 0
-        self.block_valid_trials = 0
         self.trial_history.clear()  # reset valid-trial history for the new block
-        self.trial_limit = random.randint(40, 60)  # new minimum trials for the new block
-        print(f"New block '{self.current_block}' with min trials: {self.trial_limit}")
-        
+        print(f"Switching to new block '{self.current_block}'")
+
         # Reset debiasing history when a new sound block starts
         if self.current_block == "sound":
             self.decision_history = []
@@ -344,7 +380,6 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_action_r_blocks(self.action_right_block_count)
             self.last_block = self.current_block  # Prevent duplicate counting
         
-        print(f"Switching to {self.current_block} block")
         print(f"Block counts - Sound: {self.sound_block_count}, Action-Left: {self.action_left_block_count}, Action-Right: {self.action_right_block_count}")
 
     
@@ -370,7 +405,8 @@ class AdaptiveSensorimotorTask:
             self.data_saved = False
             self.plot_updated = False
             
-            self.is_catch_trial = random.random() < self.catch_trials_fraction
+            # Decide catch trial by session rule
+            self.is_catch_trial = self.decide_session_catch()
             
             # Determine trial type
             if self.is_catch_trial:
@@ -382,6 +418,13 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_catch_trials(self.catch_trials)
                 self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
                 self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
+                
+                # Optional: print running catch fraction
+                print(f"[Catch] {self.catch_trials} of {self.total_trials} "
+                      f"({(self.catch_trials / self.total_trials)*100:.1f}%) so far; "
+                      f"target ≈ {self.catch_trials_fraction*100:.1f}%")
+                
+                
             else:
                 if self.current_block == "sound":
                     # Randomly select the a cue sound  and apply debiasing when needed
@@ -427,9 +470,10 @@ class AdaptiveSensorimotorTask:
                     self.save_data()
                     self.trial_saved = True
                     
-                # Evaluate possible switch even after early-lick abort (eligibility might already be met)
-                self.maybe_switch_block()
-                return  # Exit trial 
+                
+                # Early-lick trials are not valid, but print the current %
+                self.maybe_update_terminal_only()
+                return  # Exit trial
                 
            
             # Play sound  
@@ -441,9 +485,6 @@ class AdaptiveSensorimotorTask:
             # Wait for response window to finish if no lick happens
             threading.Thread(target=self.wait_for_response, daemon=True).start()
                 
-            # Check for block switch
-            if self.trials_in_block >= self.trial_limit:
-                self.switch_block()
          
     
     def play_sound(self, frequency):
@@ -547,6 +588,53 @@ class AdaptiveSensorimotorTask:
             side, tlick = 'left', t_left
         else:
             side, tlick = 'right', t_right
+            
+        
+        # Catch trials
+       
+        if self.is_catch_trial:
+            with self.lock:
+                if self.first_lick is not None:
+                    return
+    
+                self.first_lick = side
+                self.tlick = tlick
+                self.decision_history.append("L" if side == "left" else "R")
+                self.decision_history = self.decision_history[-self.min_trials_debias:]
+    
+                print(f"Catch trial: Lick detected on {side.upper()} spout")
+    
+                # Counters
+                self.total_licks += 1
+                if side == 'left':
+                    self.licks_left += 1
+                    self.gui_controls.update_licks_left(self.licks_left)
+                else:
+                    self.licks_right += 1
+                    self.gui_controls.update_licks_right(self.licks_right)
+    
+                self.gui_controls.update_total_licks(self.total_licks)
+    
+                # End trial
+                if self.timer_3 and self.timer_3.is_alive():
+                    self.timer_3.cancel()
+                self.trialstarted = False
+                threading.Thread(target=self.blue_led_off, daemon=True).start()
+                self.tend = time.time()
+                self.trial_duration = self.tend - self.ttrial
+                self.gui_controls.update_trial_duration(self.trial_duration)
+                self.is_catch_trial = False
+                self.next_trial_eligible = True
+    
+                # Save trial data
+                if not self.trial_saved:
+                    self.save_data()
+                    self.trial_saved = True
+    
+                # Omissions don't affect accuracy; just print the current %
+                self.maybe_update_terminal_only()
+                return
+            
     
         with self.lock:
             if self.first_lick is not None:
@@ -558,7 +646,8 @@ class AdaptiveSensorimotorTask:
             self.decision_history = self.decision_history[-self.min_trials_debias:]
     
             # Outcome (reward vs punishment)
-            if self.correct_spout == side:
+            is_correct = (self.correct_spout == side)
+            if is_correct:
                 threading.Thread(target=self.reward, args=(side,)).start()
                 self.correct_trials += 1
                 self.gui_controls.update_correct_trials(self.correct_trials)
@@ -570,6 +659,7 @@ class AdaptiveSensorimotorTask:
                     print('wrong spout - punishment skipped')
                 self.incorrect_trials += 1
                 self.gui_controls.update_incorrect_trials(self.incorrect_trials)
+    
     
             # Counters & UI
             self.total_licks += 1
@@ -596,8 +686,8 @@ class AdaptiveSensorimotorTask:
                 self.save_data()
                 self.trial_saved = True
                         
-            # Evaluate block switch (needs both: min trials reached AND ≥85% on last 20 valid)
-            self.maybe_switch_block()
+            # VALID trial for performance window iff NOT a catch trial
+            self.on_valid_trial(is_correct=is_correct)
             return
            
 
@@ -621,8 +711,8 @@ class AdaptiveSensorimotorTask:
             self.save_data()
             self.trial_saved=True
             
-        # Omissions don't affect accuracy, but we can still be eligible already
-        self.maybe_switch_block()
+        # Omissions don't affect accuracy; just print the current %
+        self.maybe_update_terminal_only()
         
        
     def wait_for_response(self):
