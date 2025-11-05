@@ -324,7 +324,7 @@ class AdaptiveSensorimotorTask:
         
         window = valid_trials[-20:]  # deque is maxlen=20, but be explicit
         accuracy = (sum(window) / 20.0) * 100.0
-        return accuracy > 85.0
+        return accuracy >= 85.0
     
     
     def on_valid_trial(self, is_correct: bool):
