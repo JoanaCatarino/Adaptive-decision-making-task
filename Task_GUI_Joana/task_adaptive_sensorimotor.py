@@ -498,13 +498,19 @@ class AdaptiveSensorimotorTask:
             return
         
         if frequency == "8KHz":
+            ttl_stim.on()
             tone_8KHz() 
+            ttl_stim.off()
             self.sound_played = True
         elif frequency == "16KHz":
+            ttl_stim.on()
             tone_16KHz()
+            ttl_stim.off()
             self.sound_played = True
         elif frequency == "white_noise":
+            ttl_punishment.on()
             white_noise()
+            ttl_punishment.off()
 
     def blue_led_on(self):
         led_blue.on()
@@ -729,15 +735,19 @@ class AdaptiveSensorimotorTask:
         """Delivers a reward without blocking the main loop."""
     
         if side == 'left':
+            ttl_reward.on()
             pump_l.off()
             time.sleep(self.valve_opening)
             pump_l.on()
+            ttl_reward.off()
             print('Reward delivered - left')
             
         elif side == 'right':
+            ttl_reward.on()
             pump_r.off()
             time.sleep(self.valve_opening)
             pump_r.on()
+            ttl_reward.off()
             print('Reward delivered - right')
     
     
