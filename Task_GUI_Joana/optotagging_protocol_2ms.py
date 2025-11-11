@@ -84,7 +84,7 @@ class OptoProtocol2ms:
         # Leave LOW after block
         device.off()
 
-    def run_sequence_10ms(self):
+    def run_sequence_2ms(self):
         # 100 pulses, 2 ms ON @ 1 Hz
         self._pulse_train(laser, width_s=0.002, n=100, period_s=1.0, label="2 ms block")
 
