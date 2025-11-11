@@ -57,9 +57,13 @@ class PassiveSoundRecordings:
      
     def play_sound(self, frequency):
         if frequency == "8KHz":
+            ttl_stim.on()
             tone_8KHz()   # Your function for 8KHz sound
+            ttl_stim.off()
         elif frequency == "16KHz":
+            ttl_stim.on()
             tone_16KHz()  # Your function for 16KHz sound
+            ttl_stim.off()
             
          
     def run_sequence(self):
