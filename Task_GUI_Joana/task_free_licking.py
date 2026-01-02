@@ -7,10 +7,12 @@ Created on Sat Jul 20 17:47:58 2024
  -- Free Licking task --
 - The goal of this task is to make the animals familiarized with the spouts and the reward type they give (sucrose water)
 - In this task animals should receive a reward when they lick either of the spouts
-- Criterion: After 100 licks a Quiet window of 3000 ms is introduced - never on the first session 
+- Criterion: After 100 licks a Quiet window starts to be introduced (1s - 2s - 3s) - never on the first session 
 
 Important
 - when pump is set to ON it is actually OFF and when it is set to OFF it is pumping water
+
+Version - 2025
 """
 
 import threading

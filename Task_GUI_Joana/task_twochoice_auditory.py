@@ -3,6 +3,8 @@
 Created on Sat Jul 20 17:51:07 2024
 
 @author: JoanaCatarino
+
+Version - 2025
 """
 
 import threading

@@ -3,6 +3,8 @@
 Created on Sat Jul 20 17:55:09 2024
 
 @author: JoanaCatarino
+
+Version - 2025
 """
 
 import threading
@@ -803,8 +805,8 @@ class AdaptiveSensorimotorTask:
         trial_data = [
             np.nan if not hasattr(self, 'total_trials') else self.total_trials,  # trial number
             np.nan if not hasattr(self, 'ttrial') else self.ttrial,  # trial start
-            np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
             np.nan if not hasattr(self, 'RW_start') else self.RW_start, # Response window start
+            np.nan if not hasattr(self, 'tend') else self.tend,  # trial end
             np.nan if not hasattr(self, 'trial_duration') else self.trial_duration,  # trial duration
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
