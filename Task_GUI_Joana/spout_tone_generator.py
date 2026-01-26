@@ -19,10 +19,10 @@ spouts = ['left', 'right']
 tones = ['8KHz', '16KHz']
 
 # List of animals that need assigment of pairs
-animals = ["986215", "986235", "999770", "999772", "986167", "986168", "986169", "986170", "986171"]
+animals = ["1020226", "1020227", "1020228", "1031912", "1031913", "1033993", "1033996", "1033998", "1033999", "1021218", "1021219", "1038513"]
 
 # Directory and filename for csv with assignments
-directory = 'L:/dmclab/Joana/Behavior/Spout-tone map'
+directory = 'L:/dmclab/Joana/PFC-Str_behavior_project/Spout-tone map'
 filename = 'spout_tone_generator.csv'
 
 # Generate all possible pairs of spouts and tones, which are:
