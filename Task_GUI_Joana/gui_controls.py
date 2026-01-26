@@ -490,7 +490,6 @@ class GuiControls:
         self.ui.txt_ITImin.setEnabled(enable)
         self.ui.txt_ITImax.setEnabled(enable)
         self.ui.txt_ValveOpening.setEnabled(enable)
-        self.ui.chk_AutomaticRewards.setEnabled(enable)
         self.ui.chk_NoPunishment.setEnabled(enable)
         self.ui.chk_IgnoreLicksWW.setEnabled(enable)
         self.ui.txt_Blocks.setEnabled(enable)
@@ -505,6 +504,7 @@ class GuiControls:
         self.ui.chk_Reward_left.setEnabled(True)
         self.ui.chk_Reward_right.setEnabled(True)
         self.ui.chk_Punishment.setEnabled(True)
+        #self.ui.chk_Manip_sound_lights(True)
 
     def disable_controls(self):
         self.ui.chk_BlueLED.setEnabled(False)
@@ -515,6 +515,7 @@ class GuiControls:
         self.ui.chk_Reward_left.setEnabled(False)
         self.ui.chk_Reward_right.setEnabled(False)
         self.ui.chk_Punishment.setEnabled(False)
+        #self.ui.chk_Manip_sound_lights(False)
 
 
     def execute_task(self):
@@ -546,7 +547,6 @@ class GuiControls:
         self.trial_duration = 0
         self.sound_8KHz = 0
         self.sound_16KHz = 0
-        self.autom_rewards = 0
         self.action_left_block_count = 0
         self.action_right_block_count = 0
         self.catch_trials = 0
@@ -562,7 +562,6 @@ class GuiControls:
         self.update_trial_duration(0)
         self.update_sound_8KHz(0)
         self.update_sound_16KHz(0)
-        self.update_autom_rewards(0)
         self.update_action_l_blocks(0)
         self.update_action_r_blocks(0)
         self.update_catch_trials(0)
@@ -750,9 +749,6 @@ class GuiControls:
         
     def update_sound_16KHz(self, sound_16KHz):
         self.ui.box_16KHzTrials.setText(f'{sound_16KHz}')
-        
-    def update_autom_rewards(self, autom_rewards):
-        self.ui.box_AutomRewards.setText(f'{autom_rewards}')
         
     def update_sound_blocks(self, sound_block_count):
         self.ui.box_SoundBlocks.setText(f'{sound_block_count}')

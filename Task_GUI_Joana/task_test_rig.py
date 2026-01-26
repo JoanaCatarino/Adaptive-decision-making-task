@@ -42,6 +42,7 @@ class TestRig:
         self.ui.chk_WhiteLED_Right.clicked.connect(self.toggle_white_led_right)
         self.ui.chk_Reward_left.clicked.connect(self.activate_pump_left)
         self.ui.chk_Reward_right.clicked.connect(self.activate_pump_right)
+        #self.ui.chk_Manip_sound_lights.connect(self.play_mock_recording)  # Play manipulator sound and flash lights to do a mock recording
 
     def disconnect_signals(self):
         """ Ensures no duplicate signal connections """
@@ -54,6 +55,7 @@ class TestRig:
             self.ui.chk_WhiteLED_Right.clicked.disconnect()
             self.ui.chk_Reward_left.clicked.disconnect()
             self.ui.chk_Reward_right.clicked.disconnect()
+            #self.ui.chk_Manip_sound_lights.disconnect()
         except TypeError:
             pass  # If already disconnected, ignore
 
@@ -116,6 +118,11 @@ class TestRig:
         pump_r.off()
         sleep(0.5)
         pump_r.on()
+
+
+    #def play_mock_recording(self):
+
+
 
     ## --- Stop Function ---
     def stop(self):

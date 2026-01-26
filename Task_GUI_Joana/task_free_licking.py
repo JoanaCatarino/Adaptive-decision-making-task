@@ -5,14 +5,19 @@ Created on Sat Jul 20 17:47:58 2024
 @author: JoanaCatarino
 
  -- Free Licking task --
-- The goal of this task is to make the animals familiarized with the spouts and the reward type they give (sucrose water)
+ 
+- First training stage
+- The goal of this task is to make the animals familiarized with the spouts and the reward type they give (2uL sucrose water)
 - In this task animals should receive a reward when they lick either of the spouts
-- Criterion: After 100 licks a Quiet window starts to be introduced (1s - 2s - 3s) - never on the first session 
+- Criterion: After 100 licks a Quiet window starts to be introduced
+    - First quite winfdow is 1 sec, after 100 licks it moves to 2 sec and after another 100 licks to 3s.
+    - After the QW=3s is achieved, a full session of 3s is done - If 100 licks are achieved in this session, the animal is moved to the next training stage
 
 Important
 - when pump is set to ON it is actually OFF and when it is set to OFF it is pumping water
 
-Version - 2025
+Version - 2025 saved in the drive (Behavior - Protocols)
+New version - jan 2026
 """
 
 import threading
@@ -36,7 +41,6 @@ class FreeLickingTask:
         self.save_dir = os.path.dirname(csv_file_path)
         os.makedirs(self.save_dir, exist_ok=True)
         self.file_path = csv_file_path # use the csv file name
-        self.trials = [] # list to store trial data
         
         # Connection to GUI
         self.gui_controls = gui_controls
@@ -68,20 +72,18 @@ class FreeLickingTask:
         # Time variables
         self.tstart = None # start of the task
         self.ttrial = None # start of the trial
-        self.t = None # current time
-        self.tlick_l = None # last lick left spout
-        self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.tend = None # end of trial
         self.trial_duration = None # trial duration
-        self.RW_start = None
+        self.RW_start = None # start of response window
+        self.reward_time = None # time reward is delivered
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
         
         self.first_lick = None
         
-        self.trial_saved = False # added 15/05/2025
+        self.trial_saved = False 
         
 
     def start (self):
@@ -110,7 +112,7 @@ class FreeLickingTask:
         if self.print_thread.is_alive():
             self.print_thread.join()
         pump_l.on() 
-        
+        pump_r.on()
         
     
     def check_animal_quiet(self):
@@ -165,13 +167,14 @@ class FreeLickingTask:
         """ Initiates a trial, runs LED in parallel, and logs trial start"""
         
         with self.lock:
-            self.trial_saved = False # Added 15/05/2025
+            self.trial_saved = False 
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
             self.ttrial = time.time() # Update trial start time
             self.RW_start = time.time() # Start response window
             self.first_lick = None # Reset first lick at the start of each trial
+            self.reward_time = None # Reset reward delivery time at the start of each trial
             self.is_rewarded = False
             self.data_saved = False
             
@@ -289,12 +292,14 @@ class FreeLickingTask:
             pump_l.off()
             time.sleep(self.valve_opening)
             pump_l.on()
+            self.reward_time = time.time()
             print('Reward delivered - left')
             
         elif side == 'right':
             pump_r.off()
             time.sleep(self.valve_opening)
             pump_r.on()
+            self.reward_time = time.time()
             print('Reward delivered - right')
     
         
@@ -337,9 +342,11 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'early_lick_time') else self.early_lick_time,  # early licks time
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
-            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz             
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz 
+            np.nan if not hasattr(self, 'stim_time') else self.stim_time, # stim (tone) time            
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
@@ -347,6 +354,8 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'is_rewarded') else (1 if self.is_rewarded else 0),  # reward
             np.nan if not hasattr(self, 'is_punished') else (1 if self.is_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
+            np.nan if not hasattr(self, 'reward_time') else self.reward_time, # time reward is delivered
+            np.nan if not hasattr(self, 'punishment_time') else self.punishment_time, # time punishment is delivered
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
             np.nan if not hasattr(self, 'WW') else self.WW,
@@ -355,7 +364,6 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
             np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
             np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
-            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
             np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
@@ -365,100 +373,10 @@ class FreeLickingTask:
             np.nan if not hasattr(self, 'tstart') else self.tstart  # session start
         ]
     
+  
         # Append data to the CSV file
         with open(self.csv_file_path, mode='a', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(trial_data)
             
     
-"""
-
-old code with threshold crossing
-
-
-def detect_licks(self):
-
-    Checks for licks and delivers rewards in parallel.
-
-    # Ensure piezo data is updated before checking
-    p1 = list(self.piezo_reader.piezo_adder1)
-    p2 = list(self.piezo_reader.piezo_adder2)
-
-    # Small delay to prevent CPU overload and stabilize readings
-    time.sleep(0.001)
-
-    # Left piezo
-    if p1:
-        latest_value1 = p1[-1]
-
-        if latest_value1 > self.threshold_left:
-            with self.lock:
-                self.tlick_l = time.time()
-                elapsed_left = self.tlick_l - self.ttrial
-
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l
-
-                    # Deliver reward in a separate thread
-                    threading.Thread(target=self.reward, args=('left',)).start()
-
-                    self.total_licks += 1
-                    self.licks_left += 1
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_left(self.licks_left)
-                    
-                    self.is_rewarded = True
-                    
-                    self.timer_3.cancel()    
-                    self.trialstarted = False
-                    self.tend = time.time()
-                    self.trial_duration = (self.tend-self.ttrial)
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.next_trial_eligible = True
-                    
-                    # Update live stair plot
-                    self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
-
-                    # Save trial data
-                    self.save_data()
-                    return
-
-    # Right piezo        
-    if p2:
-        latest_value2 = p2[-1]
-
-        if latest_value2 > self.threshold_right:
-            with self.lock:
-                self.tlick_r = time.time()
-                elapsed_right = self.tlick_r - self.ttrial
-
-                if self.first_lick is None and (0 < elapsed_right < self.RW):
-                    self.first_lick = 'right'
-                    self.tlick = self.tlick_r
-
-                    # Deliver reward in a separate thread
-                    threading.Thread(target=self.reward, args=('right',)).start()
-
-                    self.total_licks += 1
-                    self.licks_right += 1
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_right(self.licks_right)
-                    
-                    self.is_rewarded = True
-                    
-                    self.timer_3.cancel()    
-                    self.trialstarted = False
-                    self.tend = time.time()
-                    self.trial_duration = (self.tend-self.ttrial)
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.next_trial_eligible = True
-                    
-                    # Update live stair plot
-                    self.gui_controls.update_lick_plot(self.total_trials, self.total_licks, self.licks_left, self.licks_right)
-
-                    # Save trial data
-                    self.save_data()
-                    return
-       
-"""

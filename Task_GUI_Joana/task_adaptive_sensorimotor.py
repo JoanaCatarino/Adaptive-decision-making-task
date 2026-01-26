@@ -32,7 +32,6 @@ class AdaptiveSensorimotorTask:
         self.save_dir = os.path.dirname(csv_file_path)
         os.makedirs(self.save_dir, exist_ok=True)
         self.file_path = csv_file_path # use the csv file name
-        self.trials = [] # list to store trial data
         
         # Connection to GUI
         self.gui_controls = gui_controls
@@ -87,10 +86,8 @@ class AdaptiveSensorimotorTask:
         self.incorrect_trials = 0
         self.early_licks = 0
         self.omissions = 0
-        self.trial_duration = 0
         self.sound_8KHz = 0
         self.sound_16KHz = 0
-        self.autom_rewards = 0
         self.catch_trials = 0
          
         # Booleans
@@ -108,14 +105,16 @@ class AdaptiveSensorimotorTask:
         # Time variables
         self.tstart = None # start of the task
         self.ttrial = None # start of the trial
-        self.t = None # current time
-        self.tlick_l = None # last lick left spout
-        self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
-        self.current_time = None
+        self.early_lick_time = None # time of early lick that aborted trial
+        self.stim_time = None # time sound is played
+        self.reward_time = None # time reward is delivered
+        self.punishment_time = None #time punishment is delivered
         self.tend = None # end of the trial
+        self.trial_duration = None # trial duration
         self.next_trial_eligible = False
+        self.timer_3 = None
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
@@ -138,6 +137,9 @@ class AdaptiveSensorimotorTask:
         
         # Trial monitor
         self.monitor_history = deque(maxlen=15)
+        
+        # Action block monitor - to prevent more than 3 consecutive trials with the same sound type
+        self.action_sound_history = deque(maxlen=3)
         
 
     def start (self):
@@ -180,6 +182,7 @@ class AdaptiveSensorimotorTask:
             print("Saved trial during manual stop.")
         
         pump_l.on()
+        pump_r.on()
         led_blue.off()
         
     
@@ -295,7 +298,6 @@ class AdaptiveSensorimotorTask:
         return (random.random() < p)
     
     
-    
     # Block Switching by performance
     
     def recent_performance_pct(self):
@@ -372,6 +374,9 @@ class AdaptiveSensorimotorTask:
         # Reset debiasing history when a new sound block starts
         if self.current_block == "sound":
             self.decision_history = []
+            
+            # Reset action sound history when entering a sound block
+            self.action_sound_history.clear()
         
         # Update block counters only once per block switch
         if self.current_block != self.last_block:
@@ -389,15 +394,30 @@ class AdaptiveSensorimotorTask:
         print(f"Block counts - Sound: {self.sound_block_count}, Action-Left: {self.action_left_block_count}, Action-Right: {self.action_right_block_count}")
 
     
+    def choose_action_sound(self):
+        """Choose a sound for action trials, preventing >3 identical sounds in a row."""
+    
+        possible_sounds = ["8KHz", "16KHz"]
+    
+        # If last 3 sounds were identical, force the opposite
+        if len(self.action_sound_history) == 3:
+            if all(s == self.action_sound_history[0] for s in self.action_sound_history):
+                forced_sound = "16KHz" if self.action_sound_history[0] == "8KHz" else "8KHz"
+                return forced_sound
+    
+        # Otherwise choose randomly
+        return random.choice(possible_sounds)
+    
+
     def start_trial(self):
         
-        """ Initiates a trial, runs LED in paralledl, and logs trial start"""
+        """ Initiates a trial, runs LED in parallel, and logs trial start"""
         
         with self.lock:
             if self.trialstarted:
                 return
             
-            self.trial_saved = False # Added 15/05/2025
+            self.trial_saved = False 
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -425,12 +445,6 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.ui.box_CurrentTrial.setText('Catch Trial')
                 self.gui_controls.ui.OV_box_CurrentTrial.setText('Catch Trial')
                 
-                # Optional: print running catch fraction
-                #print(f"[Catch] {self.catch_trials} of {self.total_trials} "
-                     # f"({(self.catch_trials / self.total_trials)*100:.1f}%) so far; "
-                      #f"target ≈ {self.catch_trials_fraction*100:.1f}%")
-                
-                
             else:
                 if self.current_block == "sound":
                     # Randomly select the a cue sound  and apply debiasing when needed
@@ -438,12 +452,15 @@ class AdaptiveSensorimotorTask:
                     self.current_tone = "8KHz" if self.correct_spout == self.spout_8KHz else "16KHz"
                     
                 elif self.current_block == "action-left":
-                    self.current_tone = random.choice(["8KHz", "16KHz"])  # Play sound, but it's ignored
-                    self.correct_spout = "left"  # Always reward left, punish right
+                    self.current_tone = self.choose_action_sound()
+                    self.correct_spout = "left"
+                    self.action_sound_history.append(self.current_tone)
                 
                 elif self.current_block == "action-right":
-                    self.current_tone = random.choice(["8KHz", "16KHz"])  # Play sound, but it's ignored
-                    self.correct_spout = "right"  # Always reward right, punish left
+                    self.current_tone = self.choose_action_sound()
+                    self.correct_spout = "right"
+                    self.action_sound_history.append(self.current_tone)
+
                 
                 print(f"Trial {self.total_trials} | Block: {self.current_block} | Tone: {self.current_tone} | Correct spout: {self.correct_spout}")
                 self.gui_controls.ui.box_CurrentTrial.setText(f"Block: {self.current_block}  |  {self.current_tone}  -  {self.correct_spout}")
@@ -472,7 +489,7 @@ class AdaptiveSensorimotorTask:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                if not self.trial_saved: # Added 15/05/2025
+                if not self.trial_saved: 
                     self.save_data()
                     self.trial_saved = True
                     
@@ -502,16 +519,19 @@ class AdaptiveSensorimotorTask:
         if frequency == "8KHz":
             ttl_stim.on()
             tone_8KHz() 
+            self.stim_time = time.time()
             ttl_stim.off()
             self.sound_played = True
         elif frequency == "16KHz":
             ttl_stim.on()
             tone_16KHz()
+            self.stim_time = time.time()
             ttl_stim.off()
             self.sound_played = True
         elif frequency == "white_noise":
             ttl_punishment.on()
             white_noise()
+            self.punishment_time = time.time()
             ttl_punishment.off()
 
     def blue_led_on(self):
@@ -527,6 +547,7 @@ class AdaptiveSensorimotorTask:
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
         WW_start = time.time()  # Mark the WW start time
+        self.early_lick_time = None # reset early lick time stamp
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
             p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
@@ -534,10 +555,12 @@ class AdaptiveSensorimotorTask:
             
             # Check if a lick is detected
             if p1 and p1[-1] > self.threshold_left:
+                self.early_lick_time = time.time()
                 print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
     
             if p2 and p2[-1] > self.threshold_right:
+                self.early_lick_time = time.time()
                 print("Lick detected during WW! Aborting trial.")
                 return True  # Abort trial
             
@@ -559,8 +582,9 @@ class AdaptiveSensorimotorTask:
     def check_and_start_next_trial(self):
         """ Starts the next trial if conditions allow it """
         if self.next_trial_ready and not self.trialstarted:
-            print("Starting next trial automatically.")
-            self.start_trial()
+            if self.check_animal_quiet(): # troubleshoot
+                print("Starting next trial")    
+                self.start_trial()
     
 
     def detect_licks(self):
@@ -714,13 +738,14 @@ class AdaptiveSensorimotorTask:
         self.omission_counted = True
         
         if not self.first_lick:
-            self.omissions += 1
-            self.gui_controls.update_omissions(self.omissions)
+            if not self.is_catch_trial:
+                self.omissions += 1
+                self.gui_controls.update_omissions(self.omissions)
         
         self.is_catch_trial = False
         self.next_trial_eligible = True
         # Save trial data
-        if not self.trial_saved: # Added this 15/05/2025
+        if not self.trial_saved: 
             self.save_data()
             self.trial_saved=True
             
@@ -739,6 +764,7 @@ class AdaptiveSensorimotorTask:
         if side == 'left':
             ttl_reward.on()
             pump_l.off()
+            self.reward_time = time.time()
             time.sleep(self.valve_opening)
             pump_l.on()
             ttl_reward.off()
@@ -747,6 +773,7 @@ class AdaptiveSensorimotorTask:
         elif side == 'right':
             ttl_reward.on()
             pump_r.off()
+            self.reward_time = time.time()
             time.sleep(self.valve_opening)
             pump_r.on()
             ttl_reward.off()
@@ -811,9 +838,11 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'early_lick_time') else self.early_lick_time,  # early licks time
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
-            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 8KHz
+            np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 5KHz
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz
+            np.nan if not hasattr(self, 'stim_time') else self.stim_time, # time sound was played
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
@@ -821,7 +850,8 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
             np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
-            #np.nan if not hasattr(self, 'RW_start') else self.RW_start, # timestamp for response window start
+            np.nan if not hasattr(self, 'reward_time') else self.reward_time, # time reward was delivered
+            np.nan if not hasattr(self, 'punishment_time') else self.punishment_time, # time punishment was delivered
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
             np.nan if not hasattr(self, 'WW') else self.WW,
@@ -830,7 +860,6 @@ class AdaptiveSensorimotorTask:
             np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
             np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
             np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
-            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
             np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
@@ -854,7 +883,7 @@ class AdaptiveSensorimotorTask:
         }.get(self.current_block, "")  # If undefined, show empty string ""
     
         # **Extract Trial History Info & Update GUI**
-        trial_outcome = "correct" if trial_data[15] == 1 else "incorrect" if trial_data[16] == 1 else "omission"
+        trial_outcome = "correct" if trial_data[17] == 1 else "incorrect" if trial_data[18] == 1 else "omission"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
@@ -903,207 +932,3 @@ class AdaptiveSensorimotorTask:
                 lbl_T.setText(str(trial["trial_number"]))
                 
                 
-                
-                
-'''                
-def detect_licks(self):
-
-    """Checks for licks and delivers rewards in parallel."""
-
-    # Ensure piezo data is updated before checking
-    p1 = list(self.piezo_reader.piezo_adder1)
-    p2 = list(self.piezo_reader.piezo_adder2)
-
-    # Small delay to prevent CPU overload and stabilize readings
-    time.sleep(0.001)
-    
-    trial_result = None  # Default to None (omission)
-    
-    # Catch trial: Record licks without giving reward or punishment
-    if self.is_catch_trial:
-        if p1 and p1[-1] > self.threshold_left:
-            
-            with self.lock:
-                self.tlick_l = time.time()
-                elapsed_left = self.tlick_l - self.RW_start
-                
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l 
-                    self.decision_history.append("L")  # Store in history
-                    self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
-                    print(f"Catch trial: Lick detected on LEFT spout")
-                    
-                    self.total_licks += 1
-                    self.licks_left += 1
-                    
-                    # Update GUI values
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_left(self.licks_left)
-    
-                    # End trial 
-                    self.timer_3.cancel()
-                    self.trialstarted = False
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                    self.tend = time.time()
-                    self.trial_duration = self.tend - self.ttrial
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.is_catch_trial = False
-                    self.next_trial_eligible = True
-                    # Save trial data
-                    if not self.trial_saved: # Added 15/05/2025
-                        self.save_data()
-                        self.trial_saved=True
-                    
-                    # Catch doesn't affect accuracy; still can check switch eligibility
-                    self.maybe_switch_block()
-                    return  # Exit function to prevent normal trial execution
-                    
-                    
-
-        if p2 and p2[-1] > self.threshold_right:
-            with self.lock:
-                self.tlick_r = time.time()
-                elapsed_right = self.tlick_r - self.RW_start
-                
-                if self.first_lick is None and (0 < elapsed_right < self.RW):
-                    self.first_lick = 'right'
-                    self.tlick = self.tlick_r  
-                    self.decision_history.append("R")  # Store in history
-                    self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
-                    print(f"Catch trial: Lick detected on RIGHT spout at {self.tlick_r}, but no reward/punishment given.")
-
-                    self.total_licks += 1
-                    self.licks_right += 1
-            
-                    # Update GUI values
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_right(self.licks_right)
-    
-                    # End trial 
-                    self.timer_3.cancel()
-                    self.trialstarted = False
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                    self.tend = time.time()
-                    self.trial_duration = self.tend - self.ttrial
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.is_catch_trial = False
-                    self.next_trial_eligible = True
-                    # Save trial data
-                    if not self.trial_saved: # Added 15/05/2025
-                        self.save_data()
-                        self.trial_saved=True
-                    # Catch doesn't affect accuracy; still can check switch eligibility
-                    self.maybe_switch_block()
-                    return  # Exit function to prevent normal trial execution
-                
-    
-    # For normal trials
-    # Left piezo
-    if p1:
-        latest_value1 = p1[-1]
-    
-        if latest_value1 > self.threshold_left:
-            with self.lock:
-                self.tlick_l = time.time()
-                elapsed_left = self.tlick_l - self.RW_start
-    
-                if self.first_lick is None and (0 < elapsed_left < self.RW):
-                    self.first_lick = 'left'
-                    self.tlick = self.tlick_l
-                    self.decision_history.append("L")  # Store in history
-                    self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
-                        
-                    if self.correct_spout == self.first_lick:
-    
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('left',)).start() 
-
-                        self.correct_trials += 1
-                        self.trial_history.append(1)  # Valid trial: correct
-                        self.block_valid_trials += 1
-                        self.gui_controls.update_correct_trials(self.correct_trials)
-                            
-                    else:
-                        self.play_sound('white_noise')
-                        print('wrong spout')
-                        self.incorrect_trials +=1
-                        self.trial_history.append(0)  #Valid trial: Incorrect
-                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                    
-                        
-                    self.total_licks += 1
-                    self.licks_left += 1
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_left(self.licks_left)
-                    self.timer_3.cancel()
-                    self.trialstarted = False
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                    self.tend = time.time()
-                    self.trial_duration = (self.tend-self.ttrial)
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.next_trial_eligible = True
-                    # Save trial data
-                    if not self.trial_saved: # Added 15/05/2025
-                        self.save_data()
-                        self.trial_saved=True
-                        
-                    # Evaluate block switch (needs both: min trials reached AND ≥85% on last 20 valid)
-                    self.maybe_switch_block()
-                    return
-                
-            
-    # Right piezo        
-    if p2:
-        latest_value2 = p2[-1]
-    
-        if latest_value2 > self.threshold_right:
-            with self.lock:
-                self.tlick_r = time.time()
-                elapsed_right = self.tlick_r - self.RW_start
-    
-                if self.first_lick is None and (0 < elapsed_right < self.RW):
-                    self.first_lick = 'right'
-                    self.tlick = self.tlick_r
-                    self.decision_history.append("R")  # Store in history
-                    self.decision_history = self.decision_history[-self.min_trials_debias:] # Keep last 15 trials
-                        
-                    if self.correct_spout == self.first_lick:
-    
-                        # Deliver reward in a separate thread
-                        threading.Thread(target=self.reward, args=('right',)).start()
-                       
-                        
-                        self.correct_trials += 1
-                        self.trial_history.append(1)  #Valid trial: Correct
-                        self.block_valid_trials += 1
-                        self.gui_controls.update_correct_trials(self.correct_trials)
-                        
-                    else:
-                        self.play_sound('white_noise')
-                        print('wrong spout')
-                        self.incorrect_trials +=1
-                        self.trial_history.append(0)  #Valid trial: Incorrect
-                        self.gui_controls.update_incorrect_trials(self.incorrect_trials)
-                        
-                    self.total_licks += 1
-                    self.licks_right += 1
-                    self.gui_controls.update_total_licks(self.total_licks)
-                    self.gui_controls.update_licks_right(self.licks_right)
-                    self.timer_3.cancel()
-                    self.trialstarted = False
-                    threading.Thread(target=self.blue_led_off, daemon=True).start()
-                    self.tend = time.time()
-                    self.trial_duration = (self.tend-self.ttrial)
-                    self.gui_controls.update_trial_duration(self.trial_duration)
-                    self.next_trial_eligible = True
-                    # Save trial data
-                    if not self.trial_saved: # Added 15/05/2025
-                        self.save_data()
-                        self.trial_saved=True
-                        
-                    # Evaluate block switch (needs both: min trials reached AND ≥85% on last 20 valid)
-                    self.maybe_switch_block()
-                    return         
-                
-'''

@@ -4,9 +4,13 @@ Created on Sat Jul 20 17:51:07 2024
 
 @author: JoanaCatarino
 
-original file for blocks
+ -- Two-Choice Auditory Task Blocks --
+ 
+- Second training stage
+- The goal of this task is to make the animals familiar to the association between spouts and tones
+- Here animals need to do 10, 5 or 3 corretc licks on the spout associated to the tone to change to another tone type. 
 
-Version - 2025
+New version - jan 2026 
 """
 
 
@@ -35,7 +39,6 @@ class TwoChoiceAuditoryTask_Blocks:
         self.save_dir = os.path.dirname(csv_file_path)
         os.makedirs(self.save_dir, exist_ok=True)
         self.file_path = csv_file_path # use the csv file name
-        self.trials = [] # list to store trial data
         
         # Connection to GUI
         self.gui_controls = gui_controls
@@ -70,12 +73,9 @@ class TwoChoiceAuditoryTask_Blocks:
         self.incorrect_trials = 0
         self.early_licks = 0
         self.omissions = 0
-        self.trial_duration = 0
         self.sound_8KHz = 0
         self.sound_16KHz = 0
-        self.autom_rewards = 0
-        self.catch_trials = 0
-        
+      
         # Booleans
         self.trialstarted = False
         self.running = False
@@ -88,30 +88,23 @@ class TwoChoiceAuditoryTask_Blocks:
         # Time variables
         self.tstart = None # start of the task
         self.ttrial = None # start of the trial
-        self.t = None # current time
-        self.tlick_l = None # last lick left spout
-        self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
-        self.current_time = None
+        self.early_lick_time = None # time of early lick that aborted trial
+        self.stim_time = None # time sound is played
+        self.reward_time = None # time reward is delivered
+        self.punishment_time = None #time punishment is delivered
         self.tend = None # end of the trial
+        self.trial_duration = None # trial duration
         self.next_trial_eligible = False
-        self.timer_3 = None # Troubleshoot 20/05
+        self.timer_3 = None 
         
         # Lock for thread-safe operations
         self.lock = threading.Lock()
         
         self.first_lick = None
-        self.trial_saved = False # added 15/05/2025
-        
-        # Debiasing variables 
-        self.decision_history = [] # Stores last N trial outcomes
-        self.min_trials_debias = 15 # Number of trials for debiasing
-        self.decision_SD = 0.5 # standart deviation for Gaussian sampling
-        self.correct_spout = None 
-        self.selected_side = None
-        self.bias_value = None
-        self.debias_value = None
+        self.correct_spout = None
+        self.trial_saved = False 
         
         # Block variables
         self.block_size = 10 # added for blocks
@@ -184,13 +177,15 @@ class TwoChoiceAuditoryTask_Blocks:
         print(f"Warning: No mapping found for Animal {self.animal_id}. Check the CSV file.")
         return False 
     
+    
+    
     def choose_next_trial_blockwise(self): # added for blocks
         """ 
         Selects next trial using blocks of n correct trials (n= self.block_size)
 
         """
         if self.current_block_side is None:
-            self.current_block_side= random.choice(["left", "right"]) # added for blocks
+            self.current_block_side = random.choice(["left", "right"]) # Choose block side randomly for the start of the task
             self.correct_in_block = 0
             print(f"[BLOCK INIT] Starting block: {self.current_block_side}")
 
@@ -247,7 +242,7 @@ class TwoChoiceAuditoryTask_Blocks:
             if self.trialstarted:
                 return
             
-            self.trial_saved = False # Added 15/05/2025
+            self.trial_saved = False 
             self.trialstarted = True
             self.total_trials +=1
             self.gui_controls.update_total_trials(self.total_trials)
@@ -294,7 +289,7 @@ class TwoChoiceAuditoryTask_Blocks:
                 self.gui_controls.update_trial_duration(self.trial_duration)
                 self.schedule_next_trial()
                 # Save trial data
-                if not self.trial_saved: # Added 15/05/2025
+                if not self.trial_saved: 
                     self.save_data()
                     self.trial_saved = True
                 return  # Exit trial 
@@ -303,43 +298,26 @@ class TwoChoiceAuditoryTask_Blocks:
             self.play_sound(self.current_tone)
             self.sound_played = True
             
-            autom_rewards = self.gui_controls.ui.chk_AutomaticRewards.isChecked()
-            
-            if autom_rewards:
-                print(f"Automatic reward given at {self.correct_spout}")
-                threading.Thread(target=self.reward, args=(self.correct_spout,)).start()
-                self.trialstarted = False
-                threading.Thread(target=self.blue_led_off, daemon=True).start()
-                self.autom_rewards += 1
-                self.gui_controls.update_autom_rewards(self.autom_rewards)
-                self.tend = time.time()
-                self.trial_duration = (self.tend-self.ttrial)
-                self.gui_controls.update_trial_duration(self.trial_duration)
-                self.schedule_next_trial()
-                # Save trial data
-                if not self.trial_saved: # Added 15/05/2025
-                    self.save_data()
-                    self.trial_saved = True
-                
-            if not autom_rewards:            # **If Automatic Reward is NOT checked, proceed with standard response window**
-                self.RW_start = time.time()  # Start response window
-            
-                # Wait for response window to finish if no lick happens
-                threading.Thread(target=self.wait_for_response, daemon=True).start()
+            # Start response window
+            self.RW_start = time.time() 
+             
+            # Wait for response window to finish if no lick happens
+            threading.Thread(target=self.wait_for_response, daemon=True).start()
             
     
     def play_sound(self, frequency):
         
         if frequency == "8KHz":
-            tone_8KHz()  
+            tone_8KHz() 
+            self.stim_time = time.time()
         elif frequency == "16KHz":
             tone_16KHz()
+            self.stim_time = time.time()
         elif frequency == "white_noise":
             white_noise()
+            self.punishment_time = time.time()
+            
 
-        #threading.Thread(target=play, daemon=True).start()
-
-        
     def blue_led_on(self):
         led_blue.on()
         
@@ -352,24 +330,22 @@ class TwoChoiceAuditoryTask_Blocks:
         """ Detects licks during the waiting window (WW) and aborts the trial if necessary. """
         
         WW_start = time.time()  # Mark the WW start time
+        self.early_lick_time = None # reset early lick time stamp
         
         ignore_licks = self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() # Check if Ignore Licks during WW option is checked in the gui
         
         while time.time() - WW_start < self.WW:  # Wait for WW duration
-            #p1 = list(self.piezo_reader.piezo_adder1)  # Left spout
-            #p2 = list(self.piezo_reader.piezo_adder2)  # Right spout
-            
             p1 = np.array(self.piezo_reader.piezo_adder1,dtype=np.uint16)
             p2 = np.array(self.piezo_reader.piezo_adder2,dtype=np.uint16)
             
             # Check if a lick is detected
             if not ignore_licks:
-                #if p1 and p1[-1] > self.threshold_left:
                 if p1.size and p1[-1] > self.threshold_left:
+                    self.early_lick_time = time.time()
                     return True  # Abort trial
         
-                #if p2 and p2[-1] > self.threshold_right:
                 if p2.size and p2[-1] > self.threshold_right:
+                    self.early_lick_time = time.time()
                     return True  # Abort trial
             
             time.sleep(0.001)  # Small delay to prevent CPU overload
@@ -440,8 +416,6 @@ class TwoChoiceAuditoryTask_Blocks:
     
             self.first_lick = side
             self.tlick = tlick
-            self.decision_history.append("L" if side == "left" else "R")
-            self.decision_history = self.decision_history[-self.min_trials_debias:]
     
             # Outcome (reward vs punishment)
             if self.correct_spout == side:
@@ -518,12 +492,14 @@ class TwoChoiceAuditoryTask_Blocks:
             pump_l.off()
             time.sleep(self.valve_opening)
             pump_l.on()
+            self.reward_time = time.time()
             print('Reward delivered - left')
             
         elif side == 'right':
             pump_r.off()
             time.sleep(self.valve_opening)
             pump_r.on()
+            self.reward_time = time.time()
             print('Reward delivered - right')
     
     
@@ -533,7 +509,7 @@ class TwoChoiceAuditoryTask_Blocks:
             if self.first_trial:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
-                    self.trial_saved = False # Added this 15/05/2025
+                    self.trial_saved = False 
                     self.start_trial()
                     self.first_trial = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
@@ -543,7 +519,7 @@ class TwoChoiceAuditoryTask_Blocks:
             if self.next_trial_eligible == True and ((time.time() - (self.tend)) >= self.ITI) and not self.trialstarted:
                 print(f"ITI duration: {self.ITI} seconds")  # Print ITI value for debugging
                 if self.check_animal_quiet():
-                    self.trial_saved = False # Added this 15/05/2025
+                    self.trial_saved = False 
                     self.start_trial()
                     self.next_trial_eligible = False
                     self.ITI = round(random.uniform(self.ITI_min, self.ITI_max),1)
@@ -563,8 +539,7 @@ class TwoChoiceAuditoryTask_Blocks:
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
         
         # Determine if a reward was given
-        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
-                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None))
     
         # Determine if punishment was given
         was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
@@ -586,9 +561,11 @@ class TwoChoiceAuditoryTask_Blocks:
             np.nan if not hasattr(self, 'ITI') else self.ITI,  # ITI
             np.nan if not hasattr(self, 'current_block') else self.current_block,  # block
             np.nan if not hasattr(self, 'early_lick_counted') else (1 if self.early_lick_counted else 0),  # early licks
+            np.nan if not hasattr(self, 'early_lick_time') else self.early_lick_time,  # early licks time
             np.nan if not hasattr(self, 'sound_played') else (1 if self.sound_played else 0),  # stim
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '8KHz' else 0),  # 5KHz
             np.nan if not hasattr(self, 'current_tone') else (1 if self.current_tone == '16KHz' else 0),  # 16KHz
+            np.nan if not hasattr(self, 'stim_time') else self.stim_time, # time sound was played
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick else 0),  # lick
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'left' else 0),  # left spout
             np.nan if not hasattr(self, 'first_lick') else (1 if self.first_lick == 'right' else 0),  # right spout
@@ -596,6 +573,8 @@ class TwoChoiceAuditoryTask_Blocks:
             np.nan if not hasattr(self, 'first_lick') else (1 if was_rewarded else 0),  # reward
             np.nan if not hasattr(self, 'first_lick') else (1 if was_punished else 0),  # punishment
             np.nan if not hasattr(self, 'first_lick') else (1 if was_omission else 0),  # omission
+            np.nan if not hasattr(self, 'reward_time') else self.reward_time, # time reward was delivered
+            np.nan if not hasattr(self, 'punishment_time') else self.punishment_time, # time punishment was delivered
             np.nan if not hasattr(self, 'RW') else self.RW,
             np.nan if not hasattr(self, 'QW') else self.QW,
             np.nan if not hasattr(self, 'WW') else self.WW,
@@ -604,7 +583,6 @@ class TwoChoiceAuditoryTask_Blocks:
             np.nan if not hasattr(self, 'ITI_max') else self.ITI_max,
             np.nan if not hasattr(self, 'threshold_left') else self.threshold_left,
             np.nan if not hasattr(self, 'threshold_right') else self.threshold_right,
-            1 if self.gui_controls.ui.chk_AutomaticRewards.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_NoPunishment.isChecked() else np.nan,
             1 if self.gui_controls.ui.chk_IgnoreLicksWW.isChecked() else np.nan,
             np.nan if not hasattr(self, 'catch_trial_counted') else (1 if self.catch_trial_counted else 0),  # catch trials
@@ -627,7 +605,7 @@ class TwoChoiceAuditoryTask_Blocks:
         }.get(getattr(self, 'current_block', ""), "")  # If undefined, show empty string ""
     
         # **Extract Trial History Info & Update GUI**
-        trial_outcome = "correct" if trial_data[15] == 1 else "incorrect" if trial_data[16] == 1 else "omission"
+        trial_outcome = "correct" if trial_data[17] == 1 else "incorrect" if trial_data[18] == 1 else "omission"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)

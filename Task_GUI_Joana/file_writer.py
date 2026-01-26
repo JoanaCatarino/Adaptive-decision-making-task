@@ -86,9 +86,9 @@ def create_data_file(date_label, animal_id_combobox, task_combobox, box_combobox
         
     # Define common csv headers for all tasks - this order and info remains the same across tasks
     headers = ["trial_number", "trial_start", "RW_start", "trial_end", "trial_duration", "ITI", "block", "early_lick",
-               "stim", "8KHz", "16KHz", "lick", "left_spout", "right_spout", "lick_time", "reward",
-               "punishment", "omission", "RW", "QW", "WW", "valve_opening", "ITImin", "ITImax",
-               "threshold_left", "threshold_right", "autom_reward", "no_punishment","ignore_licks", "catch_trial",
+               "early_lick_time", "stim", "8KHz", "16KHz", "stim_time", "lick", "left_spout", "right_spout", "lick_time", "reward",
+               "punishment", "omission", "reward_time", "punishment_time", "RW", "QW", "WW", "valve_opening", "ITImin",
+               "ITImax", "threshold_left", "threshold_right", "no_punishment","ignore_licks", "catch_trial",
                "distractor_trial", "distractor_left", "distractor_right", "session_start"]
 
     # Create the CSV file and leave it open so tha the different heads can be defined per task
