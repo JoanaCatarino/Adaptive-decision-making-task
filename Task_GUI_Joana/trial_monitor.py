@@ -3,6 +3,8 @@
 Created on Tue Mar 18 11:42:26 2025
 
 @author: JoanaCatarino
+
+# version working before I tried to add colors to the trial monitor - jan 2026
 """
 
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout
@@ -56,28 +58,60 @@ class TrialMonitor(QWidget):
     def update_trial(self, trial_data):
         """ Update the QLabel widgets with new trial data """
         self.trial_history.append(trial_data)
-
+    
         for col, trial in enumerate(self.trial_history):
             # Update Block Type (S, AL, AR)
-            self.labels["block"][col].setText(trial["block_type"])
-
-            # Update Spout Choices with color
-            self.update_color(self.labels["left_spout"][col], trial, "L")
-            self.update_color(self.labels["right_spout"][col], trial, "R")
-
+            self.labels["block"][col].setText(trial.get("block_type", ""))
+    
+            # NEW: determine trial "status"
+            # Prefer "status" if provided; fallback to old "outcome"
+            status = trial.get("status", trial.get("outcome", "unknown"))
+    
+            # If trial-type status should override everything, color BOTH spouts
+            # Catch trial → orange (both spouts)
+            if status == "catch":
+                self._set_bg(self.labels["left_spout"][col], QColor("#E67B51"))
+                self._set_bg(self.labels["right_spout"][col], QColor("#E67B51"))
+    
+            # Early lick → blue (both spouts)
+            elif status == "early":
+                self._set_bg(self.labels["left_spout"][col], QColor("#3CBBC9"))
+                self._set_bg(self.labels["right_spout"][col], QColor("#3CBBC9"))
+                
+            elif status == "omission":
+                self._set_bg(self.labels["left_spout"][col], QColor(Qt.lightGray))  # gray
+                self._set_bg(self.labels["right_spout"][col], QColor(Qt.lightGray))
+                
+            else:
+                # Normal trials: color only the chosen spout based on correct/incorrect
+                self.update_color(self.labels["left_spout"][col], trial, "L")
+                self.update_color(self.labels["right_spout"][col], trial, "R")
+    
             # Update Trial Number
-            self.labels["trial_number"][col].setText(str(trial["trial_number"]))
-
+            self.labels["trial_number"][col].setText(str(trial.get("trial_number", "")))
+    
+    
     def update_color(self, label, trial, spout_side):
-        """ Set QLabel background color based on outcome """
-        color = QColor(Qt.lightGray)  # Default: omission
-
-        if trial["spout"] == spout_side:
-            if trial["outcome"] == "correct":
+        """ Set QLabel background color for normal trials (chosen spout only) """
+        # Default: not chosen -> light gray
+        color = QColor(Qt.lightGray)
+    
+        chosen = trial.get("spout", None)  # "L" or "R" expected
+        outcome = trial.get("outcome", trial.get("status", "unknown"))  # fallback either way
+    
+        if chosen == spout_side:
+            if outcome == "correct":
                 color = QColor(Qt.green)
-            elif trial["outcome"] == "incorrect":
+            elif outcome == "incorrect":
                 color = QColor(Qt.red)
-
+            else:
+                # if chosen but unknown outcome, keep gray
+                color = QColor(Qt.lightGray)
+    
+        self._set_bg(label, color)
+    
+    
+    def _set_bg(self, label, color: QColor):
         palette = label.palette()
         palette.setColor(QPalette.Window, color)
         label.setPalette(palette)
