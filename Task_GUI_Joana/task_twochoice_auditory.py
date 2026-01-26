@@ -550,7 +550,7 @@ class TwoChoiceAuditoryTask:
             
     
     def save_data(self):
-        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure."""
+        """ Saves trial data, ensuring missing variables are filled with NaN while maintaining structure. """
         
         # Prevent duplicate calls
         if hasattr(self, 'data_saved') and self.data_saved:
@@ -559,7 +559,7 @@ class TwoChoiceAuditoryTask:
         
         # Update plot
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
-        
+                
         # Determine if a reward was given
         was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None)))
     
@@ -619,19 +619,38 @@ class TwoChoiceAuditoryTask:
             writer = csv.writer(file)
             writer.writerow(trial_data)
             
+            
         # **Convert block type for display**
         block_type_display = {
             "sound": "S",
             "action-left": "AL",
             "action-right": "AR"
-        }.get(getattr(self, 'current_block', ""), "")  # If undefined, show empty string ""
+        }.get(self.current_block, "")  # If undefined, show empty string ""
+    
     
         # **Extract Trial History Info & Update GUI**
-        trial_outcome = "correct" if trial_data[17] == 1 else "incorrect" if trial_data[18] == 1 else "omission"
+        is_catch = (trial_data[32] == 1)
+        is_early = (trial_data[7] == 1)
+        is_omission = (trial_data[19] == 1)
+        is_correct = (trial_data[17] == 1)
+        is_incorrect = (trial_data[18] == 1)
+        
+        if is_catch:
+            trial_status = "catch"
+        elif is_early:
+            trial_status = "early"
+        elif is_omission:
+            trial_status = "omission"
+        elif is_correct:
+            trial_status = "correct"
+        elif is_incorrect:
+            trial_status = "incorrect"
+        else:
+            trial_status = "unknown"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
-            "outcome": trial_outcome,  # Correct, Incorrect, Omission
+            "status": trial_status, 
             "trial_number": self.total_trials  # Trial ID
         }
         
@@ -645,32 +664,42 @@ class TwoChoiceAuditoryTask:
         
         
     def update_trial_history(self):
-        """ Updates the GUI labels for trial history using a single outcome label per trial """
+        """ Updates the GUI labels for trial history using a single status label per trial """
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
-            
-            # **Update Block Type (S, AL, AR, or Empty)**
+    
+            # Update Block Type (S, AL, AR, or Empty)
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
             if lbl_block:
-                lbl_block.setText(trial["block_type"])
+                lbl_block.setText(trial.get("block_type", ""))
     
-            # **Find the Outcome Label**
+            # Find the Outcome Label
             lbl_outcome = getattr(self.gui_controls.ui, f"lbl_O{col}", None)
     
-            # **Reset previous color**
+            # Reset previous color
             if lbl_outcome:
-                lbl_outcome.setStyleSheet("")  # Clear previous color
+                lbl_outcome.setStyleSheet("")
     
-                # **Assign color based on outcome**
-                if trial["outcome"] == "correct":
-                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")
-                elif trial["outcome"] == "incorrect":
+                status = trial.get("status", "unknown")
+    
+                # Assign color based on NEW rules
+                if status == "catch":
+                    lbl_outcome.setStyleSheet("background-color: #E67B51;")  # orange
+                elif status == "early":
+                    lbl_outcome.setStyleSheet("background-color: #3CBBC9;")  # blue
+                elif status == "omission":
+                    lbl_outcome.setStyleSheet("background-color: gray;")
+                elif status == "correct":
+                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")  # green
+                elif status == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
                 else:
-                    lbl_outcome.setStyleSheet("background-color: gray;")
-                    
-            # **Update Trial Number**
+                    lbl_outcome.setStyleSheet("background-color: lightgray;")
+    
+            # Update Trial Number
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
-                lbl_T.setText(str(trial["trial_number"])) 
+                lbl_T.setText(str(trial.get("trial_number", "")))
+                    
+                
