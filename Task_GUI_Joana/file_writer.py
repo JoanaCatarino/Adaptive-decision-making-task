@@ -21,12 +21,10 @@ SAVE_DIRECTORY = os.path.join(home,"save_dir")
 # Create a dictionary for the different tasks with the identifier that is used in the data file name
 TASK_NICKNAME = {
     'Free Licking': 'FreeLick',
-    'Spout Sampling': 'SpoutSamp',
     'Two-Choice Auditory Task': '2ChoiceAuditory',
     'Adaptive Sensorimotor Task': 'AdaptSensorimotor',
     'Adaptive Sensorimotor Task w/ Distractor': 'AdaptSensorimotor_distractor',
     'Two-Choice Auditory Task Blocks': '2ChoiceBlocks',
-    'test Two-Choice Auditory Task Blocks': '2ChoiceBlocks_test'
     }
 
 # Save data

@@ -15,16 +15,11 @@ def task (combobox, font_size=8):
     items = ['',
              'Test rig',
              'Free Licking',
-             'Spout Sampling',
              'Two-Choice Auditory Task Blocks',
              'Two-Choice Auditory Task',
              'Adaptive Sensorimotor Task',
              'Adaptive Sensorimotor Task w/ Distractor',
-             'test Two-Choice Auditory Task Blocks',
-             'Recording - Passive protocol sounds',
-             'Recording - Optotagging 2ms protocol',
-             'Recording - Optotagging 10ms protocol',
-             'Recording - Optotagging 100ms protocol'
+             'Recording - Passive protocol sounds'
              ]
     
     # Create a font with the specified size

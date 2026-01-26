@@ -45,7 +45,6 @@ from gpio_map import *
 # Import task classes
 from task_test_rig import TestRig
 from task_free_licking import FreeLickingTask
-from task_spout_sampling import SpoutSamplingTask
 from task_twochoice_auditory_blocks import TwoChoiceAuditoryTask_Blocks
 from task_twochoice_auditory import TwoChoiceAuditoryTask
 from task_adaptive_sensorimotor import AdaptiveSensorimotorTask
@@ -53,12 +52,6 @@ from task_adaptive_sensorimotor_distractor import AdaptiveSensorimotorTaskDistra
 
 # Import recording protocols as tasks
 from passive_protocol_sounds import PassiveSoundRecordings
-from optotagging_protocol_10ms import OptoProtocol10ms
-from optotagging_protocol_100ms import OptoProtocol100ms
-from optotagging_protocol_2ms import OptoProtocol2ms
-
-# Import test tasks
-from task_twochoice_auditory_blocks_test import TwoChoiceAuditoryTask_Blocks_test
 
 
 
@@ -640,9 +633,6 @@ class GuiControls:
         elif selected_task == 'Free Licking':
             self.current_task = FreeLickingTask(self, csv_file_path)
 
-        elif selected_task == 'Spout Sampling':
-            self.current_task = SpoutSamplingTask(self, csv_file_path) 
-
         elif selected_task == 'Two-Choice Auditory Task':
             self.current_task = TwoChoiceAuditoryTask(self, csv_file_path)
 
@@ -655,21 +645,9 @@ class GuiControls:
         elif selected_task == 'Two-Choice Auditory Task Blocks':
             self.current_task = TwoChoiceAuditoryTask_Blocks(self, csv_file_path)
             
-        elif selected_task == 'test Two-Choice Auditory Task Blocks':
-            self.current_task = TwoChoiceAuditoryTask_Blocks_test(self, csv_file_path)
-            
         elif selected_task == 'Recording - Passive protocol sounds':
             self.current_task = PassiveSoundRecordings(self)
-            
-        elif selected_task == 'Recording - Optotagging 2ms protocol':
-            self.current_task = OptoProtocol2ms(self)
-            
-        elif selected_task == 'Recording - Optotagging 10ms protocol':
-            self.current_task = OptoProtocol10ms(self)
-            
-        elif selected_task == 'Recording - Optotagging 100ms protocol':
-            self.current_task = OptoProtocol100ms(self)
-            
+       
         
         if self.current_task:
             self.current_task.start()
@@ -788,7 +766,7 @@ class GuiControls:
                 new_block_size = float(block_size) if block_size else None
         
                 # Ensure there's a running task and it's of the correct type
-                if self.current_task and isinstance(self.current_task, (FreeLickingTask, SpoutSamplingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, TwoChoiceAuditoryTask_Blocks_test, PassiveSoundRecordings, OptoProtocol2ms, OptoProtocol10ms, OptoProtocol100ms)):
+                if self.current_task and isinstance(self.current_task, (FreeLickingTask, TwoChoiceAuditoryTask, AdaptiveSensorimotorTask, AdaptiveSensorimotorTaskDistractor, TwoChoiceAuditoryTask_Blocks, PassiveSoundRecordings)):
                     # Update quiet window
                     if new_quiet_window is not None:
                         self.current_task.QW = int(new_quiet_window)
