@@ -431,6 +431,13 @@ class AdaptiveSensorimotorTask:
             self.data_saved = False
             self.plot_updated = False
             
+            # reset time variables at the beginning of each trial
+            self.RW_start = None
+            self.early_lick_time = None # time of early lick that aborted trial
+            self.stim_time = None # time sound is played
+            self.reward_time = None # time reward is delivered
+            self.punishment_time = None #time punishment is delivered
+            
             # Decide catch trial by session rule
             self.is_catch_trial = self.decide_session_catch()
             
