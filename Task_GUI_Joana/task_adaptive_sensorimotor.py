@@ -911,7 +911,7 @@ class AdaptiveSensorimotorTask:
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
-            "outcome": trial_status, 
+            "status": trial_status, 
             "trial_number": self.total_trials  # Trial ID
         }
         
