@@ -3725,6 +3725,56 @@ color: rgb(112, 112, 112);</string>
        <string>Check</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>553</x>
+        <y>715</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(94, 185, 199);</string>
+      </property>
+      <property name="text">
+       <string>O</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>919</x>
+        <y>758</y>
+        <width>16</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 154, 82);</string>
+      </property>
+      <property name="text">
+       <string>O</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
      <zorder>bkg_Trials</zorder>
      <zorder>TaskSettings</zorder>
      <zorder>lbl_TaskSettings</zorder>
@@ -3809,6 +3859,8 @@ color: rgb(112, 112, 112);</string>
      <zorder>lbl_Date_3</zorder>
      <zorder>lbl_CameraStatus</zorder>
      <zorder>btn_CheckHardware</zorder>
+     <zorder>label_3</zorder>
+     <zorder>label_4</zorder>
     </widget>
     <widget class="QWidget" name="Overview">
      <attribute name="title">

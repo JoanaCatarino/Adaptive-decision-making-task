@@ -42,7 +42,7 @@ class TestRig:
         self.ui.chk_WhiteLED_Right.clicked.connect(self.toggle_white_led_right)
         self.ui.chk_Reward_left.clicked.connect(self.activate_pump_left)
         self.ui.chk_Reward_right.clicked.connect(self.activate_pump_right)
-        #self.ui.chk_Manip_sound_lights.connect(self.play_mock_recording)  # Play manipulator sound and flash lights to do a mock recording
+        #self.ui.chk_Manip_sound_lights.clicked.connect(self.play_mock_recording)  # Play manipulator sound and flash lights to do a mock recording
 
     def disconnect_signals(self):
         """ Ensures no duplicate signal connections """
@@ -55,7 +55,7 @@ class TestRig:
             self.ui.chk_WhiteLED_Right.clicked.disconnect()
             self.ui.chk_Reward_left.clicked.disconnect()
             self.ui.chk_Reward_right.clicked.disconnect()
-            #self.ui.chk_Manip_sound_lights.disconnect()
+            #self.ui.chk_Manip_sound_lights.clicked.disconnect()
         except TypeError:
             pass  # If already disconnected, ignore
 
@@ -119,14 +119,54 @@ class TestRig:
         sleep(0.5)
         pump_r.on()
 
+    '''
+     ## --- Mock recording: loop sound + alternating lights until Stop pressed ---
+    def play_mock_recording(self):
+        print("Starting mock recording loop (sound + alternating lights)")
 
-    #def play_mock_recording(self):
+        audio_path = "/home/pi/sounds/mock_recording.wav"  # <-- change this to your clip path
 
+        # If already running, don't start another set of threads
+        if hasattr(self, "mock_stop_event") and self.mock_stop_event is not None and not self.mock_stop_event.is_set():
+            print("Mock recording already running")
+            return
 
+        self.mock_stop_event = threading.Event()
+
+        def play_audio_loop():
+            # Loops the clip until stop is requested
+            while not self.mock_stop_event.is_set():
+                subprocess.run(["aplay", "-q", audio_path], check=False)
+
+        def alternate_lights_loop():
+            # Alternates LEDs until stop is requested
+            while not self.mock_stop_event.is_set():
+                led_white_l.on()
+                led_white_r.off()
+                sleep(0.25)
+                if self.mock_stop_event.is_set():
+                    break
+
+                led_white_l.off()
+                led_white_r.on()
+                sleep(0.25)
+
+            # Ensure both are off after stopping
+            led_white_l.off()
+            led_white_r.off()
+
+        threading.Thread(target=play_audio_loop, daemon=True).start()
+        threading.Thread(target=alternate_lights_loop, daemon=True).start()
+    '''
 
     ## --- Stop Function ---
     def stop(self):
         print('Test rig stopping')
+        
+        # Stop mock recording loop if running
+        #if hasattr(self, "mock_stop_event") and self.mock_stop_event is not None:
+            #self.mock_stop_event.set()
+        
         self.disconnect_signals()
 
 
