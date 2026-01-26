@@ -815,8 +815,7 @@ class AdaptiveSensorimotorTask:
         self.gui_controls.update_performance_plot(self.total_trials, self.correct_trials, self.incorrect_trials)
                 
         # Determine if a reward was given
-        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False)) or
-                        self.gui_controls.ui.chk_AutomaticRewards.isChecked())
+        was_rewarded = ((getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) == getattr(self, 'first_lick', None)))
     
         # Determine if punishment was given
         was_punished = (getattr(self, 'first_lick', None) and getattr(self, 'correct_spout', None) != getattr(self, 'first_lick', None) and not getattr(self, 'catch_trial_counted', False))
