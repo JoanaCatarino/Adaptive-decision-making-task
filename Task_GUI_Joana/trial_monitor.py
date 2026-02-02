@@ -115,3 +115,14 @@ class TrialMonitor(QWidget):
         palette = label.palette()
         palette.setColor(QPalette.Window, color)
         label.setPalette(palette)
+#%%
+
+
+
+
+
+
+#%%
+
+
+

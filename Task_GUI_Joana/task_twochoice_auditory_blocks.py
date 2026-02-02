@@ -39,6 +39,7 @@ class TwoChoiceAuditoryTask_Blocks:
         self.save_dir = os.path.dirname(csv_file_path)
         os.makedirs(self.save_dir, exist_ok=True)
         self.file_path = csv_file_path # use the csv file name
+        self.trials = [] # list to store trial data
         
         # Connection to GUI
         self.gui_controls = gui_controls
@@ -88,8 +89,12 @@ class TwoChoiceAuditoryTask_Blocks:
         # Time variables
         self.tstart = None # start of the task
         self.ttrial = None # start of the trial
+        self.t = None # current time
+        self.tlick_l = None # last lick left spout
+        self.tlick_r = None # last lick right spout
         self.tlick = None # time of 1st lick within response window
         self.RW_start = None
+        self.current_time = None
         self.early_lick_time = None # time of early lick that aborted trial
         self.stim_time = None # time sound is played
         self.reward_time = None # time reward is delivered
@@ -103,8 +108,16 @@ class TwoChoiceAuditoryTask_Blocks:
         self.lock = threading.Lock()
         
         self.first_lick = None
-        self.correct_spout = None
         self.trial_saved = False 
+        
+        # Debiasing variables 
+        self.decision_history = [] # Stores last N trial outcomes
+        self.min_trials_debias = 15 # Number of trials for debiasing
+        self.decision_SD = 0.5 # standart deviation for Gaussian sampling
+        self.correct_spout = None 
+        self.selected_side = None
+        self.bias_value = None
+        self.debias_value = None
         
         # Block variables
         self.block_size = 10 # added for blocks
@@ -422,6 +435,8 @@ class TwoChoiceAuditoryTask_Blocks:
     
             self.first_lick = side
             self.tlick = tlick
+            self.decision_history.append("L" if side == "left" else "R")
+            self.decision_history = self.decision_history[-self.min_trials_debias:]
     
             # Outcome (reward vs punishment)
             if self.correct_spout == side:
@@ -603,38 +618,19 @@ class TwoChoiceAuditoryTask_Blocks:
             writer = csv.writer(file)
             writer.writerow(trial_data)
             
-            
         # **Convert block type for display**
         block_type_display = {
             "sound": "S",
             "action-left": "AL",
             "action-right": "AR"
-        }.get(self.current_block, "")  # If undefined, show empty string ""
-    
+        }.get(getattr(self, 'current_block', ""), "")  # If undefined, show empty string ""
     
         # **Extract Trial History Info & Update GUI**
-        is_catch = (trial_data[32] == 1)
-        is_early = (trial_data[7] == 1)
-        is_omission = (trial_data[19] == 1)
-        is_correct = (trial_data[17] == 1)
-        is_incorrect = (trial_data[18] == 1)
-        
-        if is_catch:
-            trial_status = "catch"
-        elif is_early:
-            trial_status = "early"
-        elif is_omission:
-            trial_status = "omission"
-        elif is_correct:
-            trial_status = "correct"
-        elif is_incorrect:
-            trial_status = "incorrect"
-        else:
-            trial_status = "unknown"
+        trial_outcome = "correct" if trial_data[17] == 1 else "incorrect" if trial_data[18] == 1 else "omission"
     
         trial_data_gui = {
             "block_type": block_type_display,  # Use converted block type (empty if undefined)
-            "status": trial_status, 
+            "outcome": trial_outcome,  # Correct, Incorrect, Omission
             "trial_number": self.total_trials  # Trial ID
         }
         
@@ -648,42 +644,34 @@ class TwoChoiceAuditoryTask_Blocks:
         
         
     def update_trial_history(self):
-        """ Updates the GUI labels for trial history using a single status label per trial """
+        """ Updates the GUI labels for trial history using a single outcome label per trial """
     
         for i, trial in enumerate(self.monitor_history):
             col = i + 1  # QLabel names are lbl_O1 to lbl_O15 (one per trial)
-    
-            # Update Block Type (S, AL, AR, or Empty)
+            
+            # **Update Block Type (S, AL, AR, or Empty)**
             lbl_block = getattr(self.gui_controls.ui, f"lbl_B{col}", None)
             if lbl_block:
-                lbl_block.setText(trial.get("block_type", ""))
+                lbl_block.setText(trial["block_type"])
     
-            # Find the Outcome Label
+            # **Find the Outcome Label**
             lbl_outcome = getattr(self.gui_controls.ui, f"lbl_O{col}", None)
     
-            # Reset previous color
+            # **Reset previous color**
             if lbl_outcome:
-                lbl_outcome.setStyleSheet("")
+                lbl_outcome.setStyleSheet("")  # Clear previous color
     
-                status = trial.get("status", "unknown")
-    
-                # Assign color based on NEW rules
-                if status == "catch":
-                    lbl_outcome.setStyleSheet("background-color: #E67B51;")  # orange
-                elif status == "early":
-                    lbl_outcome.setStyleSheet("background-color: #3CBBC9;")  # blue
-                elif status == "omission":
-                    lbl_outcome.setStyleSheet("background-color: gray;")
-                elif status == "correct":
-                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")  # green
-                elif status == "incorrect":
+                # **Assign color based on outcome**
+                if trial["outcome"] == "correct":
+                    lbl_outcome.setStyleSheet("background-color: #0DE20D;")
+                elif trial["outcome"] == "incorrect":
                     lbl_outcome.setStyleSheet("background-color: red;")
                 else:
-                    lbl_outcome.setStyleSheet("background-color: lightgray;")
-    
-            # Update Trial Number
+                    lbl_outcome.setStyleSheet("background-color: gray;")
+                    
+            # **Update Trial Number**
             lbl_T = getattr(self.gui_controls.ui, f"lbl_T{col}", None)
             if lbl_T:
-                lbl_T.setText(str(trial.get("trial_number", "")))
+                lbl_T.setText(str(trial["trial_number"])) 
                     
                 
