@@ -625,7 +625,7 @@ class TwoChoiceAuditoryTask:
             "sound": "S",
             "action-left": "AL",
             "action-right": "AR"
-        }.get(self.current_block, "")  # If undefined, show empty string ""
+        }.get(getattr(self, 'current_block', ""), "")  # If undefined, show empty string ""
     
     
         # **Extract Trial History Info & Update GUI**
