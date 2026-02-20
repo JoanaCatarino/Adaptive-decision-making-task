@@ -22,18 +22,21 @@ from sound_generator import tone_16KHz, tone_8KHz, white_noise
 from form_updt import Ui_TaskGui
 
 
-
 class TestRig:
     def __init__(self, ui):
         self.ui = ui
-        self._mock_audio_proc = None
         self.mock_stop_event = None
+
+        # Handles for the mock playback pipeline
+        self._mock_ffmpeg_proc = None
+        self._mock_aplay_proc = None
+
         self.start()
 
     def start(self):
         pump_l.on()
         pump_r.on()
-        
+
         print('Test rig starting')
 
         # Disconnect previous connections to prevent multiple triggers
@@ -48,7 +51,7 @@ class TestRig:
         self.ui.chk_WhiteLED_Right.clicked.connect(self.toggle_white_led_right)
         self.ui.chk_Reward_left.clicked.connect(self.activate_pump_left)
         self.ui.chk_Reward_right.clicked.connect(self.activate_pump_right)
-        self.ui.chk_Manip_sound_lights.clicked.connect(self.play_mock_recording)  # Play manipulator sound and flash lights to do a mock recording
+        self.ui.chk_Manip_sound_lights.clicked.connect(self.play_mock_recording)
 
     def disconnect_signals(self):
         """ Ensures no duplicate signal connections """
@@ -125,13 +128,12 @@ class TestRig:
         sleep(0.5)
         pump_r.on()
 
-    
-     ## --- Mock recording: loop sound + alternating lights until Stop pressed ---
+    ## --- Mock recording: loop sound + alternating lights until Stop pressed ---
     def play_mock_recording(self):
         print("Starting mock recording loop (sound + alternating lights)")
 
-        audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.m4a"
-        volume_percent = 30  # 0–100 (per-playback volume)
+        audio_path = "/home/kmb-box2-raspi/mock_recording_sound/mock_recording_sound.m4a"
+        volume_percent = 4  # 0–100 (per-playback volume)
 
         # If already running, don't start another set of threads
         if self.mock_stop_event is not None and not self.mock_stop_event.is_set():
@@ -140,74 +142,69 @@ class TestRig:
 
         self.mock_stop_event = threading.Event()
 
-        # Convert 0–100% to a linear volume multiplier (0.0–1.0)
+        # Convert 0–100% to linear multiplier (0.0–1.0)
         vol = max(0, min(100, volume_percent)) / 100.0
 
         def play_audio_loop():
             """
-            Robust per-sound volume for .m4a:
-            ffmpeg decodes -> outputs raw PCM (s16le) -> aplay plays raw PCM.
-            No WAV header involved, so no read_header errors.
+            Robust playback:
+            ffmpeg decodes .m4a -> raw PCM -> aplay.
+            Stop works by terminating both ffmpeg + aplay.
             """
-            ffmpeg_cmd = "/usr/bin/ffmpeg"   # use full paths to avoid GUI PATH issues
+            ffmpeg_cmd = "/usr/bin/ffmpeg"
             aplay_cmd  = "/usr/bin/aplay"
-        
-            # playback format
+
             sr = "44100"
             ch = "2"
-        
+
             while not self.mock_stop_event.is_set():
-                # Start aplay first (it reads raw PCM from stdin)
-                self._mock_aplay_proc = subprocess.Popen(
-                    [aplay_cmd, "-q", "-f", "S16_LE", "-r", sr, "-c", ch],
-                    stdin=subprocess.PIPE,
-                    stderr=subprocess.PIPE
-                )
-        
-                # ffmpeg decodes and applies volume, outputs raw PCM to stdout
-                self._mock_ffmpeg_proc = subprocess.Popen(
-                    [
-                        ffmpeg_cmd,
-                        "-hide_banner",
-                        "-loglevel", "error",
-                        "-i", audio_path,
-                        "-filter:a", f"volume={vol}",
-                        "-f", "s16le",
-                        "-acodec", "pcm_s16le",
-                        "-ar", sr,
-                        "-ac", ch,
-                        "pipe:1",
-                    ],
-                    stdout=self._mock_aplay_proc.stdin,
-                    stderr=subprocess.PIPE
-                )
-        
-                # Wait for ffmpeg to finish this clip
-                ffmpeg_err = self._mock_ffmpeg_proc.communicate()[1]
-        
-                # Close stdin so aplay can finish cleanly
                 try:
-                    if self._mock_aplay_proc.stdin:
-                        self._mock_aplay_proc.stdin.close()
-                except Exception:
-                    pass
-        
-                # Wait for aplay
-                aplay_err = b""
-                try:
-                    aplay_err = self._mock_aplay_proc.communicate(timeout=1)[1]
-                except Exception:
-                    pass
-        
-                # Clear handles
-                self._mock_ffmpeg_proc = None
-                self._mock_aplay_proc = None
-        
-                # If ffmpeg had an error, print it (THIS will tell you the real reason)
-                if ffmpeg_err:
-                    print("ffmpeg error:", ffmpeg_err.decode(errors="ignore"))
-                    # If it failed, don't spin super fast
-                    sleep(0.2)
+                    # Start aplay first
+                    self._mock_aplay_proc = subprocess.Popen(
+                        [aplay_cmd, "-q", "-f", "S16_LE", "-r", sr, "-c", ch],
+                        stdin=subprocess.PIPE,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL
+                    )
+
+                    # Start ffmpeg, pipe its stdout into aplay stdin
+                    self._mock_ffmpeg_proc = subprocess.Popen(
+                        [
+                            ffmpeg_cmd,
+                            "-hide_banner",
+                            "-loglevel", "error",
+                            "-i", audio_path,
+                            "-filter:a", f"volume={vol}",
+                            "-f", "s16le",
+                            "-acodec", "pcm_s16le",
+                            "-ar", sr,
+                            "-ac", ch,
+                            "pipe:1",
+                        ],
+                        stdout=self._mock_aplay_proc.stdin,
+                        stderr=subprocess.DEVNULL
+                    )
+
+                    # Wait until this clip finishes OR until Stop kills the processes
+                    self._mock_ffmpeg_proc.wait()
+
+                finally:
+                    # Close stdin so aplay can exit cleanly
+                    try:
+                        if self._mock_aplay_proc and self._mock_aplay_proc.stdin:
+                            self._mock_aplay_proc.stdin.close()
+                    except Exception:
+                        pass
+
+                    # Wait briefly for aplay to exit
+                    try:
+                        if self._mock_aplay_proc:
+                            self._mock_aplay_proc.wait(timeout=0.5)
+                    except Exception:
+                        pass
+
+                    self._mock_ffmpeg_proc = None
+                    self._mock_aplay_proc = None
 
         def alternate_lights_loop():
             while not self.mock_stop_event.is_set():
@@ -226,31 +223,37 @@ class TestRig:
 
         threading.Thread(target=play_audio_loop, daemon=True).start()
         threading.Thread(target=alternate_lights_loop, daemon=True).start()
-    
 
     ## --- Stop Function ---
     def stop(self):
         print('Test rig stopping')
-        
-        # Stop mock recording loop if running
+
+        # Tell loops to stop
         if self.mock_stop_event is not None:
             self.mock_stop_event.set()
 
-        # If audio is currently playing, stop it immediately
-        if self._mock_audio_proc is not None:
-            try:
-                self._mock_audio_proc.terminate()
-            except Exception:
-                pass
-            self._mock_audio_proc = None
+        # Close aplay stdin (helps it unblock)
+        try:
+            if self._mock_aplay_proc and self._mock_aplay_proc.stdin:
+                self._mock_aplay_proc.stdin.close()
+        except Exception:
+            pass
 
-        # Make sure LEDs are off
+        # Kill ffmpeg + aplay immediately (THIS is what makes Stop work)
+        for proc_attr in ("_mock_ffmpeg_proc", "_mock_aplay_proc"):
+            proc = getattr(self, proc_attr, None)
+            if proc is not None:
+                try:
+                    proc.terminate()
+                except Exception:
+                    pass
+                setattr(self, proc_attr, None)
+
+        # Ensure LEDs off
         led_white_l.off()
         led_white_r.off()
-        
+
         self.disconnect_signals()
-
-
 
 
 
