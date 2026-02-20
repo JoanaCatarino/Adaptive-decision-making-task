@@ -150,13 +150,13 @@ class TestRig:
             while not self.mock_stop_event.is_set():
                 led_white_l.on()
                 led_white_r.off()
-                sleep(2)
+                sleep(4)
                 if self.mock_stop_event.is_set():
                     break
 
                 led_white_l.off()
                 led_white_r.on()
-                sleep(2)
+                sleep(4)
 
             # Ensure both are off after stopping
             led_white_l.off()
