@@ -130,7 +130,9 @@ class TestRig:
     def play_mock_recording(self):
         print("Starting mock recording loop (sound + alternating lights)")
 
-        audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.wav"
+        # Works with .wav and .m4a if ffplay is installed
+        audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.m4a"
+        volume_percent = 30  # 0–100 (ONLY affects this playback)
 
         # If already running, don't start another set of threads
         if self.mock_stop_event is not None and not self.mock_stop_event.is_set():
@@ -140,9 +142,22 @@ class TestRig:
         self.mock_stop_event = threading.Event()
 
         def play_audio_loop():
+            """
+            Loop audio until stop is requested.
+            Uses ffplay because it supports per-playback volume (-volume).
+            Install on Pi: sudo apt update && sudo apt install ffmpeg
+            """
+            ffplay_cmd = "ffplay"  # or "/usr/bin/ffplay" if PATH issues
+
             while not self.mock_stop_event.is_set():
-                # Start aplay and keep a handle so stop() can terminate it
-                self._mock_audio_proc = subprocess.Popen(["aplay", "-q", audio_path])
+                self._mock_audio_proc = subprocess.Popen([
+                    ffplay_cmd,
+                    "-nodisp",
+                    "-autoexit",
+                    "-loglevel", "quiet",
+                    "-volume", str(volume_percent),
+                    audio_path
+                ])
                 self._mock_audio_proc.wait()
                 self._mock_audio_proc = None
 
