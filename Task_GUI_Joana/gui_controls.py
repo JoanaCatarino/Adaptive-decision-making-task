@@ -497,7 +497,7 @@ class GuiControls:
         self.ui.chk_Reward_left.setEnabled(True)
         self.ui.chk_Reward_right.setEnabled(True)
         self.ui.chk_Punishment.setEnabled(True)
-        self.ui.chk_Manip_sound_lights(True)
+        self.ui.chk_Manip_sound_lights.setEnabled(True)
 
     def disable_controls(self):
         self.ui.chk_BlueLED.setEnabled(False)
@@ -508,7 +508,8 @@ class GuiControls:
         self.ui.chk_Reward_left.setEnabled(False)
         self.ui.chk_Reward_right.setEnabled(False)
         self.ui.chk_Punishment.setEnabled(False)
-        self.ui.chk_Manip_sound_lights(False)
+        self.ui.chk_Manip_sound_lights.setEnabled(False)
+        
 
 
     def execute_task(self):
