@@ -130,9 +130,8 @@ class TestRig:
     def play_mock_recording(self):
         print("Starting mock recording loop (sound + alternating lights)")
 
-        # Works with .wav and .m4a if ffplay is installed
         audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.m4a"
-        volume_percent = 30  # 0–100 (ONLY affects this playback)
+        volume_percent = 30  # 0–100 (per-playback volume)
 
         # If already running, don't start another set of threads
         if self.mock_stop_event is not None and not self.mock_stop_event.is_set():
@@ -141,25 +140,61 @@ class TestRig:
 
         self.mock_stop_event = threading.Event()
 
+        # Convert 0–100% to a linear volume multiplier (0.0–1.0)
+        vol = max(0, min(100, volume_percent)) / 100.0
+
         def play_audio_loop():
             """
-            Loop audio until stop is requested.
-            Uses ffplay because it supports per-playback volume (-volume).
-            Install on Pi: sudo apt update && sudo apt install ffmpeg
+            Reliable per-sound volume:
+            ffmpeg decodes .m4a, applies volume filter, outputs wav to stdout,
+            piped into aplay (ALSA).
             """
-            ffplay_cmd = "ffplay"  # or "/usr/bin/ffplay" if PATH issues
+            ffmpeg_cmd = "ffmpeg"        # or "/usr/bin/ffmpeg" if PATH issues in GUI
+            aplay_cmd = "aplay"          # or "/usr/bin/aplay"
 
             while not self.mock_stop_event.is_set():
-                self._mock_audio_proc = subprocess.Popen([
-                    ffplay_cmd,
-                    "-nodisp",
-                    "-autoexit",
-                    "-loglevel", "quiet",
-                    "-volume", str(volume_percent),
-                    audio_path
-                ])
-                self._mock_audio_proc.wait()
-                self._mock_audio_proc = None
+                try:
+                    # aplay reads WAV from stdin
+                    self._mock_aplay_proc = subprocess.Popen(
+                        [aplay_cmd, "-q"],
+                        stdin=subprocess.PIPE
+                    )
+
+                    # ffmpeg outputs WAV to stdout, with volume applied
+                    self._mock_ffmpeg_proc = subprocess.Popen(
+                        [
+                            ffmpeg_cmd,
+                            "-hide_banner",
+                            "-loglevel", "error",
+                            "-i", audio_path,
+                            "-filter:a", f"volume={vol}",
+                            "-f", "wav",
+                            "pipe:1",
+                        ],
+                        stdout=self._mock_aplay_proc.stdin,
+                        stderr=subprocess.PIPE
+                    )
+
+                    # wait for ffmpeg to finish this clip
+                    self._mock_ffmpeg_proc.wait()
+
+                finally:
+                    # Close stdin so aplay can finish cleanly
+                    try:
+                        if self._mock_aplay_proc and self._mock_aplay_proc.stdin:
+                            self._mock_aplay_proc.stdin.close()
+                    except Exception:
+                        pass
+
+                    # Wait briefly for aplay to finish
+                    try:
+                        if self._mock_aplay_proc:
+                            self._mock_aplay_proc.wait(timeout=1)
+                    except Exception:
+                        pass
+
+                    self._mock_ffmpeg_proc = None
+                    self._mock_aplay_proc = None
 
         def alternate_lights_loop():
             while not self.mock_stop_event.is_set():
@@ -173,7 +208,6 @@ class TestRig:
                 led_white_r.on()
                 sleep(4)
 
-            # Ensure both are off after stopping
             led_white_l.off()
             led_white_r.off()
 
