@@ -145,56 +145,69 @@ class TestRig:
 
         def play_audio_loop():
             """
-            Reliable per-sound volume:
-            ffmpeg decodes .m4a, applies volume filter, outputs wav to stdout,
-            piped into aplay (ALSA).
+            Robust per-sound volume for .m4a:
+            ffmpeg decodes -> outputs raw PCM (s16le) -> aplay plays raw PCM.
+            No WAV header involved, so no read_header errors.
             """
-            ffmpeg_cmd = "ffmpeg"        # or "/usr/bin/ffmpeg" if PATH issues in GUI
-            aplay_cmd = "aplay"          # or "/usr/bin/aplay"
-
+            ffmpeg_cmd = "/usr/bin/ffmpeg"   # use full paths to avoid GUI PATH issues
+            aplay_cmd  = "/usr/bin/aplay"
+        
+            # playback format
+            sr = "44100"
+            ch = "2"
+        
             while not self.mock_stop_event.is_set():
+                # Start aplay first (it reads raw PCM from stdin)
+                self._mock_aplay_proc = subprocess.Popen(
+                    [aplay_cmd, "-q", "-f", "S16_LE", "-r", sr, "-c", ch],
+                    stdin=subprocess.PIPE,
+                    stderr=subprocess.PIPE
+                )
+        
+                # ffmpeg decodes and applies volume, outputs raw PCM to stdout
+                self._mock_ffmpeg_proc = subprocess.Popen(
+                    [
+                        ffmpeg_cmd,
+                        "-hide_banner",
+                        "-loglevel", "error",
+                        "-i", audio_path,
+                        "-filter:a", f"volume={vol}",
+                        "-f", "s16le",
+                        "-acodec", "pcm_s16le",
+                        "-ar", sr,
+                        "-ac", ch,
+                        "pipe:1",
+                    ],
+                    stdout=self._mock_aplay_proc.stdin,
+                    stderr=subprocess.PIPE
+                )
+        
+                # Wait for ffmpeg to finish this clip
+                ffmpeg_err = self._mock_ffmpeg_proc.communicate()[1]
+        
+                # Close stdin so aplay can finish cleanly
                 try:
-                    # aplay reads WAV from stdin
-                    self._mock_aplay_proc = subprocess.Popen(
-                        [aplay_cmd, "-q"],
-                        stdin=subprocess.PIPE
-                    )
-
-                    # ffmpeg outputs WAV to stdout, with volume applied
-                    self._mock_ffmpeg_proc = subprocess.Popen(
-                        [
-                            ffmpeg_cmd,
-                            "-hide_banner",
-                            "-loglevel", "error",
-                            "-i", audio_path,
-                            "-filter:a", f"volume={vol}",
-                            "-f", "wav",
-                            "pipe:1",
-                        ],
-                        stdout=self._mock_aplay_proc.stdin,
-                        stderr=subprocess.PIPE
-                    )
-
-                    # wait for ffmpeg to finish this clip
-                    self._mock_ffmpeg_proc.wait()
-
-                finally:
-                    # Close stdin so aplay can finish cleanly
-                    try:
-                        if self._mock_aplay_proc and self._mock_aplay_proc.stdin:
-                            self._mock_aplay_proc.stdin.close()
-                    except Exception:
-                        pass
-
-                    # Wait briefly for aplay to finish
-                    try:
-                        if self._mock_aplay_proc:
-                            self._mock_aplay_proc.wait(timeout=1)
-                    except Exception:
-                        pass
-
-                    self._mock_ffmpeg_proc = None
-                    self._mock_aplay_proc = None
+                    if self._mock_aplay_proc.stdin:
+                        self._mock_aplay_proc.stdin.close()
+                except Exception:
+                    pass
+        
+                # Wait for aplay
+                aplay_err = b""
+                try:
+                    aplay_err = self._mock_aplay_proc.communicate(timeout=1)[1]
+                except Exception:
+                    pass
+        
+                # Clear handles
+                self._mock_ffmpeg_proc = None
+                self._mock_aplay_proc = None
+        
+                # If ffmpeg had an error, print it (THIS will tell you the real reason)
+                if ffmpeg_err:
+                    print("ffmpeg error:", ffmpeg_err.decode(errors="ignore"))
+                    # If it failed, don't spin super fast
+                    sleep(0.2)
 
         def alternate_lights_loop():
             while not self.mock_stop_event.is_set():
