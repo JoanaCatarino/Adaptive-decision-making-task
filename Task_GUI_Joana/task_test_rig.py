@@ -13,6 +13,7 @@ from the sound_generator file.
 """
 
 import threading
+import subprocess
 from gpio_map import *
 from gpiozero import LED
 from time import sleep
@@ -149,7 +150,7 @@ class TestRig:
 
                 led_white_l.off()
                 led_white_r.on()
-                sleep(0.25)
+                sleep(0.5)
 
             # Ensure both are off after stopping
             led_white_l.off()
