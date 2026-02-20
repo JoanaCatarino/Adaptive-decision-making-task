@@ -14,15 +14,20 @@ from the sound_generator file.
 
 import threading
 import subprocess
+
 from gpio_map import *
 from gpiozero import LED
 from time import sleep
 from sound_generator import tone_16KHz, tone_8KHz, white_noise
 from form_updt import Ui_TaskGui
 
+
+
 class TestRig:
     def __init__(self, ui):
         self.ui = ui
+        self._mock_audio_proc = None
+        self.mock_stop_event = None
         self.start()
 
     def start(self):
@@ -125,32 +130,33 @@ class TestRig:
     def play_mock_recording(self):
         print("Starting mock recording loop (sound + alternating lights)")
 
-        audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.wav"  # <-- change this to your clip path
+        audio_path = "/home/kmb-box1-raspi/mock_recording_sound/mock_recording_sound.wav"
 
         # If already running, don't start another set of threads
-        if hasattr(self, "mock_stop_event") and self.mock_stop_event is not None and not self.mock_stop_event.is_set():
+        if self.mock_stop_event is not None and not self.mock_stop_event.is_set():
             print("Mock recording already running")
             return
 
         self.mock_stop_event = threading.Event()
 
         def play_audio_loop():
-            # Loops the clip until stop is requested
             while not self.mock_stop_event.is_set():
-                subprocess.run(["aplay", "-q", audio_path], check=False)
+                # Start aplay and keep a handle so stop() can terminate it
+                self._mock_audio_proc = subprocess.Popen(["aplay", "-q", audio_path])
+                self._mock_audio_proc.wait()
+                self._mock_audio_proc = None
 
         def alternate_lights_loop():
-            # Alternates LEDs until stop is requested
             while not self.mock_stop_event.is_set():
                 led_white_l.on()
                 led_white_r.off()
-                sleep(0.25)
+                sleep(2)
                 if self.mock_stop_event.is_set():
                     break
 
                 led_white_l.off()
                 led_white_r.on()
-                sleep(0.5)
+                sleep(2)
 
             # Ensure both are off after stopping
             led_white_l.off()
@@ -165,8 +171,20 @@ class TestRig:
         print('Test rig stopping')
         
         # Stop mock recording loop if running
-        #if hasattr(self, "mock_stop_event") and self.mock_stop_event is not None:
-            #self.mock_stop_event.set()
+        if self.mock_stop_event is not None:
+            self.mock_stop_event.set()
+
+        # If audio is currently playing, stop it immediately
+        if self._mock_audio_proc is not None:
+            try:
+                self._mock_audio_proc.terminate()
+            except Exception:
+                pass
+            self._mock_audio_proc = None
+
+        # Make sure LEDs are off
+        led_white_l.off()
+        led_white_r.off())
         
         self.disconnect_signals()
 
