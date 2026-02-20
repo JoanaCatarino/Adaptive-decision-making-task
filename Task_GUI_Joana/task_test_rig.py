@@ -184,7 +184,7 @@ class TestRig:
 
         # Make sure LEDs are off
         led_white_l.off()
-        led_white_r.off())
+        led_white_r.off()
         
         self.disconnect_signals()
 
