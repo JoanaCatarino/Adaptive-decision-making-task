@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['..\\..\\Spike-analysis\\open_align_files.py', '..\\..\\Spike-analysis\\align_test_long.py']
+recent_files = ['..\\..\\Spike-analysis\\open_align_files.py', '..\\..\\Spike-analysis\\prelim_psth_confirm.py', '..\\..\\Behavior\\run_daily_analysis.py', '..\\..\\Behavior\\transfer_files.py', '..\\..\\Behavior\\overall_plots_Blocks.py', '..\\..\\Behavior\\AllAnimals_adaptive.py', '..\\..\\Behavior\\AllAnimals_free_licking.py', '..\\..\\Behavior\\colors.py', '..\\..\\Behavior\\adaptive_native_trained_together.py', '..\\..\\Behavior\\adaptive_nt_together_passqc.py', '..\\..\\Behavior\\adaptive_task_full_merged_with_all_custom_sections.py', '..\\..\\Behavior\\adaptive_task_full_version_with_stats.py', '..\\..\\Behavior\\AllAnimals_adaptive_new.py', '..\\..\\Behavior\\lab_meeting_code.py', '..\\..\\Behavior\\get_behavior_metrics.py', '..\\..\\Behavior\\adaptive_general_metrics_nfn.py', '..\\..\\Behavior\\test_dlc.py', '..\\..\\Behavior\\adaptive_nfn_marie_style.py', '..\\..\\Spike-analysis\\analysis_nfn.py', '..\\..\\..\\..\\Downloads\\adaptive_sensorimotor_neuronal_analysis.py', '..\\..\\NWB_generator_example\\python\\make_nwb_2probes_old.py', '..\\..\\NWB_generator_example\\python\\make_nwb_2probes.py', '..\\..\\Behavior\\probe_regions.py', '..\\..\\Behavior\\brain3D_neuropixels.py']
 
 [main]
 version = 0.2.0
