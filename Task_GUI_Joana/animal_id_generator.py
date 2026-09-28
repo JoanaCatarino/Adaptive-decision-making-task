@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QComboBox
 from PyQt5.QtGui import QFont  # Import QFont for font manipulation
 
 def animal_id(combobox, font_size=8):
-    items = ["Test-animal", "1105695", "1105696", "1107081", "1107080", "1105692", "1105693", "1112090", "1114859"]
+    items = ["Test-animal", "1105695", "1105696", "1107081", "1107080", "1105692", "1105693", "1112090", "1114859", "1119556", "1119526"]
     
     # Create a font with the specified size
     font = QFont()
